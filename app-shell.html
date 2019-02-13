@@ -1,0 +1,366 @@
+
+<style>
+
+  :host {
+    display: block;
+    --drawer-content-container-mixin: {};
+    --drawer-item-mixin: {
+      display:         block;
+      padding:         0 16px;
+      text-decoration: none;
+      color:           var(--secondary-text-color);
+      line-height:     40px;
+    };
+    --drawer-item-selected-mixin: {
+      color:       var(--dark-text-color);
+      font-weight: bold;
+    };
+  }
+
+  .layout {
+    opacity:    1;
+    transition: opacity 0.2s ease-in;
+  }
+
+  .layout-unresolved {
+    opacity: 0;
+  }
+
+  app-drawer-layout:not([narrow]) [drawer-toggle] {
+    display: none;
+  }
+
+  app-header {
+    color:            var(--header-color, white);
+    background-color: var(--header-background-color, var(--app-primary-color));
+    --app-header-background-rear-layer: {
+      background-color: var(--header-background-color, var(--app-primary-color));
+    };
+    --app-header-background-front-layer: {
+      background-image:    var(--header-background-image);
+      background-position: center center;
+    };
+  }
+
+  app-header paper-icon-button {
+    --paper-icon-button-ink-color: var(--light-text-color);
+  }
+
+  #drawer {
+    --app-drawer-content-container: {
+      color:            var(--drawer-color, var(--dark-text-color));
+      background-color: var(--drawer-background-color, var(--app-background-color));
+      @apply --drawer-content-container-mixin;
+    };
+  }
+  
+  #make-scrollable {
+    height:   100%; 
+    overflow: auto;
+  }
+  /*create a deep shadow when drawer is persitently shown ie. large screens*/
+  app-drawer-layout:not([narrow]) #drawer {
+    --app-drawer-content-container: {
+      color:            var(--drawer-color, var(--dark-text-color));
+      background-color: var(--drawer-background-color, var(--app-background-color));
+      box-shadow:       6px 0px 10px 0px rgba(0, 0, 0, 0.14),
+                        1px 0px 18px 0px rgba(0, 0, 0, 0.12),
+                        3px 0px 5px -1px rgba(0, 0, 0, 0.4);
+      @apply --drawer-content-container-mixin;
+    };
+  }
+
+  #drawer-background-slot::slotted(*) {
+    position: absolute;
+    top:      0px;  
+    right:    0px;
+    bottom:   0px;
+    left:     0px;
+    z-index: -1;
+  }
+
+  .drawer-list {
+    display: block;
+  }
+
+  .drawer-item {
+    @apply --drawer-item-mixin;
+  }
+  
+  a {
+   text-decoration: none;
+   color:           var(--secondary-text-color);
+  }
+
+  .drawer-list a.iron-selected {
+    @apply --drawer-item-selected-mixin;
+  }
+
+  .drawer-item iron-icon {
+    top: -2px;
+  }
+
+  .show-divider {
+    margin-top: 12px;
+    padding:    16px 0px;
+    border-top: 2px solid var(--divider-color);
+  }
+
+  #account-icon-container {
+    position: absolute;
+    right:    16px;
+  }
+
+  #accountIconBtnImg {
+    height:           24px;
+    width:            24px;
+    position:         absolute;
+    top:              8px;
+    left:             8px;
+    background-color: var(--app-primary-color);
+    border-radius:    50%;
+    pointer-events:   none;
+  }
+
+  .hide-account-img {
+    display: none;
+  }
+
+  #pages {
+    display: block; /* important for safari */
+    /* safari scroll flicker workaround */
+    transition: opacity 0.2s ease-in;
+  }
+
+  #accountRequiredOverlay {
+    display:          none;
+    justify-content:  center;
+    align-items:      center;
+    text-align:       center;
+    position:         fixed;
+    top:              0px;
+    right:            0px;
+    bottom:           0px;
+    left:             0px;
+    padding:          16px;
+    transition:       opacity 0.2s ease-in;
+    background-color: var(--app-background-color);
+    pointer-events:   auto;
+  }
+
+  .hide-account-required {
+    opacity: 0;
+  }
+
+  .show-account-required {
+    opacity: 1;
+  }
+
+  #warningToast {
+    display:      flex;
+    align-items:  center;
+    padding-left: 52px;
+    color:        var(--app-warning-color);
+  }
+
+  #warningToast iron-icon {
+    position: absolute;
+    left:     16px;
+  }
+
+  .toasts-w-btn {
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+  }
+
+  .toasts-w-btn paper-button {
+    color: var(--app-accent-color);
+  }
+
+</style>
+
+
+<app-location route="{{route}}" 
+              url-space-regex="^[[_rootPath]]">
+</app-location>
+<app-route route="{{route}}"
+           pattern="[[_rootPath]]:page"
+           data="{{_routeData}}"
+           tail="{{_subroute}}">
+</app-route>
+<app-localstorage-document id="darkModeStorage"
+                           key="darkModeToggle" 
+                           data="[[_darkMode]]">
+</app-localstorage-document>
+<app-localstorage-document id="persistenceStorage"
+                           key="persistenceToggle" 
+                           data="[[_persistence]]">
+</app-localstorage-document>
+
+
+<app-drawer-layout id="layout" 
+                   class="layout layout-unresolved" 
+                   fullbleed 
+                   narrow="{{narrow}}">
+  <!-- MENU DRAWER -->
+  <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
+    <div id="make-scrollable">
+      <slot id="drawer-background-slot" name="drawer-background-slot"></slot>
+      <app-toolbar>Menu</app-toolbar>
+
+      <iron-selector selected="[[page]]" 
+                     attr-for-selected="page" 
+                     class="drawer-list" 
+                     role="navigation">
+        <template is="dom-repeat" items="[[_slottedViewElementData]]">
+          <a page="[[item.page.value]]" 
+             href="[[_rootPath]][[item.page.value]]">
+            <div class="drawer-item">
+              <iron-icon icon="[[item.icon.value]]" 
+                         hidden="[[__computeHideIcon(item.icon.value)]]">
+              </iron-icon>
+              [[item.label.value]]
+            </div>
+          </a>
+        </template>
+      </iron-selector>
+
+      <div class$="[[_showDivider]]">
+        <template is="dom-repeat" items="[[_slottedOverlayElementData]]">
+          <div class="drawer-item" on-click="__slottedDrawerElementClicked">
+            <iron-icon icon="[[item.icon.value]]" 
+                       hidden="[[__computeHideIcon(item.icon.value)]]">
+            </iron-icon>
+            [[item.label.value]]
+          </div>
+        </template>
+        <template is="dom-if" if="[[!noUsers]]">
+          <div class="drawer-item" on-click="__drawerAccountClicked">
+            <iron-icon icon="app-icons:account-circle"></iron-icon>
+            Account
+          </div>
+        </template>        
+        <div class="drawer-item" on-click="__drawerSettingsClicked">
+          <iron-icon icon="app-icons:settings"></iron-icon>
+          Settings
+        </div>        
+        <iron-selector selected="[[page]]" 
+                       attr-for-selected="page" 
+                       class="drawer-list" 
+                       role="navigation">
+          <template is="dom-repeat" items="[[_slottedBottomViewElementData]]">
+            <a page="[[item.page.value]]" 
+               href="[[_rootPath]][[item.page.value]]">
+              <div class="drawer-item">
+                <iron-icon icon="[[item.icon.value]]" 
+                           hidden="[[__computeHideIcon(item.icon.value)]]">
+                </iron-icon>
+                [[item.label.value]]
+              </div>
+           </a>
+          </template>
+        </iron-selector>
+      </div>
+
+    </div>
+  </app-drawer>
+
+  <!-- MAIN HEADER & CONTENT -->
+  <!-- DO NOT use 'has-scroll-region' in app-header-layout so that 
+       it will use the document scroller for proper ios useage -->
+  <app-header-layout id="app-shell-main-panel">
+    <app-header id="header" 
+                slot="header" 
+                scroll-target="document"
+                threshold="[[threshold]]"
+                condenses
+                effects="waterfall blend-background">
+      <app-toolbar id="topToolbar">
+        <paper-icon-button icon="app-icons:menu" 
+                           drawer-toggle 
+                           aria-label="Opens menu drawer">
+        </paper-icon-button>
+        <div main-title hidden="[[!title]]">[[title]]</div>
+        <slot name="top-toolbar-slot"></slot>
+        <div id="account-icon-container" hidden="[[noUsers]]">
+          <paper-icon-button id="account-icon-btn" 
+                             icon="[[__computeAccountButtonIcon(currentUser)]]"
+                             on-click="__userButtonClicked"
+                             aria-label="Account sign in or up">
+          </paper-icon-button>
+          <iron-image id="accountIconBtnImg"
+                      class$="[[__computeAccountIconButtonImgClass(currentUser)]]"
+                      preload 
+                      fade 
+                      sizing="cover"
+                      src="[[__computeAccountIconButtonSrc(currentUser)]]">
+          </iron-image>
+        </div>
+      </app-toolbar>
+      <template is="dom-repeat" items="[[__createMiddleToolbars(headerSize)]]">
+        <app-toolbar class="toolbars">
+          <slot name="[[item.slotName]]"></slot>
+        </app-toolbar>
+      </template>
+      <template is="dom-if" if="[[__stampBottomToolbar(headerSize, stickyBottomToolbar)]]">
+        <app-toolbar id="bottomToolbar">
+          <slot name="bottom-toolbar-slot"></slot>
+        </app-toolbar>
+      </template>
+      <template is="dom-if" if="[[__stampStickyBottomToolbar(headerSize, stickyBottomToolbar)]]">
+        <app-toolbar id="bottomToolbar" sticky>
+          <slot name="bottom-toolbar-slot"></slot>
+        </app-toolbar>
+      </template>
+    </app-header>
+    <!-- useful for a sticky search bar with an autocomplete below it -->    
+    <slot id="underHeaderStickySlot" name="under-header-sticky-slot"></slot>
+    <div id="pages">
+      <iron-pages selected="[[page]]"
+                  attr-for-selected="page"
+                  fallback-selection="view404"
+                  role="main">
+        <!-- dynamically imported -->
+        <slot id="views-slot" name="views-slot"></slot>
+        <slot id="views-bottom-slot" name="views-bottom-slot"></slot> 
+        <view-404 page="view404"></view-404>
+      </iron-pages>
+      <slot name="footer-slot"></slot>
+      <div id="accountRequiredOverlay" class="hide-account-required">
+        <h1>You must be signed in to use this app</h1>
+      </div>
+    </div>
+  </app-header-layout>
+</app-drawer-layout>
+
+
+<!-- overlays -->
+<slot id="overlays-slot" name="overlays-slot"></slot>
+<app-account id="account"
+             user="[[currentUser]]"
+             header-image="[[accountHeaderImage]]"
+             header-size="[[accountHeaderSize]]">
+</app-account>
+<app-settings id="settings" 
+              dark-mode="[[_darkMode]]"
+              persistence="[[_persistence]]">
+</app-settings>
+<app-auth id="auth"></app-auth>
+
+
+<!-- used by multiple custom elements via utils.js message()/warn() -->
+<paper-toast id="toast"></paper-toast>
+<paper-toast id="warningToast">
+  <iron-icon icon="app-icons:warning"></iron-icon>
+</paper-toast>
+<paper-toast id="confirmToast" class="toasts-w-btn">
+  <paper-button on-click="__confirmToastUndoButtonClicked">undo</paper-button>
+</paper-toast>
+<paper-toast id="swToast" 
+             class="toasts-w-btn" 
+             duration="Infinity" 
+             always-on-top>
+  <paper-button on-click="__swToastRefreshButtonClicked">refresh</paper-button>
+  <paper-button on-click="__swToastDismissButtonClicked">dismiss</paper-button>
+</paper-toast>
