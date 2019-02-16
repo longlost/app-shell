@@ -494,10 +494,10 @@
     "@spriteful/lambda" "^1.3.3"
     "@spriteful/utils" "^1.1.6"
 
-"@spriteful/app-account@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@spriteful/app-account/-/app-account-1.0.0.tgz#e96de4a18f75e8029584aa7ba5b9c3b35ec5611e"
-  integrity sha512-TZ9V1g9aaMimI8LAT8J6chnNS5s3OovQ/BrhhJkH1Y89EuXJVudCJJPaI5NincYJe5/0K0EVnz5S9NpHwppZTw==
+"@spriteful/app-account@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@spriteful/app-account/-/app-account-1.0.1.tgz#2ea7505ec41f4201d23508cbdd4c72b428de28ba"
+  integrity sha512-b9a1tUI1/fUdE5S2GmueLrJVNlCUxNi9RrWc83IFKreyA+HyIPygV87hvp9xXFgOrgosYJOk4m2QJurazeon9Q==
   dependencies:
     "@polymer/gold-phone-input" "^3.0.1"
     "@polymer/iron-icon" "^3.0.1"
@@ -509,14 +509,14 @@
     "@polymer/polymer" "^3.1.0"
     "@spriteful/animation" "^1.0.5"
     "@spriteful/app-header-overlay" "^1.0.0"
-    "@spriteful/app-icons" "^1.0.0"
+    "@spriteful/app-icons" "^1.0.1"
     "@spriteful/app-modal" "^1.0.0"
     "@spriteful/app-spinner" "^1.0.0"
-    "@spriteful/edit-input" "^1.0.0"
-    "@spriteful/icon-to-spinner" "^1.0.1"
+    "@spriteful/edit-input" "^1.0.1"
+    "@spriteful/icon-to-spinner" "^1.0.2"
     "@spriteful/responsive-image" "^1.0.0"
     "@spriteful/services" "^2.1.3"
-    "@spriteful/shipping-inputs" "^1.0.0"
+    "@spriteful/shipping-inputs" "^1.0.1"
     "@spriteful/spriteful-element" "^1.0.4"
     "@spriteful/utils" "^1.1.6"
 
@@ -552,6 +552,13 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@spriteful/app-icons/-/app-icons-1.0.0.tgz#442a9a152f0e79f3329d5514f99553affca1d713"
   integrity sha512-QjMZAUKTxK3d4C3XqRfPTeXnDXVKbUFPvLY5C6jsA6dHMMd1rtT0dEf+8BwMkUOrX/o0BUwR3/EtmH7i1JVuOw==
+  dependencies:
+    "@polymer/iron-iconset-svg" "^3.0.1"
+
+"@spriteful/app-icons@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@spriteful/app-icons/-/app-icons-1.0.1.tgz#959a1034edf290e437f07f603d24799efd22d14d"
+  integrity sha512-wkGgCQEaABViOfxnk5rKQwVTB+V5CVRfO8q9Y980SUBPzubd8beGBpGnfKKlCGSLAzQqhVP5nAh2zvyVCVhGvw==
   dependencies:
     "@polymer/iron-iconset-svg" "^3.0.1"
 
@@ -601,23 +608,23 @@
     "@spriteful/spriteful-element" "^1.0.4"
     "@spriteful/utils" "^1.1.6"
 
-"@spriteful/edit-input@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@spriteful/edit-input/-/edit-input-1.0.0.tgz#2ce849e7bcef464d874a1af76a731d49e4488f86"
-  integrity sha512-zSbVvHcjesC5fYeq4PbTmRCEceaAz8/sy4azZgC8LCa95/Z+pLZ+f35DoIv0yMHlZVYY3LbIDdpMiWJMArBzug==
+"@spriteful/edit-input@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@spriteful/edit-input/-/edit-input-1.0.1.tgz#c5d7088308e1dbbce2fa5482a2b720b1a14befc8"
+  integrity sha512-bihJYRBdR1Ehyo/On4PUSDVp9kID2AuOPjWIY/h6LpLyHBLAHZwO5w5qeDHsdTXSoPk1tXuUZW3/q6cQBc4iFg==
   dependencies:
     "@polymer/paper-button" "^3.0.1"
     "@polymer/paper-ripple" "^3.0.1"
     "@polymer/polymer" "^3.1.0"
-    "@spriteful/icon-to-spinner" "^1.0.0"
-    "@spriteful/pencil-to-check-icon" "^1.0.0"
+    "@spriteful/icon-to-spinner" "^1.0.2"
+    "@spriteful/pencil-to-check-icon" "^1.0.1"
     "@spriteful/spriteful-element" "^1.0.4"
     "@spriteful/utils" "^1.1.6"
 
-"@spriteful/icon-to-spinner@^1.0.0", "@spriteful/icon-to-spinner@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@spriteful/icon-to-spinner/-/icon-to-spinner-1.0.1.tgz#1d36dea8953e133b2f38cdd0cc293e09c0a715a9"
-  integrity sha512-DLv6lK1+trSjXJ0IYUcKob6AXnI/CNWj1VoqqmCWQSGQmdWxpTusN00jTx3VTsqySVAnLOi9RfzS8y3h2itW9w==
+"@spriteful/icon-to-spinner@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@spriteful/icon-to-spinner/-/icon-to-spinner-1.0.2.tgz#148a66451a7575820ec9958408b361d8f2329454"
+  integrity sha512-A7yLxVDpFIkbrqjsmV6uUqjdOnuKVBm2mWDZvSXSCLtr9ujtpUtdfQ/ziFUbr/P083vkj5M8Tf3IWuYXK4jrqA==
   dependencies:
     "@polymer/iron-icon" "^3.0.1"
     "@polymer/paper-spinner" "^3.0.1"
@@ -646,7 +653,7 @@
     "@spriteful/requested-init-mixin" "^1.0.0"
     "@spriteful/utils" "^1.1.6"
 
-"@spriteful/pencil-to-check-icon@^1.0.0":
+"@spriteful/pencil-to-check-icon@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@spriteful/pencil-to-check-icon/-/pencil-to-check-icon-1.0.1.tgz#7de3e7235549db977888576303e92657a046e274"
   integrity sha512-mU1vqwqju4dzAMf3nZ4aOlHRS+uwc0Z5FrYs0+iS6m8BgUwcGBNHu71gbkwSvDztwv+B9x9U4vBqqj5DyIIAmQ==
@@ -681,14 +688,14 @@
     comlinkjs "^3.1.1"
     firebase "^5.8.2"
 
-"@spriteful/shipping-inputs@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@spriteful/shipping-inputs/-/shipping-inputs-1.0.0.tgz#bcedae862f16b199219aaf765389fdbe4341738a"
-  integrity sha512-nimmZudglQwp/Y4kSe4bjS0eLgal8BlW18zV26qcCY3X/IjUUAttobkoStzqKpkWxbZdZlrc2cRksk5BaYa5Qg==
+"@spriteful/shipping-inputs@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@spriteful/shipping-inputs/-/shipping-inputs-1.0.1.tgz#8617e32535e718108074a5ad3640bdb3287d63b7"
+  integrity sha512-RuGXBL4s0FMKOcx6/S9zSUtAcPfNJx4jCy/FY0DkuGgv8rVWrCcoaW403WyD7rhBllK+mJADPoXrILrj9Gh0CA==
   dependencies:
     "@polymer/paper-input" "^3.0.1"
     "@polymer/polymer" "^3.1.0"
-    "@spriteful/edit-input" "^1.0.0"
+    "@spriteful/edit-input" "^1.0.1"
 
 "@spriteful/spriteful-element@^1.0.4":
   version "1.0.4"

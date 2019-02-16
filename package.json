@@ -1,6 +1,6 @@
 {
   "name": "@spriteful/app-shell",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "app level element that handles switching between views and overlays",
   "main": "app-shell.js",
   "scripts": {
@@ -28,9 +28,9 @@
     "@polymer/paper-icon-button": "^3.0.2",
     "@polymer/paper-toast": "^3.0.1",
     "@polymer/polymer": "^3.1.0",
-    "@spriteful/app-account": "^1.0.0",
+    "@spriteful/app-account": "^1.0.1",
     "@spriteful/app-auth": "^1.0.1",
-    "@spriteful/app-icons": "^1.0.0",
+    "@spriteful/app-icons": "^1.0.1",
     "@spriteful/app-settings": "^1.0.0",
     "@spriteful/overlay-control-mixin": "^1.0.0",
     "@spriteful/services": "^2.1.3",
