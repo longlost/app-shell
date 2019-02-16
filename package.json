@@ -1,6 +1,6 @@
 {
   "name": "@spriteful/app-shell",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "app level element that handles switching between views and overlays",
   "main": "app-shell.js",
   "scripts": {
