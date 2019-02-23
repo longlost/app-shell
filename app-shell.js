@@ -396,7 +396,7 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
 
   __routePageChanged(page) {
     this.__switchView(page);
-    window.scrollTo({top: 0});
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
 
