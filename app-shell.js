@@ -93,6 +93,8 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
 
       revealHeader: Boolean,
 
+      hasSeoJson: Boolean,
+
       headerSize: {
         type: Number,
         value: 1
@@ -130,6 +132,10 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
       },
 
       _darkMode: Boolean,
+
+      _descriptionMeta: Object,
+
+      _jsonLdScript: Object,
 
       _menuOverlaysSlotNodes: Array,
 
@@ -191,7 +197,8 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
     // update view since connectedCallback runs after the router is done
     this.__switchView(this._routeData.page);
     this.$.layout.classList.remove('layout-unresolved');
-
+    this._descriptionMeta = document.head.querySelector('[name~=description');
+    this._jsonLdScript = document.head.querySelector('[id~=pageJsonLd');
     if (this.noUsers) { return; }
 
     this.__addUserAccountListeners();
@@ -396,7 +403,21 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
 
   __routePageChanged(page) {
     this.__switchView(page);
+    this.__updateMeta(page);
     window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  
+  async __updateMeta(page) {
+    if (!this.hasSeoJson) { return; }
+    const defaultPage = page || 'home';
+    const {default: seo} = await import('seo.json');
+    const selectedPageData = seo[defaultPage];
+    const {title, description, pageJson} = selectedPageData;
+    const json = JSON.stringify(pageJson);
+    document.title = title;
+    this._descriptionMeta.setAttribute('content', description);
+    this._jsonLdScript.innerHTML = json;
   }
 
 
