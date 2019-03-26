@@ -197,8 +197,9 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
     // update view since connectedCallback runs after the router is done
     this.__switchView(this._routeData.page);
     this.$.layout.classList.remove('layout-unresolved');
-    this._descriptionMeta = document.head.querySelector('[name~=description');
-    this._jsonLdScript = document.head.querySelector('[id~=pageJsonLd');
+    this._descriptionMeta = document.head.querySelector('[name~=description]');
+    this._jsonLdScript    = document.head.querySelector('[id~=pageJsonLd]');
+    
     if (this.noUsers) { return; }
 
     this.__addUserAccountListeners();
