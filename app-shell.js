@@ -99,6 +99,11 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
         type: Number,
         value: 1
       },
+      
+      hideMenu: {
+        type: Boolean,
+        value: false,
+      },
       // webpack dynamic imports from parent
       // used for lazy loading
       imports: Object,
@@ -124,6 +129,11 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
       title: {
         type: String,
         value: 'Title Goes Here'
+      },
+
+      viewChangedScroll: {
+        type: String,
+        value: "none"
       },
 
       currentUser: { // important for first paint
@@ -405,7 +415,12 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
   __routePageChanged(page) {
     this.__switchView(page);
     this.__updateMeta(page);
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    if (this.viewChangedScroll === 'instant') {
+       window.scrollTo({top: 0, behavior: 'auto'});
+    }
+    else if (this.viewChangedScroll === 'smooth') {
+       window.scrollTo({top: 0, behavior: 'smooth'});
+    }
   }
 
   

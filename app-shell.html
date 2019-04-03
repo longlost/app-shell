@@ -203,7 +203,8 @@
 <app-drawer-layout id="layout" 
                    class="layout layout-unresolved" 
                    fullbleed 
-                   narrow="{{narrow}}">
+                   narrow="{{narrow}}"
+                   force-narrow=[[hideMenu]]>
   <!-- MENU DRAWER -->
   <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
     <div id="make-scrollable">
