@@ -200,10 +200,10 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
       this.$.header, 
       'threshold-triggered-changed', 
       this.__headerThresholdChanged.bind(this)
-    );
+    );    
+    this.__slotListeners();
     this.__addSettingsListeners();
     this.__initializePersistence();
-    this.__setupMenuItems();
     // update view since connectedCallback runs after the router is done
     this.__switchView(this._routeData.page);
     this.$.layout.classList.remove('layout-unresolved');
@@ -295,6 +295,13 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
     this.fire('app-shell-threshold-triggered-changed', event.detail);
   }
 
+  // pick up dynamic changes to views
+  __slotListeners() {
+    listen(this.$.viewsSlot,       'slotchange', this.__setupMenuItems.bind(this));
+    listen(this.$.overlaysSlot,    'slotchange', this.__setupMenuItems.bind(this));
+    listen(this.$.viewsBottomSlot, 'slotchange', this.__setupMenuItems.bind(this));
+  }
+
 
   __addSettingsListeners() {
     listen(
@@ -370,9 +377,9 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
 
   __setupMenuItems() {
     // pull out data from slotted view elements to use in routing/lazy-loading
-    const viewsSlotNodes        = this.slotNodes('#views-slot');
-    const allOverlaySlotNodes   = this.slotNodes('#overlays-slot');
-    const viewsBottomSlotNodes  = this.slotNodes('#views-bottom-slot');
+    const viewsSlotNodes        = this.slotNodes('#viewsSlot');
+    const allOverlaySlotNodes   = this.slotNodes('#overlaysSlot');
+    const viewsBottomSlotNodes  = this.slotNodes('#viewsBottomSlot');
     // filter out overlays that dont need a menu item
     this._menuOverlaysSlotNodes = allOverlaySlotNodes.
       filter(({attributes}) => (attributes.label && attributes.page));
