@@ -324,8 +324,8 @@
                   fallback-selection="view404"
                   role="main">
         <!-- dynamically imported -->
-        <slot id="views-slot" name="views-slot"></slot>
-        <slot id="views-bottom-slot" name="views-bottom-slot"></slot> 
+        <slot id="viewsSlot" name="views-slot"></slot>
+        <slot id="viewsBottomSlot" name="views-bottom-slot"></slot> 
         <view-404 page="view404"></view-404>
       </iron-pages>
       <slot name="footer-slot"></slot>
@@ -338,7 +338,8 @@
 
 
 <!-- overlays -->
-<slot id="overlays-slot" name="overlays-slot"></slot>
+<slot id="overlaysSlot" name="overlays-slot"></slot>
+
 <app-account id="account"
              user="[[currentUser]]"
              header-image="[[accountHeaderImage]]"
