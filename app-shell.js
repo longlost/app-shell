@@ -202,7 +202,8 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
       this.__headerThresholdChanged.bind(this)
     );    
     this.__slotListeners();
-    this.__addSettingsListeners();
+    this.__addSettingsListeners();    
+    this.__setupMenuItems();
     this.__initializePersistence();
     // update view since connectedCallback runs after the router is done
     this.__switchView(this._routeData.page);
