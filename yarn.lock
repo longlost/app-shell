@@ -777,6 +777,13 @@
   dependencies:
     "@webcomponents/shadycss" "^1.8.0"
 
+"@polymer/polymer@^3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@polymer/polymer/-/polymer-3.3.0.tgz#52a0665ac29654728e8f46e8ee178c02c49efdd0"
+  integrity sha512-rij7suomS7DxdBamnwr/Xa0V5hpypf7I9oYKseF2FWz5Xh2a3wJNpVjgJy1adXVCxqIyPhghsrthnfCt7EblsQ==
+  dependencies:
+    "@webcomponents/shadycss" "^1.9.1"
+
 "@polymer/prism-element@^3.0.0-pre.25":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/prism-element/-/prism-element-3.0.1.tgz#b35d53eec9ecea5e5fec7c82c7e978e760e53501"
@@ -1026,10 +1033,10 @@
   resolved "https://registry.yarnpkg.com/@spriteful/lambda/-/lambda-1.3.5.tgz#14cef52aff8144ab1af6cdd500debb8daddf4564"
   integrity sha512-e3lnmVRce1bO6Ygw3V+rmKZGog2+OyEJYmC9h/p0vO63Y8alqY+VFbowkvYl7PJUCo+AlqLm9GrdPbAQTn+KrQ==
 
-"@spriteful/overlay-control-mixin@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@spriteful/overlay-control-mixin/-/overlay-control-mixin-1.0.1.tgz#99f7e8ab2a68b16015a4d575f659ec21c05011bb"
-  integrity sha512-/sJ9+Y4sqA7GPgzogcyAxtpSruTUxaUbXKAKChn3zGoFb7+8i6GH63rOe7CVGddwAiN77tM0magcVXHRbfsHRg==
+"@spriteful/overlay-control-mixin@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@spriteful/overlay-control-mixin/-/overlay-control-mixin-1.0.2.tgz#0a5f419a03c4eaba3fbb71fb9478b3ed7911f190"
+  integrity sha512-20B1NrnkwGngBHCejoFtb0gDvKlK8p31jiVTGrLS1pfIklQVWJNg684EusGI66zSGOojgciGNZ0K79ONHepYOQ==
   dependencies:
     "@spriteful/utils" "^1.2.4"
 
@@ -1178,6 +1185,11 @@
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@webcomponents/shadycss/-/shadycss-1.9.0.tgz#8450465037370d4f5c32e801bb2554a7cf2f5037"
   integrity sha512-g8Xa+6RSEME4g/wLJW4YII0eq15rvXp76RxPAuv7hx+Bdoi7GzZJ/EoZOUfyIbqAsQbII1TcWD4/+Xhs5NcM1w==
+
+"@webcomponents/shadycss@^1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@webcomponents/shadycss/-/shadycss-1.9.1.tgz#d769fbadfa504f11b84caeef26701f89070ec49a"
+  integrity sha512-IaZOnWOKXHghqk/WfPNDRIgDBi3RsVPY2IFAw6tYiL9UBGvQRy5R6uC+Fk7qTZsReTJ0xh5MTT8yAcb3MUR4mQ==
 
 "@webcomponents/webcomponentsjs@^2.2.10":
   version "2.2.10"
