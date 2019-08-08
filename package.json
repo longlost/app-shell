@@ -1,6 +1,6 @@
 {
   "name": "@spriteful/app-shell",
-  "version": "1.0.11",
+  "version": "1.1.0",
   "description": "app level element that handles switching between views and overlays",
   "main": "app-shell.js",
   "scripts": {
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/spriteful/app-shell#readme",
   "dependencies": {
-    "@polymer/app-layout": "^3.0.2",
+    "@polymer/app-layout": "^3.1.0",
     "@polymer/app-route": "^3.0.2",
     "@polymer/app-storage": "^3.0.2",
     "@polymer/iron-icon": "^3.0.1",
@@ -28,11 +28,11 @@
     "@polymer/paper-icon-button": "^3.0.2",
     "@polymer/paper-toast": "^3.0.1",
     "@polymer/polymer": "^3.3.0",
-    "@spriteful/app-account": "^1.0.1",
+    "@spriteful/app-account": "^1.0.2",
     "@spriteful/app-auth": "^1.0.2",
     "@spriteful/app-icons": "^1.0.6",
     "@spriteful/app-settings": "^1.0.0",
-    "@spriteful/overlay-control-mixin": "^1.0.2",
+    "@spriteful/overlay-control-mixin": "^1.0.3",
     "@spriteful/services": "^2.1.7",
     "@spriteful/spriteful-element": "^1.0.4",
     "@spriteful/utils": "^1.2.4",
@@ -43,7 +43,7 @@
     "@polymer/test-fixture": "^4.0.2",
     "@webcomponents/webcomponentsjs": "^2.2.10",
     "chai": "^4.2.0",
-    "mocha": "^6.1.4",
+    "mocha": "^6.2.0",
     "wct-mocha": "^1.0.1"
   }
 }
