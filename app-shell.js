@@ -87,6 +87,8 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
 
       accountRequired: Boolean,
 
+      darkModeDefault: Boolean,
+
       divider: Boolean,
 
       fixedHeader: Boolean,
@@ -210,7 +212,9 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
     this.$.layout.classList.remove('layout-unresolved');
     this._descriptionMeta = document.head.querySelector('[name~=description]');
     this._jsonLdScript    = document.head.querySelector('[id~=pageJsonLd]');
-    
+    // localstorage overrides this is user has changed the setting previously
+    this.__setDarkMode(this.darkModeDefault); 
+
     if (this.noUsers) { return; }
 
     this.__addUserAccountListeners();
@@ -308,7 +312,7 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
     listen(
       this.$.darkModeStorage,
       'data-changed',
-      this.__setDarkMode.bind(this)
+      this.__darkModeChanged.bind(this)
     );
     listen(
       this.$.persistenceStorage,
@@ -318,7 +322,7 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
     listen(
       this.$.settings,
       'settings-dark-mode-changed',
-      this.__setDarkMode.bind(this)
+      this.__darkModeChanged.bind(this)
     );
     listen(
       this.$.settings,
@@ -338,11 +342,8 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
     }
   }
 
-  // fired from spriteful-settings
-  __setDarkMode(event) {
-    const {value: dark} = event.detail;
-    // sets app-localstorage-document data val
-    this._darkMode = dark;
+
+  __setDarkMode(dark) {
     if (dark) {
       ShadyCSS.styleDocument({
         '--app-body-color':       theme.darkBodyColor,
@@ -358,7 +359,16 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
         '--dark-text-color':      theme.lightText,
         '--text-truncate-fade':   theme.lightTextTruncate
       });
-    }
+    }    
+    // sets app-localstorage-document data val
+    this._darkMode = dark;
+    // use this event for all changes including localstorage cache updates
+    this.fire('app-shell-dark-mode-changed', {value: dark});
+  }
+
+  // fired from dark mode app-localstorage-document and spriteful-settings
+  __darkModeChanged(event) {
+    this.__setDarkMode(event.detail.value);
   }
 
 

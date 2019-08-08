@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@firebase/app-types@0.3.3", "@firebase/app-types@^0.3.2", "@firebase/app-types@^0.3.3":
+"@firebase/app-types@0.3.3", "@firebase/app-types@^0.3.2":
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/@firebase/app-types/-/app-types-0.3.3.tgz#87659dd4cce8d1e341c717c61bd654998ac7142b"
   integrity sha512-mMcYitdEdzKOzEevHtECVepiqncSZBxRdI9r/LcJfx5ai4529UufpoLz15CnKLHEqkSB3OQqlZbI78xpZNQPPA==
@@ -395,7 +395,7 @@
   dependencies:
     tslib "1.9.3"
 
-"@firebase/util@0.2.6", "@firebase/util@^0.2.6":
+"@firebase/util@0.2.6":
   version "0.2.6"
   resolved "https://registry.yarnpkg.com/@firebase/util/-/util-0.2.6.tgz#03262ea2f94de60c4ce844069bdedcc7819d3dde"
   integrity sha512-xhQdQt/9eoX7CmCvWoe2YERMf/pIw0DgO0PicVTWJba+EAGdebHcpMeXRWvtsc7Wdj5Qh22hGLk1C+gz/nP5CQ==
@@ -424,6 +424,17 @@
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@polymer/app-layout/-/app-layout-3.0.2.tgz#8a6f3c87b405635fd3547db82db8dbb6c51b6bf9"
   integrity sha512-qKcQHj72uGxGoetjnNQ7pg4F6Da4U5jKBzZy0VRmDuZMUPDmtIqHaIgC5K6B4y+xUag0gkV9ce72Q3hNaK9y+g==
+  dependencies:
+    "@polymer/iron-flex-layout" "^3.0.0-pre.26"
+    "@polymer/iron-media-query" "^3.0.0-pre.26"
+    "@polymer/iron-resizable-behavior" "^3.0.0-pre.26"
+    "@polymer/iron-scroll-target-behavior" "^3.0.0-pre.26"
+    "@polymer/polymer" "^3.0.0"
+
+"@polymer/app-layout@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@polymer/app-layout/-/app-layout-3.1.0.tgz#b146cd2ce202e079ac51059a4fcaef03f5b2f3c4"
+  integrity sha512-+jf5/TtUDj/la9Vi59ooGNjnTN8JTkyIUK8gxAms0N3MmyeqrmcNLlJKDVyE6IIGKz0WfFeGKqKtmtTLHrZIlg==
   dependencies:
     "@polymer/iron-flex-layout" "^3.0.0-pre.26"
     "@polymer/iron-media-query" "^3.0.0-pre.26"
@@ -554,7 +565,7 @@
     "@polymer/iron-meta" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-image@^3.0.0-pre.26", "@polymer/iron-image@^3.0.1":
+"@polymer/iron-image@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-image/-/iron-image-3.0.1.tgz#c5456d65733879ab0aaed75fbc26419db79cbe5d"
   integrity sha512-Tp6iB/7YYo6IwmVnxHgctKJXjlE6KcHtja+BvyKq7Du+9JB8XgZ2D+WZTYofagwQJ5Akl4oFis5gtO+LM9Z4dA==
@@ -705,10 +716,23 @@
     "@polymer/paper-styles" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/paper-input@^3.0.0-pre.26", "@polymer/paper-input@^3.0.1":
+"@polymer/paper-input@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/paper-input/-/paper-input-3.0.1.tgz#ec711a131af74f10553bbf1125971ddc354afe62"
   integrity sha512-th6fuP6PyQEBJSWVtJQ/ZsoQp8Zysq4bRIOg2uGZsNX6gfm6AVoMph5pXOlS8RHoVDDYDG9GRjQib7JPSWKkrw==
+  dependencies:
+    "@polymer/iron-a11y-keys-behavior" "^3.0.0-pre.26"
+    "@polymer/iron-autogrow-textarea" "^3.0.0-pre.26"
+    "@polymer/iron-behaviors" "^3.0.0-pre.26"
+    "@polymer/iron-form-element-behavior" "^3.0.0-pre.26"
+    "@polymer/iron-input" "^3.0.0-pre.26"
+    "@polymer/paper-styles" "^3.0.0-pre.26"
+    "@polymer/polymer" "^3.0.0"
+
+"@polymer/paper-input@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@polymer/paper-input/-/paper-input-3.0.2.tgz#c70559ed9b38a34efda972de8bcb7caed3c299d5"
+  integrity sha512-EoyJLsUCo7zLQp63jG7+qbRcN7ynT0p9MktDeH+dnl29UqFD4Ovj2/O5cSgq3lA3dYrei4vHF11Qmdmk7iab7Q==
   dependencies:
     "@polymer/iron-a11y-keys-behavior" "^3.0.0-pre.26"
     "@polymer/iron-autogrow-textarea" "^3.0.0-pre.26"
@@ -858,31 +882,31 @@
     "@spriteful/lambda" "^1.3.3"
     "@spriteful/utils" "^1.1.6"
 
-"@spriteful/app-account@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@spriteful/app-account/-/app-account-1.0.1.tgz#2ea7505ec41f4201d23508cbdd4c72b428de28ba"
-  integrity sha512-b9a1tUI1/fUdE5S2GmueLrJVNlCUxNi9RrWc83IFKreyA+HyIPygV87hvp9xXFgOrgosYJOk4m2QJurazeon9Q==
+"@spriteful/app-account@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@spriteful/app-account/-/app-account-1.0.2.tgz#685957efb0e77bac95858ea94042c6431f67d3f3"
+  integrity sha512-1QOS/GCDyy5aqlQeC7WDT59FaB+Tgdyg0rVUcpCRpszlw8DfbAfuzHON5PiN58SMbwOWYBdyp6hSqlDOHm5WWg==
   dependencies:
     "@polymer/gold-phone-input" "^3.0.1"
     "@polymer/iron-icon" "^3.0.1"
-    "@polymer/iron-image" "^3.0.1"
+    "@polymer/iron-image" "^3.0.2"
     "@polymer/paper-button" "^3.0.1"
     "@polymer/paper-fab" "^3.0.1"
-    "@polymer/paper-input" "^3.0.1"
+    "@polymer/paper-input" "^3.0.2"
     "@polymer/paper-ripple" "^3.0.1"
-    "@polymer/polymer" "^3.1.0"
+    "@polymer/polymer" "^3.3.0"
     "@spriteful/animation" "^1.0.5"
-    "@spriteful/app-header-overlay" "^1.0.0"
-    "@spriteful/app-icons" "^1.0.1"
+    "@spriteful/app-header-overlay" "^1.0.1"
+    "@spriteful/app-icons" "^1.0.6"
     "@spriteful/app-modal" "^1.0.0"
     "@spriteful/app-spinner" "^1.0.0"
     "@spriteful/edit-input" "^1.0.1"
     "@spriteful/icon-to-spinner" "^1.0.2"
-    "@spriteful/responsive-image" "^1.0.0"
-    "@spriteful/services" "^2.1.3"
-    "@spriteful/shipping-inputs" "^1.0.1"
+    "@spriteful/responsive-image" "^1.0.3"
+    "@spriteful/services" "^2.1.7"
+    "@spriteful/shipping-inputs" "^1.0.3"
     "@spriteful/spriteful-element" "^1.0.4"
-    "@spriteful/utils" "^1.1.6"
+    "@spriteful/utils" "^1.2.4"
 
 "@spriteful/app-auth@^1.0.2":
   version "1.0.2"
@@ -914,17 +938,23 @@
     "@spriteful/spriteful-element" "^1.0.4"
     "@spriteful/utils" "^1.1.6"
 
+"@spriteful/app-header-overlay@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@spriteful/app-header-overlay/-/app-header-overlay-1.0.1.tgz#e2f945a30f4f7e56718d3b3467aefe9b5d94bd09"
+  integrity sha512-uAPysi0hjIrqzx+UGJFEC8WgBIM0AVwNWEqKEF2kld5o548yZ7GVPLgxA2FuHdj7y83BgqXPgeJwJvoMJtNDfg==
+  dependencies:
+    "@polymer/app-layout" "^3.0.2"
+    "@polymer/paper-icon-button" "^3.0.2"
+    "@polymer/polymer" "^3.2.0"
+    "@spriteful/app-icons" "^1.0.6"
+    "@spriteful/overlay-mixin" "^1.0.0"
+    "@spriteful/spriteful-element" "^1.0.4"
+    "@spriteful/utils" "^1.2.4"
+
 "@spriteful/app-icons@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@spriteful/app-icons/-/app-icons-1.0.0.tgz#442a9a152f0e79f3329d5514f99553affca1d713"
   integrity sha512-QjMZAUKTxK3d4C3XqRfPTeXnDXVKbUFPvLY5C6jsA6dHMMd1rtT0dEf+8BwMkUOrX/o0BUwR3/EtmH7i1JVuOw==
-  dependencies:
-    "@polymer/iron-iconset-svg" "^3.0.1"
-
-"@spriteful/app-icons@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@spriteful/app-icons/-/app-icons-1.0.1.tgz#959a1034edf290e437f07f603d24799efd22d14d"
-  integrity sha512-wkGgCQEaABViOfxnk5rKQwVTB+V5CVRfO8q9Y980SUBPzubd8beGBpGnfKKlCGSLAzQqhVP5nAh2zvyVCVhGvw==
   dependencies:
     "@polymer/iron-iconset-svg" "^3.0.1"
 
@@ -1033,10 +1063,10 @@
   resolved "https://registry.yarnpkg.com/@spriteful/lambda/-/lambda-1.3.5.tgz#14cef52aff8144ab1af6cdd500debb8daddf4564"
   integrity sha512-e3lnmVRce1bO6Ygw3V+rmKZGog2+OyEJYmC9h/p0vO63Y8alqY+VFbowkvYl7PJUCo+AlqLm9GrdPbAQTn+KrQ==
 
-"@spriteful/overlay-control-mixin@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@spriteful/overlay-control-mixin/-/overlay-control-mixin-1.0.2.tgz#0a5f419a03c4eaba3fbb71fb9478b3ed7911f190"
-  integrity sha512-20B1NrnkwGngBHCejoFtb0gDvKlK8p31jiVTGrLS1pfIklQVWJNg684EusGI66zSGOojgciGNZ0K79ONHepYOQ==
+"@spriteful/overlay-control-mixin@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@spriteful/overlay-control-mixin/-/overlay-control-mixin-1.0.3.tgz#a04f5bcbedb0c8e499e0e621aa7847fd444c6cc4"
+  integrity sha512-dPEqW+GOp6VNwZzY4PHfwk9D51oBnGJbXowfZveedmS9EHsiDyU6y5CzLcBYrQWq1QeMrgw0Y7lkvvjvZazwGQ==
   dependencies:
     "@spriteful/utils" "^1.2.4"
 
@@ -1064,25 +1094,14 @@
   dependencies:
     "@spriteful/utils" "^1.1.6"
 
-"@spriteful/responsive-image@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@spriteful/responsive-image/-/responsive-image-1.0.0.tgz#923856536a98344cc5df37d14402874d27dd2703"
-  integrity sha512-TESYZlgTZaZnj1wiG5CSP4SU0jCOKSpxHtk0LJpm81lbpm/XTYxYO5H+Kpz0kh+o8U7g93XNXxbFWJ7ODpMyFw==
+"@spriteful/responsive-image@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@spriteful/responsive-image/-/responsive-image-1.0.3.tgz#022a9bd4da7d44fbdf8f7670f88e59c5f113b5cd"
+  integrity sha512-LT2xPPSn64KwyZajTx4r9V4c09juCvl9Nk3hf/B8qxdKwojamN+L16yxCgefQjMGYGPQoIzsDv2+ck3gh2+gyA==
   dependencies:
-    "@polymer/polymer" "^3.1.0"
+    "@polymer/polymer" "^3.2.0"
     "@spriteful/spriteful-element" "^1.0.4"
-    "@spriteful/utils" "^1.1.6"
-
-"@spriteful/services@^2.1.3":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@spriteful/services/-/services-2.1.3.tgz#746f9ae667fe9ff2476ee02feafb8ed66651b05f"
-  integrity sha512-buM89oCXaNaAT9vJbBHgMhNn55x+/oKbMjmADNr5cY79XVimol+jZoIKhXtgytXl0/fSzC3ka8GMT4m2GqGuxA==
-  dependencies:
-    "@firebase/app-types" "^0.3.3"
-    "@firebase/util" "^0.2.6"
-    "@spriteful/worker" "^3.0.2"
-    comlinkjs "^3.1.1"
-    firebase "^5.8.2"
+    "@spriteful/utils" "^1.2.4"
 
 "@spriteful/services@^2.1.5":
   version "2.1.5"
@@ -1108,13 +1127,13 @@
     comlinkjs "^3.2.0"
     firebase "^6.0.4"
 
-"@spriteful/shipping-inputs@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@spriteful/shipping-inputs/-/shipping-inputs-1.0.1.tgz#8617e32535e718108074a5ad3640bdb3287d63b7"
-  integrity sha512-RuGXBL4s0FMKOcx6/S9zSUtAcPfNJx4jCy/FY0DkuGgv8rVWrCcoaW403WyD7rhBllK+mJADPoXrILrj9Gh0CA==
+"@spriteful/shipping-inputs@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@spriteful/shipping-inputs/-/shipping-inputs-1.0.3.tgz#f2d4a1956988a8f1839ac5cabd6a50afd4f402ce"
+  integrity sha512-PxGUQ9eNAl30ct/Q/2WI/fEVuEoW2PDWZvk96h/Ri6txRIjyv6htogicGrPMElxRltjxnwg83MWxBIuK5T97EA==
   dependencies:
-    "@polymer/paper-input" "^3.0.1"
-    "@polymer/polymer" "^3.1.0"
+    "@polymer/paper-input" "^3.0.2"
+    "@polymer/polymer" "^3.2.0"
     "@spriteful/edit-input" "^1.0.1"
 
 "@spriteful/spriteful-element@^1.0.4":
@@ -1567,7 +1586,7 @@ find-up@3.0.0, find-up@^3.0.0:
   dependencies:
     locate-path "^3.0.0"
 
-firebase@^5.7.2, firebase@^5.8.2:
+firebase@^5.7.2:
   version "5.8.2"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-5.8.2.tgz#4fc6acb1d41e9aa18fa712ca68b7826b355b541a"
   integrity sha512-8sdN33WIO8+Ic8wqJ9luhAPsb6M+m4v30wm/nP265GJ25MK2u8SpDNNxqKSu87SVEuUUWe9Hp7zbistIhWppGg==
@@ -1997,10 +2016,10 @@ mkdirp@0.5.1, mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mocha@^6.1.4:
-  version "6.1.4"
-  resolved "https://registry.yarnpkg.com/mocha/-/mocha-6.1.4.tgz#e35fada242d5434a7e163d555c705f6875951640"
-  integrity sha512-PN8CIy4RXsIoxoFJzS4QNnCH4psUCPWc4/rPrst/ecSJJbLBkubMiyGCP2Kj/9YnWbotFqAoeXyXMucj7gwCFg==
+mocha@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/mocha/-/mocha-6.2.0.tgz#f896b642843445d1bb8bca60eabd9206b8916e56"
+  integrity sha512-qwfFgY+7EKAAUAdv7VYMZQknI7YJSGesxHyhn6qD52DV8UcSZs5XwCifcZGMVIE4a5fbmhvbotxC0DLQ0oKohQ==
   dependencies:
     ansi-colors "3.2.3"
     browser-stdout "1.3.1"
