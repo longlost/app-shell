@@ -88,6 +88,10 @@
     @apply --drawer-item-mixin;
   }
   
+  .drawer-label {
+    cursor: pointer;
+  }
+
   a {
    text-decoration: none;
    color:           var(--secondary-text-color);
@@ -222,7 +226,7 @@
               <iron-icon icon="[[item.icon.value]]" 
                          hidden="[[__computeHideIcon(item.icon.value)]]">
               </iron-icon>
-              [[item.label.value]]
+              <span class="drawer-label">[[item.label.value]]</span>
             </div>
           </a>
         </template>
@@ -234,18 +238,18 @@
             <iron-icon icon="[[item.icon.value]]" 
                        hidden="[[__computeHideIcon(item.icon.value)]]">
             </iron-icon>
-            [[item.label.value]]
+            <span class="drawer-label">[[item.label.value]]</span>
           </div>
         </template>
         <template is="dom-if" if="[[!noUsers]]">
           <div class="drawer-item" on-click="__drawerAccountClicked">
             <iron-icon icon="app-icons:account-circle"></iron-icon>
-            Account
+            <span class="drawer-label">Account</span>
           </div>
         </template>        
         <div class="drawer-item" on-click="__drawerSettingsClicked">
           <iron-icon icon="app-icons:settings"></iron-icon>
-          Settings
+          <span class="drawer-label">Settings</span>
         </div>        
         <iron-selector selected="[[page]]" 
                        attr-for-selected="page" 
@@ -258,7 +262,7 @@
                 <iron-icon icon="[[item.icon.value]]" 
                            hidden="[[__computeHideIcon(item.icon.value)]]">
                 </iron-icon>
-                [[item.label.value]]
+                <span class="drawer-label">[[item.label.value]]</span>
               </div>
            </a>
           </template>
