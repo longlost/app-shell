@@ -349,6 +349,7 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
         '--app-body-color':       theme.darkBodyColor,
         '--app-background-color': theme.darkBackground,
         '--dark-text-color':      theme.darkText,
+        '--light-text-color':     theme.lightText,
         '--text-truncate-fade':   theme.darkTextTruncate
       });
     }
@@ -357,6 +358,7 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
         '--app-body-color':       theme.lightBodyColor,
         '--app-background-color': theme.lightBackground,
         '--dark-text-color':      theme.lightText,
+        '--light-text-color':     theme.darkText,
         '--text-truncate-fade':   theme.lightTextTruncate
       });
     }    
