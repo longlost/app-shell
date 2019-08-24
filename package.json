@@ -30,7 +30,7 @@
     "@polymer/polymer": "^3.3.0",
     "@spriteful/app-account": "^1.0.2",
     "@spriteful/app-auth": "^1.0.2",
-    "@spriteful/app-icons": "^1.0.6",
+    "@spriteful/app-icons": "^1.0.8",
     "@spriteful/app-settings": "^1.0.0",
     "@spriteful/overlay-control-mixin": "^1.0.3",
     "@spriteful/services": "^2.1.7",

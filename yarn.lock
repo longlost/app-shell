@@ -965,6 +965,13 @@
   dependencies:
     "@polymer/iron-iconset-svg" "^3.0.1"
 
+"@spriteful/app-icons@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@spriteful/app-icons/-/app-icons-1.0.8.tgz#e690dee73df5df3a1fab7006da5c9d0173eb9c25"
+  integrity sha512-REZ9H/nM9HTagvhC2a8kGOB9Dx1EPbEdvWlVEq0KfxHSxb9qHBqiBSqm2JOnIiXZ7K6+FVeodswBqGNrrwjiCg==
+  dependencies:
+    "@polymer/iron-iconset-svg" "^3.0.1"
+
 "@spriteful/app-modal@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@spriteful/app-modal/-/app-modal-1.0.0.tgz#7ea7233f0c346941f5dc177a8d44466a24c5508b"
