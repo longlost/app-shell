@@ -190,7 +190,8 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
     return [
       '__routePageChanged(_routeData.page)',
       '__fixedHeaderChanged(fixedHeader)',
-      '__revealHeaderChanged(revealHeader)'
+      '__revealHeaderChanged(revealHeader)',
+      '__stickyBottomToolbarChanged(stickyBottomToolbar)'
     ];
   }
 
@@ -236,18 +237,7 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
 
     return slots;
   }
-
-
-  __stampBottomToolbar(headerSize, isSticky) {
-    if (isSticky) { return false; }
-    return headerSize > 1;
-  }
-
-
-  __stampStickyBottomToolbar(headerSize, isSticky) {
-    return (headerSize > 1 && isSticky);
-  }
-
+  
 
   __computeAccountButtonIcon(user) {
     if (!user) { return 'app-icons:account-circle'; }
@@ -293,6 +283,20 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
 
   __revealHeaderChanged(bool) {
     this.__setHeaderAttribute(bool, 'reveals');
+  }
+
+
+  __stickyBottomToolbarChanged(sticky) {
+    if (sticky) {
+      this.__setHeaderAttribute(true, 'fixed');
+      this.$.topToolbar.removeAttribute('sticky');
+      this.$.bottomToolbar.setAttribute('sticky', true);
+    }
+    else {
+      this.__setHeaderAttribute(false, 'fixed');
+      this.$.topToolbar.setAttribute('sticky', true);
+      this.$.bottomToolbar.removeAttribute('sticky');
+    }
   }
 
 
