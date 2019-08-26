@@ -130,6 +130,14 @@
   .hide-account-img {
     display: none;
   }
+  /* cannot use app-toolbar with paper-tabs set to sticky on ios safari */
+  #bottomToolbar {
+    position:  relative;
+    width:     100%;
+    height:    64px;
+    padding:   0px 16px;
+    font-size: var(--app-toolbar-font-size, 20px);
+  }
 
   #pages {
     display: block; /* important for safari */
@@ -282,6 +290,7 @@
                 threshold="[[threshold]]"
                 condenses
                 effects="waterfall blend-background">
+
       <app-toolbar id="topToolbar">
         <paper-icon-button icon="app-icons:menu" 
                            drawer-toggle 
@@ -309,16 +318,10 @@
           <slot name="[[item.slotName]]"></slot>
         </app-toolbar>
       </template>
-      <template is="dom-if" if="[[__stampBottomToolbar(headerSize, stickyBottomToolbar)]]">
-        <app-toolbar id="bottomToolbar">
-          <slot name="bottom-toolbar-slot"></slot>
-        </app-toolbar>
-      </template>
-      <template is="dom-if" if="[[__stampStickyBottomToolbar(headerSize, stickyBottomToolbar)]]">
-        <app-toolbar id="bottomToolbar" sticky>
-          <slot name="bottom-toolbar-slot"></slot>
-        </app-toolbar>
-      </template>
+      <!-- cannot use app-toobar and paper-tabs with sticky on ios safari -->
+      <div id="bottomToolbar">
+        <slot name="bottom-toolbar-slot"></slot>
+      </div>
     </app-header>
     <!-- useful for a sticky search bar with an autocomplete below it -->    
     <slot id="underHeaderStickySlot" name="under-header-sticky-slot"></slot>
