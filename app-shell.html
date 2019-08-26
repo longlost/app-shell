@@ -139,6 +139,10 @@
     font-size: var(--app-toolbar-font-size, 20px);
   }
 
+  #bottomToolbar[hidden] {
+    display: none;
+  }
+
   #pages {
     display: block; /* important for safari */
     /* safari scroll flicker workaround */
@@ -313,13 +317,15 @@
           </iron-image>
         </div>
       </app-toolbar>
-      <template is="dom-repeat" items="[[__createMiddleToolbars(headerSize)]]">
+      <template is="dom-repeat" 
+                items="[[__createMiddleToolbars(headerSize)]]">
         <app-toolbar class="toolbars">
           <slot name="[[item.slotName]]"></slot>
         </app-toolbar>
       </template>
       <!-- cannot use app-toobar and paper-tabs with sticky on ios safari -->
-      <div id="bottomToolbar">
+      <div id="bottomToolbar" 
+           hidden="[[__computeBottomToolbarHidden(headerSize)]]">
         <slot name="bottom-toolbar-slot"></slot>
       </div>
     </app-header>

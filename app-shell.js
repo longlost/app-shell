@@ -237,6 +237,12 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
 
     return slots;
   }
+
+
+  __computeBottomToolbarHidden(headerSize) {
+    if (headerSize < 2) { return true; }
+    return false;
+  }
   
 
   __computeAccountButtonIcon(user) {
