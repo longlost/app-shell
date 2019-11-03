@@ -7,23 +7,23 @@
  * @demo demo/index.html
  */
 import {
-  SpritefulElement,
+  AppElement,
   html
-}                                from '@spriteful/spriteful-element/spriteful-element.js';
+}                                from '@longlost/app-element/app-element.js';
 import {
-  SpritefulOverlayControlMixin
-}                                from '@spriteful/overlay-control-mixin/overlay-control-mixin.js';
+  OverlayControlMixin
+}                                from '@longlost/overlay-control-mixin/overlay-control-mixin.js';
 import {
   listen,
   listenOnce,
   schedule,
   wait,
   warn
-}                                from '@spriteful/utils/utils.js';
+}                                from '@longlost/utils/utils.js';
 import {setPassiveTouchGestures} from '@polymer/polymer/lib/utils/settings.js';
 import {appUserAndData, theme}   from 'app.config.js';
 import htmlString                from './app-shell.html';
-import '@spriteful/app-icons/app-icons.js';
+import '@longlost/app-icons/app-icons.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
 import '@polymer/app-storage/app-localstorage/app-localstorage-document.js';
@@ -48,26 +48,26 @@ setPassiveTouchGestures(true); // polymer
 const builtInLazyImports = {
   view404:  () => import(
     /* webpackChunkName: 'view-404' */
-    '@spriteful/view-404/view-404.js'
+    '@longlost/view-404/view-404.js'
   ),
   account:  () => import(
     /* webpackChunkName: 'app-account' */
-    '@spriteful/app-account/app-account.js'
+    '@longlost/app-account/app-account.js'
   ),
   settings: () => import(
     /* webpackChunkName: 'app-settings' */
-    '@spriteful/app-settings/app-settings.js'
+    '@longlost/app-settings/app-settings.js'
   ),
   auth:     () => import(
     /* webpackChunkName: 'app-auth' */
-    '@spriteful/app-auth/app-auth.js'
+    '@longlost/app-auth/app-auth.js'
   ),
 };
 
 const builtInLazyImport = name => builtInLazyImports[name]();
 
 
-class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
+class AppShell extends OverlayControlMixin(AppElement) {
   static get is() { return 'app-shell'; }
 
   static get template() {
@@ -162,9 +162,9 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
       * path (e.g., with URLs like `my.domain/` and `my.domain/view1`).
       *
       * If you intend to serve your app from a non-root path (e.g., with URLs
-      * like `my.domain/spriteful-app/` and `my.domain/spriteful-app/view1`), edit this line
+      * like `my.domain/app-main/` and `my.domain/app-main/view1`), edit this line
       * to indicate the path from which you'll be serving, including leading
-      * and trailing slashes (e.g., `/spriteful-app/`).
+      * and trailing slashes (e.g., `/app-main/`).
       */
       _rootPath: {
         type: String,
@@ -378,7 +378,7 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
     this.fire('app-shell-dark-mode-changed', {value: dark});
   }
 
-  // fired from dark mode app-localstorage-document and spriteful-settings
+  // fired from dark mode app-localstorage-document and app-settings
   __darkModeChanged(event) {
     this.__setDarkMode(event.detail.value);
   }
@@ -391,7 +391,7 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
     if (value) {
       const {default: services} = await import(
         /* webpackChunkName: 'services' */ 
-        '@spriteful/services/services.js'
+        '@longlost/services/services.js'
       );
       services.enablePersistence();
     }
@@ -659,10 +659,10 @@ class SpritefulAppShell extends SpritefulOverlayControlMixin(SpritefulElement) {
 
 
   resetUnderlays() {
-    // spriteful-overlay-control-mixin.js
+    // overlay-control-mixin.js
     this.__resetUnderlays();
   }
 
 }
 
-window.customElements.define(SpritefulAppShell.is, SpritefulAppShell);
+window.customElements.define(AppShell.is, AppShell);
