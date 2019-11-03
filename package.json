@@ -1,5 +1,5 @@
 {
-  "name": "@spriteful/app-shell",
+  "name": "@longlost/app-shell",
   "version": "1.1.4",
   "description": "app level element that handles switching between views and overlays",
   "main": "app-shell.js",
@@ -8,15 +8,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spriteful/app-shell.git"
+    "url": "git+https://github.com/longlost/app-shell.git"
   },
-  "author": "Spriteful spritefuldev@gmail.com",
+  "author": "Longlost Dev longlostdev@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/spriteful/app-shell/issues"
+    "url": "https://github.com/longlost/app-shell/issues"
   },
-  "homepage": "https://github.com/spriteful/app-shell#readme",
+  "homepage": "https://github.com/longlost/app-shell#readme",
   "dependencies": {
+    "@longlost/app-account": "^1.0.2",
+    "@longlost/app-auth": "^1.0.2",
+    "@longlost/app-element": "^1.0.4",
+    "@longlost/app-icons": "^1.0.8",
+    "@longlost/app-settings": "^1.0.0",
+    "@longlost/overlay-control-mixin": "^1.0.3",
+    "@longlost/services": "^2.1.7",
+    "@longlost/utils": "^1.2.4",
+    "@longlost/view-404": "^1.0.0",
     "@polymer/app-layout": "^3.1.0",
     "@polymer/app-route": "^3.0.2",
     "@polymer/app-storage": "^3.0.2",
@@ -27,23 +36,14 @@
     "@polymer/paper-button": "^3.0.1",
     "@polymer/paper-icon-button": "^3.0.2",
     "@polymer/paper-toast": "^3.0.1",
-    "@polymer/polymer": "^3.3.0",
-    "@spriteful/app-account": "^1.0.2",
-    "@spriteful/app-auth": "^1.0.2",
-    "@spriteful/app-icons": "^1.0.8",
-    "@spriteful/app-settings": "^1.0.0",
-    "@spriteful/overlay-control-mixin": "^1.0.3",
-    "@spriteful/services": "^2.1.7",
-    "@spriteful/spriteful-element": "^1.0.4",
-    "@spriteful/utils": "^1.2.4",
-    "@spriteful/view-404": "^1.0.0"
+    "@polymer/polymer": "^3.3.0"
   },
   "devDependencies": {
     "@polymer/iron-demo-helpers": "^3.1.0",
     "@polymer/test-fixture": "^4.0.2",
-    "@webcomponents/webcomponentsjs": "^2.2.10",
+    "@webcomponents/webcomponentsjs": "^2.3.0",
     "chai": "^4.2.0",
-    "mocha": "^6.2.0",
+    "mocha": "^6.2.2",
     "wct-mocha": "^1.0.1"
   }
 }
