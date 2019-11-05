@@ -84,18 +84,19 @@ class AppShell extends OverlayControlMixin(AppElement) {
         type: Number,
         value: 4
       },
-
+      // for whitelisted apps such as CMS
       accountRequired: Boolean,
 
-      darkModeDefault: Boolean,
+      currentUser: { // important for first paint
+        type: Object,
+        value: null
+      },
 
+      darkModeDefault: Boolean,
+      // menu divider between views and overlays
       divider: Boolean,
 
       fixedHeader: Boolean,
-
-      revealHeader: Boolean,
-
-      hasSeoJson: Boolean,
 
       headerSize: {
         type: Number,
@@ -106,8 +107,9 @@ class AppShell extends OverlayControlMixin(AppElement) {
         type: Boolean,
         value: false,
       },
-      // webpack dynamic imports from parent
-      // used for lazy loading
+      // Webpack dynamic imports from parent.
+      // Used for lazy loading views and overlays 
+      // that have a nav menu entry.
       imports: Object,
 
       noUsers: {
@@ -115,11 +117,27 @@ class AppShell extends OverlayControlMixin(AppElement) {
         value: false
       },
       // routing
-      page: {
-        type: String,
-        notify: true, // temporary fix for paper-tabs in bottom-toolbar-slot
-        reflectToAttribute: true
-      },
+      page: String,
+
+      revealHeader: Boolean,
+      // Use in conjunction with app-main _overlayImports.
+      // Add overlay ids to this object if you intend
+      // on the overlay's content being important to SEO.
+      // The expected route should be added to sitemap.xml file
+      // for googlebot to pickup
+      //
+      // WARNING!!
+      //
+      // The overlays will be opened when routed to from 
+      // a direct link (ie. "www.my-app.com/my-overlay"), so
+      // be sure that the overlay can be opened as a standalone
+      // workflow without any preconditions
+      //
+      // Object consists of expected route as key and overlay id as val.
+      //
+      // ie. {my-overlay: 'myOverlay'} 
+      //
+      seoOverlayIds: Object,
 
       stickyBottomToolbar: Boolean,
 
@@ -135,12 +153,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
       viewChangedScroll: {
         type: String,
-        value: "none"
-      },
-
-      currentUser: { // important for first paint
-        type: Object,
-        value: null
+        value: 'none' // or 'instant', 'smooth'
       },
 
       _darkMode: Boolean,
@@ -191,7 +204,8 @@ class AppShell extends OverlayControlMixin(AppElement) {
       '__routePageChanged(_routeData.page)',
       '__fixedHeaderChanged(fixedHeader)',
       '__revealHeaderChanged(revealHeader)',
-      '__stickyBottomToolbarChanged(stickyBottomToolbar)'
+      '__stickyBottomToolbarChanged(stickyBottomToolbar)',
+      '__pageChanged(page)'
     ];
   }
 
@@ -442,36 +456,39 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  __routePageChanged(page) {
-    this.__switchView(page);
-    this.__updateMeta(page);
-    if (this.viewChangedScroll === 'instant') {
-       window.scrollTo({top: 0, behavior: 'auto'});
-    }
-    else if (this.viewChangedScroll === 'smooth') {
-       window.scrollTo({top: 0, behavior: 'smooth'});
-    }
-  }
-
-  
-  async __updateMeta(page) {
-    if (!this.hasSeoJson) { return; }
-    const defaultPage = page || 'home';
-    const {default: seo} = await import('seo.json');
-    const selectedPageData = seo[defaultPage];
-    const {title, description, pageJson} = selectedPageData;
-    const json = JSON.stringify(pageJson);
-    document.title = title;
-    this._descriptionMeta.setAttribute('content', description);
-    this._jsonLdScript.innerHTML = json;
-  }
-
-
   __getPage(page) {
     if (page) {
       return page;
     }
-    return this._slottedViewElementData[0].page.value; // 'home'
+    return this._slottedViewElementData[0].page.value; // ie. 'home'
+  }
+
+  
+  async __updateSEOMeta(page) {
+    try {      
+      const defaultPage      = this.__getPage(page);
+      const {default: seo}   = await import('seo.json');
+      const selectedPageData = seo[defaultPage];
+
+      if (!selectedPageData) {
+        console.warn(`The ${defaultPage} page does not have data in seo.json file.`); 
+        return;
+      }
+
+      const {description, pageJson, title} = selectedPageData;
+      this._descriptionMeta.setAttribute('content', description);
+      document.title = title;
+
+      if (this._jsonLdScript) {      
+        this._jsonLdScript.innerHTML = JSON.stringify(pageJson);
+      }
+      else {
+        console.warn('No json-ld script tag with id="pageJsonLd" found in document head.');
+      }
+    }
+    catch (error) {
+      console.error(error);
+    }
   }
 
 
@@ -487,8 +504,23 @@ class AppShell extends OverlayControlMixin(AppElement) {
       await dynamicImport();
     }
     catch (_) {
-      this.page = 'view404';
-      await builtInLazyImport('view404');
+      // Check for available seo ready overlays for web crawler.
+      if (this.seoOverlayIds && this.seoOverlayIds[page]) {
+        try {
+          const id = this.seoOverlayIds[page];
+          await this.debounce('seo-overlay-debounce', 100);
+          this.fire('open-overlay', {id});
+        }
+        catch (error) {
+          if (error === 'debounced') { return; }
+          console.error(error);
+        }
+      }
+      // If no seo overlays, fallback to view-404
+      else {
+        this.page = 'view404';
+        await builtInLazyImport('view404');
+      }
     } 
     finally {
       // Close a non-persistent drawer when the page & route are changed.
@@ -496,6 +528,24 @@ class AppShell extends OverlayControlMixin(AppElement) {
         this.$.drawer.close();
       }
     }
+  }
+
+
+  async __routePageChanged(page) {
+    this.__updateSEOMeta(page);
+    await this.__switchView(page);
+
+    if (this.viewChangedScroll === 'instant') {
+      window.scrollTo({top: 0, behavior: 'auto'});
+    }
+    else if (this.viewChangedScroll === 'smooth') {
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+  }
+
+
+  __pageChanged(page) {
+    this.fire('app-shell-page-changed', {value: page});
   }
 
 
@@ -511,6 +561,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
     try {
       await this.clicked();
       await this.__waitForDrawerToClose();
+
       const getOverlay = async () => {
         if (page) {
           const dynamicImport = this.imports[page];
@@ -522,6 +573,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
           return this.$[id];
         }
       };
+      
       const overlay = await getOverlay();
       overlay.open();
     }
