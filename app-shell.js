@@ -463,34 +463,6 @@ class AppShell extends OverlayControlMixin(AppElement) {
     return this._slottedViewElementData[0].page.value; // ie. 'home'
   }
 
-  
-  async __updateSEOMeta(page) {
-    try {      
-      const defaultPage      = this.__getPage(page);
-      const {default: seo}   = await import('seo.json');
-      const selectedPageData = seo[defaultPage];
-
-      if (!selectedPageData) {
-        console.warn(`The ${defaultPage} page does not have data in seo.json file.`); 
-        return;
-      }
-
-      const {description, pageJson, title} = selectedPageData;
-      this._descriptionMeta.setAttribute('content', description);
-      document.title = title;
-
-      if (this._jsonLdScript) {      
-        this._jsonLdScript.innerHTML = JSON.stringify(pageJson);
-      }
-      else {
-        console.warn('No json-ld script tag with id="pageJsonLd" found in document head.');
-      }
-    }
-    catch (error) {
-      console.error(error);
-    }
-  }
-
 
   async __switchView(page) {
     // Polymer 2.0 will call with `undefined` on initialization.
@@ -530,10 +502,38 @@ class AppShell extends OverlayControlMixin(AppElement) {
     }
   }
 
+  
+  async __updateSEOMeta(page) {
+    try { 
+      const {default: seo}   = await import('seo.json');     
+      const defaultPage      = this.__getPage(page);
+      const selectedPageData = seo[defaultPage];
+
+      if (!selectedPageData) {
+        console.warn(`The ${defaultPage} page does not have data in seo.json file.`); 
+        return;
+      }
+
+      const {description, pageJson, title} = selectedPageData;
+      this._descriptionMeta.setAttribute('content', description);
+      document.title = title;
+
+      if (this._jsonLdScript) {      
+        this._jsonLdScript.innerHTML = JSON.stringify(pageJson);
+      }
+      else {
+        console.warn('No json-ld script tag with id="pageJsonLd" found in document head.');
+      }
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+
 
   async __routePageChanged(page) {
-    this.__updateSEOMeta(page);
     await this.__switchView(page);
+    await this.__updateSEOMeta(page);
 
     if (this.viewChangedScroll === 'instant') {
       window.scrollTo({top: 0, behavior: 'auto'});
