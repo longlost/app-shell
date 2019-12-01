@@ -353,10 +353,10 @@
   dependencies:
     "@longlost/utils" "^1.2.4"
 
-"@longlost/app-settings@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@longlost/app-settings/-/app-settings-1.1.0.tgz#fbeafe852291e87c900aaf3dc256214540c8d627"
-  integrity sha512-+7mXxa3UiQF+SPK7sbEUTB2vgKc7W+I2H1+cfXSfb6GroHY7bCqkha9LlLhPgAGqr8pYu8RWeA2Lfi4GLggtLA==
+"@longlost/app-settings@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@longlost/app-settings/-/app-settings-1.1.1.tgz#f0a3c5c25f1a4bab7292a55672083904aa1a75c7"
+  integrity sha512-7ivdX5DM70d+rmfK/TkHxvrsp4Elj3LT/4OML+MoP6Gf+i07ABimivn9uhrgrqDTnR7jMhwnU0TGxY5/a3fpLA==
   dependencies:
     "@longlost/app-element" "^1.0.4"
     "@longlost/app-header-overlay" "^1.0.5"

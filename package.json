@@ -21,7 +21,7 @@
     "@longlost/app-auth": "^1.0.2",
     "@longlost/app-element": "^1.0.4",
     "@longlost/app-icons": "^1.0.11",
-    "@longlost/app-settings": "^1.1.0",
+    "@longlost/app-settings": "^1.1.1",
     "@longlost/overlay-control-mixin": "^1.0.3",
     "@longlost/services": "^2.1.7",
     "@longlost/utils": "^1.3.5",

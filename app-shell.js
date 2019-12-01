@@ -176,6 +176,8 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
       _descriptionMeta: Object,
 
+      _hideAutoColorMode: Boolean,
+
       _jsonLdScript: Object,
 
       _menuOverlaysSlotNodes: Array,
@@ -243,9 +245,6 @@ class AppShell extends OverlayControlMixin(AppElement) {
     this.$.layout.classList.remove('layout-unresolved');
     this._descriptionMeta = document.head.querySelector('[name~=description]');
     this._jsonLdScript    = document.head.querySelector('[id~=pageJsonLd]');
-    // Localstorage overrides this if user 
-    // has changed the setting previously.
-    this.__setDarkMode(this.darkModeDefault);
     this.__setupAutoColorMode();
 
     if (this.noUsers) { return; }
@@ -469,7 +468,12 @@ class AppShell extends OverlayControlMixin(AppElement) {
     else if (isLightMode) {
       this.__setDarkMode(false);
     }
-    else if (isNotSpecified || hasNoSupport) {
+    else if (isNotSpecified) {
+      this.__setDarkMode(this.darkModeDefault);
+    }
+    else if (hasNoSupport) {  
+      this._autoColorMode     = false;
+      this._hideAutoColorMode = true;   
       this.__setDarkMode(this.darkModeDefault);
     }
   }
