@@ -1,11 +1,17 @@
+
 /**
- * `app-shell`
- * app level element that handles switching between views and overlays
- *
- * @customElement
- * @polymer
- * @demo demo/index.html
- */
+  * `app-shell`
+  *
+  *   App level element that handles switching between views and overlays.
+  *
+  * @customElement
+  * @polymer
+  * @demo demo/index.html
+  *
+  *
+  **/
+
+
 import {
   AppElement,
   html
@@ -91,7 +97,9 @@ class AppShell extends OverlayControlMixin(AppElement) {
         type: Object,
         value: null
       },
-
+      // When dev sets this prop, dark mode is
+      // defaulted when browser does not support
+      // the 'prefers-color-scheme' media-query.
       darkModeDefault: Boolean,
       // menu divider between views and overlays
       divider: Boolean,
@@ -155,7 +163,15 @@ class AppShell extends OverlayControlMixin(AppElement) {
         type: String,
         value: 'none' // or 'instant', 'smooth'
       },
-
+      // If true, app color theme mode will
+      // follow the device's color theme setting.
+      // When false, user can manually change
+      // the theme.
+      _autoColorMode: {
+        type: Boolean,
+        value: true
+      },
+      // Dark/Light mode state.
       _darkMode: Boolean,
 
       _descriptionMeta: Object,
@@ -227,8 +243,10 @@ class AppShell extends OverlayControlMixin(AppElement) {
     this.$.layout.classList.remove('layout-unresolved');
     this._descriptionMeta = document.head.querySelector('[name~=description]');
     this._jsonLdScript    = document.head.querySelector('[id~=pageJsonLd]');
-    // localstorage overrides this is user has changed the setting previously
-    this.__setDarkMode(this.darkModeDefault); 
+    // Localstorage overrides this if user 
+    // has changed the setting previously.
+    this.__setDarkMode(this.darkModeDefault);
+    this.__setupAutoColorMode();
 
     if (this.noUsers) { return; }
 
@@ -334,6 +352,11 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
   __addSettingsListeners() {
     listen(
+      this.$.autoColorModeStorage,
+      'data-changed',
+      this.__autoColorModeChanged.bind(this)
+    );
+    listen(
       this.$.darkModeStorage,
       'data-changed',
       this.__darkModeChanged.bind(this)
@@ -342,6 +365,11 @@ class AppShell extends OverlayControlMixin(AppElement) {
       this.$.persistenceStorage,
       'data-changed',
       this.__setPersistence.bind(this)
+    );
+    listen(
+      this.$.settings,
+      'settings-auto-color-mode-changed',
+      this.__autoColorModeChanged.bind(this)
     );
     listen(
       this.$.settings,
@@ -392,9 +420,58 @@ class AppShell extends OverlayControlMixin(AppElement) {
     this.fire('app-shell-dark-mode-changed', {value: dark});
   }
 
-  // fired from dark mode app-localstorage-document and app-settings
+  // Fired from auto color mode app-localstorage-document and app-settings.
+  __autoColorModeChanged(event) {
+    this._autoColorMode = event.detail.value;
+  }
+
+  // Fired from dark mode app-localstorage-document and app-settings.
   __darkModeChanged(event) {
+    if (this._autoColorMode) { return; }
     this.__setDarkMode(event.detail.value);
+  }
+
+  // Follow device color theme unless user 
+  // has turned this off in <app-settings>
+  // via _autoColorMode toggle.
+  // If browser supports 'prefers-color-scheme'
+  // it will respect the setting for light or dark mode.
+  __setupAutoColorMode() {
+    // Bail if user has set the 'Auto Color Mode' toggle off.
+    if (!this._autoColorMode) { return; }
+
+    const mediaQuery = window.matchMedia;
+    // Take immediate readings.   
+    const isDarkMode     = mediaQuery('(prefers-color-scheme: dark)').matches
+    const isLightMode    = mediaQuery('(prefers-color-scheme: light)').matches
+    const isNotSpecified = mediaQuery('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport   = !isDarkMode && !isLightMode && !isNotSpecified;
+
+    // Start listening for device changes while app is open.
+    mediaQuery('(prefers-color-scheme: dark)').addListener(event => {
+      if (!this._autoColorMode) { return; }
+
+      if (event.matches) {
+        this.__setDarkMode(true);
+      }
+    });
+    mediaQuery('(prefers-color-scheme: light)').addListener(event => {
+      if (!this._autoColorMode) { return; }
+
+      if (event.matches) {
+        this.__setDarkMode(false);
+      }
+    });
+
+    if (isDarkMode) {
+      this.__setDarkMode(true);
+    }
+    else if (isLightMode) {
+      this.__setDarkMode(false);
+    }
+    else if (isNotSpecified || hasNoSupport) {
+      this.__setDarkMode(this.darkModeDefault);
+    }
   }
 
 

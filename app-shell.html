@@ -206,6 +206,12 @@
            data="{{_routeData}}"
            tail="{{_subroute}}">
 </app-route>
+
+
+<app-localstorage-document id="autoColorModeStorage"
+                           key="autoColorModeToggle" 
+                           data="[[_autoColorMode]]">
+</app-localstorage-document>
 <app-localstorage-document id="darkModeStorage"
                            key="darkModeToggle" 
                            data="[[_darkMode]]">
@@ -358,7 +364,8 @@
              header-image="[[accountHeaderImage]]"
              header-size="[[accountHeaderSize]]">
 </app-account>
-<app-settings id="settings" 
+<app-settings id="settings"
+              auto-color-mode="[[_autoColorMode]]"
               dark-mode="[[_darkMode]]"
               persistence="[[_persistence]]">
 </app-settings>
