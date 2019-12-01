@@ -175,7 +175,9 @@ class AppShell extends OverlayControlMixin(AppElement) {
       _darkMode: Boolean,
 
       _descriptionMeta: Object,
-
+      // Hide <app-settings> toggle when
+      // browser does not support the 
+      // 'prefers-color-scheme' media query.
       _hideAutoColorMode: Boolean,
 
       _jsonLdScript: Object,
@@ -473,6 +475,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
     }
     else if (hasNoSupport) {  
       this._autoColorMode     = false;
+      // Hide the toggle in <app-settings> when not supported.
       this._hideAutoColorMode = true;   
       this.__setDarkMode(this.darkModeDefault);
     }
