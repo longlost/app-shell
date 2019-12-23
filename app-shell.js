@@ -59,19 +59,19 @@ setPassiveTouchGestures(true); // polymer
 const builtInLazyImports = {
   view404:  () => import(
     /* webpackChunkName: 'view-404' */
-    '@longlost/view-404/view-404.js'
+    './views/view-404.js'
   ),
   account:  () => import(
     /* webpackChunkName: 'app-account' */
-    '@longlost/app-account/app-account.js'
+    './account/app-account.js'
   ),
   settings: () => import(
     /* webpackChunkName: 'app-settings' */
-    '@longlost/app-settings/app-settings.js'
+    './settings/app-settings.js'
   ),
   auth:     () => import(
     /* webpackChunkName: 'app-auth' */
-    '@longlost/app-auth/app-auth.js'
+    './auth/app-auth.js'
   ),
 };
 

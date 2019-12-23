@@ -1,0 +1,289 @@
+
+<style>
+
+  #overlay {
+    /* match truncated text with main title truncate */
+    --overlay-bottom-toolbar-text-width: calc(100% - 96px); 
+  }
+
+  #header-image {
+    width:            100%;
+    height:           100%;
+    background-color: var(--app-primary-color);
+  }
+  
+  .content {
+    position:   relative;
+    margin-top: 32px;
+    opacity:    0;
+    transform:  scale(0.97, 0.97);
+    transition: opacity 0.2s ease-in, transform 0.2s ease-out;
+  }
+
+  .content-enter {
+    opacity:   1;
+    transform: scale(1, 1);
+  }
+
+  #grid {
+    display:               grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-column-gap:       144px;
+    justify-items:         center;
+    max-width:             1152px;
+    margin:                0px auto;
+  }
+
+  .grid-item {
+    max-width: 480px;
+    width:     100%;
+  }
+
+  .max-width-wrapper {
+    max-width: 480px;
+    margin:    0px auto;
+  }
+
+  #verified-wrapper {
+    display:        flex;
+    align-items:    center;
+    height:         62px; /* match edit-input */
+    font-size:      12px;
+    color:          var(--app-accent-color);
+  }
+
+  #verified-wrapper[hidden] {
+    display: none;
+  }
+
+  #verified-wrapper iron-icon {
+    margin: 0px 16px;
+  }
+
+  #profile-photo-wrapper {
+    position:         relative;
+    top:             -4px;
+    width:            64px;
+    height:           64px;    
+    border-radius:    50%;
+    background-color: var(--app-background-color);
+    color:            var(--app-accent-color);
+    box-shadow:       0 4px 5px 0 rgba(0, 0, 0, 0.14),
+                      0 1px 10px 0 rgba(0, 0, 0, 0.12),
+                      0 2px 4px -1px rgba(0, 0, 0, 0.4);
+  }
+
+  #profilePhoto {
+    position:         relative;
+    top:              5px;
+    left:             5px;
+    width:            54px;
+    height:           54px;
+    border-radius:    50%;
+    background-color: var(--app-accent-color);
+  }
+
+  #profilePhoto[hidden] {
+    display: none;
+  }
+
+  .profile-icon {
+    position: absolute;
+  }
+
+  #profile-photo-fallback-icon {
+    top:      0px;
+    left:     0px;
+    width:    100%;
+    height:   100%;
+  }
+
+  .divider {    
+    @apply --bottom-divider-mixin;
+    margin: 32px 0px;
+    width:  100%; /* needed for grid */
+  }
+
+  h3 {
+    color:       var(--secondary-text-color);
+    font-weight: normal;
+    padding:     0px 16px;
+    transition:  opacity 0.2s ease-in;
+  }
+
+  #bottom-btns-container {
+    display:        flex;
+    flex-direction: column;
+    margin-top:     32px;
+    padding:        64px 16px 0px 16px;
+  }
+
+  .bottom-btns {
+    margin: 0px 0px 32px 0px;
+  }
+
+  #save-all-btn {
+    background-color: var(--app-accent-color);
+    color:            white;
+  }
+
+  #save-all-btn[disabled] {
+    background-color: var(--app-disabled-color);
+    color:            var(--disabled-text-color);
+  }
+
+  #delete-btn {
+    background-color: var(--app-error-color);
+    color:            white;
+  }
+
+  @media only screen and (min-width: 846px) {
+
+    #first-divider {
+      display: none;
+    }
+
+  }
+
+</style>
+
+
+<app-header-overlay id="overlay"
+                    header-size="[[headerSize]]"
+                    parent-controls-exits
+                    prebuilt-animation="from-left"
+                    reveal-header
+                    title="[[user.displayName]]">
+
+  <responsive-image id="header-image"
+                    slot="header-background-slot"
+                    disable-auto-sizing
+                    responsive="[[_headerImg]]"
+                    sizing="cover"
+                    alt="Account header">
+  </responsive-image>
+
+  <paper-button slot="top-toolbar-buttons-slot" 
+                on-click="__signOutButtonClicked">
+    sign out
+  </paper-button>
+
+  <div id="profile-photo-wrapper" 
+       slot="fab-slot"
+       on-click="__fabClicked">
+    <iron-image id="profilePhoto"
+                hidden="[[!user.photoURL]]" 
+                preload 
+                fade 
+                alt="Profile Photo" 
+                sizing="contain" 
+                src="[[user.photoURL]]">
+    </iron-image>
+    <iron-icon id="profile-photo-fallback-icon"
+               class="profile-icon"
+               hidden="[[user.photoURL]]" 
+               icon="app-icons:face">
+    </iron-icon>
+    <paper-ripple></paper-ripple>
+  </div>
+
+  <div id="content" class="content" slot="content">
+    <div id="grid">
+      <div class="grid-item">
+        <h3>My Profile
+          <span hidden="[[__computeHideCredit(_credit)]]"> - Credit $[[_credit]]</span>
+        </h3>
+        <div id="verified-wrapper"
+             hidden="[[!user.emailVerified]]">
+          <iron-icon icon="app-icons:verified-user"></iron-icon>
+          <div>
+            Verified
+          </div>
+        </div>
+        <edit-input icon="label"
+                    kind="displayName">
+          <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                       autocapitalize
+                       auto-validate
+                       label="Display Name"
+                       placeholder="[[__computeDisplayNamePlaceholder(user.displayName)]]"
+                       tabindex="0">
+          </paper-input>
+        </edit-input>
+        <edit-input icon="security"
+                    kind="password">
+          <paper-input id="passwordInput"
+                       allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                       auto-validate
+                       label="Password"
+                       placeholder="*****"
+                       tabindex="0"
+                       type="password">
+          </paper-input>
+        </edit-input>
+        <edit-input icon="mail"
+                    kind="email">
+          <paper-input id="emailInput"
+                       allowed-pattern="[^/\s/\f/\n/\r/\t/\v]"
+                       auto-validate
+                       error-message="Please enter a valid format"
+                       label="[[__computeEmailLabel(user.emailVerified)]]"
+                       pattern=".+@{1}.+\.{1}.+"
+                       placeholder="[[__computeEmailPlaceholder(user.email)]]"
+                       tabindex="0"
+                       type="email">
+          </paper-input>
+        </edit-input>
+        <edit-input icon="call"
+                    kind="phone">
+          <gold-phone-input auto-validate
+                            label="Phone Number"
+                            maxlength="12"
+                            placeholder="[[__computePhonePlaceholder(_userMeta.phone)]]" 
+                            tabindex="0">
+          </gold-phone-input>
+        </edit-input>
+      </div>
+
+      <div id="first-divider" class="divider"></div>
+
+      <div class="grid-item">    
+        <h3>My Shipping</h3>
+        <shipping-inputs id="shipping"
+                         hide-name-input
+                         data="[[_userMeta]]">
+        </shipping-inputs>
+      </div>      
+    </div>    
+
+    <div class="divider"></div>
+
+    <div class="max-width-wrapper">
+      <div id="bottom-btns-container">
+        <paper-button id="save-all-btn"
+                      class="bottom-btns"
+                      disabled="[[!_unsavedEdits]]"
+                      raised 
+                      on-click="__saveAllButtonClicked">
+          save all
+        </paper-button>
+        <paper-button id="delete-btn"
+                      class="bottom-btns"
+                      raised 
+                      on-click="__deleteUserButtonClicked">
+          delete account
+        </paper-button>
+      </div>
+    </div>
+
+  </div>
+</app-header-overlay>
+
+<app-spinner id="spinner" full-screen></app-spinner>
+
+<!-- dynamically imported -->
+<password-modal id="passwordModal"></password-modal>
+<reauth-modal id="reauthModal"></reauth-modal>
+<delete-modal id="deleteModal"></delete-modal>
+<unsaved-edits-modal id="unsavedEditsModal"></unsaved-edits-modal>
+    
