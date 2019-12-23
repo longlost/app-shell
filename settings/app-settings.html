@@ -1,0 +1,184 @@
+
+<style>  
+
+  .option {
+    padding: 32px 16px;
+  }
+
+  .max-width {
+    width:     100%;
+    max-width: 414px;
+    margin:    0px auto;
+  }
+
+  .row {
+    display:         flex;
+    justify-content: space-between;
+    align-items:     center;
+    margin:          32px 0px;
+  }
+
+  .row-title {
+    font-size: 20px;
+  }
+
+  .disabled {
+    color: var(--disabled-text-color);
+  }
+
+  .highlighted {
+    color: var(--app-accent-color);
+  }
+
+  .divider {
+    @apply --divider-mixin;          
+  }
+
+  iron-icon {
+    margin-right: 8px;
+  }
+
+  paper-toggle-button {
+    margin-left: 8px;
+    --paper-toggle-button-checked-button-color: var(--app-accent-color);
+    --paper-toggle-button-checked-bar-color:    var(--app-accent-color);
+    --paper-toggle-button-checked-ink-color:    var(--app-accent-color);
+    --paper-toggle-button-label-color:          var(--dark-text-color);
+  }
+
+  paper-toggle-button[disabled] {
+    --paper-toggle-button-label-color: var(--disabled-text-color);
+  }
+
+  p {
+    color: var(--secondary-text-color);
+  }
+
+  strong {
+    color: var(--app-accent-color);
+  }
+
+  app-modal {
+    --modal-card-header-color: var(--dark-text-color);
+  }
+
+  .modal-card-content {
+    position:  relative;
+    max-width: 500px;
+  }
+
+  .dismiss-confirm-buttons {
+    display:         flex;
+    justify-content: flex-end;
+  }
+
+  .confirm-btn {
+    background-color: var(--app-accent-color);
+    color:            var(--light-text-color);
+  }
+
+  .confirm-btn[disabled] {
+    background-color: var(--app-disabled-color);
+    color:            var(--disabled-text-color);
+  }
+
+  .dismiss-btn {
+    color: var(--app-accent-color);
+  }
+
+  *[hidden] {
+    display: none;
+  }
+
+</style>
+
+
+<app-header-overlay id="overlay"
+                    header-size="1"
+                    prebuilt-animation="from-bottom"
+                    reveal-header
+                    title="Settings">
+  <div slot="content">
+
+    <div class="option">
+      <div class="max-width">
+
+        <div class$="row [[__computeHighlightedToggleClass(autoColorMode)]]"
+             hidden="[[hideAutoColorMode]]">
+          <span class="row-title">
+            <iron-icon icon="app-icons:settings-brightness"></iron-icon>
+            Use Device Color Mode
+          </span>
+          <paper-toggle-button id="autoColorModeToggle" 
+                               checked="[[autoColorMode]]">
+            [[_autoColorModeLabel]]
+          </paper-toggle-button>
+        </div>
+
+        <div class="row">
+          <span class$="row-title [[__computeDisabledClass(autoColorMode)]]">
+            <iron-icon icon="app-icons:brightness-medium"></iron-icon>
+            Dark Mode
+          </span>
+          <paper-toggle-button id="darkModeToggle" 
+                               checked="[[darkMode]]"
+                               disabled="[[autoColorMode]]">
+            [[_darkModeLabel]]
+          </paper-toggle-button>
+        </div>
+
+      </div>      
+    </div>
+
+    <div class="option divider" 
+         hidden="[[__computeTrustedToggleHidden(_trustedConfig)]]">
+      <div class="max-width">
+
+        <div class$="row [[__computeHighlightedToggleClass(persistence)]]">
+          <span class="row-title">
+            <iron-icon icon="app-icons:security"></iron-icon>
+            Trusted Device
+          </span>
+          <paper-toggle-button id="trustedToggle"
+                               checked="[[persistence]]">
+            [[_persistenceLabel]]
+          </paper-toggle-button>
+        </div>
+
+        <p>
+          Is this your <strong>personal</strong> device, or is it <strong>shared</strong>?
+        </p>
+        <p>
+          If you <strong>trust</strong> this device, the app will keep a <strong>copy</strong> of <strong>your data</strong> on this device for use when you are <strong>offline</strong> or when you have a <strong>slow connection</strong>.
+          This is the <strong>default</strong> behavior.
+        </p>
+        <p>
+          If this is a <strong>shared</strong> device, it is <strong>recommended</strong> to turn this feature <strong>off</strong>.
+        </p>
+
+      </div>      
+    </div>
+  </div>
+</app-header-overlay>
+
+
+<app-modal id="refreshModal"
+           heading="Refresh Required">
+  <div class="modal-card-content" 
+       slot="card-content-slot">
+    <p>
+      The app <strong>must</strong> be <strong>refreshed</strong> before this change can be applied!
+    </p>
+  </div>
+  <div class="dismiss-confirm-buttons" 
+       slot="card-actions-slot">
+    <paper-button class="dismiss-btn" 
+                  on-click="__modalDismissButtonClicked">
+      dismiss
+    </paper-button>   
+    <paper-button class="confirm-btn" 
+                  on-click="__modalRefreshButtonClicked">
+      refresh
+    </paper-button>      
+  </div>
+</app-modal>

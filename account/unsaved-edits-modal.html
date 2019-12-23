@@ -1,0 +1,45 @@
+
+<style>
+
+  .card-actions {
+    display:         flex;
+    justify-content: flex-end;
+  }
+
+  #exit-anyway-btn {    
+    color: var(--app-accent-color);
+  }
+
+  #save-all-btn {
+    background-color: var(--app-accent-color);
+    color:            var(--light-text-color);
+  }
+
+</style>
+
+
+<app-modal id="modal"
+           heading="Unsaved Edits"
+           on-click="__modalClicked">
+  <div slot="card-content-slot">
+    <p>
+      You have unsaved edits.
+    </p>
+    <p>
+      These are indicated by a <iron-icon icon="app-icons:check"></iron-icon>
+    </p>
+    <p>
+      Do you want to exit without saving, or would you like to save your changes?
+    </p>
+  </div>
+  <div class="card-actions" slot="card-actions-slot">
+    <paper-button id="exit-anyway-btn" 
+                  on-click="__exitAnywayButtonClicked">
+      exit anyway
+    </paper-button>  
+    <paper-button id="save-all-btn" 
+                  on-click="__saveAllButtonClicked">
+      save all
+    </paper-button>        
+  </div>
+</app-modal>

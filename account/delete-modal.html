@@ -1,0 +1,48 @@
+
+<style>
+
+  .card-actions {
+    display:         flex;
+    justify-content: flex-end;
+  }
+  
+  #delete-btn {
+    @apply --paper-button-with-icon-mixin;
+    background-color: var(--app-error-color);
+    color:            var(--light-text-color);
+  }
+
+  iron-icon {
+    @apply --iron-icon-inside-paper-button-mixin;
+  }
+
+  #dismiss-btn {
+    color: var(--app-accent-color);
+  }
+
+</style>
+
+
+<app-modal id="modal"
+           heading="Delete Account"
+           on-click="__reauthModalClicked">
+  <div id="content-div" slot="card-content-slot">
+    <p>
+      Warning! This action cannot be undone!
+    </p>
+    <p>
+      If you continue, your account and data will be permenantly deleted.
+    </p>
+  </div>
+  <div class="card-actions" slot="card-actions-slot">
+    <paper-button id="dismiss-btn" 
+                  on-click="__dismissButtonClicked">
+      dismiss
+    </paper-button>  
+    <paper-button id="delete-btn" 
+                  on-click="__deleteButtonClicked">
+      <iron-icon icon="app-icons:delete-forever"></iron-icon>
+      delete
+    </paper-button>           
+  </div>
+</app-modal>

@@ -1,0 +1,36 @@
+
+<style>
+
+  #account-btn {
+    color: var(--app-accent-color);
+  }
+
+  #logout-btn {
+    color:            var(--light-text-color);
+    background-color: var(--app-accent-color);
+  }
+
+</style>
+
+
+<!-- firebaseui modal inserted into body-->
+<div id="firebaseuiAuthOverlay">
+  <div id="firebaseuiAuthContainer"></div>
+</div>
+
+
+<app-modal id="modal" 
+           heading="Account Actions"
+           prebuilt-animation="scale" 
+           on-click="__logoutModalClicked">
+  <div slot="card-content-slot">
+    <paper-button id="account-btn" 
+                  on-click="__accountButtonClicked">
+      my account
+    </paper-button>
+    <paper-button id="logout-btn" 
+                  on-click="__signOutButtonClicked">
+      sign out
+    </paper-button>
+  </div>
+</app-modal>
