@@ -15,20 +15,25 @@
 import {
   AppElement,
   html
-}                                from '@longlost/app-element/app-element.js';
-import {
-  OverlayControlMixin
-}                                from '@longlost/overlay-control-mixin/overlay-control-mixin.js';
+}                 from '@longlost/app-element/app-element.js';
 import {
   listen,
   listenOnce,
   schedule,
   wait,
   warn
-}                                from '@longlost/utils/utils.js';
-import {setPassiveTouchGestures} from '@polymer/polymer/lib/utils/settings.js';
-import {appUserAndData, theme}   from 'app.config.js';
-import htmlString                from './app-shell.html';
+}                 from '@longlost/utils/utils.js';
+import {
+  setPassiveTouchGestures
+}                 from '@polymer/polymer/lib/utils/settings.js';
+import {
+  OverlayControlMixin
+}                 from './overlay-control-mixin.js';
+import {
+  appUserAndData, 
+  theme
+}                 from 'app.config.js';
+import htmlString from './app-shell.html';
 import '@longlost/app-icons/app-icons.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
