@@ -253,17 +253,23 @@ export const OverlayControlMixin = superClass => {
 	  }
 
 
-	  __setupUnderlayForDisplay(underlay, overlay) {
-	  	underlay.content.style.display 	 = 'block';
-	    underlay.header.style.opacity  	 = '1';
-	    underlay.content.style.transform = 
-	      `translateY(${overlay.contentPos - underlay.contentPos}px)`;
+	  __showUnderlay(underlay) {
+	  	underlay.content.style.display = 'block';
+	    underlay.header.style.opacity  = '1';
 
       if (underlay.underHeaderSticky) {
 	    	const {id} 			 = underlay.underHeaderSticky;
 	    	const slottedEls = this.slotNodes(`#${id}`);
 	    	slottedEls.forEach(el => el.style.display = 'flex');
 	    }
+	  }
+
+
+	  __setupUnderlayForDisplay(underlay, overlay) {
+	  	this.__showUnderlay(underlay);
+
+	    underlay.content.style.transform = 
+	      `translateY(${overlay.contentPos - underlay.contentPos}px)`;
 	  }
 
 
@@ -378,9 +384,13 @@ export const OverlayControlMixin = superClass => {
 
 	  	if (!overlays) { return; } // Not a header overlay.
 
-	  	const {overlay, underlay} 			= overlays;
+	  	const {overlay, underlay} = overlays;
 	  	this.__hideLayoutElement(overlay);
 	  	this.__setLayoutElToPreviousScrollPosition(underlay);
+
+	  	// This method is only needed when overlay.reset method is used.
+	  	// Otherwise, these styles area already set.
+	  	this.__showUnderlay(underlay);
 
 	    await schedule();
 
