@@ -1,13 +1,9 @@
+
 /**
   * 
   * `app-auth`
   *
   *   Wrapper for firebase and firebaseui authentication.
-  *
-  *   @customElement
-  *   @polymer
-  *   @demo demo/index.html
-  *
   *
   * Api:
   *
@@ -17,6 +13,11 @@
   *
   *     showAuthUI()          show signup/signin firebaseui if no user
   *                           or show signout modal if ther is a current user
+  *
+  *
+  *   @customElement
+  *   @polymer
+  *   @demo demo/index.html
   *
   **/
 
@@ -40,7 +41,7 @@ import {
 import htmlString from './app-auth.html';
 import {firebase} from '@longlost/boot/boot.js';
 import 'firebase/auth';
-import '@longlost/app-modal/app-modal.js';
+import '@longlost/app-overlays/app-modal.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-card/paper-card.js';
 import './app-auth.css'; // webpack css-loader injects this file into body
@@ -57,6 +58,7 @@ class AppAuth extends AppElement {
 
   static get properties() {
     return {
+
       //   user.displayName
       //   user.email
       //   user.emailVerified
@@ -67,11 +69,14 @@ class AppAuth extends AppElement {
       //   user.getIdToken().
       //     then(accessToken => console.log('accessToken: ', accessToken));
       _user: Object,
-      // div in index.hmtl used as a container for firebaseui
+
+      // Div in index.html used as a container for firebaseui.
       _authOverlay: Object, 
-      // firebaseui instance
+
+      // Firebaseui instance.
       _firebaseUi: Object,
-      // firebaseui-web config
+
+      // firebaseui-web config.
       // https://github.com/firebase/firebaseui-web
       _firebaseUIConfig: Object
 
@@ -88,50 +93,63 @@ class AppAuth extends AppElement {
 
   __getFirebaseUiConfig(ui) {
     return {
+
       // Whether to upgrade anonymous users should be explicitly provided.
       // The user must already be signed in anonymously before FirebaseUI is
       // rendered.
-      // imperitively set to true if _user.isAnonymous is true in __startFirebaseUI
+      // Imperitively set to true if _user.isAnonymous is true in __startFirebaseUI.
       autoUpgradeAnonymousUsers: false,
 
       callbacks: {
         signInSuccessWithAuthResult: () => {
+
           // Return type determines whether we (return false) continue the redirect automatically
           // or whether we (return true) leave that to developer to handle.
           return false;
         },
+
         // signInFailure callback must be provided to handle merge conflicts which
         // occur when an existing credential is linked to an anonymous user.
         signInFailure: async error => {
           try {
+
             // For merge conflicts, the error.code will be
             // 'firebaseui/anonymous-upgrade-merge-conflict'.
             if (error.code !== 'firebaseui/anonymous-upgrade-merge-conflict') {
               return;
             }
+
             // The credential the user tried to sign in with.
             const cred = error.credential;
+
             // The anonymous user data has to be copied to the non-anonymous user.
             // Save anonymous user data first.
             const coll = 'users';
+
             const {default: services} = await import(
               /* webpackChunkName: 'services' */ 
               '@longlost/services/services.js'
             );
-            // parameters === {coll, doc}
+
+            // parameters === {coll, doc}.
             const anonymousUserData = await services.get({coll, doc: this._user.uid});
+
             // This will trigger onAuthStateChanged listener which
             // could trigger a redirect to another page.
             // Ensure the upgrade flow is not interrupted by that callback
             // and that this is given enough time to complete before
             // redirection.
             const newUser = await firebase.auth().signInWithCredential(cred);
+
             // Original Anonymous Auth instance now has the new user.
             // parameters === {coll, doc, data}
             await services.set({coll, doc: newUser.uid, data: anonymousUserData});
+
             // Delete anonymnous user.
             await this._user.delete();
+
             this._user = newUser;
+
             // FirebaseUI will reset and the UI cleared when this promise
             // resolves.
             // signInSuccess will not run. Successful sign-in logic has to be
@@ -144,7 +162,7 @@ class AppAuth extends AppElement {
       },
 
 
-      // account chooser does not work in ios standalone/pwa mode
+      // Account chooser does not work in ios standalone/pwa mode
       // if you logout then try to log back in, 
       // as of 1/9/2019 "firebaseui": "^3.5.1" CB
       // credentialHelper: ui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM,
@@ -152,19 +170,21 @@ class AppAuth extends AppElement {
 
 
 
-      signInFlow: 'redirect', // or 'popup', must use redirect for single page apps
+      signInFlow: 'redirect', // Or 'popup', must use redirect for single page apps.
 
       signInOptions: [
+
         // Leave the lines as is for the providers you want to offer your users.
         {
           provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+
           // Whether the display name should be displayed in the Sign Up page.
           requireDisplayName: true
         }//,
 
 
-        // google oauth is currenly inop on iOS PWA modes
-        // it causes all sorts of issues even if we test 
+        // Google oauth is currenly inop on iOS PWA modes.
+        // It causes all sorts of issues even if we test 
         // for ios standalone mode in js and only use email signup
         // until it is fixed, DO NOT USE! 
         // as of 1/9/2019 "firebaseui": "^3.5.1" CB        
@@ -179,7 +199,8 @@ class AppAuth extends AppElement {
         // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
         // firebase.auth.GithubAuthProvider.PROVIDER_ID
       ],
-      // Terms of service url
+
+      // Terms of service url.
       tosUrl: termsOfServiceUrl,
       privacyPolicyUrl
     };
@@ -187,15 +208,18 @@ class AppAuth extends AppElement {
 
 
   async __setupFirebaseUI() {
-    // this file has huge impact on first paint if loaded during bootup
+
+    // This file has huge impact on first paint if loaded during bootup.
     await import(
       /* webpackChunkName: 'firebaseui-css' */ 
       'firebaseui/dist/firebaseui.css'
     );
+
     const firebaseui = await import(
       /* webpackChunkName: 'firebaseui' */ 
       'firebaseui'
     );
+
     this._firebaseUIConfig = this.__getFirebaseUiConfig(firebaseui);
     this._firebaseUi       = new firebaseui.auth.AuthUI(firebase.auth());
   }
@@ -203,22 +227,24 @@ class AppAuth extends AppElement {
 
   __firebaseAuthChanged() {
     firebase.auth().onAuthStateChanged(async user => {
+
       if (user === null) {
 
 
-        // needed for redirected auth types like signin with google 
+        // Needed for redirected auth types like signin with google 
         // commented for testing for smaller bundle sizes
 
 
         // if (!this._firebaseUi) {
         //   await this.__setupFirebaseUI();
         // }
+        //
         // if (this._firebaseUi.isPendingRedirect() || !appUserAndData.anonymous) {
         //   this.__openFirebaseAuthUI();
         // }
 
-        // needed for redirected auth types like signin with google 
-        // testing for smaller bundle sizes
+        // Needed for redirected auth types like signin with Google.
+        // Testing for smaller bundle sizes.
         if ((this._firebaseUi && this._firebaseUi.isPendingRedirect()) || !appUserAndData.anonymous) {
           this.__openFirebaseAuthUI();
         }
@@ -241,51 +267,65 @@ class AppAuth extends AppElement {
 
   async __initFirebase() {
     const persistenceType = () => {
-      // local:   user and data reset only when signed out explicitly, 
-      // session: user and data persisted for current session or tab, 
-      // none:    user and data cleared on window refresh
+
+      // local:   User and data reset only when signed out explicitly.
+      // session: User and data persisted for current session or tab.
+      // none:    User and data cleared on window refresh.
       if (appUserAndData.trustedDevice) {
         return firebase.auth.Auth.Persistence.LOCAL;
       }
+
       return firebase.auth.Auth.Persistence.SESSION;
     };
+
     firebase.auth().useDeviceLanguage();
+
     await firebase.auth().setPersistence(persistenceType());
+
     this.__firebaseAuthChanged();
   }
 
-  // ignore card clicks
+  // Ignore card clicks.
   __cardClicked(event) {
     hijackEvent(event);
   }
 
 
   __startFirebaseUI() {
+
     if (this._user && this._user.isAnonymous) {
       this._firebaseUIConfig.autoUpgradeAnonymousUsers = true;
     }
-    // #firebaseuiAuthContainer found in index.html
+
+    // #firebaseuiAuthContainer found in index.html.
     // The start method will wait until the DOM is loaded.
     this._firebaseUi.start('#firebaseuiAuthContainer', this._firebaseUIConfig);
   }
 
 
   async __openFirebaseAuthUI() {
+
     if (!this._authOverlay) {
       document.body.insertBefore(this.$.firebaseuiAuthOverlay, null);
       this._authOverlay = topLevelOverlayController('#firebaseuiAuthOverlay');
       listen(this.$.firebaseuiAuthContainer, 'click', this.__cardClicked.bind(this));
     }
-    await this._authOverlay.open();    
+
+    await this._authOverlay.open();   
+
     if (!this._firebaseUi) {
       await this.__setupFirebaseUI();
     }
+
     if (!this._firebaseUi.isPendingRedirect()) {
-      // close and reset overlay if user clicks outside of chooser buttons
+
+      // Close and reset overlay if user clicks outside of chooser buttons.
       listen(this._authOverlay, 'click', this.__authOverlayClicked.bind(this));
     }
-    // widget sometimes doesnt appear unless we wait another animation cycle
+
+    // Widget sometimes doesnt appear unless we wait another animation cycle.
     await schedule();
+
     this.__startFirebaseUI();
   }
 
@@ -353,9 +393,11 @@ class AppAuth extends AppElement {
 
 
   showAuthUI() {
+
     if (this._user) {
       return this.__openLogoutModal();
     }
+
     return this.__openFirebaseAuthUI();
   }
 
@@ -366,10 +408,13 @@ class AppAuth extends AppElement {
         /* webpackChunkName: 'services' */ 
         '@longlost/services/services.js'
       );
+
       await firebase.auth().signOut();
+
       if (this._firebaseUi) {
         this._firebaseUi.reset();
       }
+      
       message('You are signed out.');
     }
     catch (error) {

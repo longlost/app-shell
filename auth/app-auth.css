@@ -2,7 +2,7 @@
 /* 
  *
  * index.html top level background modal wrapper
- * controler api in utils.js
+ * controler api in utils.js.
  *
  */
 
@@ -30,18 +30,20 @@
                     0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
 
-/* input underlines, primary buttons */
-/* wont work withough !important */
+/* Input underlines, primary buttons. */
+/* Won't work withough !important. */
 .firebaseui-textfield.mdl-textfield .firebaseui-label::after,
 .mdl-button--raised.mdl-button--colored,
 .mdl-button.mdl-button--colored {
-  /* default color is material design dark blue */
+
+  /* Default color is material design dark blue. */
   background-color: var(--app-primary-color, #3f51b5) !important;
 }
 
-/* secondary buttons */
-/* wont work withough !important */
+/* Secondary buttons. */
+/* Won't work withough !important. */
 .mdl-button--primary.mdl-button--primary {
-  /* default color is material design dark blue */
+
+  /* Default color is material design dark blue. */
   color: var(--app-primary-color, #3f51b5) !important;
 }

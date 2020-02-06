@@ -2,7 +2,7 @@
 <style>
 
   #overlay {
-    /* match truncated text with main title truncate */
+    /* Match truncated text with main title truncate. */
     --overlay-bottom-toolbar-text-width: calc(100% - 96px); 
   }
 
@@ -47,7 +47,7 @@
   #verified-wrapper {
     display:        flex;
     align-items:    center;
-    height:         62px; /* match edit-input */
+    height:         62px; /* Match edit-input. */
     font-size:      12px;
     color:          var(--app-accent-color);
   }
@@ -101,7 +101,7 @@
   .divider {    
     @apply --bottom-divider-mixin;
     margin: 32px 0px;
-    width:  100%; /* needed for grid */
+    width:  100%; /* Needed for grid. */
   }
 
   h3 {
@@ -187,7 +187,9 @@
     <paper-ripple></paper-ripple>
   </div>
 
-  <div id="content" class="content" slot="content">
+  <div id="content" 
+       class="content" 
+       slot="content">
     <div id="grid">
       <div class="grid-item">
         <h3>My Profile
@@ -281,7 +283,7 @@
 
 <app-spinner id="spinner" full-screen></app-spinner>
 
-<!-- dynamically imported -->
+<!-- Dynamically imported. -->
 <password-modal id="passwordModal"></password-modal>
 <reauth-modal id="reauthModal"></reauth-modal>
 <delete-modal id="deleteModal"></delete-modal>

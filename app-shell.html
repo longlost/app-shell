@@ -59,7 +59,8 @@
     height:   100%; 
     overflow: auto;
   }
-  /*create a deep shadow when drawer is persitently shown ie. large screens*/
+
+  /* Create a deep shadow when drawer is persitently shown ie. large screens. */
   app-drawer-layout:not([narrow]) #drawer {
     --app-drawer-content-container: {
       color:            var(--drawer-color, var(--dark-text-color));
@@ -130,7 +131,8 @@
   .hide-account-img {
     display: none;
   }
-  /* cannot use app-toolbar with paper-tabs set to sticky on ios safari */
+
+  /* Cannot use app-toolbar with paper-tabs set to sticky on ios safari. */
   #bottomToolbar {
     position:  relative;
     width:     100%;
@@ -144,8 +146,9 @@
   }
 
   #pages {
-    display: block; /* important for safari */
-    /* safari scroll flicker workaround */
+    display: block; /* Important for safari. */
+
+    /* Safari scroll flicker workaround. */
     transition: opacity 0.2s ease-in;
   }
 
@@ -227,17 +230,26 @@
                    fullbleed 
                    narrow="{{narrow}}"
                    force-narrow=[[hideMenu]]>
+
   <!-- MENU DRAWER -->
-  <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
+  <app-drawer id="drawer" 
+              slot="drawer" 
+              swipe-open="[[narrow]]">
     <div id="make-scrollable">
-      <slot id="drawer-background-slot" name="drawer-background-slot"></slot>
+
+      <slot id="drawer-background-slot" 
+            name="drawer-background-slot">
+      </slot>
+
       <app-toolbar>Menu</app-toolbar>
 
       <iron-selector selected="[[page]]" 
                      attr-for-selected="page" 
                      class="drawer-list" 
                      role="navigation">
-        <template is="dom-repeat" items="[[_slottedViewElementData]]">
+
+        <template is="dom-repeat" 
+                  items="[[_slottedViewElementData]]">
           <a page="[[item.page.value]]" 
              href="[[_rootPath]][[item.page.value]]">
             <div class="drawer-item">
@@ -248,32 +260,44 @@
             </div>
           </a>
         </template>
+
       </iron-selector>
 
       <div class$="[[_showDivider]]">
-        <template is="dom-repeat" items="[[_slottedOverlayElementData]]">
-          <div class="drawer-item" on-click="__slottedDrawerElementClicked">
+
+        <template is="dom-repeat" 
+                  items="[[_slottedOverlayElementData]]">
+          <div class="drawer-item" 
+               on-click="__slottedDrawerElementClicked">
             <iron-icon icon="[[item.icon.value]]" 
                        hidden="[[__computeHideIcon(item.icon.value)]]">
             </iron-icon>
             <span class="drawer-label">[[item.label.value]]</span>
           </div>
         </template>
-        <template is="dom-if" if="[[!noUsers]]">
-          <div class="drawer-item" on-click="__drawerAccountClicked">
+
+        <template is="dom-if" 
+                  if="[[!noUsers]]">
+          <div class="drawer-item" 
+               on-click="__drawerAccountClicked">
             <iron-icon icon="app-icons:account-circle"></iron-icon>
             <span class="drawer-label">Account</span>
           </div>
-        </template>        
-        <div class="drawer-item" on-click="__drawerSettingsClicked">
+        </template> 
+
+        <div class="drawer-item" 
+             on-click="__drawerSettingsClicked">
           <iron-icon icon="app-icons:settings"></iron-icon>
           <span class="drawer-label">Settings</span>
-        </div>        
+        </div> 
+
         <iron-selector selected="[[page]]" 
                        attr-for-selected="page" 
                        class="drawer-list" 
                        role="navigation">
-          <template is="dom-repeat" items="[[_slottedBottomViewElementData]]">
+
+          <template is="dom-repeat" 
+                    items="[[_slottedBottomViewElementData]]">
             <a page="[[item.page.value]]" 
                href="[[_rootPath]][[item.page.value]]">
               <div class="drawer-item">
@@ -284,6 +308,7 @@
               </div>
            </a>
           </template>
+
         </iron-selector>
       </div>
 
@@ -292,7 +317,7 @@
 
   <!-- MAIN HEADER & CONTENT -->
   <!-- DO NOT use 'has-scroll-region' in app-header-layout so that 
-       it will use the document scroller for proper ios useage -->
+       it will use the document scroller for proper ios useage. -->
   <app-header-layout id="app-shell-main-panel">
     <app-header id="header" 
                 slot="header" 
@@ -302,13 +327,18 @@
                 effects="waterfall blend-background">
 
       <app-toolbar id="topToolbar">
+
         <paper-icon-button icon="app-icons:menu" 
                            drawer-toggle 
                            aria-label="Opens menu drawer">
         </paper-icon-button>
+
         <div main-title hidden="[[!title]]">[[title]]</div>
+
         <slot name="top-toolbar-slot"></slot>
-        <div id="account-icon-container" hidden="[[noUsers]]">
+
+        <div id="account-icon-container" 
+             hidden="[[noUsers]]">
           <paper-icon-button id="account-icon-btn" 
                              icon="[[__computeAccountButtonIcon(currentUser)]]"
                              on-click="__userButtonClicked"
@@ -322,65 +352,95 @@
                       src="[[__computeAccountIconButtonSrc(currentUser)]]">
           </iron-image>
         </div>
+
       </app-toolbar>
+
       <template is="dom-repeat" 
                 items="[[__createMiddleToolbars(headerSize)]]">
         <app-toolbar class="toolbars">
           <slot name="[[item.slotName]]"></slot>
         </app-toolbar>
       </template>
-      <!-- cannot use app-toobar and paper-tabs with sticky on ios safari -->
+
+      <!-- Cannot use app-toobar and paper-tabs with sticky on iOS Safari. -->
       <div id="bottomToolbar" 
            hidden="[[__computeBottomToolbarHidden(headerSize)]]">
+
         <slot name="bottom-toolbar-slot"></slot>
+
       </div>
+
     </app-header>
-    <!-- useful for a sticky search bar with an autocomplete below it -->    
-    <slot id="underHeaderStickySlot" name="under-header-sticky-slot"></slot>
+
+    <!-- Useful for a sticky search bar with an autocomplete below it. -->    
+    <slot id="underHeaderStickySlot" 
+          name="under-header-sticky-slot">
+    </slot>
+
     <div id="pages">
+
       <iron-pages selected="[[page]]"
                   attr-for-selected="page"
                   fallback-selection="view404"
                   role="main">
-        <!-- dynamically imported -->
-        <slot id="viewsSlot" name="views-slot"></slot>
-        <slot id="viewsBottomSlot" name="views-bottom-slot"></slot> 
+
+        <!-- Dynamically imported. -->
+        <slot id="viewsSlot" 
+              name="views-slot">
+        </slot>
+
+        <slot id="viewsBottomSlot" 
+              name="views-bottom-slot">
+        </slot> 
+
         <view-404 page="view404"></view-404>
       </iron-pages>
+
       <slot name="footer-slot"></slot>
+
       <div id="accountRequiredOverlay" class="hide-account-required">
         <h1>You must be signed in to use this app</h1>
       </div>
+
     </div>
+
   </app-header-layout>
 </app-drawer-layout>
 
 
-<!-- overlays -->
-<slot id="overlaysSlot" name="overlays-slot"></slot>
+<!-- Overlays. -->
+<slot id="overlaysSlot" 
+      name="overlays-slot">
+</slot>
 
 <app-account id="account"
              user="[[currentUser]]"
              header-image="[[accountHeaderImage]]"
              header-size="[[accountHeaderSize]]">
 </app-account>
+
 <app-settings id="settings"
               auto-color-mode="[[_autoColorMode]]"
               dark-mode="[[_darkMode]]"
               hide-auto-color-mode="[[_hideAutoColorMode]]"
               persistence="[[_persistence]]">
 </app-settings>
+
 <app-auth id="auth"></app-auth>
 
 
-<!-- used by multiple custom elements via utils.js message()/warn() -->
+<!-- Used by multiple custom elements via utils.js message()/warn(). -->
 <paper-toast id="toast"></paper-toast>
+
 <paper-toast id="warningToast">
   <iron-icon icon="app-icons:warning"></iron-icon>
 </paper-toast>
-<paper-toast id="confirmToast" class="toasts-w-btn">
+
+<paper-toast id="confirmToast" 
+             class="toasts-w-btn">
   <paper-button on-click="__confirmToastUndoButtonClicked">undo</paper-button>
 </paper-toast>
+
 <paper-toast id="swToast" 
              class="toasts-w-btn" 
              duration="Infinity" 

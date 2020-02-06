@@ -51,10 +51,10 @@ import '@polymer/iron-selector/iron-selector.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-toast/paper-toast.js';
-// account, services, settings, auth overlays are imported dynamically
+// account, services, settings, auth overlays are imported dynamically.
 
 
-setPassiveTouchGestures(true); // polymer
+setPassiveTouchGestures(true); // Polymer.
 
 const builtInLazyImports = {
   view404:  () => import(
@@ -88,25 +88,31 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
   static get properties() {
     return {
-      // must be from webpack responsive-loader
+
+      // Must be from webpack responsive-loader.
       accountHeaderImage: Object,
-      // number of account header toolbars (64px tall each)
+
+      // Number of account header toolbars (64px tall each).
       accountHeaderSize: {
         type: Number,
         value: 4
       },
-      // for whitelisted apps such as CMS
+
+      // For whitelisted apps such as CMS.
       accountRequired: Boolean,
 
-      currentUser: { // important for first paint
+      // Important for first paint.
+      currentUser: { 
         type: Object,
         value: null
       },
+
       // When dev sets this prop, dark mode is
       // defaulted when browser does not support
       // the 'prefers-color-scheme' media-query.
       darkModeDefault: Boolean,
-      // menu divider between views and overlays
+
+      // Menu drawer divider between views and overlays.
       divider: Boolean,
 
       fixedHeader: Boolean,
@@ -120,6 +126,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
         type: Boolean,
         value: false,
       },
+
       // Webpack dynamic imports from parent.
       // Used for lazy loading views and overlays 
       // that have a nav menu entry.
@@ -129,10 +136,12 @@ class AppShell extends OverlayControlMixin(AppElement) {
         type: Boolean,
         value: false
       },
-      // routing
+
+      // Routing.
       page: String,
 
       revealHeader: Boolean,
+
       // Use in conjunction with app-main _overlayImports.
       // Add overlay ids to this object if you intend
       // on the overlay's content being important to SEO.
@@ -166,8 +175,9 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
       viewChangedScroll: {
         type: String,
-        value: 'none' // or 'instant', 'smooth'
+        value: 'none' // Or 'instant', 'smooth'.
       },
+
       // If true, app color theme mode will
       // follow the device's color theme setting.
       // When false, user can manually change
@@ -176,10 +186,12 @@ class AppShell extends OverlayControlMixin(AppElement) {
         type: Boolean,
         value: true
       },
+
       // Dark/Light mode state.
       _darkMode: Boolean,
 
       _descriptionMeta: Object,
+
       // Hide <app-settings> toggle when
       // browser does not support the 
       // 'prefers-color-scheme' media query.
@@ -192,6 +204,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
       _persistence: Boolean,
 
       _routeData: Object,
+
       /**
       * [polymer-root-path]
       *
@@ -242,12 +255,14 @@ class AppShell extends OverlayControlMixin(AppElement) {
       this.$.header, 
       'threshold-triggered-changed', 
       this.__headerThresholdChanged.bind(this)
-    );    
+    );  
+
     this.__slotListeners();
     this.__addSettingsListeners();    
     this.__setupMenuItems();
     this.__initializePersistence();
-    // update view since connectedCallback runs after the router is done
+
+    // Update view since connectedCallback runs after the router is done.
     this.__switchView(this._routeData.page);
     this.$.layout.classList.remove('layout-unresolved');
     this._descriptionMeta = document.head.querySelector('[name~=description]');
@@ -258,6 +273,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
     this.__addUserAccountListeners();
     this.__fixAccountBtnForSafari();
+
     await schedule();
     builtInLazyImport('auth');
   }
@@ -311,6 +327,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
   __setHeaderAttribute(bool, attr) {
     if (bool === undefined) { return; }
+
     if (bool) {
       this.$.header.setAttribute(attr, true);
     }
@@ -331,6 +348,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __stickyBottomToolbarChanged(sticky) {
+
     if (sticky) {
       this.__setHeaderAttribute(true, 'fixed');
       this.$.topToolbar.removeAttribute('sticky');
@@ -348,7 +366,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
     this.fire('app-shell-threshold-triggered-changed', event.detail);
   }
 
-  // pick up dynamic changes to views
+  // Pick up dynamic changes to views.
   __slotListeners() {
     listen(this.$.viewsSlot,       'slotchange', this.__setupMenuItems.bind(this));
     listen(this.$.overlaysSlot,    'slotchange', this.__setupMenuItems.bind(this));
@@ -390,18 +408,22 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  async __initializePersistence() {    
-    // one time initialization to default to app.config setting
+  async __initializePersistence() {
+
+    // One time initialization to default to app.config setting.
     await this.$.persistenceStorage.transactionsComplete;
     const storedVal = this.$.persistenceStorage.data;
+
     if (storedVal === undefined) {
-      // cannot set this._persistence here, will not trigger data-changed event
+
+      // Cannot set this._persistence here, will not trigger data-changed event.
       this.$.persistenceStorage.data = appUserAndData.trustedDevice;
     }
   }
 
 
   __setDarkMode(dark) {
+
     if (dark) {
       ShadyCSS.styleDocument({
         '--app-body-color':       theme.darkBodyColor,
@@ -419,10 +441,12 @@ class AppShell extends OverlayControlMixin(AppElement) {
         '--light-text-color':     theme.darkText,
         '--text-truncate-fade':   theme.lightTextTruncate
       });
-    }    
-    // sets app-localstorage-document data val
+    } 
+
+    // Sets app-localstorage-document data val.
     this._darkMode = dark;
-    // use this event for all changes including localstorage cache updates
+
+    // Use this event for all changes including localstorage cache updates.
     this.fire('app-shell-dark-mode-changed', {value: dark});
   }
 
@@ -443,10 +467,12 @@ class AppShell extends OverlayControlMixin(AppElement) {
   // If browser supports 'prefers-color-scheme'
   // it will respect the setting for light or dark mode.
   __setupAutoColorMode() {
+
     // Bail if user has set the 'Auto Color Mode' toggle off.
     if (!this._autoColorMode) { return; }
 
     const mediaQuery = window.matchMedia;
+
     // Take immediate readings.   
     const isDarkMode     = mediaQuery('(prefers-color-scheme: dark)').matches
     const isLightMode    = mediaQuery('(prefers-color-scheme: light)').matches
@@ -461,6 +487,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
         this.__setDarkMode(true);
       }
     });
+
     mediaQuery('(prefers-color-scheme: light)').addListener(event => {
       if (!this._autoColorMode) { return; }
 
@@ -480,6 +507,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
     }
     else if (hasNoSupport) {  
       this._autoColorMode     = false;
+
       // Hide the toggle in <app-settings> when not supported.
       this._hideAutoColorMode = true;   
       this.__setDarkMode(this.darkModeDefault);
@@ -488,9 +516,11 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   async __setPersistence(event) {
-    const {value}     = event.detail;
-    // pass to app-localstorage-document and app-settings
+    const {value} = event.detail;
+
+    // Pass to app-localstorage-document and app-settings.
     this._persistence = value; 
+
     if (value) {
       const {default: services} = await import(
         /* webpackChunkName: 'services' */ 
@@ -502,14 +532,18 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __setupMenuItems() {
-    // pull out data from slotted view elements to use in routing/lazy-loading
+
+    // Pull out data from slotted view elements to use in routing/lazy-loading.
     const viewsSlotNodes        = this.slotNodes('#viewsSlot');
     const allOverlaySlotNodes   = this.slotNodes('#overlaysSlot');
     const viewsBottomSlotNodes  = this.slotNodes('#viewsBottomSlot');
-    // filter out overlays that dont need a menu item
+
+    // Filter out overlays that dont need a menu item.
     this._menuOverlaysSlotNodes = allOverlaySlotNodes.
       filter(({attributes}) => (attributes.label && attributes.page));
+
     const nodesAttributes = nodes => nodes.map(node => node.attributes);
+
     this._slottedViewElementData       = nodesAttributes(viewsSlotNodes);
     this._slottedOverlayElementData    = nodesAttributes(this._menuOverlaysSlotNodes);
     this._slottedBottomViewElementData = nodesAttributes(viewsBottomSlotNodes);
@@ -534,7 +568,9 @@ class AppShell extends OverlayControlMixin(AppElement) {
   __userChanged(event) {
     const {user}     = event.detail;
     this.currentUser = user;
-    if (this.accountRequired) { // whitelist apps
+
+    if (this.accountRequired) { // Whitelist apps.
+
       if (!user) {
         this.__showAccountRequiredOverlay();
       }
@@ -546,25 +582,32 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __getPage(page) {
+
     if (page) {
       return page;
     }
-    return this._slottedViewElementData[0].page.value; // ie. 'home'
+
+    return this._slottedViewElementData[0].page.value; // ie. 'home'.
   }
 
 
   async __switchView(page) {
+
     // Polymer 2.0 will call with `undefined` on initialization.
     // Ignore until we are properly called with a string.
     if (page === undefined) { return; }
+
     try {
+
       // If no page was found in the route data, page will be an empty string.
       // Deault to the first view element in that case.
       this.page           = this.__getPage(page);
       const dynamicImport = this.imports[this.page];
+
       await dynamicImport();
     }
     catch (_) {
+
       // Check for available seo ready overlays for web crawler.
       if (this.seoOverlayIds && this.seoOverlayIds[page]) {
         try {
@@ -577,13 +620,13 @@ class AppShell extends OverlayControlMixin(AppElement) {
           console.error(error);
         }
       }
-      // If no seo overlays, fallback to view-404
-      else {
+      else { // If no seo overlays, fallback to view-404.
         this.page = 'view404';
         await builtInLazyImport('view404');
       }
     } 
     finally {
+
       // Close a non-persistent drawer when the page & route are changed.
       if (!this.$.drawer.persistent) {
         this.$.drawer.close();
@@ -639,8 +682,11 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __waitForDrawerToClose() {
-    if (this.narrow && this.$.drawer.opened) { // only close drawer in narrow layouts (ie. mobile portrait)
+
+    // Only close drawer in narrow layouts (ie. mobile portrait).
+    if (this.narrow && this.$.drawer.opened) { 
       this.$.drawer.close();
+
       return listenOnce(this, 'app-drawer-transitioned');
     }
   }
@@ -652,15 +698,16 @@ class AppShell extends OverlayControlMixin(AppElement) {
       await this.__waitForDrawerToClose();
 
       const getOverlay = async () => {
+
         if (page) {
           const dynamicImport = this.imports[page];
           await dynamicImport();
           return this._menuOverlaysSlotNodes.find(node => node.id === id);
         }
-        else {
-          await builtInLazyImport(id);
-          return this.$[id];
-        }
+
+        await builtInLazyImport(id);
+
+        return this.$[id];
       };
       
       const overlay = await getOverlay();
@@ -668,6 +715,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
     }
     catch (error) {
       if (error === 'click debounced') { return; }
+
       if (window.navigator.onLine) {
         console.error(error);
         warn('The page you requested failed to load.');
@@ -687,8 +735,10 @@ class AppShell extends OverlayControlMixin(AppElement) {
   async __showAccountRequiredOverlay() {
     try {
       this.$.accountRequiredOverlay.style.display = 'flex';
+
       await schedule();
       this.$.accountRequiredOverlay.classList.add('show-account-required');
+
       return wait(200);
     }
     catch (error) {
@@ -710,6 +760,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __drawerAccountClicked() {
+
     if (this.currentUser) {
       this.__prepToOpenOverlay('account');
     }
@@ -800,6 +851,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   resetUnderlays() {
+    
     // overlay-control-mixin.js
     this.__resetUnderlays();
   }

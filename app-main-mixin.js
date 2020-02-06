@@ -1,4 +1,17 @@
 
+/**
+  * `app-main-mixin`
+  *
+  *   Common top-level app logic.
+  *
+  *
+  * @customElement
+  * @polymer
+  * @demo demo/index.html
+  *
+  *
+  **/
+
 import {AppElement} from '@longlost/app-element/app-element.js';
 import {
   listen,
@@ -15,18 +28,23 @@ export const AppMainMixin = () => {
 
     static get properties() {
       return {
+
         // From app-shell-dark-mode-changed event.
         _darkMode: Boolean,
+
         // Set true on window's 'load' event.
         _loaded: {
           type: Boolean,
           value: false
         },
+
         // An object containing a group of functions that import overlay files.
         // To be overwritten by app-main implementation.
         _overlayImports: Object,
+
         // From app-shell-page-changed event.
         _page: String,
+
         // From app-shell via app-auth.
         _user: Object
 
@@ -59,7 +77,7 @@ export const AppMainMixin = () => {
       this._user = event.detail.user;
     }
 
-    // may be called directly by implementation
+    // May be called directly by implementation.
     async __openOverlay(id, detail) {
       try {
             
@@ -83,7 +101,7 @@ export const AppMainMixin = () => {
           throw new Error('The overlay must have an open method.');
         }
 
-        await overlay.open(detail); // await here to catch errors here
+        await overlay.open(detail); // Await here to catch errors here.
       }
       catch (error) {
         console.error(error);     
@@ -94,7 +112,8 @@ export const AppMainMixin = () => {
 
     async __openOverlayHandler(event) {
       try {
-        if (!this._overlayImports) { return; }      
+        if (!this._overlayImports) { return; } 
+
         const {id} = event.detail;
 
         if (!id || !this._overlayImports[id]) { 
@@ -102,7 +121,7 @@ export const AppMainMixin = () => {
             The 'id' property must match the id of the overlay element in dom and the correct key in _overlayImports`);
         }
 
-        await this.__openOverlay(id, event.detail); // await here to catch errors here
+        await this.__openOverlay(id, event.detail); // Await here to catch errors here.
       }
       catch (error) {
         console.error(error);     
