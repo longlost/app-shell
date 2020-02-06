@@ -1,14 +1,18 @@
+
 /**
- * 
- *  `app-account`
- *  prebuilt overlay to handle user account editing and updating
- *
- *  @customElement
- *  @polymer
- *  @demo demo/index.html
- *
- *
- */
+  * 
+  *  `app-account`
+  *
+  *
+  *  Prebuilt overlay to handle user account editing and updating.
+  *
+  *
+  *  @customElement
+  *  @polymer
+  *  @demo demo/index.html
+  *
+  *
+  **/
 
 import {
   AppElement, 
@@ -23,9 +27,9 @@ import {
 }                        from '@longlost/utils/utils.js';
 import services          from '@longlost/services/services.js';
 import htmlString        from './app-account.html';
-import '@longlost/app-header-overlay/app-header-overlay.js';
-import '@longlost/edit-input/edit-input.js';
-import '@longlost/shipping-inputs/shipping-inputs.js';
+import '@longlost/app-overlays/app-header-overlay.js';
+import '@longlost/app-inputs/edit-input.js';
+import '@longlost/app-inputs/shipping-inputs.js';
 import '@longlost/app-spinner/app-spinner.js';
 import '@longlost/responsive-image/responsive-image.js';
 import '@longlost/app-icons/app-icons.js';
@@ -41,7 +45,7 @@ import '@polymer/paper-button/paper-button.js';
 // ./delete-modal.js is dynamically imported
 
 
-// get credit val from user account
+// Get credit val from user account.
 const getCredit = async uid => {
   try {
     const {credit} = await services.get({
@@ -74,9 +78,11 @@ class AppAccount extends AppElement {
 
   static get properties() {
     return {
-      // from app-user
+
+      // From app-user.
       user: Object,
-      // must be webpack responsive-loader object
+
+      // Must be webpack responsive-loader object.
       headerImage: String,
 
       headerSize: {
@@ -89,7 +95,7 @@ class AppAccount extends AppElement {
         value: '0.00'
       },
 
-      // regular firestore user data inputs
+      // Regular firestore user data inputs.
       _normalKeys: {
         type: Array,
         readOnly: true,
@@ -103,9 +109,11 @@ class AppAccount extends AppElement {
           'zip'
         ]
       },
-      // save all flow control by password modal
+
+      // Save all flow control by password modal.
       _passwordPromiseRejecter: Object,
-      // save all flow control by password modal
+
+      // Save all flow control by password modal.
       _passwordPromiseResolver: Object,
 
       _unsavedEdits: {
@@ -298,11 +306,13 @@ class AppAccount extends AppElement {
 
   async __backButtonClicked() {
     try {
-      // already has this.clicked from app-header-overlay.js
+
+      // Already has this.clicked from app-header-overlay.js
       if (this._unsavedEdits) {
         this.__openUnsavedEditsModal();
         return;
       }
+
       await this.$.overlay.back();
       this.__reset();
     }
@@ -354,11 +364,14 @@ class AppAccount extends AppElement {
         /* webpackChunkName: 'account-reauth-modal' */ 
         './reauth-modal.js'
       );
+
       await this.$.reauthModal.open();
+
       if (this._passwordPromiseRejecter) {
         await schedule();
         this._passwordPromiseRejecter('reauth needed');
       }
+
       if (this.$.passwordModal.close) {
         return this.$.passwordModal.close();
       }
@@ -370,7 +383,9 @@ class AppAccount extends AppElement {
   async __weakPassword() {
     this.$.passwordInput.errorMessage = 'Weak password';
     this.$.passwordInput.invalid      = true;
+
     await  this.$.passwordModal.close();
+
     return warn('Please create a stronger password.');
   }
 
@@ -378,6 +393,7 @@ class AppAccount extends AppElement {
   __invalidEmail() {
     this.$.emailInput.errorMessage = 'Invalid email address';
     this.$.emailInput.invalid      = true;
+
     return warn('The email address is invalid. Please try again.');
   }
 
@@ -385,29 +401,37 @@ class AppAccount extends AppElement {
   __emailAlreadyInUse() {
     this.$.emailInput.errorMessage = 'Email already in use';
     this.$.emailInput.invalid      = true;
+
     return warn('This email address is already taken. Please try another one.');
   }
 
 
   __handleFirebaseErrors(error) {
+
     if (!error || !error.code) { 
       console.error(error);
       return Promise.resolve(); 
     }
+
     switch (error.code) {
+
       // Thrown if the user's last sign-in time does not meet the security threshold. 
       // This does not apply if the user is anonymous.
       case 'auth/requires-recent-login':
         return this.__openReauthenticateModal();
+
       // Thrown if the password is not strong enough.
       case 'auth/weak-password':
         return this.__weakPassword();
+
       // Thrown if the email used is invalid.
       case 'auth/invalid-email':
         return this.__invalidEmail();
+
       // Thrown if the email is already used by another user.
       case 'auth/email-already-in-use':
         return this.__emailAlreadyInUse();
+
       default:
         console.error('firebase user profile edit error: ', error);
         return Promise.resolve();
@@ -419,11 +443,13 @@ class AppAccount extends AppElement {
     const {password, stopSpinner} = event.detail;
 
     try {
+
       if (password === this._newPassword) {
         await this.user.updatePassword(password);
         await stopSpinner();
         await this.$.passwordModal.close();
         message('Your password has been updated');
+
         if (this._passwordPromiseResolver) {
           await schedule();
           this._passwordPromiseResolver();
@@ -432,6 +458,7 @@ class AppAccount extends AppElement {
       else {
         await stopSpinner();
         warn('Your new password inputs do not match. Please try again.');
+
         if (this._passwordPromiseRejecter) {
           await schedule();
           this._passwordPromiseRejecter('passwords dont match');
@@ -440,6 +467,7 @@ class AppAccount extends AppElement {
     }
     catch (error) {
       stopSpinner();
+
       if (this._passwordPromiseRejecter) {
         await schedule();
         this._passwordPromiseRejecter(error);
@@ -453,6 +481,7 @@ class AppAccount extends AppElement {
 
   __sendVerificationEmail() {
     if (!this.user) { return; }
+
     return this.user.sendEmailVerification();
   }
 
@@ -461,7 +490,8 @@ class AppAccount extends AppElement {
     const {kind, reset, stopSpinner, value} = event.detail;
 
     try {
-      // bail if a required value is empty, address2 not required
+
+      // Bail if a required value is empty, address2 not required.
       if (!value && (kind !== 'address2' || !value.trim())) {
         await warn('Sorry, this is a required field.');
         stopSpinner();
@@ -469,89 +499,123 @@ class AppAccount extends AppElement {
 
       const saveEditToDb = async str => {
         const oldVal = this._userMeta[kind];
-        if (oldVal !== value) { // ignore if there is no change
+
+        if (oldVal !== value) { // Ignore if there is no change.
           const data = {};
           data[kind] = value;
+
           await services.set({coll: 'users', doc: this.user.uid, data});
+
           this.set(`_userMeta.${kind}`, value);
           const event = await confirm(`${str} updated.`);
           const undo  = event.detail.canceled;
+
           if (undo) {
             data[kind] = oldVal;
+
             await services.set({coll: 'users', doc: this.user.uid, data});
+
             this.set(`_userMeta.${kind}`, oldVal);
             reset();
+
             await stopSpinner();
+
             message('Change undone.');
+
             return;
           }
         }
+
         stopSpinner();
       };
 
       switch (kind) {
         case 'displayName':
           const previousDisplayName = this.user.displayName;
-          // profile obj === {displayName: nullable string, photoURL: nullable string}
+
+          // Profile obj === {displayName: nullable string, photoURL: nullable string}.
           // The profile's displayName and photoURL to update.
           await this.user.updateProfile({
             displayName: value, 
             photoURL:    this.user.photoURL
           });
-          this.notifyPath('user.displayName'); // cannot write to firebase user
+
+          this.notifyPath('user.displayName'); // Cannot write to Firebase user.
+
           const event = await confirm('Display name updated.');
           const undo  = event.detail.canceled;
+
           if (undo) {
             await this.user.updateProfile({
               displayName: previousDisplayName, 
               photoURL:    this.user.photoURL
             });
+
             this.notifyPath('user.displayName');
             await stopSpinner();
+
             reset();
             message('Change undone.');
           } 
           else {
             stopSpinner();
           }
+
           break;
+
         case 'password':
           this._newPassword = value;
+
           await stopSpinner();
           await this.__openPasswordModal();
+
           break;
+
         case 'email':
+
           await this.user.updateEmail(value);
-          // sends an email to user for them to verify
+
+          // Sends an email to user for them to verify.
           await this.__sendVerificationEmail();
           this.notifyPath('user.email');
+
           await stopSpinner();
           message('Email updated.');
+
           break;
+
         case 'phone':
           await saveEditToDb('Phone number');
           break;
+
         case 'fullName':
           await saveEditToDb('Full name');
           break;
+
         case 'address1':
           await saveEditToDb('Address');
           break;
+
         case 'address2':
           await saveEditToDb('Address');
           break;
+
         case 'city':
           await saveEditToDb('City');
           break;
+
         case 'state':
           await saveEditToDb('State/province/region');
           break;
+
         case 'zip':
           await saveEditToDb('Zip/postal code');
           break;
+
         case 'country':
           await saveEditToDb('Country');
           break;
+
         default:
           console.warn('no such input kind: ', kind);
           break;
@@ -575,20 +639,24 @@ class AppAccount extends AppElement {
       if (pwEdit && pwEdit.trim()) {        
         this._newPassword = pwEdit;
         await this.__openPasswordModal();
-        // password modal controls how this promise resolves
+
+        // Password modal controls how this promise resolves.
         const promise = new Promise((resolve, reject) => {
           this._passwordPromiseResolver = resolve;
           this._passwordPromiseRejecter = reject;
-        });        
+        });
+
         await promise;
       }
       
       const normalSaves = this._normalKeys.reduce((accum, key) => {
         const val = this._unsavedEditsObj[key];
-        // address2 can be empty string, not required
+
+        // 'address2' can be empty string, not required.
         if (val && (key === 'address2' || val.trim())) {
           accum[key] = val;
         }
+
         return accum; 
       }, {});
 
@@ -599,18 +667,21 @@ class AppAccount extends AppElement {
       });
 
       const saveDisplayName = async displayName => {
-        // profile obj === {displayName: nullable string, photoURL: nullable string}
+
+        // Profile obj === {displayName: nullable string, photoURL: nullable string}.
         // The profile's displayName and photoURL to update.
         await this.user.updateProfile({
           displayName, 
           photoURL: this.user.photoURL
         });
-        this.notifyPath('user.displayName'); // cannot write to firebase user
+
+        this.notifyPath('user.displayName'); // Cannot write to firebase user.
       };
 
       const saveEmail = async email => {
         await this.user.updateEmail(email);
-        // sends an email to user for them to verify
+
+        // Sends an email to user for them to verify.
         await this.__sendVerificationEmail();
         this.notifyPath('user.email');
       };
@@ -630,14 +701,17 @@ class AppAccount extends AppElement {
         displayNameSavePromise, 
         emailSavePromise
       ]);
-      // update input vals
+
+      // Update input vals.
       const savesKeys = Object.keys(normalSaves);
       savesKeys.forEach(key => {
         const value = normalSaves[key];
         this.set(`_userMeta.${key}`, value);
       });
-      // reset obj
+
+      // Reset obj.
       this.set('_unsavedEditsObj', {});
+
       await message('Account updated.');
     }
     catch (error) {
@@ -663,7 +737,8 @@ class AppAccount extends AppElement {
 
   async __deleteUser() {
     try {
-      // delete and signout user   
+
+      // Delete and signout user.
       await services.deleteDocument({coll: 'users', doc: this.user.uid});
       await this.user.delete();
       await services.signOut(); 

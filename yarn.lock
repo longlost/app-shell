@@ -430,19 +430,6 @@
     "@longlost/element-mixin" "^1.0.9"
     "@polymer/polymer" "^3.3.1"
 
-"@longlost/app-header-overlay@^1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@longlost/app-header-overlay/-/app-header-overlay-1.0.8.tgz#ccaa4f73c143812656a36e31f2bd1b6f296340f3"
-  integrity sha512-WBtztVp7hjNNOHG8c+2EK5ScOVpLI9hVWdXNJaPMWQrVeYVEH74laEtVUTd807juYYuxpfEYfZt9xzHkoSrItA==
-  dependencies:
-    "@longlost/app-element" "^1.0.6"
-    "@longlost/app-icons" "^1.0.11"
-    "@longlost/overlay-mixin" "^1.0.1"
-    "@longlost/utils" "^1.3.5"
-    "@polymer/app-layout" "^3.1.0"
-    "@polymer/paper-icon-button" "^3.0.2"
-    "@polymer/polymer" "^3.3.1"
-
 "@longlost/app-icons@^1.0.0", "@longlost/app-icons@^1.0.11":
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/@longlost/app-icons/-/app-icons-1.0.11.tgz#af4666ed9ea0f1c811dca71414db16dff9c37347"
@@ -450,31 +437,68 @@
   dependencies:
     "@polymer/iron-iconset-svg" "^3.0.1"
 
-"@longlost/app-modal@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@longlost/app-modal/-/app-modal-1.1.0.tgz#866cbbdbc9147f62e238cd485ddbe643c70006b2"
-  integrity sha512-VdBGG5ipTLhkvzJSF3sq89WzCh6duJXCLFjAMNWlKnqX8zDWI1EB8VE0mJPQ20Mv11Hqd+u++tSgm14xQARX/g==
+"@longlost/app-inputs@^1.3.4":
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/@longlost/app-inputs/-/app-inputs-1.3.4.tgz#1bb90ba67f176198937b025c84f9dff04a5e7247"
+  integrity sha512-3KDdkbtSagNYGbt1gR9mw9o5GmtirA5eZ4DVKnNXmY9gyKlKuBEg07A/2OlNxL3f6BJ1JkzyqR++SpGaCAixcw==
   dependencies:
     "@longlost/app-element" "^1.0.6"
-    "@longlost/app-overlay" "^1.0.4"
-    "@longlost/app-shared-styles" "^2.0.8"
+    "@longlost/app-icons" "^1.0.11"
+    "@longlost/app-shared-styles" "^2.0.11"
+    "@longlost/lambda" "^2.1.1"
+    "@longlost/utils" "^1.3.5"
+    "@polymer/gold-phone-input" "^3.0.1"
+    "@polymer/iron-a11y-keys" "^3.0.1"
+    "@polymer/iron-form-element-behavior" "^3.0.1"
+    "@polymer/iron-icon" "^3.0.1"
+    "@polymer/iron-iconset-svg" "^3.0.1"
+    "@polymer/iron-input" "^3.0.1"
+    "@polymer/paper-dropdown-menu" "^3.1.0"
+    "@polymer/paper-icon-button" "^3.0.2"
+    "@polymer/paper-input" "^3.2.0"
+    "@polymer/paper-item" "^3.0.1"
+    "@polymer/paper-listbox" "^3.0.1"
+    "@polymer/polymer" "^3.3.1"
+
+"@longlost/app-modal@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@longlost/app-modal/-/app-modal-1.1.1.tgz#2119e7486eb18ba860d88f695c36e8ca74453e2a"
+  integrity sha512-z+gr34RvM8haUBARcPSrjHdj7t7fteQygMCcdaQrOq/qzsg1ONey4PJe+wum1e2XrLG0JCkw/RBxtpjkd82IiA==
+  dependencies:
+    "@longlost/app-element" "^1.0.6"
+    "@longlost/app-overlay" "^1.1.0"
+    "@longlost/app-shared-styles" "^2.0.12"
     "@longlost/utils" "^1.3.5"
     "@polymer/paper-card" "^3.0.1"
     "@polymer/polymer" "^3.3.1"
 
-"@longlost/app-overlay@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@longlost/app-overlay/-/app-overlay-1.0.4.tgz#4abc8f3ea6f0dbd03102f33b4fe0f37b880f74a5"
-  integrity sha512-3oVlV8Ctrzu8gFbQE3bmWhxEj7BN1adVCldKYhoRcsziOnHIrqUee0a/VjFfvGFWRrN+Lthv4rX2JELYQ5/51w==
+"@longlost/app-overlay@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@longlost/app-overlay/-/app-overlay-1.1.0.tgz#e535c587ed66721badf7134b44b2edf2a04e43f5"
+  integrity sha512-Po+PZU0AMlJ7OMXubHJqTHVRKi7Wss+KEnej1MGp4iev5VAv7KwLZoeJ5jGzW76BiHdeSwNplbUfhLuxJwrDeA==
   dependencies:
     "@longlost/app-element" "^1.0.6"
     "@longlost/overlay-mixin" "^1.0.1"
     "@polymer/polymer" "^3.3.1"
 
-"@longlost/app-shared-styles@^2.0.8":
-  version "2.0.11"
-  resolved "https://registry.yarnpkg.com/@longlost/app-shared-styles/-/app-shared-styles-2.0.11.tgz#0653c9f9e5033c33caa1315bb2daf0d6e98ddc7a"
-  integrity sha512-U+bXcT1Oi+893rLRkTSR7GhJncNKrTetuKvBUA852IXctYbdS9icCPfyVAvVnb/bh+KC2mhCAc7QO7JHv6EUNA==
+"@longlost/app-overlays@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@longlost/app-overlays/-/app-overlays-1.0.0.tgz#a1e65b076fb7366903712feeea7094f99416d6a3"
+  integrity sha512-bhfMXRw725JIB9peujHAK8DKE1OHwl4QyRL3UOYxKwXSXidSmsh55GKIWeaT+rmEILhYmgYofOpZOyp9JV+iNA==
+  dependencies:
+    "@longlost/animation" "^1.0.5"
+    "@longlost/app-element" "^1.0.6"
+    "@longlost/app-icons" "^1.0.11"
+    "@longlost/app-shared-styles" "^2.0.12"
+    "@longlost/utils" "^1.3.5"
+    "@polymer/app-layout" "^3.1.0"
+    "@polymer/paper-card" "^3.0.1"
+    "@polymer/paper-icon-button" "^3.0.2"
+
+"@longlost/app-shared-styles@^2.0.11", "@longlost/app-shared-styles@^2.0.12":
+  version "2.0.12"
+  resolved "https://registry.yarnpkg.com/@longlost/app-shared-styles/-/app-shared-styles-2.0.12.tgz#de0e4d40b8da6986b3c49dcc1d69aaebd6d8b891"
+  integrity sha512-C5DKKZRSKf29a6Lri+w1FDcwO1m3dD0poyGdrEy0AaOsqSvsL1YCIlgQJ4AW+awBu3r58ratU8JjQRPTjGpGyQ==
   dependencies:
     "@polymer/polymer" "^3.3.1"
 
@@ -500,19 +524,6 @@
     scroll-behavior-polyfill "^2.0.13"
     web-animations-js "^2.3.2"
     workbox-window "^4.3.1"
-
-"@longlost/edit-input@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@longlost/edit-input/-/edit-input-1.0.1.tgz#d37afa1330f8823af7e4f88ada0fc04c992e5d2b"
-  integrity sha512-bdgTGGFLjgGRKaW92q0enRJ4v7lDULK2DX7HizcDnzuiFbTP2u0YpBydtlbHtY9NGg4Gw2yjH/YRRAAkWQG8qQ==
-  dependencies:
-    "@longlost/app-element" "^1.0.4"
-    "@longlost/icon-to-spinner" "^1.0.2"
-    "@longlost/pencil-to-check-icon" "^1.0.1"
-    "@longlost/utils" "^1.1.6"
-    "@polymer/paper-button" "^3.0.1"
-    "@polymer/paper-ripple" "^3.0.1"
-    "@polymer/polymer" "^3.3.0"
 
 "@longlost/element-mixin@^1.0.8":
   version "1.0.8"
@@ -549,6 +560,11 @@
   resolved "https://registry.yarnpkg.com/@longlost/lambda/-/lambda-2.0.1.tgz#1f04ba5a6ad5b04d3f91b00784a4c1ecc9d1d324"
   integrity sha512-eYj0iuV6ALAbrw8SKV4Cn4zbTWA6ekN8Hmn0mY1BYHptJV83OOWVa+C/k1JnuZLWbRO/ruMO4lKiT2o1LV9Pvg==
 
+"@longlost/lambda@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@longlost/lambda/-/lambda-2.1.1.tgz#0e8ad44ee941a4e7e0802449482ccc8f64d88a0c"
+  integrity sha512-AEBQSU1A2Mwj6s6zJSA8BKsLQ9/5ambgEOaI+mgO7kfbCnC9FQhWgXJKDQXGoZdFJC1HC6kTqv9dTYTRxFvmSw==
+
 "@longlost/overlay-mixin@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@longlost/overlay-mixin/-/overlay-mixin-1.0.1.tgz#d7dfa2f0f2aeb7eba2f1b42d4ed424f55b837c25"
@@ -557,14 +573,6 @@
     "@longlost/animation" "^1.0.5"
     "@longlost/requested-init-mixin" "^1.0.0"
     "@longlost/utils" "^1.3.5"
-
-"@longlost/pencil-to-check-icon@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@longlost/pencil-to-check-icon/-/pencil-to-check-icon-1.0.1.tgz#0466b5feba1fdd7de07597316da688190a1577ad"
-  integrity sha512-l9mbOeXTLTtjvHH28Eguf1rEreVC8s6ik03bwQyAqm17effVlnUcxH27N+b89Qee6f/GE/c/KV226YbHA1Xgkg==
-  dependencies:
-    "@longlost/utils" "^1.1.6"
-    "@polymer/polymer" "^3.3.0"
 
 "@longlost/requested-init-mixin@^1.0.0":
   version "1.0.0"
@@ -591,15 +599,6 @@
     "@firebase/util" "^0.2.37"
     "@longlost/boot" "^1.2.3"
     firebase "^7.6.2"
-
-"@longlost/shipping-inputs@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@longlost/shipping-inputs/-/shipping-inputs-1.0.3.tgz#81b4dbcd0287ff0d0d54b5a68388185dab285f19"
-  integrity sha512-XHco+9yPI9bg9+Kd5QBC7mXAdzNCEkVNbWAKzgE47c1v6XQiSuxBXcPMGovNscsHysNLHJSDi/t0ieDV/gg16g==
-  dependencies:
-    "@longlost/edit-input" "^1.0.1"
-    "@polymer/paper-input" "^3.0.2"
-    "@polymer/polymer" "^3.3.0"
 
 "@longlost/utils@^1.1.6", "@longlost/utils@^1.2.4", "@longlost/utils@^1.3.3", "@longlost/utils@^1.3.5":
   version "1.3.5"
@@ -665,6 +664,14 @@
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
+"@polymer/iron-a11y-keys@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@polymer/iron-a11y-keys/-/iron-a11y-keys-3.0.1.tgz#bd59613c27248f7e516bbe389087d01be9396e9c"
+  integrity sha512-zmTi8xHeY4ZMJLAitW2hAmW5zXZ35hVy/eHQUFadAlOccuBK3oRRmoPRQRaZgpyJrCVFDAQRXXzzJtUDil/0CA==
+  dependencies:
+    "@polymer/iron-a11y-keys-behavior" "^3.0.0-pre.26"
+    "@polymer/polymer" "^3.0.0"
+
 "@polymer/iron-autogrow-textarea@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-autogrow-textarea/-/iron-autogrow-textarea-3.0.1.tgz#0205d9c5ca16f3afd505f41e9037989707d59dce"
@@ -704,6 +711,16 @@
     "@polymer/polymer" "^3.0.0"
     "@polymer/prism-element" "^3.0.0-pre.25"
 
+"@polymer/iron-dropdown@^3.0.0-pre.26":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@polymer/iron-dropdown/-/iron-dropdown-3.0.1.tgz#c573faa1a08c179d201ae877c1c726018314bff3"
+  integrity sha512-22yLhepfcKjuQMfFmRHi/9MPKTqkzgRrmWWW0P5uqK++xle53k2QBO5VYUAYiCN3ZcxIi9lEhZ9YWGeQj2JBig==
+  dependencies:
+    "@polymer/iron-behaviors" "^3.0.0-pre.26"
+    "@polymer/iron-overlay-behavior" "^3.0.0-pre.27"
+    "@polymer/neon-animation" "^3.0.0-pre.26"
+    "@polymer/polymer" "^3.0.0"
+
 "@polymer/iron-fit-behavior@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-fit-behavior/-/iron-fit-behavior-3.0.1.tgz#e5c26b0b4d9e74f0c3d6d56b9cfd460e84bddf0d"
@@ -718,7 +735,7 @@
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-form-element-behavior@^3.0.0-pre.26":
+"@polymer/iron-form-element-behavior@^3.0.0-pre.26", "@polymer/iron-form-element-behavior@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-form-element-behavior/-/iron-form-element-behavior-3.0.1.tgz#4c79e1981d7796ce659e997f3b8f5e14b4a075a4"
   integrity sha512-G/e2KXyL5AY7mMjmomHkGpgS0uAf4ovNpKhkuUTRnMuMJuf589bKqE85KN4ovE1Tzhv2hJoh/igyD6ekHiYU1A==
@@ -734,7 +751,7 @@
     "@polymer/iron-meta" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-iconset-svg@^3.0.1":
+"@polymer/iron-iconset-svg@^3.0.0-pre.26", "@polymer/iron-iconset-svg@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-iconset-svg/-/iron-iconset-svg-3.0.1.tgz#568d6e7dbc120299dae63be3600aeba0d30ddbea"
   integrity sha512-XNwURbNHRw6u2fJe05O5fMYye6GSgDlDqCO+q6K1zAnKIrpgZwf2vTkBd5uCcZwsN0FyCB3mvNZx4jkh85dRDw==
@@ -749,7 +766,7 @@
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/iron-input@^3.0.0-pre.26":
+"@polymer/iron-input@^3.0.0-pre.26", "@polymer/iron-input@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-input/-/iron-input-3.0.1.tgz#dc866a25107f9b38d9ca4512dd9a3e51b78b4915"
   integrity sha512-WLx13kEcbH9GKbj9+pWR6pbJkA5kxn3796ynx6eQd2rueMyUfVTR3GzOvadBKsciUuIuzrxpBWZ2+3UcueVUQQ==
@@ -770,6 +787,16 @@
   resolved "https://registry.yarnpkg.com/@polymer/iron-media-query/-/iron-media-query-3.0.1.tgz#5cd8a1c1e8c9b8bafd3dd5da14e0f8d2cfa76d83"
   integrity sha512-czUX1pm1zfmfcZtq5J57XFkcobBv08Y50exp0/3v8Bos5VL/jv2tU0RwiTfDBxUMhjicGbgwEBFQPY2V5DMzyw==
   dependencies:
+    "@polymer/polymer" "^3.0.0"
+
+"@polymer/iron-menu-behavior@^3.0.0-pre.26":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@polymer/iron-menu-behavior/-/iron-menu-behavior-3.0.2.tgz#f8fa2d59af472a4cb4fb0359c704b808bc2c105d"
+  integrity sha512-8dpASkFNBIkxAJWsFLWIO1M7tKM0+wKs3PqdeF/dDdBciwoaaFgC2K1XCZFZnbe2t9/nJgemXxVugGZAWpYCGg==
+  dependencies:
+    "@polymer/iron-a11y-keys-behavior" "^3.0.0-pre.26"
+    "@polymer/iron-flex-layout" "^3.0.0-pre.26"
+    "@polymer/iron-selector" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
 "@polymer/iron-meta@^3.0.0-pre.26":
@@ -835,6 +862,15 @@
     "@polymer/polymer" "^3.0.0"
     marked "~0.3.9"
 
+"@polymer/neon-animation@^3.0.0-pre.26":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@polymer/neon-animation/-/neon-animation-3.0.1.tgz#6658e4b524abc057477772a7473292493d366c24"
+  integrity sha512-cDDc0llpVCe0ATbDS3clDthI54Bc8YwZIeTGGmBJleKOvbRTUC5+ssJmRL+VwVh+VM5FlnQlx760ppftY3uprg==
+  dependencies:
+    "@polymer/iron-resizable-behavior" "^3.0.0-pre.26"
+    "@polymer/iron-selector" "^3.0.0-pre.26"
+    "@polymer/polymer" "^3.0.0"
+
 "@polymer/paper-behaviors@^3.0.0-pre.27":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/paper-behaviors/-/paper-behaviors-3.0.1.tgz#83f1cd06489f484c1b108a2967fb01952df722ad"
@@ -865,6 +901,23 @@
     "@polymer/paper-styles" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
+"@polymer/paper-dropdown-menu@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@polymer/paper-dropdown-menu/-/paper-dropdown-menu-3.1.0.tgz#3983baafc9a05c1475a680a7aa6512f994c89c88"
+  integrity sha512-orxH2FzBCjUleXex//STZHjgWXm7z09+JRPnhJld7xEheRDE7XrKsrsS0Xl7f8bBqUrisdaL9HTX9yBJ/k8bbQ==
+  dependencies:
+    "@polymer/iron-a11y-keys-behavior" "^3.0.0-pre.26"
+    "@polymer/iron-form-element-behavior" "^3.0.0-pre.26"
+    "@polymer/iron-icon" "^3.0.0-pre.26"
+    "@polymer/iron-iconset-svg" "^3.0.0-pre.26"
+    "@polymer/iron-validatable-behavior" "^3.0.0-pre.26"
+    "@polymer/paper-behaviors" "^3.0.0-pre.27"
+    "@polymer/paper-input" "^3.1.0"
+    "@polymer/paper-menu-button" "^3.0.0-pre.26"
+    "@polymer/paper-ripple" "^3.0.0-pre.26"
+    "@polymer/paper-styles" "^3.0.0-pre.26"
+    "@polymer/polymer" "^3.3.1"
+
 "@polymer/paper-fab@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/paper-fab/-/paper-fab-3.0.1.tgz#2636359e7fb70dd5a549ed92ba9b3bdb9ff86bf8"
@@ -886,7 +939,7 @@
     "@polymer/paper-styles" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/paper-input@^3.0.0-pre.26", "@polymer/paper-input@^3.0.2":
+"@polymer/paper-input@^3.0.0-pre.26":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@polymer/paper-input/-/paper-input-3.1.0.tgz#8e854670650d4b031b4cad5adda70c62448fa2c2"
   integrity sha512-6h53K7ijaZAKuyZFhyfzu94XUUqNu9pv2q9/Sz8pTb3i4PAk2l399I+ZlhmGRMElocPUQZbciTc5eD7eyH5wsQ==
@@ -899,7 +952,7 @@
     "@polymer/paper-styles" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/paper-input@^3.2.0":
+"@polymer/paper-input@^3.1.0", "@polymer/paper-input@^3.2.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@polymer/paper-input/-/paper-input-3.2.0.tgz#a07dbc1b009bac97a5a86eccb57d99b17bd96285"
   integrity sha512-vYEBxq6LDR+QGDrAO/il0JNhCd+31TwSnv58MVV+ijaGKz1qAuSJw4NSsgF3lrXCwomqnpME19vbp2ktrcluVA==
@@ -912,6 +965,39 @@
     "@polymer/paper-styles" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
+"@polymer/paper-item@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@polymer/paper-item/-/paper-item-3.0.1.tgz#05b3543483e556cd5532431cd1751a84343989b5"
+  integrity sha512-KTk2N+GsYiI/HuubL3sxebZ6tteQbBOAp4QVLAnbjSPmwl+mJSDWk+omuadesU0bpkCwaWVs3fHuQsmXxy4pkw==
+  dependencies:
+    "@polymer/iron-behaviors" "^3.0.0-pre.26"
+    "@polymer/iron-flex-layout" "^3.0.0-pre.26"
+    "@polymer/paper-styles" "^3.0.0-pre.26"
+    "@polymer/polymer" "^3.0.0"
+
+"@polymer/paper-listbox@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@polymer/paper-listbox/-/paper-listbox-3.0.1.tgz#fe05094781b359e4afbc5bec89a07758a303a957"
+  integrity sha512-vMLWFpYcggAPmEDBmK+96fFefacOG3GLB1EguTn8+ZkqI+328hNfw1MzHjH68rgCIIUtjmm+9qgB1Sy/MN0a/A==
+  dependencies:
+    "@polymer/iron-behaviors" "^3.0.0-pre.26"
+    "@polymer/iron-menu-behavior" "^3.0.0-pre.26"
+    "@polymer/paper-styles" "^3.0.0-pre.26"
+    "@polymer/polymer" "^3.0.0"
+
+"@polymer/paper-menu-button@^3.0.0-pre.26":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@polymer/paper-menu-button/-/paper-menu-button-3.0.1.tgz#318fc4d884a01d42ed0f3f3b5a6f78548d64befa"
+  integrity sha512-Rxte2Fp7N2BMI2FMM7tB25IkvD11DhjMklcg97JP1jnlHbJNrXPh5SSX2bdtabz49UE8vejIsrxZ+AGsB5nqIQ==
+  dependencies:
+    "@polymer/iron-a11y-keys-behavior" "^3.0.0-pre.26"
+    "@polymer/iron-behaviors" "^3.0.0-pre.26"
+    "@polymer/iron-dropdown" "^3.0.0-pre.26"
+    "@polymer/iron-fit-behavior" "^3.0.0-pre.26"
+    "@polymer/neon-animation" "^3.0.0-pre.26"
+    "@polymer/paper-styles" "^3.0.0-pre.26"
+    "@polymer/polymer" "^3.0.0"
+
 "@polymer/paper-ripple@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/paper-ripple/-/paper-ripple-3.0.1.tgz#28e506f079f840703bf8cbfd62966e1e83ebc3c3"
@@ -920,7 +1006,7 @@
     "@polymer/iron-a11y-keys-behavior" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/paper-ripple@^3.0.1", "@polymer/paper-ripple@^3.0.2":
+"@polymer/paper-ripple@^3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@polymer/paper-ripple/-/paper-ripple-3.0.2.tgz#52566f5ee367942022ceaa991368105d21403de5"
   integrity sha512-DnLNvYIMsiayeICroYxx6Q6Hg1cUU8HN2sbutXazlemAlGqdq80qz3TIaVdbpbt/pvjcFGX2HtntMlPstCge8Q==

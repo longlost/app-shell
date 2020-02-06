@@ -26,7 +26,9 @@
 <app-modal id="modal"
            heading="Delete Account"
            on-click="__reauthModalClicked">
-  <div id="content-div" slot="card-content-slot">
+
+  <div id="content-div" 
+       slot="card-content-slot">
     <p>
       Warning! This action cannot be undone!
     </p>
@@ -34,7 +36,9 @@
       If you continue, your account and data will be permenantly deleted.
     </p>
   </div>
-  <div class="card-actions" slot="card-actions-slot">
+
+  <div class="card-actions" 
+       slot="card-actions-slot">
     <paper-button id="dismiss-btn" 
                   on-click="__dismissButtonClicked">
       dismiss
@@ -45,4 +49,5 @@
       delete
     </paper-button>           
   </div>
+
 </app-modal>

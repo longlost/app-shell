@@ -1,10 +1,25 @@
 
+/**
+  * 
+  *  `delete-modal`
+  *
+  *
+  *  Confirmation modal for deleting a user's account.
+  *
+  *
+  *  @customElement
+  *  @polymer
+  *  @demo demo/index.html
+  *
+  *
+  **/
+
 import {
   AppElement,
   html
 }                 from '@longlost/app-element/app-element.js';
 import htmlString from './delete-modal.html';
-import '@longlost/app-modal/app-modal.js';
+import '@longlost/app-overlays/app-modal.js';
 import '@longlost/app-icons/app-icons.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-button/paper-button.js';

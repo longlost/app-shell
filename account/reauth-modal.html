@@ -26,6 +26,7 @@
 <app-modal id="modal"
            heading="Recent Authentication Required"
            on-click="__reauthModalClicked">
+
   <div slot="card-content-slot">
     <p>
       We are sorry for the inconvenience, but this action requires a more recent signin authentication.
@@ -34,7 +35,9 @@
       Please reauthenticate if you wish to continue.
     </p>
   </div>
-  <div class="card-actions" slot="card-actions-slot">    
+
+  <div class="card-actions" 
+       slot="card-actions-slot">    
     <paper-button id="dismiss-btn" 
                   on-click="__dismissButtonClicked">
       dismiss
@@ -45,4 +48,5 @@
       continue
     </paper-button>        
   </div>
+  
 </app-modal>

@@ -21,6 +21,7 @@
 <app-modal id="modal"
            heading="Unsaved Edits"
            on-click="__modalClicked">
+
   <div slot="card-content-slot">
     <p>
       You have unsaved edits.
@@ -32,7 +33,9 @@
       Do you want to exit without saving, or would you like to save your changes?
     </p>
   </div>
-  <div class="card-actions" slot="card-actions-slot">
+
+  <div class="card-actions" 
+       slot="card-actions-slot">
     <paper-button id="exit-anyway-btn" 
                   on-click="__exitAnywayButtonClicked">
       exit anyway
@@ -42,4 +45,5 @@
       save all
     </paper-button>        
   </div>
+  
 </app-modal>

@@ -1,4 +1,20 @@
 
+/**
+  * `overlay-control-mixin`
+  *
+  *   Overlay state is handled here, including a 
+  * 	complex fix for Safari scroll fallthrough
+  * 	as well as a brower history cache that allows
+  * 	browser and device back buttons to control overlays.
+  *
+  * @customElement
+  * @polymer
+  * @demo demo/index.html
+  *
+  *
+  **/
+
+
 import {listen, schedule} from '@longlost/utils/utils.js';
 
 
@@ -79,8 +95,10 @@ export const OverlayControlMixin = superClass => {
 	  __makeRegistryItem(event) {
 	  	const {node}                    = event.detail;
 	    const {content, header, symbol} = node;
+
 	    const underlaySymbol = this.__getUnderlaySymbolFromRegistry();
-	    const item 					 = {
+
+	    const item = {
     		content,
     		contentPos:  0,
     		firstOpen: 	 true,
@@ -92,6 +110,7 @@ export const OverlayControlMixin = superClass => {
     		symbol,
     		underlaySymbol
     	};
+
     	return item;
 	  }
 
@@ -123,6 +142,7 @@ export const OverlayControlMixin = superClass => {
 	  	
     	const overlay  = this.__getItemFromRegistry(symbol);
       const underlay = this.__getItemFromRegistry(overlay.underlaySymbol);
+
       return {overlay, underlay};
 	  }
 
@@ -136,6 +156,7 @@ export const OverlayControlMixin = superClass => {
 	  	const {top}        = element.header.getScrollState();
 	    element.headerPos  = top;
 	    element.contentPos = window.pageYOffset;
+
 	    return element;
 	  }
 
@@ -143,6 +164,7 @@ export const OverlayControlMixin = superClass => {
 	  __disableHeader(element) {
 	  	element.header.disabled = true;
 	    element.header.toggleScrollListener(false);
+
 	    return element;
 	  }
 
@@ -152,15 +174,18 @@ export const OverlayControlMixin = superClass => {
 	  	overlay.header.style.opacity  = '1';
 	    overlay.content.style.opacity = '0';
 	    overlay.panel.style.top 			= `${underlay.contentPos}px`;
+
 	    return overlay;
 	  }
 
 
 	  __prepForResetScroll(overlay) {
 	  	const toolbars = this.selectAll('app-toolbar', overlay.header);
+
     	toolbars.forEach(toolbar => {
     		toolbar.style.opacity = '0';
     	});
+
 	    overlay.header.style.transform = '';
 	    overlay.panel.resetHeaderParallaxContainer();
 	  }
@@ -220,7 +245,8 @@ export const OverlayControlMixin = superClass => {
 	  }
 
 
-	  __iosContentFix(overlay) {	  	
+	  __iosContentFix(overlay) {
+	  	  	
 	    // Safari content pos fix IMPORTANT!!
 	    // The bug appears when you scroll current content down all the way
 	    // then open an overlay, content is not where it should be without this fix.

@@ -13,7 +13,7 @@
 </style>
 
 
-<!-- firebaseui modal inserted into body-->
+<!-- 'firebaseui' modal inserted into body. -->
 <div id="firebaseuiAuthOverlay">
   <div id="firebaseuiAuthContainer"></div>
 </div>
@@ -23,6 +23,7 @@
            heading="Account Actions"
            prebuilt-animation="scale" 
            on-click="__logoutModalClicked">
+
   <div slot="card-content-slot">
     <paper-button id="account-btn" 
                   on-click="__accountButtonClicked">
@@ -33,4 +34,5 @@
       sign out
     </paper-button>
   </div>
+
 </app-modal>
