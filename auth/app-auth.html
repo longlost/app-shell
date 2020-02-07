@@ -13,16 +13,15 @@
 </style>
 
 
-<!-- 'firebaseui' modal inserted into body. -->
-<div id="firebaseuiAuthOverlay">
-  <div id="firebaseuiAuthContainer"></div>
-</div>
+<signin-modal id="signinModal"
+              user="[[_user]]"
+              on-user-upgraded="__userUpgraded">
+</signin-modal>
 
 
-<app-modal id="modal" 
+<app-modal id="accountModal" 
            heading="Account Actions"
-           prebuilt-animation="scale" 
-           on-click="__logoutModalClicked">
+           on-click="__accountModalClicked">
 
   <div slot="card-content-slot">
     <paper-button id="account-btn" 
