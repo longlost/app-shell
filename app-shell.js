@@ -13,6 +13,10 @@
 
 
 import {
+  appUserAndData, 
+  theme
+}                 from 'app.config.js';
+import {
   AppElement,
   html
 }                 from '@longlost/app-element/app-element.js';
@@ -29,10 +33,6 @@ import {
 import {
   OverlayControlMixin
 }                 from './overlay-control-mixin.js';
-import {
-  appUserAndData, 
-  theme
-}                 from 'app.config.js';
 import htmlString from './app-shell.html';
 import '@longlost/app-icons/app-icons.js';
 import '@polymer/app-route/app-location.js';

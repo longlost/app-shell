@@ -112,11 +112,6 @@
     border-top: 2px solid var(--divider-color);
   }
 
-  #account-icon-container {
-    position: absolute;
-    right:    16px;
-  }
-
   #accountIconBtnImg {
     height:           24px;
     width:            24px;
@@ -337,8 +332,7 @@
 
         <slot name="top-toolbar-slot"></slot>
 
-        <div id="account-icon-container" 
-             hidden="[[noUsers]]">
+        <div hidden="[[noUsers]]">
           <paper-icon-button id="account-icon-btn" 
                              icon="[[__computeAccountButtonIcon(currentUser)]]"
                              on-click="__userButtonClicked"
