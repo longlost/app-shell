@@ -51,9 +51,10 @@ export const AppMainMixin = () => {
       };
     }
 
-
-    connectedCallback() {
-      super.connectedCallback();
+    // These MUST be in constructor, as apposed to connectedCallback
+    // in order to catch app-shell.js initializations, including page routing.
+    constructor() {
+      super();
 
       this.__windowLoadHandler();
       listen(this, 'app-shell-page-changed',      this.__pageChanged.bind(this));
