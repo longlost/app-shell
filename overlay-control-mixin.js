@@ -411,16 +411,23 @@ export const OverlayControlMixin = superClass => {
 	  	if (!overlays) { return; } // Not a header overlay.
 
 	  	const {overlay, underlay} = overlays;
-	  	this.__hideLayoutElement(overlay);
-	  	this.__setLayoutElToPreviousScrollPosition(underlay);
 
-	  	// This method is only needed when overlay.reset method is used.
-	  	// Otherwise, these styles area already set.
-	  	this.__showUnderlay(underlay);
+	  	this.__hideLayoutElement(overlay);
+
+	  	if (underlay) {	 
+		  	this.__setLayoutElToPreviousScrollPosition(underlay);
+
+		  	// This method is only needed when overlay.reset method is used.
+		  	// Otherwise, these styles area already set.
+		  	this.__showUnderlay(underlay);
+	  	}
 
 	    await schedule();
 
-	    this.__readyLayoutElement(underlay);
+	    if (underlay) {
+	    	this.__readyLayoutElement(underlay);
+	    }
+
 	    this.__removeOverlayFromRegistrySequence();
 	  }
 
