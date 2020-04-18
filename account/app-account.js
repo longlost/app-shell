@@ -27,12 +27,12 @@ import {
 }                        from '@longlost/utils/utils.js';
 import services          from '@longlost/services/services.js';
 import htmlString        from './app-account.html';
-import '@longlost/app-overlays/app-header-overlay.js';
+import '@longlost/app-icons/app-icons.js';
+import '@longlost/app-images/responsive-image.js';
 import '@longlost/app-inputs/edit-input.js';
 import '@longlost/app-inputs/shipping-inputs.js';
+import '@longlost/app-overlays/app-header-overlay.js';
 import '@longlost/app-spinner/app-spinner.js';
-import '@longlost/responsive-image/responsive-image.js';
-import '@longlost/app-icons/app-icons.js';
 import '@polymer/iron-image/iron-image.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-fab/paper-fab.js';
