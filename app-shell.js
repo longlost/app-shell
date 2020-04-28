@@ -28,7 +28,8 @@ import {
   warn
 }                 from '@longlost/utils/utils.js';
 import {
-  setPassiveTouchGestures
+  setPassiveTouchGestures,
+  setRemoveNestedTemplates
 }                 from '@polymer/polymer/lib/utils/settings.js';
 import {
   OverlayControlMixin
@@ -53,8 +54,10 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-toast/paper-toast.js';
 // account, services, settings, auth overlays are imported dynamically.
 
+// Polymer globals. These set to improve performance.
+setPassiveTouchGestures(true);
+setRemoveNestedTemplates(true);
 
-setPassiveTouchGestures(true); // Polymer.
 
 const builtInLazyImports = {
   view404:  () => import(
