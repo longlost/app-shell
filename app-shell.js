@@ -28,7 +28,6 @@ import {
   warn
 }                 from '@longlost/utils/utils.js';
 import {
-  setPassiveTouchGestures,
   setRemoveNestedTemplates
 }                 from '@polymer/polymer/lib/utils/settings.js';
 import {
@@ -54,8 +53,16 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-toast/paper-toast.js';
 // account, services, settings, auth overlays are imported dynamically.
 
+
+
 // Polymer globals. These set to improve performance.
-setPassiveTouchGestures(true);
+
+// WARNING!
+//
+// setPassiveTouchGestures(true) causes an error in 
+// Chrome 83 when the Polymer Gestures module is used (such as paper-slider).
+// This error causes the document to no longer scroll.
+
 setRemoveNestedTemplates(true);
 
 
