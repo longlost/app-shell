@@ -647,7 +647,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
   
   async __updateSEOMeta(page) {
     try { 
-      const {default: seo}   = await import('seo.json');     
+      const {default: seo}   = await import(/* webpackChunkName: 'seo' */ 'seo.json');     
       const defaultPage      = this.__getPage(page);
       const selectedPageData = seo[defaultPage];
 
