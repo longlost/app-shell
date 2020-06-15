@@ -2,16 +2,24 @@
 <style>
 
   :host {
-    display:        block;
-    --header-color: white;
+    display: block;
+
+    --drawer-background-color: var(--app-background-color);
+    --drawer-color:            var(--dark-text-color);
+    --header-background-color: var(--app-primary-color);
+    --header-color:            var(--app-primary-color-text);
+    --header-background-image: 'url(#)';
+
     --drawer-content-container-mixin: {};
+
     --drawer-item-mixin: {
       display:         block;
-      padding:         0 16px;
+      padding:         0px 16px;
       text-decoration: none;
       color:           var(--secondary-text-color);
       line-height:     40px;
     };
+
     --drawer-item-selected-mixin: {
       color:       var(--dark-text-color);
       font-weight: bold;
@@ -33,10 +41,12 @@
 
   app-header {
     color:            var(--header-color);
-    background-color: var(--header-background-color, var(--app-primary-color));
+    background-color: var(--header-background-color);
+
     --app-header-background-rear-layer: {
-      background-color: var(--header-background-color, var(--app-primary-color));
+      background-color: var(--header-background-color);
     };
+
     --app-header-background-front-layer: {
       background-image:    var(--header-background-image);
       background-position: center center;
@@ -49,8 +59,8 @@
 
   #drawer {
     --app-drawer-content-container: {
-      color:            var(--drawer-color, var(--dark-text-color));
-      background-color: var(--drawer-background-color, var(--app-background-color));
+      color:            var(--drawer-color);
+      background-color: var(--drawer-background-color);
       @apply --drawer-content-container-mixin;
     };
   }
@@ -63,8 +73,8 @@
   /* Create a deep shadow when drawer is persitently shown ie. large screens. */
   app-drawer-layout:not([narrow]) #drawer {
     --app-drawer-content-container: {
-      color:            var(--drawer-color, var(--dark-text-color));
-      background-color: var(--drawer-background-color, var(--app-background-color));
+      color:            var(--drawer-color);
+      background-color: var(--drawer-background-color);
       box-shadow:       6px 0px 10px 0px rgba(0, 0, 0, 0.14),
                         1px 0px 18px 0px rgba(0, 0, 0, 0.12),
                         3px 0px 5px -1px rgba(0, 0, 0, 0.4);
@@ -94,8 +104,8 @@
   }
 
   a {
-   text-decoration: none;
-   color:           var(--secondary-text-color);
+    text-decoration: none;
+    color:           var(--secondary-text-color);
   }
 
   .drawer-list a.iron-selected {
@@ -336,7 +346,7 @@
           <paper-icon-button id="account-icon-btn" 
                              icon="[[__computeAccountButtonIcon(currentUser)]]"
                              on-click="__userButtonClicked"
-                             aria-label="Account sign in or up">
+                             aria-label="Account sign in or sign up.">
           </paper-icon-button>
           <iron-image id="accountIconBtnImg"
                       class$="[[__computeAccountIconButtonImgClass(currentUser)]]"
@@ -393,7 +403,7 @@
       <slot name="footer-slot"></slot>
 
       <div id="accountRequiredOverlay" class="hide-account-required">
-        <h1>You must be signed in to use this app</h1>
+        <h1>You must be signed in to use this app.</h1>
       </div>
 
     </div>
@@ -432,13 +442,13 @@
 
 <paper-toast id="confirmToast" 
              class="toasts-w-btn">
-  <paper-button on-click="__confirmToastUndoButtonClicked">undo</paper-button>
+  <paper-button on-click="__confirmToastUndoButtonClicked">UNDO</paper-button>
 </paper-toast>
 
 <paper-toast id="swToast" 
              class="toasts-w-btn" 
              duration="Infinity" 
              always-on-top>
-  <paper-button on-click="__swToastRefreshButtonClicked">refresh</paper-button>
-  <paper-button on-click="__swToastDismissButtonClicked">dismiss</paper-button>
+  <paper-button on-click="__swToastRefreshButtonClicked">REFRESH</paper-button>
+  <paper-button on-click="__swToastDismissButtonClicked">DISMISS</paper-button>
 </paper-toast>

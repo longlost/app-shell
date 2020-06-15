@@ -1,5 +1,5 @@
 
-<style>
+<style include="app-shared-styles">
 
   #overlay {
     /* Match truncated text with main title truncate. */
@@ -98,8 +98,7 @@
     height:   100%;
   }
 
-  .divider {    
-    @apply --bottom-divider-mixin;
+  .divider { 
     margin: 32px 0px;
     width:  100%; /* Needed for grid. */
   }
@@ -124,7 +123,7 @@
 
   #save-all-btn {
     background-color: var(--app-accent-color);
-    color:            white;
+    color:            var(--app-accent-color-text);
   }
 
   #save-all-btn[disabled] {
@@ -134,7 +133,7 @@
 
   #delete-btn {
     background-color: var(--app-error-color);
-    color:            white;
+    color:            var(--constant-light-text, white);
   }
 
   @media only screen and (min-width: 846px) {
@@ -153,7 +152,9 @@
                     parent-controls-exits
                     prebuilt-animation="from-left"
                     reveal-header
-                    title="[[user.displayName]]">
+                    title="[[user.displayName]]"
+                    on-header-overlay-back="__overlayBack"
+                    on-overlay-reset="__reset">
 
   <responsive-image id="header-image"
                     slot="header-background-slot"
@@ -165,7 +166,7 @@
 
   <paper-button slot="top-toolbar-buttons-slot" 
                 on-click="__signOutButtonClicked">
-    sign out
+    SIGN OUT
   </paper-button>
 
   <div id="profile-photo-wrapper" 
@@ -202,6 +203,7 @@
             Verified
           </div>
         </div>
+
         <edit-input icon="label"
                     kind="displayName">
           <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
@@ -212,6 +214,7 @@
                        tabindex="0">
           </paper-input>
         </edit-input>
+
         <edit-input icon="security"
                     kind="password">
           <paper-input id="passwordInput"
@@ -223,6 +226,7 @@
                        type="password">
           </paper-input>
         </edit-input>
+
         <edit-input icon="mail"
                     kind="email">
           <paper-input id="emailInput"
@@ -236,6 +240,7 @@
                        type="email">
           </paper-input>
         </edit-input>
+
         <edit-input icon="call"
                     kind="phone">
           <gold-phone-input auto-validate
@@ -245,9 +250,10 @@
                             tabindex="0">
           </gold-phone-input>
         </edit-input>
+
       </div>
 
-      <div id="first-divider" class="divider"></div>
+      <div id="first-divider" class="divider shared-bottom-divider"></div>
 
       <div class="grid-item">    
         <h3>My Shipping</h3>
@@ -258,7 +264,7 @@
       </div>      
     </div>    
 
-    <div class="divider"></div>
+    <div class="divider shared-bottom-divider"></div>
 
     <div class="max-width-wrapper">
       <div id="bottom-btns-container">
@@ -267,13 +273,13 @@
                       disabled="[[!_unsavedEdits]]"
                       raised 
                       on-click="__saveAllButtonClicked">
-          save all
+          SAVE ALL
         </paper-button>
         <paper-button id="delete-btn"
                       class="bottom-btns"
                       raised 
                       on-click="__deleteUserButtonClicked">
-          delete account
+          DELETE ACCOUNT
         </paper-button>
       </div>
     </div>
@@ -283,9 +289,23 @@
 
 <app-spinner id="spinner" full-screen></app-spinner>
 
-<!-- Dynamically imported. -->
-<password-modal id="passwordModal"></password-modal>
-<reauth-modal id="reauthModal"></reauth-modal>
-<delete-modal id="deleteModal"></delete-modal>
-<unsaved-edits-modal id="unsavedEditsModal"></unsaved-edits-modal>
+
+<!-- Modals dynamically imported. -->
+
+<account-password-modal id="passwordModal"
+                        on-password-modal-confirm="__passwordModalConfirm">
+</account-password-modal>
+
+<account-reauth-modal id="reauthModal" 
+                      on-reauth-modal-reauth="__reauthenticate">
+</account-reauth-modal>
+
+<account-delete-modal id="deleteModal" 
+                      on-delete-modal-delete="__deleteUser">
+</account-delete-modal>
+
+<account-unsaved-edits-modal id="unsavedEditsModal"
+                             on-unsaved-edits-modal-exit="__exitWithoutSavingChanges"
+                             on-unsaved-edits-modal-save-all="__saveAll">
+</account-unsaved-edits-modal>
     
