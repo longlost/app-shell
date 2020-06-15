@@ -23,6 +23,7 @@ import {
   listen,
   message,
   schedule,
+  unlisten,
   warn
 }                        from '@longlost/utils/utils.js';
 import services          from '@longlost/services/services.js';
@@ -32,6 +33,7 @@ import '@longlost/app-images/responsive-image.js';
 import '@longlost/app-inputs/edit-input.js';
 import '@longlost/app-inputs/shipping-inputs.js';
 import '@longlost/app-overlays/app-header-overlay.js';
+import '@longlost/app-shared-styles/app-shared-styles.js';
 import '@longlost/app-spinner/app-spinner.js';
 import '@polymer/iron-image/iron-image.js';
 import '@polymer/iron-icon/iron-icon.js';
@@ -40,32 +42,35 @@ import '@polymer/paper-input/paper-input.js';
 import '@polymer/gold-phone-input/gold-phone-input.js';
 import '@polymer/paper-ripple/paper-ripple.js';
 import '@polymer/paper-button/paper-button.js';
-// ./password-modal.js is dynamically imported
-// ./reauth-modal.js is dynamically imported
-// ./delete-modal.js is dynamically imported
+// delete-modal, password-modal, reauth-modal and unsaved-edits-modal dynamically imported.
 
 
-// Get credit val from user account.
-const getCredit = async uid => {
-  try {
-    const {credit} = await services.get({
-      coll: `users/${uid}/credit`,
-      doc:  'asg'
-    });
-    return credit;
-  }
-  catch (error) {
-    if (
-      error.message &&
-      error.message.includes('No such document!')
-    ) { 
-      return '0.00';
-    }
-    else {
-      console.error(error);
-    }
-  }
-};
+
+// TODO:
+//      Create a more generic way to get user store credit data.
+//      Should be included in user's data document.
+
+// // Get credit val from user account.
+// const getCredit = async uid => {
+//   try {
+//     const {credit} = await services.get({
+//       coll: `users/${uid}/credit`,
+//       doc:  'asg'
+//     });
+//     return credit;
+//   }
+//   catch (error) {
+//     if (
+//       error.message &&
+//       error.message.includes('No such document!')
+//     ) { 
+//       return '0.00';
+//     }
+//     else {
+//       console.error(error);
+//     }
+//   }
+// };
 
 
 class AppAccount extends AppElement {
@@ -94,6 +99,10 @@ class AppAccount extends AppElement {
         type: String,
         value: '0.00'
       },
+
+      _inputChangedListenerKey: Object,
+
+      _inputConfirmListenerKey: Object,
 
       // Regular firestore user data inputs.
       _normalKeys: {
@@ -151,11 +160,19 @@ class AppAccount extends AppElement {
   }
   
 
-  async connectedCallback() {
+  connectedCallback() {
     super.connectedCallback();
 
     this.__setupListeners();
     this.__profileImgFix();
+  }
+
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    unlisten(this._inputChangedListenerKey);
+    unlisten(this._inputConfirmListenerKey);
   }
 
 
@@ -190,9 +207,11 @@ class AppAccount extends AppElement {
 
   __computeUnsavedEdits(obj) {
     if (!obj || !obj.base) { return false; }
+
     const {base: unsaved} = obj; 
-    const keys = Object.keys(unsaved);
-    return keys.some(key => unsaved[key] && unsaved[key].trim());
+    const values = Object.values(unsaved);
+
+    return values.some(val => val && val.trim());
   }
 
 
@@ -200,8 +219,14 @@ class AppAccount extends AppElement {
     try {
       if (user && user.uid) {
         const {uid} = user;
+
         this._userMeta = await services.get({coll: 'users', doc: uid});
-        this._credit   = await getCredit(uid);
+
+        // TODO:
+        //      Create a more generic way to get user store credit data.
+        //      Should be included in user's data document.
+
+        // this._credit   = await getCredit(uid);
       }
     }
     catch (error) { console.error(error); }
@@ -209,45 +234,15 @@ class AppAccount extends AppElement {
 
 
   __setupListeners() {
-    listen(
+    this._inputChangedListenerKey = listen(
       this, 
       'edit-input-changed', 
       this.__editInputChanged.bind(this)
     );
-    listen(
+    this._inputConfirmListenerKey = listen(
       this, 
       'edit-input-confirm-edit', 
       this.__confirmEdit.bind(this)
-    );
-    listen(
-      this.$.passwordModal, 
-      'password-modal-confirm', 
-      this.__passwordModalConfirm.bind(this)
-    );
-    listen(
-      this.$.reauthModal, 
-      'reauth-modal-reauth', 
-      this.__reauthenticate.bind(this)
-    );
-    listen(
-      this.$.deleteModal, 
-      'delete-modal-delete', 
-      this.__deleteUser.bind(this)
-    );
-    listen(
-      this.$.unsavedEditsModal, 
-      'unsaved-edits-modal-exit', 
-      this.__exitWithoutSavingChanges.bind(this)
-    );
-    listen(
-      this.$.unsavedEditsModal, 
-      'unsaved-edits-modal-save-all', 
-      this.__saveAll.bind(this)
-    );
-    listen(
-      this.$.overlay,
-      'header-overlay-back',
-      this.__backButtonClicked.bind(this)
     );
   }
 
@@ -276,7 +271,7 @@ class AppAccount extends AppElement {
   async __reauthenticate() {
     try {
       await this.$.overlay.close();
-      this.__reset();
+
       this.fire('account-reauth-needed');
     }
     catch (error) { console.error(error); }
@@ -287,7 +282,7 @@ class AppAccount extends AppElement {
     try {
       await import(
         /* webpackChunkName: 'account-unsaved-edits-modal' */ 
-        './unsaved-edits-modal.js'
+        './account-unsaved-edits-modal.js'
       );
       this.$.unsavedEditsModal.open();
     }
@@ -295,28 +290,20 @@ class AppAccount extends AppElement {
   }
 
 
-  async __exitWithoutSavingChanges() {
-    try {
-      await this.$.overlay.back();
-      this.__reset();
-    }
-    catch (error) { console.error(error); }
+  __exitWithoutSavingChanges() {
+    this.$.overlay.back();
   }
 
 
-  async __backButtonClicked() {
-    try {
+  __overlayBack() {
 
-      // Already has this.clicked from app-header-overlay.js
-      if (this._unsavedEdits) {
-        this.__openUnsavedEditsModal();
-        return;
-      }
-
-      await this.$.overlay.back();
-      this.__reset();
+    // Already has this.clicked from app-header-overlay.js
+    if (this._unsavedEdits) {
+      this.__openUnsavedEditsModal();
+      return;
     }
-    catch (error) { console.error(error); }
+
+    this.$.overlay.back();
   }
 
 
@@ -324,8 +311,8 @@ class AppAccount extends AppElement {
     try {
       await this.clicked();
       await this.$.overlay.close();
+
       this.fire('account-signout-button');
-      this.__reset();
     }
     catch (error) { 
       if (error === 'click debounced') { return; }
@@ -337,7 +324,14 @@ class AppAccount extends AppElement {
   async __fabClicked() {
     try {
       await this.clicked();
+
+      // TODO:
+      //      wire up to new app-camera/app-file-system
+
       warn(`Well this is embarassing...  Sorry, we're still working on this feature.`);
+
+
+
     }
     catch (error) { 
       if (error === 'click debounced') { return; }
@@ -347,14 +341,11 @@ class AppAccount extends AppElement {
 
 
   async __openPasswordModal() {
-    try {
-      await import(
-        /* webpackChunkName: 'account-password-modal' */ 
-        './password-modal.js'
-      );
-      this.$.passwordModal.open();
-    }
-    catch (error) { console.error(error); }
+    await import(
+      /* webpackChunkName: 'account-password-modal' */ 
+      './account-password-modal.js'
+    );
+    this.$.passwordModal.open();
   }
 
 
@@ -362,7 +353,7 @@ class AppAccount extends AppElement {
     try {
       await import(
         /* webpackChunkName: 'account-reauth-modal' */ 
-        './reauth-modal.js'
+        './account-reauth-modal.js'
       );
 
       await this.$.reauthModal.open();
@@ -704,6 +695,7 @@ class AppAccount extends AppElement {
 
       // Update input vals.
       const savesKeys = Object.keys(normalSaves);
+
       savesKeys.forEach(key => {
         const value = normalSaves[key];
         this.set(`_userMeta.${key}`, value);
@@ -741,10 +733,8 @@ class AppAccount extends AppElement {
       // Delete and signout user.
       await services.deleteDocument({coll: 'users', doc: this.user.uid});
       await this.user.delete();
-      await services.signOut(); 
       await schedule(); 
       await this.$.overlay.close();
-      this.__reset();
     }
     catch (error) {
       this.__handleFirebaseErrors(error);
@@ -757,7 +747,7 @@ class AppAccount extends AppElement {
       await this.clicked();
       await import(
         /* webpackChunkName: 'account-delete-modal' */ 
-        './delete-modal.js'
+        './account-delete-modal.js'
       );
       this.$.deleteModal.open();
     }

@@ -1,5 +1,5 @@
 
-<style>
+<style include="app-shared-styles">
 
   .card-actions {
     display:         flex;
@@ -11,13 +11,8 @@
   }
 
   #reauth-btn {
-    @apply --paper-button-with-icon-mixin;
     background-color: var(--app-accent-color);
-    color:            var(--light-text-color);
-  }
-
-  iron-icon {
-    @apply --iron-icon-inside-paper-button-mixin;
+    color:            var(--app-accent-color-text);
   }
 
 </style>
@@ -40,12 +35,15 @@
        slot="card-actions-slot">    
     <paper-button id="dismiss-btn" 
                   on-click="__dismissButtonClicked">
-      dismiss
+      DISMISS
     </paper-button>
-    <paper-button id="reauth-btn" 
+    <paper-button id="reauth-btn"
+                  class="shared-paper-button-with-icon"
                   on-click="__reauthButtonClicked">
-      <iron-icon icon="app-icons:account-circle"></iron-icon>
-      continue
+      <iron-icon icon="app-icons:account-circle"
+                 class="shared-iron-icon-inside-paper-button">
+      </iron-icon>
+      CONTINUE
     </paper-button>        
   </div>
   

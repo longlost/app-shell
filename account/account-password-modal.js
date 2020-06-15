@@ -1,7 +1,7 @@
 
 /**
   * 
-  *  `password-modal`
+  *  `account-password-modal`
   *
   *
   *  Confirmation modal for changing a user's account password.
@@ -18,15 +18,16 @@ import {
   AppElement,
   html
 }                 from '@longlost/app-element/app-element.js';
-import htmlString from './password-modal.html';
+import htmlString from './account-password-modal.html';
 import '@longlost/app-overlays/app-modal.js';
+import '@longlost/app-shared-styles/app-shared-styles.js';
 import '@longlost/icon-to-spinner/icon-to-spinner.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-button/paper-button.js';
 
 
 class AccountPasswordModal extends AppElement {
-  static get is() { return 'password-modal'; }
+  static get is() { return 'account-password-modal'; }
 
   static get template() {
     return html([htmlString]);

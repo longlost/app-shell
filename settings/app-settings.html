@@ -54,10 +54,6 @@
     color: var(--secondary-text-color);
   }
 
-  strong {
-    color: var(--app-accent-color);
-  }
-
   app-modal {
     --modal-card-header-color: var(--dark-text-color);
   }
@@ -74,7 +70,7 @@
 
   .confirm-btn {
     background-color: var(--app-accent-color);
-    color:            var(--light-text-color);
+    color:            var(--app-accent-color-text);
   }
 
   .confirm-btn[disabled] {
@@ -179,11 +175,11 @@
        slot="card-actions-slot">
     <paper-button class="dismiss-btn" 
                   on-click="__modalDismissButtonClicked">
-      dismiss
+      DISMISS
     </paper-button>   
     <paper-button class="confirm-btn" 
                   on-click="__modalRefreshButtonClicked">
-      refresh
+      REFRESH
     </paper-button>      
   </div>
   

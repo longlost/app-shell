@@ -1,10 +1,11 @@
 
 /**
   * 
-  *  `delete-modal`
+  *  `account-reauth-modal`
   *
   *
-  *  Confirmation modal for deleting a user's account.
+  *  This modal informs the user that they must 
+  *  log in again in order to make a particular change.
   *
   *
   *  @customElement
@@ -18,28 +19,19 @@ import {
   AppElement,
   html
 }                 from '@longlost/app-element/app-element.js';
-import htmlString from './delete-modal.html';
-import '@longlost/app-overlays/app-modal.js';
+import htmlString from './account-reauth-modal.html';
 import '@longlost/app-icons/app-icons.js';
+import '@longlost/app-overlays/app-modal.js';
+import '@longlost/app-shared-styles/app-shared-styles.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-button/paper-button.js';
 
 
-class AccountDeleteModal extends AppElement {
-  static get is() { return 'delete-modal'; }
+class AccountReauthModal extends AppElement {
+  static get is() { return 'account-reauth-modal'; }
 
   static get template() {
     return html([htmlString]);
-  }
-
-
-  close() {
-    return this.$.modal.close();
-  }
-
-
-  open() {
-    return this.$.modal.open();
   }
 
 
@@ -47,7 +39,7 @@ class AccountDeleteModal extends AppElement {
     try {
       await this.clicked();
       await this.close();
-      this.fire('delete-modal-dismiss');
+      this.fire('reauth-modal-dismiss');
     }
     catch (error) {
       if (error === 'click debounced') { return; }
@@ -66,18 +58,28 @@ class AccountDeleteModal extends AppElement {
   }
 
 
-  async __deleteButtonClicked() {
+  async __reauthButtonClicked() {
     try {
       await this.clicked();
       await this.close();
-      this.fire('delete-modal-delete');
+      this.fire('reauth-modal-reauth');
     }
     catch (error) {
       if (error === 'click debounced') { return; }
       console.error(error);
     }
   }
+
+
+  close() {
+    return this.$.modal.close();
+  }
+
+
+  open() {
+    return this.$.modal.open();
+  }
   
 }
 
-window.customElements.define(AccountDeleteModal.is, AccountDeleteModal);
+window.customElements.define(AccountReauthModal.is, AccountReauthModal);

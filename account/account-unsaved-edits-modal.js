@@ -1,7 +1,7 @@
 
 /**
   * 
-  *  `unsaved-edits-modal`
+  *  `account-unsaved-edits-modal`
   *
   *
   *  This modal informs the user that they have unsaved input edits.
@@ -18,7 +18,7 @@ import {
   AppElement, 
   html
 }                 from '@longlost/app-element/app-element.js';
-import htmlString from './unsaved-edits-modal.html';
+import htmlString from './account-unsaved-edits-modal.html';
 import '@longlost/app-overlays/app-modal.js';
 import '@longlost/app-icons/app-icons.js';
 import '@polymer/iron-icon/iron-icon.js';
@@ -26,7 +26,7 @@ import '@polymer/paper-button/paper-button.js';
 
 
 class AccountUnsavedEditsModal extends AppElement {
-  static get is() { return 'unsaved-edits-modal'; }
+  static get is() { return 'account-unsaved-edits-modal'; }
 
   static get template() {
     return html([htmlString]);

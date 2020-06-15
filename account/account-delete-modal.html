@@ -1,5 +1,5 @@
 
-<style>
+<style include="app-shared-styles">
 
   .card-actions {
     display:         flex;
@@ -7,13 +7,8 @@
   }
   
   #delete-btn {
-    @apply --paper-button-with-icon-mixin;
     background-color: var(--app-error-color);
-    color:            var(--light-text-color);
-  }
-
-  iron-icon {
-    @apply --iron-icon-inside-paper-button-mixin;
+    color:            var(--constant-light-text, white);
   }
 
   #dismiss-btn {
@@ -41,12 +36,15 @@
        slot="card-actions-slot">
     <paper-button id="dismiss-btn" 
                   on-click="__dismissButtonClicked">
-      dismiss
+      DISMISS
     </paper-button>  
-    <paper-button id="delete-btn" 
+    <paper-button id="delete-btn"
+                  class="shared-paper-button-with-icon"
                   on-click="__deleteButtonClicked">
-      <iron-icon icon="app-icons:delete-forever"></iron-icon>
-      delete
+      <iron-icon icon="app-icons:delete-forever"
+                 class="shared-iron-icon-inside-paper-button">
+      </iron-icon>
+      DELETE
     </paper-button>           
   </div>
 
