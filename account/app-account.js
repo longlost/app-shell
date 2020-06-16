@@ -4,7 +4,7 @@
   *  `app-account`
   *
   *
-  *  Prebuilt overlay to handle user account editing and updating.
+  *  Prebuilt overlay to handle editing and updating user account.
   *
   *
   *  @customElement
@@ -17,7 +17,7 @@
 import {
   AppElement, 
   html
-}                        from '@longlost/app-element/app-element.js';
+}                 from '@longlost/app-element/app-element.js';
 import {
   confirm,
   listen,
@@ -25,9 +25,9 @@ import {
   schedule,
   unlisten,
   warn
-}                        from '@longlost/utils/utils.js';
-import services          from '@longlost/services/services.js';
-import htmlString        from './app-account.html';
+}                 from '@longlost/utils/utils.js';
+import services   from '@longlost/services/services.js';
+import htmlString from './app-account.html';
 import '@longlost/app-icons/app-icons.js';
 import '@longlost/app-images/responsive-image.js';
 import '@longlost/app-inputs/edit-input.js';
@@ -113,7 +113,7 @@ class AppAccount extends AppElement {
           'address2', 
           'city', 
           'country', 
-          'phone', 
+          'phoneNumber', 
           'state', 
           'zip'
         ]
@@ -138,14 +138,14 @@ class AppAccount extends AppElement {
       _userMeta: {
         type: Object,
         value: () => ({
-          phone:    '',
-          fullName: '',
-          address1: '', 
-          address2: '',
-          city:     '',
-          state:    '',
-          zip:      '',
-          country:  '',
+          phoneNumber: null,
+          fullName:    null,
+          address1:    null, 
+          address2:    null,
+          city:        null,
+          state:       null,
+          zip:         null,
+          country:     null,
         })
       }
 
@@ -502,7 +502,7 @@ class AppAccount extends AppElement {
           const undo  = event.detail.canceled;
 
           if (undo) {
-            data[kind] = oldVal;
+            data[kind] = oldVal || null; // Firebase does not accept undefined as a value.
 
             await services.set({coll: 'users', doc: this.user.uid, data});
 
@@ -575,7 +575,7 @@ class AppAccount extends AppElement {
 
           break;
 
-        case 'phone':
+        case 'phoneNumber':
           await saveEditToDb('Phone number');
           break;
 

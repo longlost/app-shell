@@ -2,6 +2,7 @@
 <style include="app-shared-styles">
 
   #overlay {
+    
     /* Match truncated text with main title truncate. */
     --overlay-bottom-toolbar-text-width: calc(100% - 96px); 
   }
@@ -242,11 +243,11 @@
         </edit-input>
 
         <edit-input icon="call"
-                    kind="phone">
+                    kind="phoneNumber">
           <gold-phone-input auto-validate
                             label="Phone Number"
                             maxlength="12"
-                            placeholder="[[__computePhonePlaceholder(_userMeta.phone)]]" 
+                            placeholder="[[__computePhonePlaceholder(_userMeta.phoneNumber)]]" 
                             tabindex="0">
           </gold-phone-input>
         </edit-input>
