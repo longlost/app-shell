@@ -137,7 +137,7 @@
     display: none;
   }
 
-  /* Cannot use app-toolbar with paper-tabs set to sticky on ios safari. */
+  /* Cannot use app-toolbar with paper-tabs set to sticky on iOS Safari. */
   #bottomToolbar {
     position:  relative;
     width:     100%;
@@ -151,7 +151,7 @@
   }
 
   #pages {
-    display: block; /* Important for safari. */
+    display: block; /* Important for Safari. */
 
     /* Safari scroll flicker workaround. */
     transition: opacity 0.2s ease-in;
@@ -201,6 +201,11 @@
 
   .toasts-w-btn paper-button {
     color: var(--app-accent-color);
+  }
+
+  .toasts-w-btn paper-button.cta {
+    background-color: var(--app-accent-color);
+    color:            var(--app-accent-color-text);
   }
 
 </style>
@@ -433,7 +438,21 @@
 <app-auth id="auth"></app-auth>
 
 
-<!-- Used by multiple custom elements via utils.js message()/warn(). -->
+<!-- For use with `app-file-system`. -->
+<paper-toast id="fsToast" 
+             class="toasts-w-btn" 
+             duration="Infinity">
+  <paper-button on-click="__fsToastRenameButtonClicked">
+    RENAME
+  </paper-button>
+  <paper-button class="cta" 
+                on-click="__fsToastGoButtonClicked">
+    GO
+  </paper-button>
+</paper-toast>
+
+
+<!-- Used by multiple custom elements via `utils.js` message()/warn(). -->
 <paper-toast id="toast"></paper-toast>
 
 <paper-toast id="warningToast">
@@ -449,6 +468,11 @@
              class="toasts-w-btn" 
              duration="Infinity" 
              always-on-top>
-  <paper-button on-click="__swToastRefreshButtonClicked">REFRESH</paper-button>
-  <paper-button on-click="__swToastDismissButtonClicked">DISMISS</paper-button>
+  <paper-button on-click="__swToastDismissButtonClicked">
+    DISMISS
+  </paper-button>
+  <paper-button class="cta" 
+                on-click="__swToastRefreshButtonClicked">
+    REFRESH
+  </paper-button>
 </paper-toast>
