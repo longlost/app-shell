@@ -15,25 +15,24 @@
 import {
   appUserAndData, 
   theme
-}                 from 'app.config.js';
+} from 'app.config.js';
+
 import {
   AppElement,
   html
-}                 from '@longlost/app-element/app-element.js';
+} from '@longlost/app-element/app-element.js';
+
 import {
   listen,
   listenOnce,
   schedule,
   wait,
   warn
-}                 from '@longlost/utils/utils.js';
-import {
-  setRemoveNestedTemplates
-}                 from '@polymer/polymer/lib/utils/settings.js';
-import {
-  OverlayControlMixin
-}                 from './overlay-control-mixin.js';
-import htmlString from './app-shell.html';
+} from '@longlost/utils/utils.js';
+
+import {setRemoveNestedTemplates} from '@polymer/polymer/lib/utils/settings.js';
+import {OverlayControlMixin}      from './overlay-control-mixin.js';
+import htmlString                 from './app-shell.html';
 import '@longlost/app-icons/app-icons.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
@@ -815,10 +814,22 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  async __swToastRefreshButtonClicked() {
+  async __fsToastRenameButtonClicked() {
     try {
       await this.clicked();
-      this.$.swToast.close();      
+      this.$.fsToast.cancel();      
+    }
+    catch (error) {
+      if (error === 'click debounced') { return; }
+      console.error(error);
+    }
+  }
+
+
+  async __fsToastGoButtonClicked() {
+    try {
+      await this.clicked();
+      this.$.fsToast.close();      
     }
     catch (error) {
       if (error === 'click debounced') { return; }
@@ -831,6 +842,18 @@ class AppShell extends OverlayControlMixin(AppElement) {
     try {
       await this.clicked();
       this.$.swToast.cancel();      
+    }
+    catch (error) {
+      if (error === 'click debounced') { return; }
+      console.error(error);
+    }
+  }
+
+
+  async __swToastRefreshButtonClicked() {
+    try {
+      await this.clicked();
+      this.$.swToast.close();      
     }
     catch (error) {
       if (error === 'click debounced') { return; }
