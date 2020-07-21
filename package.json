@@ -1,6 +1,6 @@
 {
   "name": "@longlost/app-shell",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "app level element that handles switching between views and overlays",
   "main": "app-shell.js",
   "scripts": {
