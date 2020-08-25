@@ -11,11 +11,8 @@
   *
   **/
 
-import {
-  AppElement, 
-  html
-}                       from '@longlost/app-element/app-element.js';
-import {listen}         from '@longlost/utils/utils.js';
+import {AppElement, html} from '@longlost/app-element/app-element.js';
+
 // Must use module resolution in webpack config and include app.config.js file in root
 // of src folder (ie. resolve: {modules: [path.resolve(__dirname, 'src'), 'node_modules'],})
 import {appUserAndData} from 'app.config.js';
@@ -85,18 +82,33 @@ class AppSettings extends AppElement {
   connectedCallback() {
     super.connectedCallback();
 
-    listen(
-      this.$.autoColorModeToggle,
+    this.$.autoColorModeToggle.addEventListener(
       'checked-changed', 
       this.__toggleAutoColorMode.bind(this)
     );
-    listen(
-      this.$.darkModeToggle,
+    this.$.darkModeToggle.addEventListener(
       'checked-changed', 
       this.__toggleDarkMode.bind(this)
     );
-    listen(
-      this.$.trustedToggle,
+    this.$.trustedToggle.addEventListener(
+      'checked-changed', 
+      this.__toggleTrusted.bind(this)
+    );
+  }
+
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    this.$.autoColorModeToggle.removeEventListener(
+      'checked-changed', 
+      this.__toggleAutoColorMode.bind(this)
+    );
+    this.$.darkModeToggle.removeEventListener(
+      'checked-changed', 
+      this.__toggleDarkMode.bind(this)
+    );
+    this.$.trustedToggle.removeEventListener(
       'checked-changed', 
       this.__toggleTrusted.bind(this)
     );
@@ -126,7 +138,9 @@ class AppSettings extends AppElement {
   async __toggleAutoColorMode(event) {
     try {
       await this.clicked();
+
       const {value} = event.detail;
+
       this.fire('settings-auto-color-mode-changed', {value});        
     }
     catch (error) {
@@ -139,7 +153,9 @@ class AppSettings extends AppElement {
   async __toggleDarkMode(event) {
     try {
       await this.clicked();
+
       const {value} = event.detail;
+
       this.fire('settings-dark-mode-changed', {value});        
     }
     catch (error) {
@@ -152,7 +168,9 @@ class AppSettings extends AppElement {
   async __toggleTrusted(event) {
     try {
       await this.clicked();
+
       const {value} = event.detail;
+
       this.fire('settings-persistence-changed', {value});
       this.$.refreshModal.open();
     }
@@ -166,6 +184,7 @@ class AppSettings extends AppElement {
   async __modalDismissButtonClicked() {
     try {
       await this.clicked();
+
       this.$.refreshModal.close();
     }
     catch (error) {
@@ -178,6 +197,7 @@ class AppSettings extends AppElement {
   async __modalRefreshButtonClicked() {
     try {
       await this.clicked();
+      
       window.location.reload();
     }
     catch (error) {

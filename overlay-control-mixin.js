@@ -15,7 +15,7 @@
   **/
 
 
-import {listen, schedule} from '@longlost/utils/utils.js';
+import {schedule} from '@longlost/utils/utils.js';
 
 
 export const OverlayControlMixin = superClass => {
@@ -59,13 +59,26 @@ export const OverlayControlMixin = superClass => {
 	      }
 	    };
 
-	  	listen(this, 'overlay-preparing-to-open', 				 this.__overlayPreparingToOpen.bind(this));
-	    listen(this, 'overlay-opened',            				 this.__overlayOpened.bind(this));
-	    listen(this, 'overlay-preparing-to-exit', 				 this.__overlayPreparingToExit.bind(this));
-	    listen(this, 'overlay-exiting',           				 this.__overlayExiting.bind(this));
-	    listen(this, 'overlay-reset',             				 this.__overlayReset.bind(this));
-	    listen(this, 'overlay-controller-reset-underlays', this.__resetUnderlays.bind(this));
-	    listen(window, 'popstate', 												 this.__browserBackPushed.bind(this));
+	  	this.addEventListener('overlay-preparing-to-open', 				 	this.__overlayPreparingToOpen.bind(this));
+	    this.addEventListener('overlay-opened',            				 	this.__overlayOpened.bind(this));
+	    this.addEventListener('overlay-preparing-to-exit', 				 	this.__overlayPreparingToExit.bind(this));
+	    this.addEventListener('overlay-exiting',           				 	this.__overlayExiting.bind(this));
+	    this.addEventListener('overlay-reset',             				 	this.__overlayReset.bind(this));
+	    this.addEventListener('overlay-controller-reset-underlays',	this.__resetUnderlays.bind(this));
+	    window.addEventListener('popstate', 												this.__browserBackPushed.bind(this));
+	  }
+
+
+	  disconnectedCallback() {
+	  	super.disconnectedCallback();
+
+	  	this.removeEventListener('overlay-preparing-to-open', 				 this.__overlayPreparingToOpen.bind(this));
+	    this.removeEventListener('overlay-opened',            				 this.__overlayOpened.bind(this));
+	    this.removeEventListener('overlay-preparing-to-exit', 				 this.__overlayPreparingToExit.bind(this));
+	    this.removeEventListener('overlay-exiting',           				 this.__overlayExiting.bind(this));
+	    this.removeEventListener('overlay-reset',             				 this.__overlayReset.bind(this));
+	    this.removeEventListener('overlay-controller-reset-underlays', this.__resetUnderlays.bind(this));
+	    window.removeEventListener('popstate', 												 this.__browserBackPushed.bind(this));
 	  }
 
 

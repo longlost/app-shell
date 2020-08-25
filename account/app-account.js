@@ -17,15 +17,15 @@
 import {
   AppElement, 
   html
-}                 from '@longlost/app-element/app-element.js';
+} from '@longlost/app-element/app-element.js';
+
 import {
   confirm,
-  listen,
   message,
   schedule,
-  unlisten,
   warn
-}                 from '@longlost/utils/utils.js';
+} from '@longlost/utils/utils.js';
+
 import services   from '@longlost/services/services.js';
 import htmlString from './app-account.html';
 import '@longlost/app-icons/app-icons.js';
@@ -100,10 +100,6 @@ class AppAccount extends AppElement {
         value: '0.00'
       },
 
-      _inputChangedListenerKey: Object,
-
-      _inputConfirmListenerKey: Object,
-
       // Regular firestore user data inputs.
       _normalKeys: {
         type: Array,
@@ -171,8 +167,8 @@ class AppAccount extends AppElement {
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    unlisten(this._inputChangedListenerKey);
-    unlisten(this._inputConfirmListenerKey);
+    this.removeEventListener('edit-input-changed', this.__editInputChanged.bind(this));
+    this.removeEventListener('edit-input-confirm-edit', this.__confirmEdit.bind(this));
   }
 
 
@@ -234,16 +230,8 @@ class AppAccount extends AppElement {
 
 
   __setupListeners() {
-    this._inputChangedListenerKey = listen(
-      this, 
-      'edit-input-changed', 
-      this.__editInputChanged.bind(this)
-    );
-    this._inputConfirmListenerKey = listen(
-      this, 
-      'edit-input-confirm-edit', 
-      this.__confirmEdit.bind(this)
-    );
+    this.addEventListener('edit-input-changed', this.__editInputChanged.bind(this));
+    this.addEventListener('edit-input-confirm-edit', this.__confirmEdit.bind(this));
   }
 
 
