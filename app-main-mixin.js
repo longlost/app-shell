@@ -12,12 +12,8 @@
   *
   **/
 
-import {AppElement} from '@longlost/app-element/app-element.js';
-import {
-  listen,
-  listenOnce,
-  warn
-}                   from '@longlost/utils/utils.js';
+import {AppElement}       from '@longlost/app-element/app-element.js';
+import {listenOnce, warn} from '@longlost/utils/utils.js';
 import '@longlost/app-icons/app-icons.js';
 import './app-shell.js';
 
@@ -51,16 +47,27 @@ export const AppMainMixin = () => {
       };
     }
 
-    // These MUST be in constructor, as apposed to connectedCallback
+    // These MUST be in constructor, as opposed to connectedCallback
     // in order to catch app-shell.js initializations, including page routing.
     constructor() {
       super();
 
       this.__windowLoadHandler();
-      listen(this, 'app-shell-page-changed',      this.__pageChanged.bind(this));
-      listen(this, 'app-shell-dark-mode-changed', this.__darkModeChanged.bind(this));
-      listen(this, 'auth-userchanged',            this.__userChanged.bind(this));
-      listen(this, 'open-overlay',                this.__openOverlayHandler.bind(this));  
+
+      this.addEventListener('app-shell-page-changed',      this.__pageChanged.bind(this));
+      this.addEventListener('app-shell-dark-mode-changed', this.__darkModeChanged.bind(this));
+      this.addEventListener('auth-userchanged',            this.__userChanged.bind(this));
+      this.addEventListener('open-overlay',                this.__openOverlayHandler.bind(this));  
+    }
+
+
+    disconnectedCallback() {
+      super.disconnectedCallback();
+
+      this.removeEventListener('app-shell-page-changed',      this.__pageChanged.bind(this));
+      this.removeEventListener('app-shell-dark-mode-changed', this.__darkModeChanged.bind(this));
+      this.removeEventListener('auth-userchanged',            this.__userChanged.bind(this));
+      this.removeEventListener('open-overlay',                this.__openOverlayHandler.bind(this)); 
     }
 
 
@@ -133,6 +140,7 @@ export const AppMainMixin = () => {
 
     async __windowLoadHandler() {
       await listenOnce(window, 'load');
+
       this._loaded = true;
     }
 

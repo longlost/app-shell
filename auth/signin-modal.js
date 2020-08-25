@@ -19,26 +19,16 @@ import {
   firebaseConfig,
   privacyPolicyUrl,
   termsOfServiceUrl     
-}                 		 from 'app.config.js';
-import {
-  AppElement, 
-  html
-}                 		 from '@longlost/app-element/app-element.js';
-import {
-  htmlLiteral
-}             				 from '@polymer/polymer/lib/utils/html-tag.js';
-import {
-  hijackEvent,
-  listen,
-  schedule,
-  unlisten
-}                 		 from '@longlost/utils/utils.js';
-import {
-	firebase
-} 		 								 from '@longlost/boot/boot.js';
+} from 'app.config.js';
+
+import {AppElement, html}      from '@longlost/app-element/app-element.js';
+import {htmlLiteral}           from '@polymer/polymer/lib/utils/html-tag.js';
+import {hijackEvent, schedule} from '@longlost/utils/utils.js';
+import {firebase}              from '@longlost/boot/boot.js';
+
 // Disable webpack config 'style-loader' so 
 // these styles are not put in the document head.
-import styles 				 from '!css-loader!firebaseui/dist/firebaseui.css';
+import styles          from '!css-loader!firebaseui/dist/firebaseui.css';
 import * as firebaseui from 'firebaseui';
 import '@longlost/app-overlays/app-modal.js';
 
@@ -48,50 +38,50 @@ class SigninModal extends AppElement {
 
   static get template() {
     return html`
-    	<style>
+      <style>
 
-    		#modal {
-    			--modal-card-background-color: white;
-    			--modal-card-content-padding:  0px;
-    		}
+        #modal {
+          --modal-card-background-color: white;
+          --modal-card-content-padding:  0px;
+        }
 
-			  #firebaseuiAuthContainer {
-			    min-height: 368px;
-			    width:      240px;
-			  }
+        #firebaseuiAuthContainer {
+          min-height: 368px;
+          width:      240px;
+        }
 
         ${this.stylePartial}
 
-			  /* Input underlines, primary buttons. */
-			  /* Won't work withough !important. */
-			  .firebaseui-textfield.mdl-textfield .firebaseui-label::after,
-			  .mdl-button--raised.mdl-button--colored,
-			  .mdl-button.mdl-button--colored {
+        /* Input underlines, primary buttons. */
+        /* Won't work withough !important. */
+        .firebaseui-textfield.mdl-textfield .firebaseui-label::after,
+        .mdl-button--raised.mdl-button--colored,
+        .mdl-button.mdl-button--colored {
 
-			    /* Default color is material design dark blue. */
-			    background-color: var(--app-primary-color, #3f51b5) !important;
-			  }
+          /* Default color is material design dark blue. */
+          background-color: var(--app-primary-color, #3f51b5) !important;
+        }
 
-			  /* Secondary buttons. */
-			  /* Won't work withough !important. */
-			  .mdl-button--primary.mdl-button--primary {
+        /* Secondary buttons. */
+        /* Won't work withough !important. */
+        .mdl-button--primary.mdl-button--primary {
 
-			    /* Default color is material design dark blue. */
-			    color: var(--app-primary-color, #3f51b5) !important;
-			  }
+          /* Default color is material design dark blue. */
+          color: var(--app-primary-color, #3f51b5) !important;
+        }
 
-			</style>
+      </style>
 
 
-			<app-modal id="modal"
-								 on-overlay-reset="reset">
+      <app-modal id="modal"
+                 on-overlay-reset="reset">
 
-			  <div id="firebaseuiAuthContainer" 
-			  		 slot="card-content-slot" 
-			  		 on-click="__cardClicked">
-			  </div>
+        <div id="firebaseuiAuthContainer" 
+             slot="card-content-slot" 
+             on-click="__cardClicked">
+        </div>
 
-			</app-modal>
+      </app-modal>
     `;
   }
 
@@ -120,27 +110,25 @@ class SigninModal extends AppElement {
 
       // firebaseui-web config.
       // https://github.com/firebase/firebaseui-web
-      _firebaseUIConfig: Object,
-
-      _modalListenerKey: Object
+      _firebaseUIConfig: Object
 
     };
   }
 
 
   static get observers() {
-  	return [
-  		'__userChanged(user)'
-  	];
+    return [
+      '__userChanged(user)'
+    ];
   }
 
 
   disconnectedCallback() {
-  	super.disconnectedCallback();
+    super.disconnectedCallback();
 
-  	if (this._modalListenerKey) {
-  		unlisten(this._modalListenerKey);
-  	}
+    if (this.$.modal) {
+      this.$.modal.addEventListener('click', this.__modalClicked.bind(this));
+    }
   }
 
 
@@ -150,8 +138,8 @@ class SigninModal extends AppElement {
 
       // Needed for redirected auth types like signin with Google.
       if (
-      	(this._firebaseUi && this._firebaseUi.isPendingRedirect()) || 
-      	!appUserAndData.anonymous
+        (this._firebaseUi && this._firebaseUi.isPendingRedirect()) || 
+        !appUserAndData.anonymous
       ) {
         this.open();
       }
@@ -312,25 +300,21 @@ class SigninModal extends AppElement {
 
 
   close() {
-  	return this.$.modal.close();
+    return this.$.modal.close();
   }
 
 
   async open() {
-  	await this.$.modal.open();
+    await this.$.modal.open();
 
-  	if (!this._firebaseUi) {
+    if (!this._firebaseUi) {
       await this.__setupFirebaseUI();
     }
 
     if (!this._firebaseUi.isPendingRedirect()) {
 
       // Close and reset overlay if user clicks outside of chooser buttons.
-      this._modalListenerKey = listen(
-      	this.$.modal, 
-      	'click', 
-      	this.__modalClicked.bind(this)
-      );
+      this.$.modal.addEventListener('click', this.__modalClicked.bind(this));
     }
 
     // Widget sometimes doesnt appear unless we wait another animation cycle.
@@ -341,7 +325,7 @@ class SigninModal extends AppElement {
 
 
   reset() {
-  	if (this._firebaseUi) {
+    if (this._firebaseUi) {
       this._firebaseUi.reset();
     }
   }

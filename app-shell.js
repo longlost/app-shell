@@ -23,7 +23,6 @@ import {
 } from '@longlost/app-element/app-element.js';
 
 import {
-  listen,
   listenOnce,
   schedule,
   wait,
@@ -260,8 +259,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
   async connectedCallback() {
     super.connectedCallback();
 
-    listen(
-      this.$.header, 
+    this.$.header.addEventListener( 
       'threshold-triggered-changed', 
       this.__headerThresholdChanged.bind(this)
     );  
@@ -285,6 +283,27 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
     await schedule();
     builtInLazyImport('auth');
+  }
+
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    this.$.header.removeEventListener('threshold-triggered-changed', this.__headerThresholdChanged.bind(this));
+    this.$.viewsSlot.removeEventListener('slotchange', this.__setupMenuItems.bind(this));
+    this.$.overlaysSlot.removeEventListener('slotchange', this.__setupMenuItems.bind(this));
+    this.$.viewsBottomSlot.removeEventListener('slotchange', this.__setupMenuItems.bind(this));
+    this.$.autoColorModeStorage.removeEventListener('data-changed', this.__autoColorModeChanged.bind(this));
+    this.$.darkModeStorage.removeEventListener('data-changed', this.__darkModeChanged.bind(this));
+    this.$.persistenceStorage.removeEventListener('data-changed', this.__setPersistence.bind(this));
+    this.$.settings.removeEventListener('settings-auto-color-mode-changed', this.__autoColorModeChanged.bind(this));
+    this.$.settings.removeEventListener('settings-dark-mode-changed', this.__darkModeChanged.bind(this));
+    this.$.settings.removeEventListener('settings-persistence-changed', this.__setPersistence.bind(this));
+    this.removeEventListener('account-signout-button', this.__signOut.bind(this));
+    this.removeEventListener('account-reauth-needed', this.__reauthNeeded.bind(this));
+    this.removeEventListener('auth-userchanged', this.__userChanged.bind(this));
+    this.removeEventListener('auth-account-button', this.__userAccount.bind(this));      
+    this.removeEventListener('show-user-ui', this.showAuthUI.bind(this));
   }
 
 
@@ -377,40 +396,34 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
   // Pick up dynamic changes to views.
   __slotListeners() {
-    listen(this.$.viewsSlot,       'slotchange', this.__setupMenuItems.bind(this));
-    listen(this.$.overlaysSlot,    'slotchange', this.__setupMenuItems.bind(this));
-    listen(this.$.viewsBottomSlot, 'slotchange', this.__setupMenuItems.bind(this));
+    this.$.viewsSlot.addEventListener(      'slotchange', this.__setupMenuItems.bind(this));
+    this.$.overlaysSlot.addEventListener(   'slotchange', this.__setupMenuItems.bind(this));
+    this.$.viewsBottomSlot.addEventListener('slotchange', this.__setupMenuItems.bind(this));
   }
 
 
   __addSettingsListeners() {
-    listen(
-      this.$.autoColorModeStorage,
-      'data-changed',
+    this.$.autoColorModeStorage.addEventListener(
+      'data-changed', 
       this.__autoColorModeChanged.bind(this)
     );
-    listen(
-      this.$.darkModeStorage,
+    this.$.darkModeStorage.addEventListener(
       'data-changed',
       this.__darkModeChanged.bind(this)
     );
-    listen(
-      this.$.persistenceStorage,
+    this.$.persistenceStorage.addEventListener(
       'data-changed',
       this.__setPersistence.bind(this)
     );
-    listen(
-      this.$.settings,
+    this.$.settings.addEventListener(
       'settings-auto-color-mode-changed',
       this.__autoColorModeChanged.bind(this)
     );
-    listen(
-      this.$.settings,
+    this.$.settings.addEventListener(
       'settings-dark-mode-changed',
       this.__darkModeChanged.bind(this)
     );
-    listen(
-      this.$.settings,
+    this.$.settings.addEventListener(
       'settings-persistence-changed',
       this.__setPersistence.bind(this)
     );
@@ -560,11 +573,11 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __addUserAccountListeners() {
-    listen(this, 'account-signout-button', this.__signOut.bind(this));
-    listen(this, 'account-reauth-needed',  this.__reauthNeeded.bind(this));
-    listen(this, 'auth-userchanged',       this.__userChanged.bind(this));
-    listen(this, 'auth-account-button',    this.__userAccount.bind(this));      
-    listen(this, 'show-user-ui',           this.showAuthUI.bind(this));
+    this.addEventListener('account-signout-button', this.__signOut.bind(this));
+    this.addEventListener('account-reauth-needed',  this.__reauthNeeded.bind(this));
+    this.addEventListener('auth-userchanged',       this.__userChanged.bind(this));
+    this.addEventListener('auth-account-button',    this.__userAccount.bind(this));      
+    this.addEventListener('show-user-ui',           this.showAuthUI.bind(this));
   }
 
 
