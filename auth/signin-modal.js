@@ -123,11 +123,18 @@ class SigninModal extends AppElement {
   }
 
 
+  constructor() {
+    super();
+
+    this.__modalClicked = this.__modalClicked.bind(this);
+  }
+
+
   disconnectedCallback() {
     super.disconnectedCallback();
 
     if (this.$.modal) {
-      this.$.modal.addEventListener('click', this.__modalClicked.bind(this));
+      this.$.modal.removeEventListener('click', this.__modalClicked);
     }
   }
 
@@ -314,7 +321,7 @@ class SigninModal extends AppElement {
     if (!this._firebaseUi.isPendingRedirect()) {
 
       // Close and reset overlay if user clicks outside of chooser buttons.
-      this.$.modal.addEventListener('click', this.__modalClicked.bind(this));
+      this.$.modal.addEventListener('click', this.__modalClicked);
     }
 
     // Widget sometimes doesnt appear unless we wait another animation cycle.

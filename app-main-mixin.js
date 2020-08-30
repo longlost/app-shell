@@ -54,20 +54,25 @@ export const AppMainMixin = () => {
 
       this.__windowLoadHandler();
 
-      this.addEventListener('app-shell-page-changed',      this.__pageChanged.bind(this));
-      this.addEventListener('app-shell-dark-mode-changed', this.__darkModeChanged.bind(this));
-      this.addEventListener('auth-userchanged',            this.__userChanged.bind(this));
-      this.addEventListener('open-overlay',                this.__openOverlayHandler.bind(this));  
+      this.__pageChanged        = this.__pageChanged.bind(this);
+      this.__darkModeChanged    = this.__darkModeChanged.bind(this);
+      this.__userChanged        = this.__userChanged.bind(this);
+      this.__openOverlayHandler = this.__openOverlayHandler.bind(this);
+
+      this.addEventListener('app-shell-page-changed',      this.__pageChanged);
+      this.addEventListener('app-shell-dark-mode-changed', this.__darkModeChanged);
+      this.addEventListener('auth-userchanged',            this.__userChanged);
+      this.addEventListener('open-overlay',                this.__openOverlayHandler);  
     }
 
 
     disconnectedCallback() {
       super.disconnectedCallback();
 
-      this.removeEventListener('app-shell-page-changed',      this.__pageChanged.bind(this));
-      this.removeEventListener('app-shell-dark-mode-changed', this.__darkModeChanged.bind(this));
-      this.removeEventListener('auth-userchanged',            this.__userChanged.bind(this));
-      this.removeEventListener('open-overlay',                this.__openOverlayHandler.bind(this)); 
+      this.removeEventListener('app-shell-page-changed',      this.__pageChanged);
+      this.removeEventListener('app-shell-dark-mode-changed', this.__darkModeChanged);
+      this.removeEventListener('auth-userchanged',            this.__userChanged);
+      this.removeEventListener('open-overlay',                this.__openOverlayHandler); 
     }
 
 

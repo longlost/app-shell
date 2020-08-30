@@ -79,42 +79,6 @@ class AppSettings extends AppElement {
   }
 
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    this.$.autoColorModeToggle.addEventListener(
-      'checked-changed', 
-      this.__toggleAutoColorMode.bind(this)
-    );
-    this.$.darkModeToggle.addEventListener(
-      'checked-changed', 
-      this.__toggleDarkMode.bind(this)
-    );
-    this.$.trustedToggle.addEventListener(
-      'checked-changed', 
-      this.__toggleTrusted.bind(this)
-    );
-  }
-
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-
-    this.$.autoColorModeToggle.removeEventListener(
-      'checked-changed', 
-      this.__toggleAutoColorMode.bind(this)
-    );
-    this.$.darkModeToggle.removeEventListener(
-      'checked-changed', 
-      this.__toggleDarkMode.bind(this)
-    );
-    this.$.trustedToggle.removeEventListener(
-      'checked-changed', 
-      this.__toggleTrusted.bind(this)
-    );
-  }
-
-
   __computeLabel(bool) {
     return bool ? 'On' : 'Off';
   }
