@@ -106,8 +106,8 @@
             <iron-icon icon="app-icons:settings-brightness"></iron-icon>
             Use Device Color Mode
           </span>
-          <paper-toggle-button id="autoColorModeToggle" 
-                               checked="[[autoColorMode]]">
+          <paper-toggle-button checked="[[autoColorMode]]"
+                               on-checked-changed="__toggleAutoColorMode">
             [[_autoColorModeLabel]]
           </paper-toggle-button>
         </div>
@@ -117,9 +117,9 @@
             <iron-icon icon="app-icons:brightness-medium"></iron-icon>
             Dark Mode
           </span>
-          <paper-toggle-button id="darkModeToggle" 
-                               checked="[[darkMode]]"
-                               disabled="[[autoColorMode]]">
+          <paper-toggle-button checked="[[darkMode]]"
+                               disabled="[[autoColorMode]]"
+                               on-checked-changed="__toggleDarkMode">
             [[_darkModeLabel]]
           </paper-toggle-button>
         </div>
@@ -136,8 +136,8 @@
             <iron-icon icon="app-icons:security"></iron-icon>
             Trusted Device
           </span>
-          <paper-toggle-button id="trustedToggle"
-                               checked="[[persistence]]">
+          <paper-toggle-button checked="[[persistence]]"
+                               on-checked-changed="__toggleTrusted">
             [[_persistenceLabel]]
           </paper-toggle-button>
         </div>

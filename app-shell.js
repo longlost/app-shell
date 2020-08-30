@@ -256,13 +256,26 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
+  constructor() {
+    super();
+
+    this.__headerThresholdChanged = this.__headerThresholdChanged.bind(this);    
+    this.__setupMenuItems         = this.__setupMenuItems.bind(this);
+    this.__autoColorModeChanged   = this.__autoColorModeChanged.bind(this);
+    this.__darkModeChanged        = this.__darkModeChanged.bind(this);
+    this.__setPersistence         = this.__setPersistence.bind(this);
+    this.__signOut                = this.__signOut.bind(this);
+    this.__reauthNeeded           = this.__reauthNeeded.bind(this);
+    this.__userChanged            = this.__userChanged.bind(this);
+    this.__userAccount            = this.__userAccount.bind(this);      
+    this.showAuthUI               = this.showAuthUI.bind(this);
+  }
+
+
   async connectedCallback() {
     super.connectedCallback();
 
-    this.$.header.addEventListener( 
-      'threshold-triggered-changed', 
-      this.__headerThresholdChanged.bind(this)
-    );  
+    this.$.header.addEventListener('threshold-triggered-changed', this.__headerThresholdChanged);  
 
     this.__slotListeners();
     this.__addSettingsListeners();    
@@ -289,21 +302,21 @@ class AppShell extends OverlayControlMixin(AppElement) {
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    this.$.header.removeEventListener('threshold-triggered-changed', this.__headerThresholdChanged.bind(this));
-    this.$.viewsSlot.removeEventListener('slotchange', this.__setupMenuItems.bind(this));
-    this.$.overlaysSlot.removeEventListener('slotchange', this.__setupMenuItems.bind(this));
-    this.$.viewsBottomSlot.removeEventListener('slotchange', this.__setupMenuItems.bind(this));
-    this.$.autoColorModeStorage.removeEventListener('data-changed', this.__autoColorModeChanged.bind(this));
-    this.$.darkModeStorage.removeEventListener('data-changed', this.__darkModeChanged.bind(this));
-    this.$.persistenceStorage.removeEventListener('data-changed', this.__setPersistence.bind(this));
-    this.$.settings.removeEventListener('settings-auto-color-mode-changed', this.__autoColorModeChanged.bind(this));
-    this.$.settings.removeEventListener('settings-dark-mode-changed', this.__darkModeChanged.bind(this));
-    this.$.settings.removeEventListener('settings-persistence-changed', this.__setPersistence.bind(this));
-    this.removeEventListener('account-signout-button', this.__signOut.bind(this));
-    this.removeEventListener('account-reauth-needed', this.__reauthNeeded.bind(this));
-    this.removeEventListener('auth-userchanged', this.__userChanged.bind(this));
-    this.removeEventListener('auth-account-button', this.__userAccount.bind(this));      
-    this.removeEventListener('show-user-ui', this.showAuthUI.bind(this));
+    this.$.header.removeEventListener('threshold-triggered-changed', this.__headerThresholdChanged);
+    this.$.viewsSlot.removeEventListener('slotchange', this.__setupMenuItems);
+    this.$.overlaysSlot.removeEventListener('slotchange', this.__setupMenuItems);
+    this.$.viewsBottomSlot.removeEventListener('slotchange', this.__setupMenuItems);
+    this.$.autoColorModeStorage.removeEventListener('data-changed', this.__autoColorModeChanged);
+    this.$.darkModeStorage.removeEventListener('data-changed', this.__darkModeChanged);
+    this.$.persistenceStorage.removeEventListener('data-changed', this.__setPersistence);
+    this.$.settings.removeEventListener('settings-auto-color-mode-changed', this.__autoColorModeChanged);
+    this.$.settings.removeEventListener('settings-dark-mode-changed', this.__darkModeChanged);
+    this.$.settings.removeEventListener('settings-persistence-changed', this.__setPersistence);
+    this.removeEventListener('account-signout-button', this.__signOut);
+    this.removeEventListener('account-reauth-needed', this.__reauthNeeded);
+    this.removeEventListener('auth-userchanged', this.__userChanged);
+    this.removeEventListener('auth-account-button', this.__userAccount);      
+    this.removeEventListener('show-user-ui', this.showAuthUI);
   }
 
 
@@ -396,37 +409,19 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
   // Pick up dynamic changes to views.
   __slotListeners() {
-    this.$.viewsSlot.addEventListener(      'slotchange', this.__setupMenuItems.bind(this));
-    this.$.overlaysSlot.addEventListener(   'slotchange', this.__setupMenuItems.bind(this));
-    this.$.viewsBottomSlot.addEventListener('slotchange', this.__setupMenuItems.bind(this));
+    this.$.viewsSlot.addEventListener(      'slotchange', this.__setupMenuItems);
+    this.$.overlaysSlot.addEventListener(   'slotchange', this.__setupMenuItems);
+    this.$.viewsBottomSlot.addEventListener('slotchange', this.__setupMenuItems);
   }
 
 
   __addSettingsListeners() {
-    this.$.autoColorModeStorage.addEventListener(
-      'data-changed', 
-      this.__autoColorModeChanged.bind(this)
-    );
-    this.$.darkModeStorage.addEventListener(
-      'data-changed',
-      this.__darkModeChanged.bind(this)
-    );
-    this.$.persistenceStorage.addEventListener(
-      'data-changed',
-      this.__setPersistence.bind(this)
-    );
-    this.$.settings.addEventListener(
-      'settings-auto-color-mode-changed',
-      this.__autoColorModeChanged.bind(this)
-    );
-    this.$.settings.addEventListener(
-      'settings-dark-mode-changed',
-      this.__darkModeChanged.bind(this)
-    );
-    this.$.settings.addEventListener(
-      'settings-persistence-changed',
-      this.__setPersistence.bind(this)
-    );
+    this.$.autoColorModeStorage.addEventListener('data-changed', this.__autoColorModeChanged);
+    this.$.darkModeStorage.addEventListener(     'data-changed', this.__darkModeChanged);
+    this.$.persistenceStorage.addEventListener(  'data-changed', this.__setPersistence);
+    this.$.settings.addEventListener('settings-auto-color-mode-changed', this.__autoColorModeChanged);
+    this.$.settings.addEventListener('settings-dark-mode-changed',       this.__darkModeChanged);
+    this.$.settings.addEventListener('settings-persistence-changed',     this.__setPersistence);
   }
 
 
@@ -573,11 +568,11 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __addUserAccountListeners() {
-    this.addEventListener('account-signout-button', this.__signOut.bind(this));
-    this.addEventListener('account-reauth-needed',  this.__reauthNeeded.bind(this));
-    this.addEventListener('auth-userchanged',       this.__userChanged.bind(this));
-    this.addEventListener('auth-account-button',    this.__userAccount.bind(this));      
-    this.addEventListener('show-user-ui',           this.showAuthUI.bind(this));
+    this.addEventListener('account-signout-button', this.__signOut);
+    this.addEventListener('account-reauth-needed',  this.__reauthNeeded);
+    this.addEventListener('auth-userchanged',       this.__userChanged);
+    this.addEventListener('auth-account-button',    this.__userAccount);      
+    this.addEventListener('show-user-ui',           this.showAuthUI);
   }
 
 

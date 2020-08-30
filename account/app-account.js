@@ -159,7 +159,12 @@ class AppAccount extends AppElement {
   connectedCallback() {
     super.connectedCallback();
 
-    this.__setupListeners();
+    this.__editInputChanged = this.__editInputChanged.bind(this);
+    this.__confirmEdit      = this.__confirmEdit.bind(this);
+
+    this.addEventListener('edit-input-changed', this.__editInputChanged);
+    this.addEventListener('edit-input-confirm-edit', this.__confirmEdit);
+
     this.__profileImgFix();
   }
 
@@ -167,8 +172,8 @@ class AppAccount extends AppElement {
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    this.removeEventListener('edit-input-changed', this.__editInputChanged.bind(this));
-    this.removeEventListener('edit-input-confirm-edit', this.__confirmEdit.bind(this));
+    this.removeEventListener('edit-input-changed', this.__editInputChanged);
+    this.removeEventListener('edit-input-confirm-edit', this.__confirmEdit);
   }
 
 
@@ -226,12 +231,6 @@ class AppAccount extends AppElement {
       }
     }
     catch (error) { console.error(error); }
-  }
-
-
-  __setupListeners() {
-    this.addEventListener('edit-input-changed', this.__editInputChanged.bind(this));
-    this.addEventListener('edit-input-confirm-edit', this.__confirmEdit.bind(this));
   }
 
 

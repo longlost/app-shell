@@ -44,6 +44,7 @@ export const OverlayControlMixin = superClass => {
 
 	  	// Setup overlay controller with app-shell as the first element.
 	    const symbol = Symbol();
+
 	    this._overlayRegistry = {
 	      sequence: [symbol],
 	      [symbol]: {
@@ -59,26 +60,35 @@ export const OverlayControlMixin = superClass => {
 	      }
 	    };
 
-	  	this.addEventListener('overlay-preparing-to-open', 				 	this.__overlayPreparingToOpen.bind(this));
-	    this.addEventListener('overlay-opened',            				 	this.__overlayOpened.bind(this));
-	    this.addEventListener('overlay-preparing-to-exit', 				 	this.__overlayPreparingToExit.bind(this));
-	    this.addEventListener('overlay-exiting',           				 	this.__overlayExiting.bind(this));
-	    this.addEventListener('overlay-reset',             				 	this.__overlayReset.bind(this));
-	    this.addEventListener('overlay-controller-reset-underlays',	this.__resetUnderlays.bind(this));
-	    window.addEventListener('popstate', 												this.__browserBackPushed.bind(this));
+	    this.__overlayPreparingToOpen = this.__overlayPreparingToOpen.bind(this);
+	    this.__overlayOpened 					= this.__overlayOpened.bind(this);
+	    this.__overlayPreparingToExit = this.__overlayPreparingToExit.bind(this);
+	    this.__overlayExiting 				= this.__overlayExiting.bind(this);
+	    this.__overlayReset 					= this.__overlayReset.bind(this);
+	    this.__resetUnderlays 				= this.__resetUnderlays.bind(this);
+	    this.__browserBackPushed 			= this.__browserBackPushed.bind(this);
+
+
+	  	this.addEventListener('overlay-preparing-to-open', 				 	this.__overlayPreparingToOpen);
+	    this.addEventListener('overlay-opened',            				 	this.__overlayOpened);
+	    this.addEventListener('overlay-preparing-to-exit', 				 	this.__overlayPreparingToExit);
+	    this.addEventListener('overlay-exiting',           				 	this.__overlayExiting);
+	    this.addEventListener('overlay-reset',             				 	this.__overlayReset);
+	    this.addEventListener('overlay-controller-reset-underlays',	this.__resetUnderlays);
+	    window.addEventListener('popstate', 												this.__browserBackPushed);
 	  }
 
 
 	  disconnectedCallback() {
 	  	super.disconnectedCallback();
 
-	  	this.removeEventListener('overlay-preparing-to-open', 				 this.__overlayPreparingToOpen.bind(this));
-	    this.removeEventListener('overlay-opened',            				 this.__overlayOpened.bind(this));
-	    this.removeEventListener('overlay-preparing-to-exit', 				 this.__overlayPreparingToExit.bind(this));
-	    this.removeEventListener('overlay-exiting',           				 this.__overlayExiting.bind(this));
-	    this.removeEventListener('overlay-reset',             				 this.__overlayReset.bind(this));
-	    this.removeEventListener('overlay-controller-reset-underlays', this.__resetUnderlays.bind(this));
-	    window.removeEventListener('popstate', 												 this.__browserBackPushed.bind(this));
+	  	this.removeEventListener('overlay-preparing-to-open', 				 this.__overlayPreparingToOpen);
+	    this.removeEventListener('overlay-opened',            				 this.__overlayOpened);
+	    this.removeEventListener('overlay-preparing-to-exit', 				 this.__overlayPreparingToExit);
+	    this.removeEventListener('overlay-exiting',           				 this.__overlayExiting);
+	    this.removeEventListener('overlay-reset',             				 this.__overlayReset);
+	    this.removeEventListener('overlay-controller-reset-underlays', this.__resetUnderlays);
+	    window.removeEventListener('popstate', 												 this.__browserBackPushed);
 	  }
 
 
@@ -91,6 +101,7 @@ export const OverlayControlMixin = superClass => {
 	  	const sequence         = this._overlayRegistry.sequence.length - 1;
       const underlaySequence = sequence - 1;
       const underlaySymbol   = this._overlayRegistry.sequence[underlaySequence];
+
       return underlaySymbol;
 	  }
 
@@ -130,6 +141,7 @@ export const OverlayControlMixin = superClass => {
 
 	  __addItemToRegistry(event) {
 	  	const item = this.__makeRegistryItem(event);
+	  	
       this._overlayRegistry[item.symbol] = item;
 	  }
 
@@ -137,6 +149,7 @@ export const OverlayControlMixin = superClass => {
 	  __updateItemInRegistry(symbol) {
 	  	const underlaySymbol 	 = this.__getUnderlaySymbolFromRegistry();
 	  	const overlay 			 	 = this.__getItemFromRegistry(symbol);
+
 	  	overlay.underlaySymbol = underlaySymbol;
 	  }
 
@@ -167,6 +180,7 @@ export const OverlayControlMixin = superClass => {
 
 	  __cacheHeaderAndContentPositions(element) {
 	  	const {top}        = element.header.getScrollState();
+
 	    element.headerPos  = top;
 	    element.contentPos = window.pageYOffset;
 
@@ -205,10 +219,8 @@ export const OverlayControlMixin = superClass => {
 
 
 	  __placeHeaderAndContent(overlay) {
-	  	overlay.header.style.transform = 
-	      `translateY(${-overlay.headerPos}px)`;
-	    overlay.content.style.transform = 
-	      `translateY(${-overlay.contentPos}px)`;
+	  	overlay.header.style.transform  = `translateY(${-overlay.headerPos}px)`;
+	    overlay.content.style.transform = `translateY(${-overlay.contentPos}px)`;
 	  }
 
 
@@ -228,6 +240,7 @@ export const OverlayControlMixin = superClass => {
 	  	element.content.style.transform = '';
     	element.header.style.transform  = 
       	`translateY(${-element.headerPos}px)`; // Cached scroll pos correction.
+
     	element.header.scroll({
     		left: 		 0, 
     		top: 			 element.contentPos, 
@@ -244,6 +257,7 @@ export const OverlayControlMixin = superClass => {
 	    if (element.underHeaderSticky) {
 	    	const {id} 			 = element.underHeaderSticky;
 	    	const slottedEls = this.slotNodes(`#${id}`);
+
 	    	slottedEls.forEach(el => {
 	    		el.style.display 		= 'none';
 	    		el.style.opacity 		= '0';
@@ -269,6 +283,7 @@ export const OverlayControlMixin = superClass => {
 
 	  __showResetToolbars(overlay) {
 	  	const toolbars = this.selectAll('app-toolbar', overlay.header);
+
     	toolbars.forEach(toolbar => {
     		toolbar.style.transition = 'opacity 0.2s ease-in';
     		toolbar.style.opacity 	 = '1';
@@ -284,6 +299,7 @@ export const OverlayControlMixin = superClass => {
 	    if (element.underHeaderSticky) {
 	    	const {id} 			 = element.underHeaderSticky;
 	    	const slottedEls = this.slotNodes(`#${id}`);
+
 	    	slottedEls.forEach(el => {
 	    		el.style.transition = 'opacity 0.1s ease-in';
 	    		el.style.opacity 		= '1'
@@ -299,7 +315,10 @@ export const OverlayControlMixin = superClass => {
       if (underlay.underHeaderSticky) {
 	    	const {id} 			 = underlay.underHeaderSticky;
 	    	const slottedEls = this.slotNodes(`#${id}`);
-	    	slottedEls.forEach(el => el.style.display = 'flex');
+
+	    	slottedEls.forEach(el => {
+	    		el.style.display = 'flex';
+	    	});
 	    }
 	  }
 
@@ -330,6 +349,7 @@ export const OverlayControlMixin = superClass => {
 
 	  	this.__addItemToRegistrySequence(symbol); 	
 	  	this.__setBrowserHistory();
+
 	  	const {overlay, underlay} = this.__getOverlays(event);
 	    const cachedUnderlay 			= this.__cacheHeaderAndContentPositions(underlay);
 	    const disabledUnderlay 		= this.__disableHeader(cachedUnderlay);
@@ -398,6 +418,7 @@ export const OverlayControlMixin = superClass => {
 
 	  	const {overlay, underlay} = overlays;
 	  	const cachedOverlay = this.__cacheHeaderAndContentPositions(overlay);
+
 	  	this.__disableHeader(cachedOverlay);
 	  	this.__setupUnderlayForDisplay(underlay, overlay);	    
 	  }
@@ -447,8 +468,9 @@ export const OverlayControlMixin = superClass => {
 
 	  __browserBackPushed() {
 	   	const {sequence} = this._overlayRegistry;
-	    const last 	 = sequence.length - 1;
-	   	const symbol = sequence[last];
+	    const last 	 		 = sequence.length - 1;
+	   	const symbol 		 = sequence[last];
+
 			this._overlayRegistry[symbol].panel.back();
 	  }
 
@@ -474,6 +496,7 @@ export const OverlayControlMixin = superClass => {
   		// base view and uppermost overlay symbols.
   		if (lastIndex > 0) {
   			const newSequence = [sequence[0], sequence[lastIndex]];
+
   			this._overlayRegistry.sequence = newSequence;
   		}
 	  }
