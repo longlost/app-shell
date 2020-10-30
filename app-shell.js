@@ -541,7 +541,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
     if (value) {
       const {default: services} = await import(
         /* webpackChunkName: 'services' */ 
-        '@longlost/services/services.js'
+        './services/services.js'
       );
       services.enablePersistence();
     }

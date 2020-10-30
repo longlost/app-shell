@@ -12,6 +12,9 @@
   *
   **/
 
+import './boot/boot.js';
+
+
 import {AppElement}       from '@longlost/app-element/app-element.js';
 import {listenOnce, warn} from '@longlost/utils/utils.js';
 import '@longlost/app-icons/app-icons.js';

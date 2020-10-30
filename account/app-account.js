@@ -26,7 +26,7 @@ import {
   warn
 } from '@longlost/utils/utils.js';
 
-import services   from '@longlost/services/services.js';
+import services   from '../services/services.js';
 import htmlString from './app-account.html';
 import '@longlost/app-icons/app-icons.js';
 import '@longlost/app-images/responsive-image.js';
@@ -426,7 +426,7 @@ class AppAccount extends AppElement {
         await this.user.updatePassword(password);
         await stopSpinner();
         await this.$.passwordModal.close();
-        message('Your password has been updated');
+        message('Your password has been updated.');
 
         if (this._passwordPromiseResolver) {
           await schedule();
