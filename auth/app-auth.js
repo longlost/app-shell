@@ -21,19 +21,11 @@
   *
   **/
 
-import {
-  appUserAndData    
-}                 from 'app.config.js';
-import {
-  AppElement, 
-  html
-}                 from '@longlost/app-element/app-element.js';
-import {
-  message,
-  schedule
-}                 from '@longlost/utils/utils.js';
-import htmlString from './app-auth.html';
-import {firebase} from '@longlost/boot/boot.js';
+import {appUserAndData}    from 'app.config.js';
+import {firebase}          from '../boot/boot.js';
+import {message, schedule} from '@longlost/utils/utils.js';
+import {AppElement, html}  from '@longlost/app-element/app-element.js';
+import htmlString          from './app-auth.html';
 import 'firebase/auth';
 import '@longlost/app-overlays/app-modal.js';
 import '@polymer/paper-button/paper-button.js';

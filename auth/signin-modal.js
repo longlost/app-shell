@@ -21,10 +21,11 @@ import {
   termsOfServiceUrl     
 } from 'app.config.js';
 
+
+import {firebase}              from '../boot/boot.js';
 import {AppElement, html}      from '@longlost/app-element/app-element.js';
 import {htmlLiteral}           from '@polymer/polymer/lib/utils/html-tag.js';
 import {hijackEvent, schedule} from '@longlost/utils/utils.js';
-import {firebase}              from '@longlost/boot/boot.js';
 
 // Disable webpack config 'style-loader' so 
 // these styles are not put in the document head.
@@ -199,7 +200,7 @@ class SigninModal extends AppElement {
 
             const {default: services} = await import(
               /* webpackChunkName: 'services' */ 
-              '@longlost/services/services.js'
+              '../services/services.js'
             );
 
             const anonymousUserData = await services.get({coll, doc: this.user.uid});
