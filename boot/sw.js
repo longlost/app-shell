@@ -8,7 +8,7 @@
 import {
 	swReadyMessage, 
 	swUpdateMessage
-} from 'app.config.js';
+} from 'config.js';
 
 // This code works in conjunction with workbox-webpack-plugin GenerateSW class.
 // https://developers.google.com/web/tools/workbox/guides/advanced-recipes

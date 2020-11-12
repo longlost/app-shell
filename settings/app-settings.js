@@ -11,12 +11,11 @@
   *
   **/
 
-import {AppElement, html} from '@longlost/app-element/app-element.js';
-
 // Must use module resolution in webpack config and include app.config.js file in root
 // of src folder (ie. resolve: {modules: [path.resolve(__dirname, 'src'), 'node_modules'],})
-import {appUserAndData} from 'app.config.js';
-import htmlString       from './app-settings.html';
+import {appUserAndData}   from 'config.js';
+import {AppElement, html} from '@longlost/app-element/app-element.js';
+import htmlString         from './app-settings.html';
 import '@longlost/app-overlays/app-header-overlay.js';
 import '@longlost/app-overlays/app-modal.js';
 import '@longlost/app-icons/app-icons.js';
