@@ -15,7 +15,7 @@
 import {
   appUserAndData, 
   theme
-} from 'app.config.js';
+} from 'config.js';
 
 import {
   AppElement,

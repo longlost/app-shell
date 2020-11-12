@@ -11,10 +11,10 @@ import './sw.js';
 // Conditionally load polyfills.
 import './polyfills.js';
 
-// Must use module resolution in webpack config and include app.config.js file in root
+// Must use module resolution in webpack config and include config.js file in root
 // of src folder (ie. resolve: {modules: [path.resolve(__dirname, 'src'), 'node_modules'],}).
-import {firebaseConfig} from 'app.config.js';
-import * as firebase 		from 'firebase/app';
+import {firebaseConfig} from 'config.js';
+import firebase 				from 'firebase/app';
 
 // must fix 'IDBIndex undefined' error that causes
 // googlebot to not render on search console before 

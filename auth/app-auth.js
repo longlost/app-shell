@@ -21,7 +21,7 @@
   *
   **/
 
-import {appUserAndData}    from 'app.config.js';
+import {appUserAndData}    from 'config.js';
 import {firebase}          from '../boot/boot.js';
 import {message, schedule} from '@longlost/utils/utils.js';
 import {AppElement, html}  from '@longlost/app-element/app-element.js';

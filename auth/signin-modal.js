@@ -19,8 +19,7 @@ import {
   firebaseConfig,
   privacyPolicyUrl,
   termsOfServiceUrl     
-} from 'app.config.js';
-
+} from 'config.js';
 
 import {firebase}              from '../boot/boot.js';
 import {AppElement, html}      from '@longlost/app-element/app-element.js';
