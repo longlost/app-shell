@@ -12,10 +12,7 @@
   **/
 
 
-import {
-  appUserAndData, 
-  theme
-} from 'config.js';
+import {appUserAndData} from 'config.js';
 
 import {
   AppElement,
@@ -443,22 +440,22 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
     if (dark) {
       ShadyCSS.styleDocument({
-        '--app-body-color':       theme.darkBodyColor,
-        '--app-background-color': theme.darkBackground,
-        '--dark-text-color':      theme.darkText,
-        '--light-text-color':     theme.lightText,
-        '--text-truncate-fade':   theme.darkTextTruncate
+        '--app-background-color': 'var(--dark-mode-background)',
+        '--app-body-color':       'var(--dark-mode-body)',
+        '--dark-text-color':      'var(--dark-mode-dark-text)',
+        '--light-text-color':     'var(--dark-mode-light-text)',
+        '--text-truncate-fade':   'var(--dark-mode-truncate)'
       });
     }
     else {
       ShadyCSS.styleDocument({
-        '--app-body-color':       theme.lightBodyColor,
-        '--app-background-color': theme.lightBackground,
-        '--dark-text-color':      theme.lightText,
-        '--light-text-color':     theme.darkText,
-        '--text-truncate-fade':   theme.lightTextTruncate
+        '--app-background-color': 'var(--light-mode-background)',
+        '--app-body-color':       'var(--light-mode-body)',
+        '--dark-text-color':      'var(--light-mode-dark-text)',
+        '--light-text-color':     'var(--light-mode-light-text)',
+        '--text-truncate-fade':   'var(--light-mode-truncate)'
       });
-    } 
+    }
 
     // Sets app-localstorage-document data val.
     this._darkMode = dark;
