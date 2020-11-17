@@ -1,6 +1,6 @@
 {
   "name": "@longlost/app-shell",
-  "version": "1.5.2",
+  "version": "2.0.0",
   "description": "This element bundles core functionalities that are essential to any app.",
   "main": "app-shell.js",
   "scripts": {
