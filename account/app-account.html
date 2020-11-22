@@ -288,10 +288,11 @@
   </div>
 </app-header-overlay>
 
+
 <app-spinner id="spinner" full-screen></app-spinner>
 
 
-<!-- Modals dynamically imported. -->
+<!-- Dynamically imported. -->
 
 <account-password-modal id="passwordModal"
                         on-password-modal-confirm="__passwordModalConfirm">
@@ -309,4 +310,10 @@
                              on-unsaved-edits-modal-exit="__exitWithoutSavingChanges"
                              on-unsaved-edits-modal-save-all="__saveAll">
 </account-unsaved-edits-modal>
+
+
+<app-camera-system id="camera"
+                   dark-mode="[[darkMode]]"
+                   user="[[user]]">                     
+</app-camera-system>
     

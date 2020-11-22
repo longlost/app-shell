@@ -42,7 +42,8 @@ import '@polymer/paper-input/paper-input.js';
 import '@polymer/gold-phone-input/gold-phone-input.js';
 import '@polymer/paper-ripple/paper-ripple.js';
 import '@polymer/paper-button/paper-button.js';
-// delete-modal, password-modal, reauth-modal and unsaved-edits-modal dynamically imported.
+// delete-modal, password-modal, reauth-modal, unsaved-edits-modal
+// and app-camera dynamically imported.
 
 
 
@@ -83,6 +84,8 @@ class AppAccount extends AppElement {
 
   static get properties() {
     return {
+
+      darkMode: Boolean,
 
       // From app-user.
       user: Object,
@@ -312,17 +315,22 @@ class AppAccount extends AppElement {
     try {
       await this.clicked();
 
-      // TODO:
-      //      wire up to new app-camera/app-file-system
+      if (!this.user) {
+        throw new Error('User is not logged in before attempting to add/edit the profile pic.');
+      }
 
-      warn(`Well this is embarassing...  Sorry, we're still working on this feature.`);
+      await import(
+        /* webpackChunkName: 'app-camera-system' */ 
+        '@longlost/app-camera/app-camera-system.js'
+      );
 
-
-
+      await this.$.camera.openChooser();
     }
     catch (error) { 
       if (error === 'click debounced') { return; }
       console.error(error); 
+
+      warn('Sorry, the camera failed to load.');
     }
   }
 
