@@ -18,7 +18,7 @@
   "homepage": "https://github.com/longlost/app-shell#readme",
   "dependencies": {
     "@firebase/app-types": "^0.6.1",
-    "@longlost/app-camera": "^1.14.4",
+    "@longlost/app-camera": "^1.15.0",
     "@longlost/app-element": "^2.0.0",
     "@longlost/app-icons": "^1.0.12",
     "@longlost/app-images": "^1.8.3",
