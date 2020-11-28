@@ -42,8 +42,9 @@ import '@polymer/paper-input/paper-input.js';
 import '@polymer/gold-phone-input/gold-phone-input.js';
 import '@polymer/paper-ripple/paper-ripple.js';
 import '@polymer/paper-button/paper-button.js';
+import './account-avatar.js';
 // delete-modal, password-modal, reauth-modal, unsaved-edits-modal
-// and app-camera dynamically imported.
+// and account-photo-picker dynamically imported.
 
 
 
@@ -167,8 +168,6 @@ class AppAccount extends AppElement {
 
     this.addEventListener('edit-input-changed', this.__editInputChanged);
     this.addEventListener('edit-input-confirm-edit', this.__confirmEdit);
-
-    this.__profileImgFix();
   }
 
 
@@ -237,16 +236,6 @@ class AppAccount extends AppElement {
   }
 
 
-  __profileImgFix() {
-    const imgSizedImgDiv = this.select('#sizedImgDiv', this.$.profilePhoto);
-    const imgPlaceholder = this.select('#placeholder', this.$.profilePhoto);
-    imgSizedImgDiv.style.borderRadius   = '50%';
-    imgPlaceholder.style.borderRadius   = '50%';
-    imgPlaceholder.style.overflow       = 'hidden';
-    imgPlaceholder.style.backgroundClip = 'border-box';
-  }
-
-
   __editInputChanged(event) {
     const {kind, value} = event.detail;
     this.set(`_unsavedEditsObj.${kind}`, value);
@@ -311,20 +300,20 @@ class AppAccount extends AppElement {
   }
 
 
-  async __fabClicked() {
+  async __avatarClicked() {
     try {
       await this.clicked();
 
       if (!this.user) {
-        throw new Error('User is not logged in before attempting to add/edit the profile pic.');
+        throw new Error('User is not logged in before attempting to add/edit the profile avatar.');
       }
 
       await import(
-        /* webpackChunkName: 'app-camera-system' */ 
-        '@longlost/app-camera/app-camera-system.js'
+        /* webpackChunkName: 'account-photo-picker' */ 
+        './account-photo-picker.js'
       );
 
-      await this.$.camera.openChooser();
+      await this.$.picker.open();
     }
     catch (error) { 
       if (error === 'click debounced') { return; }

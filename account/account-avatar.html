@@ -1,0 +1,121 @@
+
+<style include="app-shared-styles">
+
+  :host {
+    display: 	inline-flex;
+    position: relative;
+  }
+
+  /* Css hack to guarantee a square aspect-ratio. */
+  :host::before {
+  	content: 				'';
+	  display: 				inline-block;
+	  height:  				0px;
+	  width: 					100%;
+	  padding-bottom: 100%;
+  }
+
+  #wrapper {
+    position: 				absolute;
+    top:  						0px;
+    right: 						0px;
+    bottom: 					0px;
+    left: 						0px;
+    border-radius:    50%;
+    background-color: var(--app-background-color);
+    color:            var(--app-secondary-color);
+    box-shadow:       0 4px 5px 0 rgba(0, 0, 0, 0.14),
+                      0 1px 10px 0 rgba(0, 0, 0, 0.12),
+                      0 2px 4px -1px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Keyboard-only focus styles hack. */
+  #wrapper:focus,
+  #content:focus,
+  paper-ripple:focus {
+    outline: none;
+  }
+
+  #content:focus,
+  paper-ripple:focus {
+  	box-shadow: none;
+  }
+
+  /* Keyboard-only focus styles hack. */
+  #wrapper:focus > paper-ripple {
+    box-shadow: 0 0 0 2px var(--dark-text-color) inset;
+  }
+
+  #content {
+  	display: 				 flex;
+  	justify-content: center;
+  	align-items: 		 center;
+  	position: 			 relative;
+  	height:  				 100%;
+    width:           100%;
+    border-radius:   50%;
+  }
+
+  #content * {
+    outline: none;
+  }
+
+  iron-image {
+    position:         relative;
+    height: 					100%;
+    width: 						100%;
+    border-radius:    50%;
+    background-color: var(--app-secondary-color);
+  }
+
+  iron-image[hidden] {
+  	display: none;
+  }
+
+  iron-icon {
+  	position: absolute;
+    top:      0px;
+    left:     0px;
+    width:    100%;
+    height:   100%;
+  }
+
+  paper-ripple[hidden] {
+  	display: none;
+  }
+
+</style>
+
+
+<iron-a11y-keys id="a11y"
+                keys="enter"
+                on-keys-pressed="__a11yKeysPressed">
+</iron-a11y-keys>
+
+
+<div id="wrapper"
+		 tabindex$="[[_tabindex]]"
+     on-click="__wrapperClicked">
+
+  <div id="content" 
+			 tabindex="-1">
+	  <iron-image class="shared-border-radius-mask"
+	              hidden="[[!src]]" 
+	              preload 
+	              fade 
+	              alt="User account avatar" 
+	              sizing="cover" 
+	              src="[[src]]"
+	              tabindex="-1">
+	  </iron-image>
+	  <iron-icon hidden="[[src]]" 
+	             icon="app-icons:account-circle"
+	             tabindex="-1">
+	  </iron-icon>
+	</div>
+
+  <paper-ripple hidden="[[!selectable]]"
+  							tabindex="-1" 
+								on-transitionend="__rippleDoneHandler">
+	</paper-ripple>
+</div>

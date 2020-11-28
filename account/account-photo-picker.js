@@ -35,9 +35,11 @@
 
 
 import {AppElement, html} from '@longlost/app-element/app-element.js';
-import {hijackEvent} 			from '@longlost/utils/utils.js';
-import htmlString 	 			from './account-photo-picker.html';
+import {hijackEvent}      from '@longlost/utils/utils.js';
+import htmlString         from './account-photo-picker.html';
 import '@longlost/app-camera/picker/acs-picker-overlay.js';
+import '@polymer/paper-button/paper-button.js';
+import './account-avatar.js';
 
 
 class AccountPhotoPicker extends AppElement {
@@ -51,9 +53,43 @@ class AccountPhotoPicker extends AppElement {
   static get properties() {
     return {
 
-      user: Object
+      darkMode: Boolean,
+
+      user: Object,
+
+      _opened: Boolean,
+
+      _src: {
+        type: String,
+        computed: '__computeSrc(user.photoURL, opened)'
+      }
 
     };
+  }
+
+
+  __computeSrc(url, opened) {
+    return url && opened ? url : '#';
+  }
+
+
+  __openeChangedHandler(event) {
+    hijackEvent(event);
+
+    this._opened = event.detail.value;
+  }
+
+
+  async __saveBtnClicked() {
+    try {
+      await this.clicked();
+
+      console.log('saved button clicked');
+    }
+    catch (error) {
+      if (error === 'click debounced') { return; }
+      console.error(error);
+    }
   }
 
 
