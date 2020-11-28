@@ -61,42 +61,11 @@
     margin: 0px 16px;
   }
 
-  #profile-photo-wrapper {
-    position:         relative;
-    top:             -4px;
-    width:            64px;
-    height:           64px;    
-    border-radius:    50%;
-    background-color: var(--app-background-color);
-    color:            var(--app-accent-color);
-    box-shadow:       0 4px 5px 0 rgba(0, 0, 0, 0.14),
-                      0 1px 10px 0 rgba(0, 0, 0, 0.12),
-                      0 2px 4px -1px rgba(0, 0, 0, 0.4);
-  }
-
-  #profilePhoto {
-    position:         relative;
-    top:              5px;
-    left:             5px;
-    width:            54px;
-    height:           54px;
-    border-radius:    50%;
-    background-color: var(--app-accent-color);
-  }
-
-  #profilePhoto[hidden] {
-    display: none;
-  }
-
-  .profile-icon {
-    position: absolute;
-  }
-
-  #profile-photo-fallback-icon {
-    top:      0px;
-    left:     0px;
-    width:    100%;
-    height:   100%;
+  #avatar {
+    position: relative;
+    top:     -4px;
+    width:    64px;
+    height:   64px;
   }
 
   .divider { 
@@ -162,7 +131,7 @@
                     disable-auto-sizing
                     responsive="[[_headerImg]]"
                     sizing="cover"
-                    alt="Account header">
+                    alt="User account background">
   </responsive-image>
 
   <paper-button slot="top-toolbar-buttons-slot" 
@@ -170,24 +139,12 @@
     SIGN OUT
   </paper-button>
 
-  <div id="profile-photo-wrapper" 
-       slot="fab-slot"
-       on-click="__fabClicked">
-    <iron-image id="profilePhoto"
-                hidden="[[!user.photoURL]]" 
-                preload 
-                fade 
-                alt="Profile Photo" 
-                sizing="contain" 
-                src="[[user.photoURL]]">
-    </iron-image>
-    <iron-icon id="profile-photo-fallback-icon"
-               class="profile-icon"
-               hidden="[[user.photoURL]]" 
-               icon="app-icons:face">
-    </iron-icon>
-    <paper-ripple></paper-ripple>
-  </div>
+  <account-avatar id="avatar"
+                  selectable 
+                  slot="fab-slot"
+                  src="[[user.photoURL]]"
+                  on-clicked-rippled="__avatarClicked">
+  </account-avatar>
 
   <div id="content" 
        class="content" 
@@ -312,8 +269,8 @@
 </account-unsaved-edits-modal>
 
 
-<app-camera-system id="camera"
-                   dark-mode="[[darkMode]]"
-                   user="[[user]]">                     
-</app-camera-system>
+<account-photo-picker id="picker"
+                      dark-mode="[[darkMode]]"
+                      user="[[user]]">                     
+</account-photo-picker>
     
