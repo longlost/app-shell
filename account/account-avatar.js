@@ -35,8 +35,8 @@
 
 
 import {AppElement, html} from '@longlost/app-element/app-element.js';
-import {consumeEvent} 		from '@longlost/utils/utils.js';
-import htmlString     		from './account-avatar.html';
+import {consumeEvent}     from '@longlost/utils/utils.js';
+import htmlString         from './account-avatar.html';
 import '@longlost/app-icons/app-icons.js';
 import '@longlost/app-shared-styles/app-shared-styles.js';
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
@@ -56,24 +56,30 @@ class AccountAvatar extends AppElement {
   static get properties() {
     return {
 
-    	selectable: {
-    		type: Boolean,
-    		value: false
-    	},
+      selectable: {
+        type: Boolean,
+        value: false
+      },
 
-    	src: {
-    		type: String,
-    		value: ''
-    	},
+      src: {
+        type: String,
+        value: ''
+      },
 
       _clicked: Boolean,
+
+      _hideImg: {
+        type: Boolean,
+        value: true,
+        computed: '__computeHideImg(src)'
+      },
 
       _rippled: Boolean,
 
       _tabindex: {
-      	type: String,
-      	value: '-1',
-      	computed: '__computeTabindex(selectable)'
+        type: String,
+        value: '-1',
+        computed: '__computeTabindex(selectable)'
       }
 
     };
@@ -94,14 +100,19 @@ class AccountAvatar extends AppElement {
   }
 
 
+  __computeHideImg(src) {
+    return (!src || src === '#');
+  }
+
+
   __computeTabindex(selectable) {
-  	return selectable ? '0' : '-1';
+    return selectable ? '0' : '-1';
   }
 
 
   __a11yKeysPressed(event) {
-  	consumeEvent(event);
-  	
+    consumeEvent(event);
+    
     const {key} = event.detail.keyboardEvent;
 
     if (key === 'Enter') {

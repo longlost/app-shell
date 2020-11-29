@@ -57,23 +57,66 @@ class AccountPhotoPicker extends AppElement {
 
       user: Object,
 
+      _btnClass: {
+        type: String,
+        value: 'remove', // Or 'save'.
+        computed: '__computeBtnClass(_btnText)'
+      },
+
+      _btnText: {
+        type: String,
+        value: 'REMOVE', // Or 'SAVE'.
+        computed: '__computeBtnText(_selected.thumbnail)'
+      },
+
+      _hideBtn: {
+        type: Boolean,
+        value: true,
+        computed: '__computeHideBtn(user.photoURL, _selected.thumbnail)'
+      },
+
       _opened: Boolean,
+
+      // The file object that was most recently selected from either
+      // camera capture, uploaded file or chosen from saved photos.
+      _selected: Object,
 
       _src: {
         type: String,
-        computed: '__computeSrc(user.photoURL, opened)'
+        computed: '__computeSrc(user.photoURL, _selected.thumbnail, _opened)'
       }
 
     };
   }
 
 
-  __computeSrc(url, opened) {
-    return url && opened ? url : '#';
+  __computeBtnClass(text) {
+    return text.toLowerCase();
   }
 
 
-  __openeChangedHandler(event) {
+  __computeBtnText(thumbnail) {
+    return thumbnail ? 'SAVE' : 'REMOVE';
+  }
+
+
+  __computeHideBtn(url, thumbnail) {
+    return (!url && !thumbnail);
+  }
+
+
+  __computeSrc(url, thumbnail, opened) {
+    if (!opened) { return '#'; }
+
+    if (thumbnail) { return thumbnail; }
+
+    if (url) { return url; }
+
+    return '#';
+  }
+
+
+  __openedChangedHandler(event) {
     hijackEvent(event);
 
     this._opened = event.detail.value;
