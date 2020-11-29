@@ -16,8 +16,16 @@
 	}
 
 	paper-button {
-		justify-self: 		center;
-		border-radius: 		24px;
+		justify-self:  center;
+		border-radius: 24px;
+	}
+
+	.remove {		
+		background-color: var(--app-error-color);
+		color: 						var(--constant-light-text);
+	}
+
+	.save {		
 		background-color: var(--app-primary-dark-color);
 		color: 						var(--app-primary-dark-color-text);
 	}
@@ -29,21 +37,20 @@
 										dark-mode="[[darkMode]]"
                     title="Change Account Photo"
                     user="[[user]]"
-                    on-acs-picker-overlay-opened-changed="__openeChangedHandler">
+                    on-acs-picker-overlay-opened-changed="__openedChangedHandler">
 
   <!-- Safari fix! Chrome does not require this extra wrapping div. -->
   <div>
 
 	  <div id="container">
-	  
-		  <account-avatar src="https://images.unsplash.com/photo-1485178575877-1a13bf489dfe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=691&q=80"></account-avatar>
 
+		  <account-avatar src="[[_src]]"></account-avatar>
 
-		  <!-- <account-avatar src="[[_src]]"></account-avatar> -->
-
-		  <paper-button raised 
+		  <paper-button class$="[[_btnClass]]"
+		  							hidden="[[_hideBtn]]"
+		  							raised 
 		  							on-click="__saveBtnClicked">
-		  	SAVE
+		  	[[_btnText]]
 		  </paper-button>
 
 		</div>
