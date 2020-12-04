@@ -1,0 +1,42 @@
+
+<style>
+
+  #dismiss-btn {
+    color: var(--app-secondary-color);
+  }
+  
+  #remove-btn {
+    background-color: var(--app-error-color);
+    color:            var(--constant-light-text, white);
+  }
+
+</style>
+
+
+<app-modal id="modal"
+           heading="Remove From Profile"
+           on-click="__dismissButtonClicked">
+
+  <div id="content-div" 
+       slot="card-content-slot">
+    <p>
+      Removing the photo from your profile will <strong>NOT</strong> delete this photo from your saved photos!
+    </p>
+    <p>
+      Select "<strong>Manage Photos</strong>" to delete and edit photos.
+    </p>
+  </div>
+
+  <div class="card-actions" 
+       slot="card-actions-slot">
+    <paper-button id="dismiss-btn" 
+                  on-click="__dismissButtonClicked">
+      DISMISS
+    </paper-button>  
+    <paper-button id="remove-btn"
+                  on-click="__removeButtonClicked">
+      REMOVE
+    </paper-button>  
+  </div>
+
+</app-modal>
