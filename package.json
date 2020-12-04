@@ -18,7 +18,7 @@
   "homepage": "https://github.com/longlost/app-shell#readme",
   "dependencies": {
     "@firebase/app-types": "^0.6.1",
-    "@longlost/app-camera": "^1.15.2",
+    "@longlost/app-camera": "^1.16.0",
     "@longlost/app-element": "^2.0.0",
     "@longlost/app-icons": "^1.0.12",
     "@longlost/app-images": "^1.8.3",
@@ -27,7 +27,7 @@
     "@longlost/app-shared-styles": "^2.0.15",
     "@longlost/app-spinner": "^1.2.0",
     "@longlost/icon-to-spinner": "^1.0.2",
-    "@longlost/utils": "^2.0.0",
+    "@longlost/utils": "^2.0.1",
     "@polymer/app-layout": "^3.1.0",
     "@polymer/app-route": "^3.0.2",
     "@polymer/app-storage": "^3.0.3",
@@ -46,10 +46,10 @@
     "@polymer/paper-toast": "^3.0.1",
     "@polymer/paper-toggle-button": "^3.0.1",
     "@polymer/polymer": "^3.4.1",
-    "firebase": "^8.1.1",
+    "firebase": "^8.1.2",
     "firebaseui": "^4.7.1",
     "scroll-behavior-polyfill": "^2.0.13",
-    "workbox-window": "^5.1.4"
+    "workbox-window": "^6.0.2"
   },
   "devDependencies": {
     "@polymer/iron-demo-helpers": "^3.1.0",

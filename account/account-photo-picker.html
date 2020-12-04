@@ -37,7 +37,8 @@
 										dark-mode="[[darkMode]]"
                     title="Change Account Photo"
                     user="[[user]]"
-                    on-acs-picker-overlay-opened-changed="__openedChangedHandler">
+                    on-acs-picker-overlay-opened-changed="__openedChangedHandler"
+                    on-acs-picker-overlay-selected-changed="__selectedChangedHandler">
 
   <!-- Safari fix! Chrome does not require this extra wrapping div. -->
   <div>
@@ -49,7 +50,7 @@
 		  <paper-button class$="[[_btnClass]]"
 		  							hidden="[[_hideBtn]]"
 		  							raised 
-		  							on-click="__saveBtnClicked">
+		  							on-click="__removeSaveBtnClicked">
 		  	[[_btnText]]
 		  </paper-button>
 
