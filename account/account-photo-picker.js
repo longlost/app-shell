@@ -34,10 +34,16 @@
   **/
 
 
-import {AppElement, html}  from '@longlost/app-element/app-element.js';
-import {hijackEvent, warn} from '@longlost/utils/utils.js';
-import services            from '@longlost/app-shell/services/services.js';
-import htmlString          from './account-photo-picker.html';
+import {AppElement, html} from '@longlost/app-element/app-element.js';
+
+import {
+  hijackEvent,
+  message, 
+  warn
+} from '@longlost/utils/utils.js';
+
+import services   from '@longlost/app-shell/services/services.js';
+import htmlString from './account-photo-picker.html';
 import '@longlost/app-camera/picker/acs-picker-overlay.js';
 import '@polymer/paper-button/paper-button.js';
 import './account-avatar.js';
@@ -130,7 +136,7 @@ class AccountPhotoPicker extends AppElement {
 
     if (selected?.original) { return selected.original; }
 
-    if (selected?._tempUrl) { return selected_tempUrl; }
+    if (selected?._tempUrl) { return selected._tempUrl; }
 
     if (!data || !type) { return '#'; }
 
@@ -254,6 +260,12 @@ class AccountPhotoPicker extends AppElement {
     }
   }
 
+
+  __cleanupSelected() {
+    this.__unsubFromSelectedItem();
+    this._selected = undefined;
+  }
+
   // This button has two states which allows it to 
   // act as a remove or a save button.
   async __removeSaveBtnClicked() {
@@ -263,7 +275,7 @@ class AccountPhotoPicker extends AppElement {
 
       await this.clicked();
 
-      // Save the recently selected photo as the new profile photo.
+      // Set the recently selected photo as the new profile photo.
       if (this._selected) {
 
         await services.set({
@@ -273,25 +285,52 @@ class AccountPhotoPicker extends AppElement {
             [this.type]: this._selected
           }
         });
+
+        this.__cleanupSelected();
+
+        await message('Profile photo updated.');
       }
 
       // Remove the photo from user's account profile.
       else {
-        await services.deleteField({
-          coll: `users`,
-          doc:   this.user.uid,
-          field: this.type
-        });
-      }
 
-      this.__unsubFromSelectedItem();
-      this._selected = undefined;
+        await import(
+          /* webpackChunkName: 'account-remove-photo-modal' */ 
+          './account-remove-photo-modal.js'
+        );
+
+        await this.$.modal.open();
+      }      
     }
     catch (error) {
       if (error === 'click debounced') { return; }
       console.error(error);
 
-      warn('Sorry, your profile could not be updated.');
+      warn('Sorry, your profile was not updated.');
+    }
+  }
+
+
+  async __removePhotoConfirmedHandler(event) {
+    try {
+      hijackEvent(event);
+
+      await services.deleteField({
+        coll: `users`,
+        doc:   this.user.uid,
+        field: this.type
+      });
+
+      if (this.type === 'avatar') {
+        await this.user.updateProfile({photoURL: null});
+      }
+
+      this.__cleanupSelected();
+    }
+    catch (error) {
+      console.error(error);
+
+      warn('Sorry, your profile photo was not removed.');
     }
   }
 
