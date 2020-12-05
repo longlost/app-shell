@@ -15,7 +15,7 @@
   **/
 
 import {AppElement, html} from '@longlost/app-element/app-element.js';
-import htmlString 				from './account-remove-photo-modal.html';
+import htmlString         from './account-remove-photo-modal.html';
 import '@longlost/app-overlays/app-modal.js';
 import '@polymer/paper-button/paper-button.js';
 
@@ -40,7 +40,7 @@ class AccountRemovePhotoModal extends AppElement {
   }
 
 
-  async __deleteButtonClicked() {
+  async __removeButtonClicked() {
     try {
       await this.clicked();
       await this.close();
