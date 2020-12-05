@@ -74,12 +74,12 @@ const imageProcessingDone = item => {
 
 // Wait for image to finish being processed, then 
 // save the updates to the user profile data.
-const manageProfilePhoto = async (item, type, ref, userId) => {
+const manageProfilePhoto = (item, type, ref, userId) => {
   if (!item || imageProcessingDone(item)) { return; }
 
   const {coll, doc, uid} = item;
 
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
 
     // Get live updates on the photo item being processed.
     // Subscribe to the db location where photo is being saved.
