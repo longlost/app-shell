@@ -35,13 +35,11 @@ import '@longlost/app-inputs/shipping-inputs.js';
 import '@longlost/app-overlays/app-header-overlay.js';
 import '@longlost/app-shared-styles/app-shared-styles.js';
 import '@longlost/app-spinner/app-spinner.js';
-import '@polymer/iron-image/iron-image.js';
-import '@polymer/iron-icon/iron-icon.js';
-import '@polymer/paper-fab/paper-fab.js';
-import '@polymer/paper-input/paper-input.js';
 import '@polymer/gold-phone-input/gold-phone-input.js';
-import '@polymer/paper-ripple/paper-ripple.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-button/paper-button.js';
+import '@polymer/paper-input/paper-input.js';
 import './account-avatar.js';
 // delete-modal, password-modal, reauth-modal, unsaved-edits-modal
 // and account-photo-picker dynamically imported.
@@ -124,6 +122,11 @@ class AppAccount extends AppElement {
 
       // Save all flow control by password modal.
       _passwordPromiseResolver: Object,
+
+      _photoPickerType: {
+        type: String,
+        value: 'avatar' // Or 'background'
+      },
 
       _unsavedEdits: {
         type: Boolean,
@@ -300,10 +303,8 @@ class AppAccount extends AppElement {
   }
 
 
-  async __avatarClicked() {
+  async __openPhotoPicker() {
     try {
-      await this.clicked();
-
       if (!this.user) {
         throw new Error('User is not logged in before attempting to add/edit the profile avatar.');
       }
@@ -313,14 +314,36 @@ class AppAccount extends AppElement {
         './account-photo-picker.js'
       );
 
+      await schedule();
+
       await this.$.picker.open();
+    }
+    catch (error) {
+      console.error(error); 
+
+      warn('Sorry, the photo picker failed to load.');
+    }
+  }
+
+
+  async __changeBackgroundButtonClicked() {
+    try {
+      await this.clicked();
+
+      this._photoPickerType = 'background';
+
+      this.__openPhotoPicker();
     }
     catch (error) { 
       if (error === 'click debounced') { return; }
       console.error(error); 
-
-      warn('Sorry, the camera failed to load.');
     }
+  }
+
+
+  async __avatarClickedRippled() {
+    this._photoPickerType = 'avatar';
+    this.__openPhotoPicker();
   }
 
 
@@ -510,10 +533,7 @@ class AppAccount extends AppElement {
 
           // Profile obj === {displayName: nullable string, photoURL: nullable string}.
           // The profile's displayName and photoURL to update.
-          await this.user.updateProfile({
-            displayName: value, 
-            photoURL:    this.user.photoURL
-          });
+          await this.user.updateProfile({displayName: value});
 
           this.notifyPath('user.displayName'); // Cannot write to Firebase user.
 
@@ -521,10 +541,7 @@ class AppAccount extends AppElement {
           const undo  = event.detail.canceled;
 
           if (undo) {
-            await this.user.updateProfile({
-              displayName: previousDisplayName, 
-              photoURL:    this.user.photoURL
-            });
+            await this.user.updateProfile({displayName: previousDisplayName});
 
             this.notifyPath('user.displayName');
             await stopSpinner();
@@ -645,10 +662,7 @@ class AppAccount extends AppElement {
 
         // Profile obj === {displayName: nullable string, photoURL: nullable string}.
         // The profile's displayName and photoURL to update.
-        await this.user.updateProfile({
-          displayName, 
-          photoURL: this.user.photoURL
-        });
+        await this.user.updateProfile({displayName});
 
         this.notifyPath('user.displayName'); // Cannot write to firebase user.
       };
@@ -715,7 +729,6 @@ class AppAccount extends AppElement {
     try {
 
       // Delete and signout user.
-      await services.deleteDocument({coll: 'users', doc: this.user.uid});
       await this.user.delete();
       await schedule(); 
       await this.$.overlay.close();

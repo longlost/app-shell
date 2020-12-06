@@ -46,6 +46,7 @@ import services   from '@longlost/app-shell/services/services.js';
 import htmlString from './account-photo-picker.html';
 import '@longlost/app-camera/picker/acs-picker-overlay.js';
 import '@polymer/paper-button/paper-button.js';
+import '@polymer/paper-spinner/paper-spinner-lite.js';
 import './account-avatar.js';
 
 
@@ -62,32 +63,45 @@ class AccountPhotoPicker extends AppElement {
 
       darkMode: Boolean,
 
+      // 'avatar' is a special value that also sets
+      // the Firebase Auth 'user' profile 'photoURL' field.
       type: {
         type: String,
-        value: 'avatar' // Or 'background'
+        value: 'avatar' // Or 'background'.
       },
 
       user: Object,
 
-      _btnClass: {
-        type: String,
-        value: 'remove', // Or 'save'.
-        computed: '__computeBtnClass(_btnText)'
-      },
-
-      _btnText: {
-        type: String,
-        value: 'REMOVE', // Or 'SAVE'.
-        computed: '__computeBtnText(_selected)'
-      },
-
-      _hideBtn: {
+      _disableBtns: {
         type: Boolean,
         value: true,
-        computed: '__computeHideBtn(type, _userData, _selected)'
+        computed: '__computeDisableBtns(user, _processing)'
+      },
+
+      _hideRemoveBtn: {
+        type: Boolean,
+        value: true,
+        computed: '__computeHideRemoveBtn(type, _userData, _selected)'
+      },
+
+      _hideClearBtn: {
+        type: Boolean,
+        value: true,
+        computed: '__computeHideClearBtn(user, _selected)'
+      },
+
+      _hideSaveBtn: {
+        type: Boolean,
+        value: true,
+        computed: '__computeHideSaveBtn(user, _selected)'
       },
 
       _opened: Boolean,
+
+      _processing: {
+        type: Boolean,
+        value: false
+      },
 
       // The file object that was most recently selected from either
       // camera capture, uploaded file or chosen from saved photos.
@@ -99,6 +113,11 @@ class AccountPhotoPicker extends AppElement {
       },
 
       _selectedItemUnsubscribe: Object,
+
+      _title: {
+        type: String,
+        computed: '__computeTitle(type)'
+      },
 
       _userDataUnsubscribe: Object
 
@@ -114,18 +133,25 @@ class AccountPhotoPicker extends AppElement {
   }
 
 
-  __computeBtnClass(text) {
-    return text.includes('REMOVE') ? 'remove' : 'save';
+  __computeDisableBtns(user, processing) {
+    return (!user || processing);
   }
 
 
-  __computeBtnText(selected) {
-    return selected ? 'SET NEW AVATAR' : 'REMOVE';
+  __computeHideRemoveBtn(type, data, selected) {
+    if (!data || !data[type]) { return true; }
+
+    return Boolean(selected);
   }
 
 
-  __computeHideBtn(type, data, selected) {
-    return ((!data || !data[type]) && !selected);
+  __computeHideClearBtn(user, selected) {
+    return (!user || !selected);
+  }
+
+
+  __computeHideSaveBtn(user, selected) {
+    return (!user || !selected);
   }
 
 
@@ -147,6 +173,11 @@ class AccountPhotoPicker extends AppElement {
     if (photoData?.original) { return photoData.original; }
 
     return '#';
+  }
+
+
+  __computeTitle(type) {
+    return type === 'avatar' ? 'Change Avatar' : 'Change Background Image';
   }
 
 
@@ -194,6 +225,13 @@ class AccountPhotoPicker extends AppElement {
     hijackEvent(event);
 
     this._opened = event.detail.value;
+  }
+
+
+  __processingChangedHandler(event) {
+    hijackEvent(event);
+
+    this._processing = event.detail.value;
   }
 
 
@@ -266,41 +304,21 @@ class AccountPhotoPicker extends AppElement {
     this._selected = undefined;
   }
 
-  // This button has two states which allows it to 
-  // act as a remove or a save button.
-  async __removeSaveBtnClicked() {
+
+  async __removeBtnClicked() {
     try {
 
-      if (!this.user) { return; }
+      if (!this.user || this._selected) { return; }
 
       await this.clicked();
 
-      // Set the recently selected photo as the new profile photo.
-      if (this._selected) {
+      // Open a confirmation modal.
+      await import(
+        /* webpackChunkName: 'account-remove-photo-modal' */ 
+        './account-remove-photo-modal.js'
+      );
 
-        await services.set({
-          coll: `users`,
-          doc:   this.user.uid,
-          data: {
-            [this.type]: this._selected
-          }
-        });
-
-        this.__cleanupSelected();
-
-        await message('Profile photo updated.');
-      }
-
-      // Remove the photo from user's account profile.
-      else {
-
-        await import(
-          /* webpackChunkName: 'account-remove-photo-modal' */ 
-          './account-remove-photo-modal.js'
-        );
-
-        await this.$.modal.open();
-      }      
+      await this.$.modal.open();
     }
     catch (error) {
       if (error === 'click debounced') { return; }
@@ -310,7 +328,52 @@ class AccountPhotoPicker extends AppElement {
     }
   }
 
+  
+  async __clearBtnClicked() {
+    try {
 
+      if (!this._selected) { return; }
+
+      await this.clicked();
+
+      this.__cleanupSelected();
+    }
+    catch (error) {
+      if (error === 'click debounced') { return; }
+      console.error(error);
+    }
+  }
+
+  
+  async __saveBtnClicked() {
+    try {
+
+      if (!this.user || !this._selected) { return; }
+
+      await this.clicked();
+
+      // Set the recently selected photo as the new profile photo.
+      await services.set({
+        coll: `users`,
+        doc:   this.user.uid,
+        data: {
+          [this.type]: this._selected
+        }
+      });
+
+      this.__cleanupSelected();
+
+      await message('Profile photo updated.');
+    }
+    catch (error) {
+      if (error === 'click debounced') { return; }
+      console.error(error);
+
+      warn('Sorry, your profile was not updated.');
+    }
+  }
+
+  // Remove the photo from user's account profile.
   async __removePhotoConfirmedHandler(event) {
     try {
       hijackEvent(event);
