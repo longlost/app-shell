@@ -1,33 +1,96 @@
 
 <style>
 
-	#container {
+	#grid {
 		display: 				 			 grid;
 		grid-template-columns: 1fr;
 		grid-template-rows:  	 1fr 48px;
-		align-items: 		 			 center;
-		width:  				 			 calc(100vw - 64px);
-		max-width:  					 414px;
-		margin:  							 16px;
+		grid-template-areas:
+			'preview'
+			'btns';
+		align-items: center;
+		width:  		 calc(100vw - 64px);
+		max-width:   414px;
+		margin:  		 16px;
 	}
 
 	account-avatar {
-		margin: 16px 32px;
+		grid-area: preview;
+		margin: 	 16px 32px;
 	}
 
-	paper-button {
-		justify-self:  center;
+	#processing {
+		grid-area:  preview;
+		align-self: stretch;
+
+		display: 				 flex;
+		flex-direction:  column;
+		justify-content: center;
+		align-items: 		 center;
+		position: 			 relative;	
+		margin: 	 			 10px 26px;
+	}
+
+	#processing[hidden] {
+		display: none;
+	}
+
+	#processing::before {
+		content: 			 '';
+		position: 		 absolute;
+		height: 			 100%;
+		width: 				 100%;
+		border-radius: 50%;
+		overflow: 		 hidden;
+
+		-webkit-backdrop-filter: blur(10px);
+		backdrop-filter: 				 blur(10px);
+		background-color: 			 var(--app-background-color);
+		opacity: 								 0.9;	
+	}
+
+	#message {		
+		color:   var(--app-dark-text);
+		z-index: 0;
+	}
+
+	paper-spinner-lite {
+		margin-top: 16px;
+		--paper-spinner-color: var(--app-primary-color);	
+	}
+
+	#btns {			
+		grid-area: btns;
+
+		display: 				 flex;
+		justify-content: center;
+	}
+
+	paper-button {	
+		margin: 			 0px 16px;
 		border-radius: 24px;
 	}
 
-	.remove {		
+	#remove-btn {		
 		background-color: var(--app-error-color);
-		color: 						var(--constant-light-text);
+		color: 						var(--app-error-color-text);
 	}
 
-	.save {		
+	#clear-btn {		
+		background-color: var(--app-warning-color);
+		color: 						var(--app-warning-color-text);
+	}
+
+	#save-btn {		
 		background-color: var(--app-primary-dark-color);
 		color: 						var(--app-primary-dark-color-text);
+	}
+
+	#remove-btn[disabled],
+	#clear-btn[disabled],
+	#save-btn[disabled] {
+		background-color: var(--app-disabled-color);
+		color: 						var(--app-disabled-text);
 	}
 
 </style>
@@ -35,24 +98,50 @@
 
 <acs-picker-overlay id="picker"
 										dark-mode="[[darkMode]]"
-                    title="Change Account Photo"
+                    title="[[_title]]"
                     user="[[user]]"
                     on-acs-picker-overlay-opened-changed="__openedChangedHandler"
+                    on-acs-picker-overlay-processing-changed="__processingChangedHandler"
                     on-acs-picker-overlay-selected-changed="__selectedChangedHandler">
 
   <!-- Safari fix! Chrome does not require this extra wrapping div. -->
   <div>
 
-	  <div id="container">
+	  <div id="grid">
 
-		  <account-avatar src="[[_src]]"></account-avatar>
+	  	<account-avatar src="[[_src]]"></account-avatar>
 
-		  <paper-button class$="[[_btnClass]]"
-		  							hidden="[[_hideBtn]]"
-		  							raised 
-		  							on-click="__removeSaveBtnClicked">
-		  	[[_btnText]]
-		  </paper-button>
+	  	<div id="processing"
+	  			 hidden="[[!_processing]]">
+	  		<div id="message">Image processing.</div>
+	  		<paper-spinner-lite id="spinner" 
+	  												active="[[_processing]]">
+	  		</paper-spinner-lite>
+	  	</div>
+
+	  	<div id="btns">
+			  <paper-button id="remove-btn"
+			  							disabled="[[_disableBtns]]"
+			  							hidden="[[_hideRemoveBtn]]"
+			  							raised 
+			  							on-click="__removeBtnClicked">
+			  	REMOVE
+			  </paper-button>
+			  <paper-button id="clear-btn"
+			  							disabled="[[_disableBtns]]"
+			  							hidden="[[_hideClearBtn]]"
+			  							raised 
+			  							on-click="__clearBtnClicked">
+			  	CLEAR
+			  </paper-button>
+			  <paper-button id="save-btn"
+			  							disabled="[[_disableBtns]]"
+			  							hidden="[[_hideSaveBtn]]"
+			  							raised 
+			  							on-click="__saveBtnClicked">
+			  	SET AVATAR
+			  </paper-button>
+		 	</div>
 
 		</div>
 

@@ -50,7 +50,7 @@
     align-items:    center;
     height:         62px; /* Match edit-input. */
     font-size:      12px;
-    color:          var(--app-accent-color);
+    color:          var(--app-secondary-color);
   }
 
   #verified-wrapper[hidden] {
@@ -62,10 +62,7 @@
   }
 
   #avatar {
-    position: relative;
-    top:     -4px;
-    width:    64px;
-    height:   64px;
+    width: 64px;
   }
 
   .divider { 
@@ -74,10 +71,8 @@
   }
 
   h3 {
-    color:       var(--secondary-text-color);
     font-weight: normal;
     padding:     0px 16px;
-    transition:  opacity 0.2s ease-in;
   }
 
   #bottom-btns-container {
@@ -92,18 +87,18 @@
   }
 
   #save-all-btn {
-    background-color: var(--app-accent-color);
-    color:            var(--app-accent-color-text);
+    background-color: var(--app-secondary-color);
+    color:            var(--app-secondary-color-text);
   }
 
   #save-all-btn[disabled] {
     background-color: var(--app-disabled-color);
-    color:            var(--disabled-text-color);
+    color:            var(--app-disabled-text);
   }
 
   #delete-btn {
     background-color: var(--app-error-color);
-    color:            var(--constant-light-text, white);
+    color:            var(--app-error-color-text, white);
   }
 
   @media only screen and (min-width: 846px) {
@@ -126,6 +121,7 @@
                     on-header-overlay-back="__overlayBack"
                     on-overlay-reset="__reset">
 
+
   <responsive-image id="header-image"
                     slot="header-background-slot"
                     disable-auto-sizing
@@ -139,16 +135,23 @@
     SIGN OUT
   </paper-button>
 
+  <paper-icon-button icon="app-icons:wallpaper"
+                     slot="top-toolbar-buttons-slot"
+                     on-click="__changeBackgroundButtonClicked">
+  </paper-icon-button>
+
   <account-avatar id="avatar"
                   selectable 
                   slot="fab-slot"
                   src="[[user.photoURL]]"
-                  on-clicked-rippled="__avatarClicked">
+                  on-clicked-rippled="__avatarClickedRippled">
   </account-avatar>
+  
 
   <div id="content" 
        class="content" 
        slot="content">
+
     <div id="grid">
       <div class="grid-item">
         <h3>My Profile
@@ -271,6 +274,7 @@
 
 <account-photo-picker id="picker"
                       dark-mode="[[darkMode]]"
+                      type="[[_photoPickerType]]"
                       user="[[user]]">                     
 </account-photo-picker>
     
