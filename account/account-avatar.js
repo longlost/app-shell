@@ -34,15 +34,15 @@
   **/
 
 
-import {AppElement, html} from '@longlost/app-element/app-element.js';
-import {consumeEvent}     from '@longlost/utils/utils.js';
+import {AppElement, html} from '@longlost/app-core/app-element.js';
+import {consumeEvent}     from '@longlost/app-core/utils.js';
 import htmlString         from './account-avatar.html';
-import '@longlost/app-icons/app-icons.js';
 import '@longlost/app-shared-styles/app-shared-styles.js';
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-image/iron-image.js';
 import '@polymer/paper-ripple/paper-ripple.js';
+import '../app-shell-icons.js';
 
 
 class AccountAvatar extends AppElement {

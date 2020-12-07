@@ -21,12 +21,11 @@
   *
   **/
 
-import {appUserAndData}    from 'config.js';
-import {firebase}          from '../boot/boot.js';
-import {message, schedule} from '@longlost/utils/utils.js';
-import {AppElement, html}  from '@longlost/app-element/app-element.js';
-import htmlString          from './app-auth.html';
-import 'firebase/auth';
+import {appUserAndData}             from 'config.js';
+import {AppElement, html}           from '@longlost/app-core/app-element.js';
+import {firebase, loadFirebaseAuth} from '@longlost/app-core/boot/boot.js';
+import {message, schedule}          from '@longlost/app-core/utils.js';
+import htmlString                   from './app-auth.html';
 import '@longlost/app-overlays/app-modal.js';
 import '@polymer/paper-button/paper-button.js';
 // lazy loading signinModal for better first paint.
@@ -62,6 +61,16 @@ class AppAuth extends AppElement {
     return [
       '__userChanged(_user)'
     ];
+  }
+
+
+  constructor() {
+    super();
+
+    // This function allows the firebase dependency to be
+    // centralized in 'app-core' alone, making version
+    // maintenance easier.
+    loadFirebaseAuth();
   }
 
 

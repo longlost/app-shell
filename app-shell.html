@@ -5,7 +5,7 @@
     display: block;
 
     --drawer-background-color: var(--app-background-color);
-    --drawer-color:            var(--dark-text-color);
+    --drawer-color:            var(--app-dark-text);
     --header-background-color: var(--app-primary-color);
     --header-color:            var(--app-primary-color-text);
     --header-background-image: 'url(#)';
@@ -16,12 +16,12 @@
       display:         block;
       padding:         0px 16px;
       text-decoration: none;
-      color:           var(--secondary-text-color);
+      color:           var(--app-secondary-text);
       line-height:     40px;
     };
 
     --drawer-item-selected-mixin: {
-      color:       var(--dark-text-color);
+      color:       var(--app-dark-text);
       font-weight: bold;
     };
   }
@@ -105,7 +105,7 @@
 
   a {
     text-decoration: none;
-    color:           var(--secondary-text-color);
+    color:           var(--app-secondary-text);
   }
 
   .drawer-list a.iron-selected {
@@ -119,7 +119,7 @@
   .show-divider {
     margin-top: 12px;
     padding:    16px 0px;
-    border-top: 2px solid var(--divider-color);
+    border-top: 2px solid var(--app-divider-color);
   }
 
   #accountIconBtnImg {
@@ -200,12 +200,12 @@
   }
 
   .toasts-w-btn paper-button {
-    color: var(--app-accent-color);
+    color: var(--app-secondary-color);
   }
 
   .toasts-w-btn paper-button.cta {
-    background-color: var(--app-accent-color);
-    color:            var(--app-accent-color-text);
+    background-color: var(--app-secondary-color);
+    color:            var(--app-secondary-color-text);
   }
 
 </style>
@@ -290,7 +290,7 @@
                   if="[[!noUsers]]">
           <div class="drawer-item" 
                on-click="__drawerAccountClicked">
-            <iron-icon icon="app-icons:account-circle"></iron-icon>
+            <iron-icon icon="app-shell-icons:account-circle"></iron-icon>
             <span class="drawer-label">Account</span>
           </div>
         </template> 

@@ -17,19 +17,19 @@ import {appUserAndData} from 'config.js';
 import {
   AppElement,
   html
-} from '@longlost/app-element/app-element.js';
+} from '@longlost/app-core/app-element.js';
 
 import {
   listenOnce,
   schedule,
   wait,
   warn
-} from '@longlost/utils/utils.js';
+} from '@longlost/app-core/utils.js';
 
 import {setRemoveNestedTemplates} from '@polymer/polymer/lib/utils/settings.js';
 import {OverlayControlMixin}      from './overlay-control-mixin.js';
 import htmlString                 from './app-shell.html';
-import '@longlost/app-icons/app-icons.js';
+import '@longlost/app-core/app-icons.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
 import '@polymer/app-storage/app-localstorage/app-localstorage-document.js';
@@ -46,6 +46,7 @@ import '@polymer/iron-selector/iron-selector.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-toast/paper-toast.js';
+import './app-shell-icons.js';
 // account, services, settings, auth overlays are imported dynamically.
 
 
@@ -338,8 +339,8 @@ class AppShell extends OverlayControlMixin(AppElement) {
   
 
   __computeAccountButtonIcon(user) {
-    if (!user) { return 'app-icons:account-circle'; }
-    return 'app-icons:face'
+    if (!user) { return 'app-shell-icons:account-circle'; }
+    return 'app-shell-icons:face'
   }
 
 
@@ -538,7 +539,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
     if (value) {
       const {default: services} = await import(
         /* webpackChunkName: 'services' */ 
-        './services/services.js'
+        '@longlost/app-core/services/services.js'
       );
       services.enablePersistence();
     }

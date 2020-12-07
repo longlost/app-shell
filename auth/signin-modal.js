@@ -21,16 +21,26 @@ import {
   termsOfServiceUrl     
 } from 'config.js';
 
-import {firebase}              from '../boot/boot.js';
-import {AppElement, html}      from '@longlost/app-element/app-element.js';
-import {htmlLiteral}           from '@polymer/polymer/lib/utils/html-tag.js';
-import {hijackEvent, schedule} from '@longlost/utils/utils.js';
+import {
+  AppElement, 
+  html
+} from '@longlost/app-core/app-element.js';
+
+import {firebase} from '@longlost/app-core/boot/boot.js';
+
+import {
+  hijackEvent, 
+  schedule
+} from '@longlost/app-core/utils.js';
+
+import {htmlLiteral} from '@polymer/polymer/lib/utils/html-tag.js';
 
 // Disable webpack config 'style-loader' so 
 // these styles are not put in the document head.
 import styles          from '!css-loader!firebaseui/dist/firebaseui.css';
 import * as firebaseui from 'firebaseui';
 import '@longlost/app-overlays/app-modal.js';
+// 'services.js' lazy-loaded.
 
 
 class SigninModal extends AppElement {
@@ -199,7 +209,7 @@ class SigninModal extends AppElement {
 
             const {default: services} = await import(
               /* webpackChunkName: 'services' */ 
-              '../services/services.js'
+              '@longlost/app-core/services/services.js'
             );
 
             const anonymousUserData = await services.get({coll, doc: this.user.uid});

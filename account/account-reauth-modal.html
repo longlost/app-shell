@@ -1,18 +1,13 @@
 
 <style include="app-shared-styles">
 
-  .card-actions {
-    display:         flex;
-    justify-content: flex-end;
-  }
-
   #dismiss-btn {
-    color: var(--app-accent-color);
+    color: var(--app-secondary-color);
   }
 
   #reauth-btn {
-    background-color: var(--app-accent-color);
-    color:            var(--app-accent-color-text);
+    background-color: var(--app-secondary-color);
+    color:            var(--app-secondary-color-text);
   }
 
 </style>
@@ -30,21 +25,21 @@
       Please reauthenticate if you wish to continue.
     </p>
   </div>
+  
+  <paper-button id="dismiss-btn"
+                slot="card-actions-slot"
+                on-click="__dismissButtonClicked">
+    DISMISS
+  </paper-button>
 
-  <div class="card-actions" 
-       slot="card-actions-slot">    
-    <paper-button id="dismiss-btn" 
-                  on-click="__dismissButtonClicked">
-      DISMISS
-    </paper-button>
-    <paper-button id="reauth-btn"
-                  class="shared-paper-button-with-icon"
-                  on-click="__reauthButtonClicked">
-      <iron-icon icon="app-icons:account-circle"
-                 class="shared-iron-icon-inside-paper-button">
-      </iron-icon>
-      CONTINUE
-    </paper-button>        
-  </div>
+  <paper-button id="reauth-btn"
+                class="shared-paper-button-with-icon"
+                slot="card-actions-slot"
+                on-click="__reauthButtonClicked">
+    <iron-icon icon="app-shell-icons:account-circle"
+               class="shared-iron-icon-inside-paper-button">
+    </iron-icon>
+    CONTINUE
+  </paper-button>
   
 </app-modal>
