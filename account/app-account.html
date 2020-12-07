@@ -135,7 +135,7 @@
     SIGN OUT
   </paper-button>
 
-  <paper-icon-button icon="app-icons:wallpaper"
+  <paper-icon-button icon="app-shell-icons:wallpaper"
                      slot="top-toolbar-buttons-slot"
                      on-click="__changeBackgroundButtonClicked">
   </paper-icon-button>
@@ -159,13 +159,13 @@
         </h3>
         <div id="verified-wrapper"
              hidden="[[!user.emailVerified]]">
-          <iron-icon icon="app-icons:verified-user"></iron-icon>
+          <iron-icon icon="app-shell-icons:verified-user"></iron-icon>
           <div>
             Verified
           </div>
         </div>
 
-        <edit-input icon="label"
+        <edit-input icon="app-icons:label"
                     kind="displayName">
           <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
                        autocapitalize
@@ -176,7 +176,7 @@
           </paper-input>
         </edit-input>
 
-        <edit-input icon="security"
+        <edit-input icon="app-shell-icons:security"
                     kind="password">
           <paper-input id="passwordInput"
                        allowed-pattern="[^/\f/\n/\r/\t/\v]"
@@ -188,7 +188,7 @@
           </paper-input>
         </edit-input>
 
-        <edit-input icon="mail"
+        <edit-input icon="app-icons:mail"
                     kind="email">
           <paper-input id="emailInput"
                        allowed-pattern="[^/\s/\f/\n/\r/\t/\v]"
@@ -202,7 +202,7 @@
           </paper-input>
         </edit-input>
 
-        <edit-input icon="call"
+        <edit-input icon="app-icons:call"
                     kind="phoneNumber">
           <gold-phone-input auto-validate
                             label="Phone Number"

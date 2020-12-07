@@ -15,7 +15,7 @@
   **/
 
 
-import {schedule} from '@longlost/utils/utils.js';
+import {schedule} from '@longlost/app-core/utils.js';
 
 
 export const OverlayControlMixin = superClass => {

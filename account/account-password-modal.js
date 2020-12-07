@@ -14,16 +14,14 @@
   *
   **/
 
-import {
-  AppElement,
-  html
-}                 from '@longlost/app-element/app-element.js';
-import htmlString from './account-password-modal.html';
+import {AppElement, html} from '@longlost/app-core/app-element.js';
+import htmlString         from './account-password-modal.html';
+import '@longlost/app-core/app-shared-styles.js';
 import '@longlost/app-overlays/app-modal.js';
-import '@longlost/app-shared-styles/app-shared-styles.js';
 import '@longlost/icon-to-spinner/icon-to-spinner.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-button/paper-button.js';
+import '../app-shell-icons.js';
 
 
 class AccountPasswordModal extends AppElement {

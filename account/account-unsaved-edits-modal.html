@@ -1,18 +1,13 @@
 
 <style>
 
-  .card-actions {
-    display:         flex;
-    justify-content: flex-end;
-  }
-
   #exit-anyway-btn {    
-    color: var(--app-accent-color);
+    color: var(--app-secondary-color);
   }
 
   #save-all-btn {
-    background-color: var(--app-accent-color);
-    color:            var(--app-accent-color-text);
+    background-color: var(--app-secondary-color);
+    color:            var(--app-secondary-color-text);
   }
 
 </style>
@@ -33,17 +28,16 @@
       Do you want to exit without saving, or would you like to save your changes?
     </p>
   </div>
-
-  <div class="card-actions" 
-       slot="card-actions-slot">
-    <paper-button id="exit-anyway-btn" 
-                  on-click="__exitAnywayButtonClicked">
-      EXIT ANYWAY
-    </paper-button>  
-    <paper-button id="save-all-btn" 
-                  on-click="__saveAllButtonClicked">
-      SAVE ALL
-    </paper-button>        
-  </div>
+  
+  <paper-button id="exit-anyway-btn"
+                slot="card-actions-slot"
+                on-click="__exitAnywayButtonClicked">
+    EXIT ANYWAY
+  </paper-button>  
+  <paper-button id="save-all-btn"
+                slot="card-actions-slot" 
+                on-click="__saveAllButtonClicked">
+    SAVE ALL
+  </paper-button>  
   
 </app-modal>

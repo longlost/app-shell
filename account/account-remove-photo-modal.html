@@ -7,7 +7,7 @@
   
   #remove-btn {
     background-color: var(--app-error-color);
-    color:            var(--constant-light-text, white);
+    color:            var(--app-error-color-text, white);
   }
 
 </style>
@@ -26,17 +26,17 @@
       Select "<strong>Manage Photos</strong>" to delete and edit photos.
     </p>
   </div>
-
-  <div class="card-actions" 
-       slot="card-actions-slot">
-    <paper-button id="dismiss-btn" 
-                  on-click="__dismissButtonClicked">
-      DISMISS
-    </paper-button>  
-    <paper-button id="remove-btn"
-                  on-click="__removeButtonClicked">
-      REMOVE
-    </paper-button>  
-  </div>
+  
+  <paper-button id="dismiss-btn"
+                slot="card-actions-slot"
+                on-click="__dismissButtonClicked">
+    DISMISS
+  </paper-button> 
+   
+  <paper-button id="remove-btn"
+                slot="card-actions-slot"
+                on-click="__removeButtonClicked">
+    REMOVE
+  </paper-button> 
 
 </app-modal>

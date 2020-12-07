@@ -14,15 +14,15 @@
 // Must use module resolution in webpack config and include app.config.js file in root
 // of src folder (ie. resolve: {modules: [path.resolve(__dirname, 'src'), 'node_modules'],})
 import {appUserAndData}   from 'config.js';
-import {AppElement, html} from '@longlost/app-element/app-element.js';
+import {AppElement, html} from '@longlost/app-core/app-element.js';
 import htmlString         from './app-settings.html';
-import '@longlost/app-icons/app-icons.js';
+import '@longlost/app-core/app-shared-styles.js';
 import '@longlost/app-overlays/app-header-overlay.js';
 import '@longlost/app-overlays/app-modal.js';
-import '@longlost/app-shared-styles/app-shared-styles.js';
 import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/iron-icon/iron-icon.js';
+import '../app-shell-icons.js';
 
 
 class AppSettings extends AppElement {

@@ -12,12 +12,10 @@
   *
   **/
 
-import './boot/boot.js';
+import '@longlost/app-core/boot/boot.js';
 
-
-import {AppElement}       from '@longlost/app-element/app-element.js';
-import {listenOnce, warn} from '@longlost/utils/utils.js';
-import '@longlost/app-icons/app-icons.js';
+import {AppElement}       from '@longlost/app-core/app-element.js';
+import {listenOnce, warn} from '@longlost/app-core/utils.js';
 import './app-shell.js';
 
 

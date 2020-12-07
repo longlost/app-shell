@@ -7,7 +7,7 @@
   
   #delete-btn {
     background-color: var(--app-error-color);
-    color:            var(--constant-light-text, white);
+    color:            var(--app-error-color-text, white);
   }
 
 </style>
@@ -27,19 +27,20 @@
     </p>
   </div>
 
-  <div slot="card-actions-slot">
-    <paper-button id="dismiss-btn" 
-                  on-click="__dismissButtonClicked">
-      DISMISS
-    </paper-button>  
-    <paper-button id="delete-btn"
-                  class="shared-paper-button-with-icon"
-                  on-click="__deleteButtonClicked">
-      <iron-icon icon="app-icons:delete-forever"
-                 class="shared-iron-icon-inside-paper-button">
-      </iron-icon>
-      DELETE
-    </paper-button>           
-  </div>
+  <paper-button id="dismiss-btn"
+                slot="card-actions-slot"
+                on-click="__dismissButtonClicked">
+    DISMISS
+  </paper-button>
+  
+  <paper-button id="delete-btn"
+                class="shared-paper-button-with-icon"
+                slot="card-actions-slot"
+                on-click="__deleteButtonClicked">
+    <iron-icon icon="app-icons:delete-forever"
+               class="shared-iron-icon-inside-paper-button">
+    </iron-icon>
+    DELETE
+  </paper-button> 
 
 </app-modal>

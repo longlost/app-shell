@@ -17,29 +17,30 @@
 import {
   AppElement, 
   html
-} from '@longlost/app-element/app-element.js';
+} from '@longlost/app-core/app-element.js';
 
 import {
   confirm,
   message,
   schedule,
   warn
-} from '@longlost/utils/utils.js';
+} from '@longlost/app-core/utils.js';
 
-import services   from '../services/services.js';
+import services   from '@longlost/app-core/services/services.js';
 import htmlString from './app-account.html';
-import '@longlost/app-icons/app-icons.js';
+import '@longlost/app-core/app-icons.js';
+import '@longlost/app-core/app-shared-styles.js';
 import '@longlost/app-images/responsive-image.js';
 import '@longlost/app-inputs/edit-input.js';
 import '@longlost/app-inputs/shipping-inputs.js';
 import '@longlost/app-overlays/app-header-overlay.js';
-import '@longlost/app-shared-styles/app-shared-styles.js';
 import '@longlost/app-spinner/app-spinner.js';
 import '@polymer/gold-phone-input/gold-phone-input.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-input/paper-input.js';
+import '../app-shell-icons.js';
 import './account-avatar.js';
 // delete-modal, password-modal, reauth-modal, unsaved-edits-modal
 // and account-photo-picker dynamically imported.

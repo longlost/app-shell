@@ -34,15 +34,15 @@
   **/
 
 
-import {AppElement, html} from '@longlost/app-element/app-element.js';
+import {AppElement, html} from '@longlost/app-core/app-element.js';
 
 import {
   hijackEvent,
   message, 
   warn
-} from '@longlost/utils/utils.js';
+} from '@longlost/app-core/utils.js';
 
-import services   from '@longlost/app-shell/services/services.js';
+import services   from '@longlost/app-core/services/services.js';
 import htmlString from './account-photo-picker.html';
 import '@longlost/app-camera/picker/acs-picker-overlay.js';
 import '@polymer/paper-button/paper-button.js';

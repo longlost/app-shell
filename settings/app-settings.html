@@ -23,11 +23,11 @@
   }
 
   .disabled {
-    color: var(--disabled-text-color);
+    color: var(--app-disabled-text);
   }
 
   .highlighted {
-    color: var(--app-accent-color);
+    color: var(--app-secondary-color);
   }
 
   iron-icon {
@@ -36,22 +36,22 @@
 
   paper-toggle-button {
     margin-left: 8px;
-    --paper-toggle-button-checked-button-color: var(--app-accent-color);
-    --paper-toggle-button-checked-bar-color:    var(--app-accent-color);
-    --paper-toggle-button-checked-ink-color:    var(--app-accent-color);
-    --paper-toggle-button-label-color:          var(--dark-text-color);
+    --paper-toggle-button-checked-button-color: var(--app-secondary-color);
+    --paper-toggle-button-checked-bar-color:    var(--app-secondary-color);
+    --paper-toggle-button-checked-ink-color:    var(--app-secondary-color);
+    --paper-toggle-button-label-color:          var(--app-dark-text);
   }
 
   paper-toggle-button[disabled] {
-    --paper-toggle-button-label-color: var(--disabled-text-color);
+    --paper-toggle-button-label-color: var(--app-disabled-text);
   }
 
   p {
-    color: var(--secondary-text-color);
+    color: var(--app-secondary-text);
   }
 
   app-modal {
-    --modal-card-header-color: var(--dark-text-color);
+    --modal-card-header-color: var(--app-dark-text);
   }
 
   .modal-card-content {
@@ -65,17 +65,17 @@
   }
 
   .confirm-btn {
-    background-color: var(--app-accent-color);
-    color:            var(--app-accent-color-text);
+    background-color: var(--app-secondary-color);
+    color:            var(--app-secondary-color-text);
   }
 
   .confirm-btn[disabled] {
     background-color: var(--app-disabled-color);
-    color:            var(--disabled-text-color);
+    color:            var(--app-disabled-text);
   }
 
   .dismiss-btn {
-    color: var(--app-accent-color);
+    color: var(--app-secondary-color);
   }
 
   *[hidden] {
@@ -99,7 +99,7 @@
         <div class$="row [[__computeHighlightedToggleClass(autoColorMode)]]"
              hidden="[[hideAutoColorMode]]">
           <span class="row-title">
-            <iron-icon icon="app-icons:settings-brightness"></iron-icon>
+            <iron-icon icon="app-shell-icons:settings-brightness"></iron-icon>
             Use Device Color Mode
           </span>
           <paper-toggle-button checked="[[autoColorMode]]"
@@ -110,7 +110,7 @@
 
         <div class="row">
           <span class$="row-title [[__computeDisabledClass(autoColorMode)]]">
-            <iron-icon icon="app-icons:brightness-medium"></iron-icon>
+            <iron-icon icon="app-shell-icons:brightness-medium"></iron-icon>
             Dark Mode
           </span>
           <paper-toggle-button checked="[[darkMode]]"
@@ -129,7 +129,7 @@
 
         <div class$="row [[__computeHighlightedToggleClass(persistence)]]">
           <span class="row-title">
-            <iron-icon icon="app-icons:security"></iron-icon>
+            <iron-icon icon="app-shell-icons:security"></iron-icon>
             Trusted Device
           </span>
           <paper-toggle-button checked="[[persistence]]"
