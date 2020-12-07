@@ -37,7 +37,7 @@
 import {AppElement, html} from '@longlost/app-core/app-element.js';
 import {consumeEvent}     from '@longlost/app-core/utils.js';
 import htmlString         from './account-avatar.html';
-import '@longlost/app-shared-styles/app-shared-styles.js';
+import '@longlost/app-core/app-shared-styles.js';
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-image/iron-image.js';

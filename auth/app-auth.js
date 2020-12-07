@@ -21,11 +21,11 @@
   *
   **/
 
-import {appUserAndData}             from 'config.js';
-import {AppElement, html}           from '@longlost/app-core/app-element.js';
-import {firebase, loadFirebaseAuth} from '@longlost/app-core/boot/boot.js';
-import {message, schedule}          from '@longlost/app-core/utils.js';
-import htmlString                   from './app-auth.html';
+import {appUserAndData}    from 'config.js';
+import {AppElement, html}  from '@longlost/app-core/app-element.js';
+import {loadFirebaseAuth}  from '@longlost/app-core/boot/boot.js';
+import {message, schedule} from '@longlost/app-core/utils.js';
+import htmlString          from './app-auth.html';
 import '@longlost/app-overlays/app-modal.js';
 import '@polymer/paper-button/paper-button.js';
 // lazy loading signinModal for better first paint.
@@ -64,16 +64,6 @@ class AppAuth extends AppElement {
   }
 
 
-  constructor() {
-    super();
-
-    // This function allows the firebase dependency to be
-    // centralized in 'app-core' alone, making version
-    // maintenance easier.
-    loadFirebaseAuth();
-  }
-
-
   connectedCallback() {
     super.connectedCallback();
 
@@ -86,7 +76,7 @@ class AppAuth extends AppElement {
   }
 
 
-  __firebaseAuthChanged() {
+  __firebaseAuthChanged(firebase) {
     firebase.auth().onAuthStateChanged(async user => {
 
       if (user) {
@@ -105,6 +95,9 @@ class AppAuth extends AppElement {
 
 
   async __initFirebase() {
+
+    const firebase = await loadFirebaseAuth();
+
     const persistenceType = () => {
 
       // local:   User and data reset only when signed out explicitly.
@@ -121,7 +114,7 @@ class AppAuth extends AppElement {
 
     await firebase.auth().setPersistence(persistenceType());
 
-    this.__firebaseAuthChanged();
+    this.__firebaseAuthChanged(firebase);
   }
 
   // Anonymous user upgraded account.
@@ -192,6 +185,8 @@ class AppAuth extends AppElement {
 
   async signOut() {
     try {
+
+      const firebase = await loadFirebaseAuth();
 
       await firebase.auth().signOut();
 
