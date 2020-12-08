@@ -35,9 +35,7 @@ import {
 
 import {htmlLiteral} from '@polymer/polymer/lib/utils/html-tag.js';
 
-// Disable webpack config 'style-loader' so 
-// these styles are not put in the document head.
-import styles          from '!css-loader!firebaseui/dist/firebaseui.css';
+import styles          from 'firebaseui/dist/firebaseui.css';
 import * as firebaseui from 'firebaseui';
 import '@longlost/app-overlays/app-modal.js';
 // 'services.js' lazy-loaded.
@@ -325,7 +323,7 @@ class SigninModal extends AppElement {
     await this.$.modal.open();
 
     if (!this._firebaseUi) {
-      await this.__setupFirebaseUI();
+      this.__setupFirebaseUI();
     }
 
     if (!this._firebaseUi.isPendingRedirect()) {
