@@ -21,11 +21,11 @@
   *
   **/
 
-import {appUserAndData}    from 'config.js';
-import {AppElement, html}  from '@longlost/app-core/app-element.js';
-import {loadFirebaseAuth}  from '@longlost/app-core/boot/boot.js';
-import {message, schedule} from '@longlost/app-core/utils.js';
-import htmlString          from './app-auth.html';
+import {appUserAndData}             from 'config.js';
+import {AppElement, html}           from '@longlost/app-core/app-element.js';
+import {firebase, loadFirebaseAuth} from '@longlost/app-core/boot/boot.js';
+import {message, schedule}          from '@longlost/app-core/utils.js';
+import htmlString                   from './app-auth.html';
 import '@longlost/app-overlays/app-modal.js';
 import '@polymer/paper-button/paper-button.js';
 // lazy loading signinModal for better first paint.
@@ -96,7 +96,7 @@ class AppAuth extends AppElement {
 
   async __initFirebase() {
 
-    const firebase = await loadFirebaseAuth();
+    await loadFirebaseAuth();
 
     const persistenceType = () => {
 
@@ -185,8 +185,6 @@ class AppAuth extends AppElement {
 
   async signOut() {
     try {
-
-      const firebase = await loadFirebaseAuth();
 
       await firebase.auth().signOut();
 
