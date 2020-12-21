@@ -30,7 +30,8 @@ import services   from '@longlost/app-core/services/services.js';
 import htmlString from './app-account.html';
 import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.js';
-import '@longlost/app-images/responsive-image.js';
+import '@longlost/app-images/app-image.js';
+import '@longlost/app-images/avatar-image.js';
 import '@longlost/app-inputs/edit-input.js';
 import '@longlost/app-inputs/shipping-inputs.js';
 import '@longlost/app-overlays/app-header-overlay.js';
@@ -41,7 +42,6 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-input/paper-input.js';
 import '../app-shell-icons.js';
-import './account-avatar.js';
 // delete-modal, password-modal, reauth-modal, unsaved-edits-modal
 // and account-photo-picker dynamically imported.
 
@@ -101,6 +101,11 @@ class AppAccount extends AppElement {
       _credit: {
         type: String,
         value: '0.00'
+      },
+
+      _darkModeClass: {
+        type: String,
+        computed: '__computeDarkModeClass(darkMode)'
       },
 
       // Regular firestore user data inputs.
@@ -183,8 +188,8 @@ class AppAccount extends AppElement {
   }
 
 
-  __computeHideCredit(credit) {
-    return !credit || Number(credit) <= 0;
+  __computeDarkModeClass(darkMode) {
+    return darkMode ? 'dark' : '';
   }
 
 
@@ -192,23 +197,23 @@ class AppAccount extends AppElement {
     return displayName ? displayName : 'No display name';
   }
 
-  __computeEmailPlaceholder(email) {
-    return email ? email : 'No email';
-  }
-
 
   __computeEmailLabel(verified) {
     return verified ? 'Email Verified' : 'Email';
   }
 
-
-  __computePhonePlaceholder(number) {
-    return number ? number : 'No phone number';
+  __computeEmailPlaceholder(email) {
+    return email ? email : 'No email';
   }
 
 
-  __computePhotoURLPlaceholder(url) {
-    return url ? url : 'No profile photo';
+  __computeHideCredit(credit) {
+    return !credit || Number(credit) <= 0;
+  }
+
+
+  __computePhonePlaceholder(number) {
+    return number ? number : 'No phone number';
   }
 
 
@@ -342,7 +347,7 @@ class AppAccount extends AppElement {
   }
 
 
-  async __avatarClickedRippled() {
+  __avatarClicked() {
     this._photoPickerType = 'avatar';
     this.__openPhotoPicker();
   }

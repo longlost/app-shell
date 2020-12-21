@@ -42,12 +42,15 @@ import {
   warn
 } from '@longlost/app-core/utils.js';
 
+import {allProcessingRan} from '@longlost/app-core/img-utils.js';
+
 import services   from '@longlost/app-core/services/services.js';
 import htmlString from './account-photo-picker.html';
 import '@longlost/app-camera/picker/acs-picker-overlay.js';
+import '@longlost/app-images/app-image.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
-import './account-avatar.js';
+import '../app-shell-icons.js';
 
 
 class AccountPhotoPicker extends AppElement {
@@ -72,6 +75,11 @@ class AccountPhotoPicker extends AppElement {
 
       user: Object,
 
+      _aspect: {
+        type: String,
+        computed: '__computeAspect(type)'
+      },
+
       _disableBtns: {
         type: Boolean,
         value: true,
@@ -94,6 +102,11 @@ class AccountPhotoPicker extends AppElement {
         type: Boolean,
         value: true,
         computed: '__computeHideSaveBtn(user, _selected)'
+      },
+
+      _imgIcon: {
+        type: String,
+        computed: '__computeImgIcon(type)'
       },
 
       _opened: Boolean,
@@ -133,6 +146,11 @@ class AccountPhotoPicker extends AppElement {
   }
 
 
+  __computeAspect(type) {
+    return type === 'avatar' ? 'square' : 'landscape';
+  }
+
+
   __computeDisableBtns(user, processing) {
     return (!user || processing);
   }
@@ -155,24 +173,23 @@ class AccountPhotoPicker extends AppElement {
   }
 
 
+  __computeImgIcon(type) {
+    return type === 'avatar' ? 'app-shell-icons:account-circle' : undefined;
+  }
+
+
   __computeSrc(type, data, selected, opened) {
-    if (!opened) { return '#'; }
+    if (!opened) { return; }
 
-    if (selected?.optimized) { return selected.optimized; }
+    if (selected) { return selected; }
 
-    if (selected?.original) { return selected.original; }
-
-    if (selected?._tempUrl) { return selected._tempUrl; }
-
-    if (!data || !type) { return '#'; }
+    if (!data || !type) { return; }
 
     const photoData = data[type];
 
-    if (photoData?.optimized) { return photoData.optimized; }
+    if (photoData) { return photoData; }
 
-    if (photoData?.original) { return photoData.original; }
-
-    return '#';
+    return;
   }
 
 
@@ -288,12 +305,7 @@ class AccountPhotoPicker extends AppElement {
 
     this._selected = event.detail.value;
 
-    const {optimized, optimizedError, thumbnail, thumbnailError} = this._selected;
-
-    const optimizedDone = Boolean(optimized || optimizedError);
-    const thumbnailDone = Boolean(thumbnail || thumbnailError);
-
-    if (!optimizedDone || !thumbnailDone) {
+    if (!allProcessingRan(this._selected)) {
       this.__startSelectedItemSub();
     }
   }
@@ -360,6 +372,16 @@ class AccountPhotoPicker extends AppElement {
           [this.type]: this._selected
         }
       });
+
+      if (this.type === 'avatar') {
+
+        const {optimized, thumbnail} = this._selected;
+        const photoURL = thumbnail || optimized;
+
+        if (photoURL) {
+          await this.user.updateProfile({photoURL});
+        }
+      }
 
       this.__cleanupSelected();
 

@@ -8,9 +8,15 @@
   }
 
   #header-image {
-    width:            100%;
-    height:           100%;
-    background-color: var(--app-primary-color);
+    width:  100%;
+    height: 100%;
+    --app-image-background-color: var(--app-primary-color);
+  }
+
+  avatar-image {
+    width: 64px;
+
+    background-color: var(--app-secondary-color);
   }
   
   .content {
@@ -59,10 +65,6 @@
 
   #verified-wrapper iron-icon {
     margin: 0px 16px;
-  }
-
-  #avatar {
-    width: 64px;
   }
 
   .divider { 
@@ -122,13 +124,12 @@
                     on-overlay-reset="__reset">
 
 
-  <responsive-image id="header-image"
-                    slot="header-background-slot"
-                    disable-auto-sizing
-                    responsive="[[_headerImg]]"
-                    sizing="cover"
-                    alt="User account background">
-  </responsive-image>
+  <app-image id="header-image"
+             alt="User account background."
+             quality="optimized"
+             slot="header-background-slot"
+             src="[[_headerImg]]">
+  </app-image>
 
   <paper-button slot="top-toolbar-buttons-slot" 
                 on-click="__signOutButtonClicked">
@@ -140,12 +141,12 @@
                      on-click="__changeBackgroundButtonClicked">
   </paper-icon-button>
 
-  <account-avatar id="avatar"
-                  selectable 
-                  slot="fab-slot"
-                  src="[[user.photoURL]]"
-                  on-clicked-rippled="__avatarClickedRippled">
-  </account-avatar>
+  <avatar-image button
+                raised
+                slot="fab-slot"
+                src="[[user.photoURL]]"
+                on-avatar-image-clicked="__avatarClicked">
+  </avatar-image>
   
 
   <div id="content" 

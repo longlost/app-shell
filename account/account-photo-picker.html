@@ -14,9 +14,19 @@
 		margin:  		 16px;
 	}
 
-	account-avatar {
+	app-image {
 		grid-area: preview;
-		margin: 	 16px 32px;
+		margin: 	 16px;
+	}
+
+	.avatar {
+		margin: 16px 32px;
+
+		--app-image-background-color: var(--app-secondary-color);
+    --app-image-border-radius: 	 	50%;
+    --app-image-icon-height:      100%;
+    --app-image-icon-width:       100%;
+    --app-image-icon-opacity:     1; 
 	}
 
 	#processing {
@@ -109,7 +119,13 @@
 
 	  <div id="grid">
 
-	  	<account-avatar src="[[_src]]"></account-avatar>
+	  	<app-image aspect="[[_aspect]]"
+	  						 class$="[[type]]"
+	  						 icon="[[_imgIcon]]"
+	  						 quality="optimized"
+	  						 raised 
+	  						 src="[[_src]]">
+	  	</app-image>
 
 	  	<div id="processing"
 	  			 hidden="[[!_processing]]">

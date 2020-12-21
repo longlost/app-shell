@@ -122,21 +122,13 @@
     border-top: 2px solid var(--app-divider-color);
   }
 
-  #accountIconBtnImg {
-    height:           24px;
-    width:            24px;
-    position:         absolute;
-    top:              8px;
-    left:             8px;
-    background-color: var(--app-primary-color);
-    border-radius:    50%;
-    pointer-events:   none;
-  }
+  avatar-image {
+    width: 40px;
 
-  .hide-account-img {
-    display: none;
+    --avatar-image-icon-height: 28px;
+    --avatar-image-icon-width:  28px;
   }
-
+ 
   /* Cannot use app-toolbar with paper-tabs set to sticky on iOS Safari. */
   #bottomToolbar {
     position:  relative;
@@ -347,20 +339,13 @@
 
         <slot name="top-toolbar-slot"></slot>
 
-        <div hidden="[[noUsers]]">
-          <paper-icon-button id="account-icon-btn" 
-                             icon="[[__computeAccountButtonIcon(currentUser)]]"
-                             on-click="__userButtonClicked"
-                             aria-label="Account sign in or sign up.">
-          </paper-icon-button>
-          <iron-image id="accountIconBtnImg"
-                      class$="[[__computeAccountIconButtonImgClass(currentUser)]]"
-                      preload 
-                      fade 
-                      sizing="cover"
-                      src="[[__computeAccountIconButtonSrc(currentUser)]]">
-          </iron-image>
-        </div>
+        <avatar-image alt="Account sign in or sign up."
+                      button
+                      hidden="[[noUsers]]"
+                      icon="[[__computeAccountButtonIcon(currentUser)]]"
+                      src="[[__computeAccountButtonSrc(currentUser)]]"
+                      on-avatar-image-clicked="__avatarClicked">
+        </avatar-image>
 
       </app-toolbar>
 

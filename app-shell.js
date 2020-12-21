@@ -20,6 +20,7 @@ import {
 } from '@longlost/app-core/app-element.js';
 
 import {
+  hijackEvent,
   listenOnce,
   schedule,
   wait,
@@ -30,6 +31,7 @@ import {setRemoveNestedTemplates} from '@polymer/polymer/lib/utils/settings.js';
 import {OverlayControlMixin}      from './overlay-control-mixin.js';
 import htmlString                 from './app-shell.html';
 import '@longlost/app-core/app-icons.js';
+import '@longlost/app-images/avatar-image.js';
 import '@polymer/app-route/app-location.js';
 import '@polymer/app-route/app-route.js';
 import '@polymer/app-storage/app-localstorage/app-localstorage-document.js';
@@ -290,7 +292,6 @@ class AppShell extends OverlayControlMixin(AppElement) {
     if (this.noUsers) { return; }
 
     this.__addUserAccountListeners();
-    this.__fixAccountBtnForSafari();
 
     await schedule();
     builtInLazyImport('auth');
@@ -339,17 +340,12 @@ class AppShell extends OverlayControlMixin(AppElement) {
   
 
   __computeAccountButtonIcon(user) {
-    if (!user) { return 'app-shell-icons:account-circle'; }
-    return 'app-shell-icons:face'
+    if (!user) { return 'app-shell-icons:face'; }
+    return 'app-shell-icons:account-circle';
   }
 
 
-  __computeAccountIconButtonImgClass(user) {
-    return user && user.photoURL ? '' : 'hide-account-img';
-  }
-
-
-  __computeAccountIconButtonSrc(user) {
+  __computeAccountButtonSrc(user) {
     return user ? user.photoURL : '';
   }
 
@@ -441,20 +437,20 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
     if (dark) {
       ShadyCSS.styleDocument({
-        '--app-background-color': 'var(--dark-mode-background)',
-        '--app-body-color':       'var(--dark-mode-body)',
-        '--dark-text-color':      'var(--dark-mode-dark-text)',
-        '--light-text-color':     'var(--dark-mode-light-text)',
-        '--text-truncate-fade':   'var(--dark-mode-truncate)'
+        '--app-background-color':   'var(--dark-mode-background)',
+        '--app-body-color':         'var(--dark-mode-body)',
+        '--app-dark-text':          'var(--dark-mode-dark-text)',
+        '--app-light-text':         'var(--dark-mode-light-text)',
+        '--app-text-truncate-fade': 'var(--dark-mode-truncate)'
       });
     }
     else {
       ShadyCSS.styleDocument({
-        '--app-background-color': 'var(--light-mode-background)',
-        '--app-body-color':       'var(--light-mode-body)',
-        '--dark-text-color':      'var(--light-mode-dark-text)',
-        '--light-text-color':     'var(--light-mode-light-text)',
-        '--text-truncate-fade':   'var(--light-mode-truncate)'
+        '--app-background-color':   'var(--light-mode-background)',
+        '--app-body-color':         'var(--light-mode-body)',
+        '--app-dark-text':          'var(--light-mode-dark-text)',
+        '--app-light-text':         'var(--light-mode-light-text)',
+        '--app-text-truncate-fade': 'var(--light-mode-truncate)'
       });
     }
 
@@ -571,12 +567,6 @@ class AppShell extends OverlayControlMixin(AppElement) {
     this.addEventListener('auth-userchanged',       this.__userChanged);
     this.addEventListener('auth-account-button',    this.__userAccount);      
     this.addEventListener('show-user-ui',           this.showAuthUI);
-  }
-
-
-  __fixAccountBtnForSafari() {
-    const accountImg = this.select('#sizedImgDiv', this.$.accountIconBtnImg);
-    accountImg.style.borderRadius = '50%';
   }
 
 
@@ -796,15 +786,10 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  async __userButtonClicked() {
-    try {
-      await this.clicked();
-      this.showAuthUI();
-    } 
-    catch (error) {
-      if (error === 'click debounced') { return; }
-      console.error(error);
-    }
+  __avatarClicked(event) {
+    hijackEvent(event);
+
+    this.showAuthUI();
   }
 
 
