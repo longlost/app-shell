@@ -75,6 +75,8 @@ class AccountPhotoPicker extends AppElement {
 
       user: Object,
 
+      userData: Object,
+
       _aspect: {
         type: String,
         computed: '__computeAspect(type)'
@@ -89,7 +91,7 @@ class AccountPhotoPicker extends AppElement {
       _hideRemoveBtn: {
         type: Boolean,
         value: true,
-        computed: '__computeHideRemoveBtn(type, _userData, _selected)'
+        computed: '__computeHideRemoveBtn(type, userData, _selected)'
       },
 
       _hideClearBtn: {
@@ -116,13 +118,18 @@ class AccountPhotoPicker extends AppElement {
         value: false
       },
 
+      _saveBtnText: {
+        type: String,
+        computed: '__computeSaveBtnText(type)'
+      },
+
       // The file object that was most recently selected from either
       // camera capture, uploaded file or chosen from saved photos.
       _selected: Object,
 
       _src: {
         type: String,
-        computed: '__computeSrc(type, _userData, _selected, _opened)'
+        computed: '__computeSrc(type, userData, _selected, _opened)'
       },
 
       _selectedItemUnsubscribe: Object,
@@ -130,9 +137,7 @@ class AccountPhotoPicker extends AppElement {
       _title: {
         type: String,
         computed: '__computeTitle(type)'
-      },
-
-      _userDataUnsubscribe: Object
+      }
 
     };
   }
@@ -140,8 +145,7 @@ class AccountPhotoPicker extends AppElement {
 
   static get observers() {
     return [
-      '__openedChanged(_opened)',
-      '__openedUserChanged(_opened, user)'
+      '__openedChanged(_opened)'
     ];
   }
 
@@ -174,7 +178,12 @@ class AccountPhotoPicker extends AppElement {
 
 
   __computeImgIcon(type) {
-    return type === 'avatar' ? 'app-shell-icons:account-circle' : undefined;
+    return type === 'avatar' ? 'app-shell-icons:account-circle' : 'app-image-icons:image';
+  }
+
+
+  __computeSaveBtnText(type) {
+    return type === 'avatar' ? 'SET AVATAR' : 'SET BACKGROUND';
   }
 
 
@@ -206,35 +215,12 @@ class AccountPhotoPicker extends AppElement {
   }
 
 
-  __unsubFromUserData() {
-    if (this._userDataUnsubscribe) {
-      this._userDataUnsubscribe();
-      this._userDataUnsubscribe = undefined;
-    }
-  }
-
-
   __openedChanged(opened) {
     if (!opened) {
       this.__unsubFromSelectedItem();
     }
-  }
 
-
-  __openedUserChanged(opened, user) {
-
-    if (opened && user) {
-      this.__startUserDataSub();
-      return;
-    }
-
-    // Clear out user's data if they log out,
-    // regardless of opened state.
-    if (!user) {
-      this._userData = undefined;
-    }
-    
-    this.__unsubFromUserData();
+    this.fire('account-photo-picker-opened-changed', {value: opened});
   }
 
 
@@ -269,29 +255,6 @@ class AccountPhotoPicker extends AppElement {
     this._selectedItemUnsubscribe = await services.subscribe({
       coll, 
       doc, 
-      callback, 
-      errorCallback
-    });
-  }
-
-
-  async __startUserDataSub() {
-
-    if (!this.user) { return; }
-
-    const {uid} = this.user;
-
-    const callback = data => {
-      this._userData = data;
-    };
-
-    const errorCallback = error => {
-      console.error(error);
-    };
- 
-    this._userDataUnsubscribe = await services.subscribe({
-      coll: 'users', 
-      doc:   uid, 
       callback, 
       errorCallback
     });
@@ -373,6 +336,9 @@ class AccountPhotoPicker extends AppElement {
         }
       });
 
+      // The 'core-updateProfilePhotos' cloud function will
+      // pick this up if the selected photo item has not
+      // been fully processed by this time.
       if (this.type === 'avatar') {
 
         const {optimized, thumbnail} = this._selected;
@@ -400,10 +366,12 @@ class AccountPhotoPicker extends AppElement {
     try {
       hijackEvent(event);
 
-      await services.deleteField({
+      await services.set({
         coll: `users`,
         doc:   this.user.uid,
-        field: this.type
+        data: {
+          [this.type]: null
+        }
       });
 
       if (this.type === 'avatar') {

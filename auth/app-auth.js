@@ -26,8 +26,12 @@ import {AppElement, html}           from '@longlost/app-core/app-element.js';
 import {firebase, loadFirebaseAuth} from '@longlost/app-core/boot/boot.js';
 import {message, schedule}          from '@longlost/app-core/utils.js';
 import htmlString                   from './app-auth.html';
+import '@longlost/app-core/app-shared-styles.js';
+import '@longlost/app-images/avatar-image.js';
 import '@longlost/app-overlays/app-modal.js';
+import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-button/paper-button.js';
+import '../app-shell-icons.js';
 // lazy loading signinModal for better first paint.
 
 
@@ -41,6 +45,8 @@ class AppAuth extends AppElement {
 
   static get properties() {
     return {
+
+      avatar: Object,
 
       //   user.displayName
       //   user.email
