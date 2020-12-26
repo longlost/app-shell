@@ -3,6 +3,8 @@
 
   #overlay {
     
+    --overlay-toolbar-vignette-opacity: 0.5;
+
     /* Match truncated text with main title truncate. */
     --overlay-bottom-toolbar-text-width: calc(100% - 96px); 
   }
@@ -19,17 +21,9 @@
     background-color: var(--app-secondary-color);
   }
   
-  .content {
+  #content {
     position:   relative;
     margin-top: 32px;
-    opacity:    0;
-    transform:  scale(0.97, 0.97);
-    transition: opacity 0.2s ease-in, transform 0.2s ease-out;
-  }
-
-  .content-enter {
-    opacity:   1;
-    transform: scale(1, 1);
   }
 
   #grid {
@@ -128,7 +122,7 @@
              alt="User account background."
              quality="optimized"
              slot="header-background-slot"
-             src="[[_headerImg]]">
+             src="[[_profileBackground]]">
   </app-image>
 
   <paper-button slot="top-toolbar-buttons-slot" 
@@ -144,13 +138,12 @@
   <avatar-image button
                 raised
                 slot="fab-slot"
-                src="[[user.photoURL]]"
+                src="[[_avatar]]"
                 on-avatar-image-clicked="__avatarClicked">
   </avatar-image>
   
 
   <div id="content" 
-       class="content" 
        slot="content">
 
     <div id="grid">
@@ -276,6 +269,8 @@
 <account-photo-picker id="picker"
                       dark-mode="[[darkMode]]"
                       type="[[_photoPickerType]]"
-                      user="[[user]]">                     
+                      user="[[user]]"
+                      user-data="[[_userData]]"
+                      on-account-photo-picker-opened-changed="__photoPickerOpenedChangedHandler">                    
 </account-photo-picker>
     

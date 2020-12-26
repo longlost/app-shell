@@ -21,6 +21,7 @@ import {
 
 import {
   confirm,
+  hijackEvent,
   message,
   schedule,
   warn
@@ -90,12 +91,21 @@ class AppAccount extends AppElement {
       // From app-user.
       user: Object,
 
-      // Must be webpack responsive-loader object.
-      headerImage: String,
+      // Should be a webpack responsive-loader image object.
+      //
+      // This is used as a branded placeholder only when the user 
+      // has not provided a personalized profile background photo.
+      headerImage: Object,
 
       headerSize: {
         type: Number,
         value: 4
+      },
+
+      // The most current user avatar photo item.
+      _avatar: {
+        type: Object,
+        computed: '__computeAvatar(_opened, user, _userData)'
       },
 
       _credit: {
@@ -107,6 +117,10 @@ class AppAccount extends AppElement {
         type: String,
         computed: '__computeDarkModeClass(darkMode)'
       },
+
+      // A pointer to the public 'headerImage' object so
+      // that the image is not loaded until after the first open.
+      _headerPlaceholderImg: Object,
 
       // Regular firestore user data inputs.
       _normalKeys: {
@@ -129,9 +143,16 @@ class AppAccount extends AppElement {
       // Save all flow control by password modal.
       _passwordPromiseResolver: Object,
 
+      _photoPickerOpened: Boolean,
+
       _photoPickerType: {
         type: String,
-        value: 'avatar' // Or 'background'
+        value: 'avatar' // Or 'background'.
+      },
+
+      _profileBackground: {
+        type: Object,
+        computed: '__computeProfileBackground(_opened, _headerPlaceholderImg, _userDataSnapshot, _userData)'
       },
 
       _unsavedEdits: {
@@ -144,7 +165,14 @@ class AppAccount extends AppElement {
         value: () => ({})
       },
 
-      _userMeta: {
+      // From a live subscription, which
+      // is only started if the photo picker
+      // has been opened.
+      _userData: Object,
+
+      // An initial recording of the user's data.
+      // Used to allow applied edits to be undone.
+      _userDataSnapshot: {
         type: Object,
         value: () => ({
           phoneNumber: null,
@@ -156,7 +184,10 @@ class AppAccount extends AppElement {
           zip:         null,
           country:     null,
         })
-      }
+      },
+
+      // Firebase unsubscribe function.
+      _userDataUnsubscribe: Object
 
     };
   }
@@ -164,7 +195,9 @@ class AppAccount extends AppElement {
 
   static get observers() {
     return [
-      '__currentUserChanged(user)'
+      '__avatarChanged(_avatar)',
+      '__userChanged(user)',
+      '__openedPickerOpenedUserChanged(_opened, _photoPickerOpened, user)'
     ];
   }
   
@@ -185,6 +218,15 @@ class AppAccount extends AppElement {
 
     this.removeEventListener('edit-input-changed', this.__editInputChanged);
     this.removeEventListener('edit-input-confirm-edit', this.__confirmEdit);
+  }
+
+
+  __computeAvatar(opened, user, userData) {
+    if (!opened || !user) { return; }
+
+    if (userData) { return userData.avatar; }
+
+    return user.photoURL;
   }
 
 
@@ -217,6 +259,20 @@ class AppAccount extends AppElement {
   }
 
 
+  __computeProfileBackground(opened, placeholder, userDataSnapshot, userData) {
+    if (!opened) { return; }
+
+    // If user removes the background, the display the placeholder.
+    if (userData) { 
+      return userData.background ? userData.background : placeholder; 
+    }
+
+    if (userDataSnapshot?.background) { return userDataSnapshot.background; }
+
+    return placeholder;
+  }
+
+
   __computeUnsavedEdits(obj) {
     if (!obj || !obj.base) { return false; }
 
@@ -227,12 +283,17 @@ class AppAccount extends AppElement {
   }
 
 
-  async __currentUserChanged(user) {
+  __avatarChanged(avatar) {
+    this.fire('app-account-avatar-changed', {value: avatar});
+  }
+
+
+  async __userChanged(user) {
     try {
       if (user && user.uid) {
         const {uid} = user;
 
-        this._userMeta = await services.get({coll: 'users', doc: uid});
+        this._userDataSnapshot = await services.get({coll: 'users', doc: uid});
 
         // TODO:
         //      Create a more generic way to get user store credit data.
@@ -245,6 +306,54 @@ class AppAccount extends AppElement {
   }
 
 
+  __openedPickerOpenedUserChanged(opened, pickerOpened, user) {
+
+    if (!user) {
+      this.__stopUserDataSub();
+
+      this._userData         = undefined;
+      this._userDataSnapshot = undefined;
+    }
+
+    if (pickerOpened) {
+      this.__startUserDataSub();
+    }
+    else if (!opened) {
+      this.__stopUserDataSub();
+    }
+  }
+
+
+  async __startUserDataSub() {
+    if (this._userDataUnsubscribe) { return; }
+
+    const callback = dbData => {
+      this._userData = dbData;
+    };
+
+    const errorCallback = error => {
+      this._userData = undefined;
+
+      console.error(error);
+    };
+
+    this._userDataUnsubscribe = await services.subscribe({
+      callback,
+      coll: 'users',
+      doc:   this.user.uid,
+      errorCallback
+    });
+  }
+
+
+  __stopUserDataSub() {
+    if (this._userDataUnsubscribe) {
+      this._userDataUnsubscribe();
+      this._userDataUnsubscribe = undefined;
+    }
+  }
+
+
   __editInputChanged(event) {
     const {kind, value} = event.detail;
     this.set(`_unsavedEditsObj.${kind}`, value);
@@ -252,7 +361,7 @@ class AppAccount extends AppElement {
 
 
   __reset() {
-    this.$.content.classList.remove('content-enter');
+    this._opened = false;
   }
 
 
@@ -260,7 +369,7 @@ class AppAccount extends AppElement {
     try {
       await this.$.overlay.close();
 
-      this.fire('account-reauth-needed');
+      this.fire('app-account-reauth-needed');
     }
     catch (error) { console.error(error); }
   }
@@ -300,7 +409,7 @@ class AppAccount extends AppElement {
       await this.clicked();
       await this.$.overlay.close();
 
-      this.fire('account-signout-button');
+      this.fire('app-account-signout-clicked');
     }
     catch (error) { 
       if (error === 'click debounced') { return; }
@@ -350,6 +459,13 @@ class AppAccount extends AppElement {
   __avatarClicked() {
     this._photoPickerType = 'avatar';
     this.__openPhotoPicker();
+  }
+
+
+  __photoPickerOpenedChangedHandler(event) {
+    hijackEvent(event);
+
+    this._photoPickerOpened = event.detail.value;
   }
 
 
@@ -502,7 +618,7 @@ class AppAccount extends AppElement {
       }
 
       const saveEditToDb = async str => {
-        const oldVal = this._userMeta[kind];
+        const oldVal = this._userDataSnapshot[kind];
 
         if (oldVal !== value) { // Ignore if there is no change.
           const data = {};
@@ -510,7 +626,7 @@ class AppAccount extends AppElement {
 
           await services.set({coll: 'users', doc: this.user.uid, data});
 
-          this.set(`_userMeta.${kind}`, value);
+          this.set(`_userDataSnapshot.${kind}`, value);
           const event = await confirm(`${str} updated.`);
           const undo  = event.detail.canceled;
 
@@ -519,7 +635,7 @@ class AppAccount extends AppElement {
 
             await services.set({coll: 'users', doc: this.user.uid, data});
 
-            this.set(`_userMeta.${kind}`, oldVal);
+            this.set(`_userDataSnapshot.${kind}`, oldVal);
             reset();
 
             await stopSpinner();
@@ -702,7 +818,7 @@ class AppAccount extends AppElement {
 
       savesKeys.forEach(key => {
         const value = normalSaves[key];
-        this.set(`_userMeta.${key}`, value);
+        this.set(`_userDataSnapshot.${key}`, value);
       });
 
       // Reset obj.
@@ -764,9 +880,10 @@ class AppAccount extends AppElement {
   async open() {
     try {
       await this.$.overlay.open();
-      this.$.content.classList.add('content-enter');
       await schedule();
-      this._headerImg = this.headerImage;
+
+      this._opened               = true;
+      this._headerPlaceholderImg = this.headerImage;
     }
     catch (error) { console.error(error); }
   }

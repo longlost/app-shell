@@ -186,6 +186,16 @@ class AppShell extends OverlayControlMixin(AppElement) {
         value: 'none' // Or 'instant', 'smooth'.
       },
 
+      // Fired from 'app-account' when user has updated their avatar photo.
+      _accountAvatarItem: Object,
+
+      // Show 'person-outline' icon when no user is logged in.
+      // Show 'account-circle' icon when user is logged in.
+      _accountIcon: {
+        type: String,
+        computed: '__computeAccountIcon(currentUser)'
+      },
+
       // If true, app color theme mode will
       // follow the device's color theme setting.
       // When false, user can manually change
@@ -193,6 +203,20 @@ class AppShell extends OverlayControlMixin(AppElement) {
       _autoColorMode: {
         type: Boolean,
         value: true
+      },
+
+      // User's profile avatar photo.
+      //
+      // Favors the '_accountAvatarItem', which contains the most up-to-date
+      // data coming from 'app-account' when the user updates their photo, 
+      // using 'account-photo-picker'. 
+      //
+      // This mamual method was chosen, instead of simply keeping a live 
+      // subscription for the entire duration of a user session, in an 
+      // attempt to reduce user and app owner data charges at scale.
+      _avatar: {
+        type: Object,
+        computed: '__computeAvatar(currentUser, _accountAvatarItem)'
       },
 
       // Dark/Light mode state.
@@ -264,8 +288,6 @@ class AppShell extends OverlayControlMixin(AppElement) {
     this.__autoColorModeChanged   = this.__autoColorModeChanged.bind(this);
     this.__darkModeChanged        = this.__darkModeChanged.bind(this);
     this.__setPersistence         = this.__setPersistence.bind(this);
-    this.__signOut                = this.__signOut.bind(this);
-    this.__reauthNeeded           = this.__reauthNeeded.bind(this);
     this.__userChanged            = this.__userChanged.bind(this);
     this.__userAccount            = this.__userAccount.bind(this);      
     this.showAuthUI               = this.showAuthUI.bind(this);
@@ -311,8 +333,6 @@ class AppShell extends OverlayControlMixin(AppElement) {
     this.$.settings.removeEventListener('settings-auto-color-mode-changed', this.__autoColorModeChanged);
     this.$.settings.removeEventListener('settings-dark-mode-changed', this.__darkModeChanged);
     this.$.settings.removeEventListener('settings-persistence-changed', this.__setPersistence);
-    this.removeEventListener('account-signout-button', this.__signOut);
-    this.removeEventListener('account-reauth-needed', this.__reauthNeeded);
     this.removeEventListener('auth-userchanged', this.__userChanged);
     this.removeEventListener('auth-account-button', this.__userAccount);      
     this.removeEventListener('show-user-ui', this.showAuthUI);
@@ -339,14 +359,19 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
   
 
-  __computeAccountButtonIcon(user) {
-    if (!user) { return 'app-shell-icons:face'; }
+  __computeAccountIcon(user) {
+    if (!user) { return 'app-shell-icons:person-outline'; }
     return 'app-shell-icons:account-circle';
   }
 
 
-  __computeAccountButtonSrc(user) {
-    return user ? user.photoURL : '';
+  __computeAvatar(user, avatarItem) {
+    if (!user) { return; }
+
+    // 'avatarItem' is null when user chooses to remove their avatar.
+    if (avatarItem === undefined) { return user.photoURL; }
+
+    return avatarItem;
   }
 
   
@@ -562,11 +587,23 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __addUserAccountListeners() {
-    this.addEventListener('account-signout-button', this.__signOut);
-    this.addEventListener('account-reauth-needed',  this.__reauthNeeded);
-    this.addEventListener('auth-userchanged',       this.__userChanged);
-    this.addEventListener('auth-account-button',    this.__userAccount);      
-    this.addEventListener('show-user-ui',           this.showAuthUI);
+    this.addEventListener('auth-userchanged',    this.__userChanged);
+    this.addEventListener('auth-account-button', this.__userAccount);      
+    this.addEventListener('show-user-ui',        this.showAuthUI);
+  }
+
+
+  __accountAvatarChangedHandler(event) {
+    hijackEvent(event);
+
+    this._accountAvatarItem = event.detail.value;
+  }
+
+
+  __accountSignoutClickedHandler(event) {
+    hijackEvent(event);
+
+    this.__signOut();
   }
 
 
@@ -863,13 +900,13 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  async __reauthNeeded() {
+  async __accountReauthNeededHandler() {
     try {
       await this.__signOut();
       this.showAuthUI();
     }
     catch (error) {
-      console.warn('__reauthNeeded error: ', error);
+      console.warn('__accountReauthNeededHandler error: ', error);
     }
   }
 

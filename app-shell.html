@@ -252,6 +252,7 @@
 
         <template is="dom-repeat" 
                   items="[[_slottedViewElementData]]">
+
           <a page="[[item.page.value]]" 
              href="[[_rootPath]][[item.page.value]]">
             <div class="drawer-item">
@@ -261,6 +262,7 @@
               <span class="drawer-label">[[item.label.value]]</span>
             </div>
           </a>
+
         </template>
 
       </iron-selector>
@@ -282,7 +284,7 @@
                   if="[[!noUsers]]">
           <div class="drawer-item" 
                on-click="__drawerAccountClicked">
-            <iron-icon icon="app-shell-icons:account-circle"></iron-icon>
+            <iron-icon icon="[[_accountIcon]]"></iron-icon>
             <span class="drawer-label">Account</span>
           </div>
         </template> 
@@ -300,6 +302,7 @@
 
           <template is="dom-repeat" 
                     items="[[_slottedBottomViewElementData]]">
+
             <a page="[[item.page.value]]" 
                href="[[_rootPath]][[item.page.value]]">
               <div class="drawer-item">
@@ -309,6 +312,7 @@
                 <span class="drawer-label">[[item.label.value]]</span>
               </div>
            </a>
+
           </template>
 
         </iron-selector>
@@ -335,15 +339,18 @@
                            aria-label="Opens menu drawer">
         </paper-icon-button>
 
-        <div main-title hidden="[[!title]]">[[title]]</div>
+        <div hidden="[[!title]]" 
+             main-title>
+          [[title]]
+        </div>
 
         <slot name="top-toolbar-slot"></slot>
 
         <avatar-image alt="Account sign in or sign up."
                       button
                       hidden="[[noUsers]]"
-                      icon="[[__computeAccountButtonIcon(currentUser)]]"
-                      src="[[__computeAccountButtonSrc(currentUser)]]"
+                      icon="[[_accountIcon]]"
+                      src="[[_avatar]]"
                       on-avatar-image-clicked="__avatarClicked">
         </avatar-image>
 
@@ -351,9 +358,11 @@
 
       <template is="dom-repeat" 
                 items="[[__createMiddleToolbars(headerSize)]]">
+
         <app-toolbar class="toolbars">
           <slot name="[[item.slotName]]"></slot>
         </app-toolbar>
+        
       </template>
 
       <!-- Cannot use app-toobar and paper-tabs with sticky on iOS Safari. -->
@@ -392,7 +401,8 @@
 
       <slot name="footer-slot"></slot>
 
-      <div id="accountRequiredOverlay" class="hide-account-required">
+      <div id="accountRequiredOverlay" 
+           class="hide-account-required">
         <h1>You must be signed in to use this app.</h1>
       </div>
 
@@ -412,7 +422,10 @@
              dark-mode="[[_darkMode]]"
              user="[[currentUser]]"
              header-image="[[accountHeaderImage]]"
-             header-size="[[accountHeaderSize]]">
+             header-size="[[accountHeaderSize]]"
+             on-app-account-avatar-changed="__accountAvatarChangedHandler"
+             on-app-account-reauth-needed="__accountReauthNeededHandler"
+             on-app-account-signout-clicked="__accountSignoutClickedHandler">
 </app-account>
 
 <app-settings id="settings"
@@ -422,7 +435,9 @@
               persistence="[[_persistence]]">
 </app-settings>
 
-<app-auth id="auth"></app-auth>
+<app-auth id="auth" 
+          avatar="[[_avatar]]">
+</app-auth>
 
 
 <!-- For use with `app-file-system`. -->
@@ -448,7 +463,9 @@
 
 <paper-toast id="confirmToast" 
              class="toasts-w-btn">
-  <paper-button on-click="__confirmToastUndoButtonClicked">UNDO</paper-button>
+  <paper-button on-click="__confirmToastUndoButtonClicked">
+    UNDO
+  </paper-button>
 </paper-toast>
 
 <paper-toast id="swToast" 
