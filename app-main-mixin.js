@@ -12,14 +12,22 @@
   *
   **/
 
+
 import '@longlost/app-core/boot/boot.js';
 
-import {AppElement}       from '@longlost/app-core/app-element.js';
-import {listenOnce, warn} from '@longlost/app-core/utils.js';
+import {AppElement} from '@longlost/app-core/app-element.js';
+
+import {
+  hijackEvent, 
+  listenOnce, 
+  warn
+} from '@longlost/app-core/utils.js';
+
 import './app-shell.js';
 
 
 export const AppMainMixin = () => {
+
   return class AppMainMixin extends AppElement {
 
 
@@ -27,72 +35,94 @@ export const AppMainMixin = () => {
       return {
 
         // From app-shell-dark-mode-changed event.
-        _darkMode: Boolean,
+        darkMode: Boolean,
 
         // Set true on window's 'load' event.
-        _loaded: {
+        loaded: {
           type: Boolean,
           value: false
         },
 
-        // An object containing a group of functions that import overlay files.
-        // To be overwritten by app-main implementation.
-        _overlayImports: Object,
-
         // From app-shell-page-changed event.
-        _page: String,
+        page: String,
 
         // From app-shell via app-auth.
-        _user: Object
+        user: Object,
+
+        // An object containing a group of functions that import overlay files.
+        // To be overwritten by app-main implementation.
+        _overlayImports: Object
 
       };
+    }
+
+
+    static get observers() {
+      return [
+        '__darkModeChanged(darkMode)',
+        '__loadedChanged(loaded)',
+        '__pageChanged(page)',
+        '__userChanged(user)'
+      ];
     }
 
     // These MUST be in constructor, as opposed to connectedCallback
     // in order to catch app-shell.js initializations, including page routing.
     constructor() {
+
       super();
 
       this.__windowLoadHandler();
 
-      this.__pageChanged        = this.__pageChanged.bind(this);
-      this.__darkModeChanged    = this.__darkModeChanged.bind(this);
-      this.__userChanged        = this.__userChanged.bind(this);
-      this.__openOverlayHandler = this.__openOverlayHandler.bind(this);
+      this.__darkModeChangedHandler = this.__darkModeChangedHandler.bind(this);
+      this.__pageChangedHandler     = this.__pageChangedHandler.bind(this);
+      this.__userChangedHandler     = this.__userChangedHandler.bind(this);
+      this.__openOverlayHandler     = this.__openOverlayHandler.bind(this);
 
-      this.addEventListener('app-shell-page-changed',      this.__pageChanged);
-      this.addEventListener('app-shell-dark-mode-changed', this.__darkModeChanged);
-      this.addEventListener('auth-userchanged',            this.__userChanged);
+      this.addEventListener('app-shell-dark-mode-changed', this.__darkModeChangedHandler);
+      this.addEventListener('app-shell-page-changed',      this.__pageChangedHandler);
+      this.addEventListener('auth-userchanged',            this.__userChangedHandler);
       this.addEventListener('open-overlay',                this.__openOverlayHandler);  
     }
 
 
     disconnectedCallback() {
+
       super.disconnectedCallback();
 
-      this.removeEventListener('app-shell-page-changed',      this.__pageChanged);
-      this.removeEventListener('app-shell-dark-mode-changed', this.__darkModeChanged);
-      this.removeEventListener('auth-userchanged',            this.__userChanged);
+      this.removeEventListener('app-shell-dark-mode-changed', this.__darkModeChangedHandler);
+      this.removeEventListener('app-shell-page-changed',      this.__pageChangedHandler);
+      this.removeEventListener('auth-userchanged',            this.__userChangedHandler);
       this.removeEventListener('open-overlay',                this.__openOverlayHandler); 
     }
 
 
-    __pageChanged(event) {
-      this._page = event.detail.value;
+    __pageChangedHandler(event) {
+
+      hijackEvent(event);
+
+      this.page = event.detail.value;
     }
 
 
-    __darkModeChanged(event) {
-      this._darkMode = event.detail.value;
+    __darkModeChangedHandler(event) {
+
+      hijackEvent(event);
+
+      this.darkMode = event.detail.value;
     }
 
 
-    __userChanged(event) {
-      this._user = event.detail.user;
+    __userChangedHandler(event) {
+
+      hijackEvent(event);
+
+      this.user = event.detail.user;
     }
 
     // May be called directly by implementation.
     async __openOverlay(id, detail) {
+
       try {
             
         if (!id) { 
@@ -125,6 +155,7 @@ export const AppMainMixin = () => {
 
 
     async __openOverlayHandler(event) {
+
       try {
         if (!this._overlayImports) { return; } 
 
@@ -145,9 +176,34 @@ export const AppMainMixin = () => {
 
 
     async __windowLoadHandler() {
+
       await listenOnce(window, 'load');
 
-      this._loaded = true;
+      this.loaded = true;
+    }
+
+
+    __darkModeChanged(dark) {
+
+      this.fire('app-dark-mode-changed', {value: dark});
+    }
+
+
+    __loadedChanged(loaded) {
+      
+      this.fire('app-loaded-changed', {value: loaded});
+    }
+
+
+    __pageChanged(page) {
+      
+      this.fire('app-page-changed', {value: page});
+    }
+
+
+    __userChanged(user) {
+      
+      this.fire('app-user-changed', {value: user});
     }
 
   };
