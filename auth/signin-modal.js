@@ -26,7 +26,7 @@ import {
   html
 } from '@longlost/app-core/app-element.js';
 
-import {firebase} from '@longlost/app-core/boot/boot.js';
+import firebaseReady from '@longlost/app-core/firebase.js';
 
 import {
   hijackEvent, 
@@ -170,7 +170,7 @@ class SigninModal extends AppElement {
   }
 
 
-  __getFirebaseUiConfig(ui) {
+  __getFirebaseUiConfig(firebase, ui) {
     return {
 
       // Whether to upgrade anonymous users should be explicitly provided.
@@ -284,8 +284,11 @@ class SigninModal extends AppElement {
   }
 
 
-  __setupFirebaseUI() {
-    this._firebaseUIConfig = this.__getFirebaseUiConfig(firebaseui);
+  async __setupFirebaseUI() {
+
+    const {firebase} = await firebaseReady();
+
+    this._firebaseUIConfig = this.__getFirebaseUiConfig(firebase, firebaseui);
     this._firebaseUi       = new firebaseui.auth.AuthUI(firebase.auth());
   }
 
@@ -323,7 +326,7 @@ class SigninModal extends AppElement {
     await this.$.modal.open();
 
     if (!this._firebaseUi) {
-      this.__setupFirebaseUI();
+      await this.__setupFirebaseUI();
     }
 
     if (!this._firebaseUi.isPendingRedirect()) {

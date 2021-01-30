@@ -30,26 +30,12 @@ import {
 import {setRemoveNestedTemplates} from '@polymer/polymer/lib/utils/settings.js';
 import {OverlayControlMixin}      from './overlay-control-mixin.js';
 import htmlString                 from './app-shell.html';
-import '@longlost/app-core/app-icons.js';
-import '@longlost/app-images/avatar-image.js';
-import '@polymer/app-route/app-location.js';
-import '@polymer/app-route/app-route.js';
-import '@polymer/app-storage/app-localstorage/app-localstorage-document.js';
-import '@polymer/app-layout/app-drawer/app-drawer.js';
-import '@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
-import '@polymer/app-layout/app-header-layout/app-header-layout.js';
-import '@polymer/app-layout/app-scroll-effects/app-scroll-effects.js';
-import '@polymer/app-layout/app-header/app-header.js';
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
-import '@polymer/iron-icon/iron-icon.js';
-import '@polymer/iron-image/iron-image.js';
-import '@polymer/iron-pages/iron-pages.js';
-import '@polymer/iron-selector/iron-selector.js';
-import '@polymer/paper-button/paper-button.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/paper-toast/paper-toast.js';
 import './app-shell-icons.js';
-// account, services, settings, auth overlays are imported dynamically.
+
+// All custom element definitions imported after window 'load' for
+// improved perceived initial load performance (Lighthouse Performance Score).
+
+// `app-account`, 'services', `app-settings`, `app-auth` overlays are imported dynamically.
 
 
 
@@ -62,6 +48,22 @@ import './app-shell-icons.js';
 // This error causes the document to no longer scroll.
 
 setRemoveNestedTemplates(true);
+
+
+const waitForLoaded = async () => {  
+
+  const app = document.querySelector('#app');
+
+  // For improving Lighthouse Performance score.
+  // Delay loading large modules.
+  if (!app.loaded) {
+    await listenOnce(app, 'app-loaded-changed');
+  }
+};
+
+
+const hydrateCustomElements = () => 
+  import(/* webpackChunkName: 'view-404' */ './app-shell-imports.js');
 
 
 const builtInLazyImports = {
@@ -122,6 +124,11 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
       // Menu drawer divider between views and overlays.
       divider: Boolean,
+
+      drawerAlign: {
+        type: String,
+        value: 'start' // Or 'end' to put it on the right side of the screen.
+      },
 
       fixedHeader: Boolean,
 
@@ -271,16 +278,18 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
   static get observers() {
     return [
-      '__routePageChanged(_routeData.page)',
+      '__drawerAlignChanged(drawerAlign)',
       '__fixedHeaderChanged(fixedHeader)',
+      '__pageChanged(page)',
       '__revealHeaderChanged(revealHeader)',
-      '__stickyBottomToolbarChanged(stickyBottomToolbar)',
-      '__pageChanged(page)'
+      '__routePageChanged(_routeData.page)',
+      '__stickyBottomToolbarChanged(stickyBottomToolbar)'
     ];
   }
 
 
   constructor() {
+
     super();
 
     this.__headerThresholdChanged = this.__headerThresholdChanged.bind(this);    
@@ -295,32 +304,42 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   async connectedCallback() {
+
     super.connectedCallback();
+
+    // Wait to load custom element imports to improve 
+    // perceived initial loading performance.
+    await waitForLoaded();
 
     this.$.header.addEventListener('threshold-triggered-changed', this.__headerThresholdChanged);  
 
     this.__slotListeners();
     this.__addSettingsListeners();    
     this.__setupMenuItems();
-    this.__initializePersistence();
 
-    // Update view since connectedCallback runs after the router is done.
-    this.__switchView(this._routeData.page);
-    this.$.layout.classList.remove('layout-unresolved');
     this._descriptionMeta = document.head.querySelector('[name~=description]');
     this._jsonLdScript    = document.head.querySelector('[id~=pageJsonLd]');
+
     this.__setupAutoColorMode();
+
+    await hydrateCustomElements();
+
+    this.__initializePersistence();
+
+    await schedule();
+
+    this.__removeNotLoadedClasses();
 
     if (this.noUsers) { return; }
 
     this.__addUserAccountListeners();
 
-    await schedule();
     builtInLazyImport('auth');
   }
 
 
   disconnectedCallback() {
+
     super.disconnectedCallback();
 
     this.$.header.removeEventListener('threshold-triggered-changed', this.__headerThresholdChanged);
@@ -340,6 +359,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __createMiddleToolbars(headerSize) {
+
     if (headerSize < 3) { return []; }
 
     const middleToobarCount = headerSize - 2;
@@ -354,18 +374,23 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __computeBottomToolbarHidden(headerSize) {
+
     if (headerSize < 2) { return true; }
+
     return false;
   }
   
 
   __computeAccountIcon(user) {
+
     if (!user) { return 'app-shell-icons:person-outline'; }
+
     return 'app-shell-icons:account-circle';
   }
 
 
   __computeAvatar(user, avatarItem) {
+
     if (!user) { return; }
 
     // 'avatarItem' is null when user chooses to remove their avatar.
@@ -376,16 +401,32 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
   
   __computeDivider(divider) {
+
     return divider ? 'show-divider' : '';
   }
 
   
   __computeHideIcon(icon) {
+
     return !icon;
   }
 
 
+  __drawerAlignChanged(drawerAlign) {
+
+    if (drawerAlign === 'end') {
+      this.$.drawer.classList.add('drawer-align-end');
+      this.$['app-shell-main-panel'].classList.add('drawer-align-end');
+    }
+    else {
+      this.$.drawer.classList.remove('drawer-align-end');
+      this.$['app-shell-main-panel'].classList.remove('drawer-align-end');
+    }
+  }
+
+
   __setHeaderAttribute(bool, attr) {
+
     if (bool === undefined) { return; }
 
     if (bool) {
@@ -398,11 +439,13 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __fixedHeaderChanged(bool) {
+
     this.__setHeaderAttribute(bool, 'fixed');
   }
 
 
   __revealHeaderChanged(bool) {
+
     this.__setHeaderAttribute(bool, 'reveals');
   }
 
@@ -423,11 +466,13 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __headerThresholdChanged(event) {
+
     this.fire('app-shell-threshold-triggered-changed', event.detail);
   }
 
   // Pick up dynamic changes to views.
   __slotListeners() {
+
     this.$.viewsSlot.addEventListener(      'slotchange', this.__setupMenuItems);
     this.$.overlaysSlot.addEventListener(   'slotchange', this.__setupMenuItems);
     this.$.viewsBottomSlot.addEventListener('slotchange', this.__setupMenuItems);
@@ -435,6 +480,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __addSettingsListeners() {
+
     this.$.autoColorModeStorage.addEventListener('data-changed', this.__autoColorModeChanged);
     this.$.darkModeStorage.addEventListener(     'data-changed', this.__darkModeChanged);
     this.$.persistenceStorage.addEventListener(  'data-changed', this.__setPersistence);
@@ -488,12 +534,15 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
   // Fired from auto color mode app-localstorage-document and app-settings.
   __autoColorModeChanged(event) {
+
     this._autoColorMode = event.detail.value;
   }
 
   // Fired from dark mode app-localstorage-document and app-settings.
   __darkModeChanged(event) {
+
     if (this._autoColorMode) { return; }
+
     this.__setDarkMode(event.detail.value);
   }
 
@@ -542,7 +591,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
       this.__setDarkMode(this.darkModeDefault);
     }
     else if (hasNoSupport) {  
-      this._autoColorMode     = false;
+      this._autoColorMode = false;
 
       // Hide the toggle in <app-settings> when not supported.
       this._hideAutoColorMode = true;   
@@ -551,17 +600,30 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
+  __removeNotLoadedClasses() {
+
+    const elements = this.selectAll('.not-loaded');
+
+    elements.forEach(el => {
+      el.classList.remove('not-loaded');
+    });
+  }
+
+
   async __setPersistence(event) {
+
     const {value} = event.detail;
 
     // Pass to app-localstorage-document and app-settings.
     this._persistence = value; 
 
     if (value) {
+
       const {default: services} = await import(
         /* webpackChunkName: 'services' */ 
         '@longlost/app-core/services/services.js'
       );
+
       services.enablePersistence();
     }
   }
@@ -574,7 +636,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
     const allOverlaySlotNodes   = this.slotNodes('#overlaysSlot');
     const viewsBottomSlotNodes  = this.slotNodes('#viewsBottomSlot');
 
-    // Filter out overlays that dont need a menu item.
+    // Filter out overlays that don't need a menu item.
     this._menuOverlaysSlotNodes = allOverlaySlotNodes.
       filter(({attributes}) => (attributes.label && attributes.page));
 
@@ -587,6 +649,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __addUserAccountListeners() {
+
     this.addEventListener('auth-userchanged',    this.__userChanged);
     this.addEventListener('auth-account-button', this.__userAccount);      
     this.addEventListener('show-user-ui',        this.showAuthUI);
@@ -594,6 +657,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __accountAvatarChangedHandler(event) {
+
     hijackEvent(event);
 
     this._accountAvatarItem = event.detail.value;
@@ -601,6 +665,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __accountSignoutClickedHandler(event) {
+
     hijackEvent(event);
 
     this.__signOut();
@@ -608,6 +673,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __userChanged(event) {
+
     const {user}     = event.detail;
     this.currentUser = user;
 
@@ -652,8 +718,10 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
       // Check for available seo ready overlays for web crawler.
       if (this.seoOverlayIds && this.seoOverlayIds[page]) {
+
         try {
           const id = this.seoOverlayIds[page];
+
           await this.debounce('seo-overlay-debounce', 100);
           this.fire('open-overlay', {id});
         }
@@ -678,8 +746,10 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
   
   async __updateSEOMeta(page) {
+
     try { 
-      const {default: seo}   = await import(/* webpackChunkName: 'seo' */ 'seo.json');     
+      const {default: seo} = await import(/* webpackChunkName: 'seo' */ 'seo.json');  
+
       const defaultPage      = this.__getPage(page);
       const selectedPageData = seo[defaultPage];
 
@@ -689,6 +759,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
       }
 
       const {description, pageJson, title} = selectedPageData;
+
       this._descriptionMeta.setAttribute('content', description);
       document.title = title;
 
@@ -706,19 +777,18 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   async __routePageChanged(page) {
+
     await this.__switchView(page);
     await this.__updateSEOMeta(page);
 
-    if (this.viewChangedScroll === 'instant') {
-      window.scrollTo({top: 0, behavior: 'auto'});
-    }
-    else if (this.viewChangedScroll === 'smooth') {
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    }
+    const behavior = this.viewChangedScroll === 'instant' ? 'auto' : 'smooth';
+
+    window.scrollTo({top: 0, behavior});
   }
 
 
   __pageChanged(page) {
+
     this.fire('app-shell-page-changed', {value: page});
   }
 
@@ -735,6 +805,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   async __prepToOpenOverlay(id, page) {
+
     try {
       await this.clicked();
       await this.__waitForDrawerToClose();
@@ -743,7 +814,9 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
         if (page) {
           const dynamicImport = this.imports[page];
+
           await dynamicImport();
+
           return this._menuOverlaysSlotNodes.find(node => node.id === id);
         }
 
@@ -770,15 +843,18 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   showAuthUI() {
+
     return this.$.auth.showAuthUI();
   }
 
 
   async __showAccountRequiredOverlay() {
+
     try {
       this.$.accountRequiredOverlay.style.display = 'flex';
 
       await schedule();
+
       this.$.accountRequiredOverlay.classList.add('show-account-required');
 
       return wait(200);
@@ -790,6 +866,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   async __hideAccountRequiredOverlay() {
+
     try {
       this.$.accountRequiredOverlay.classList.remove('show-account-required');
       await wait(200);
@@ -813,17 +890,20 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __drawerSettingsClicked() {
+
     this.__prepToOpenOverlay('settings');
   }
 
 
   __slottedDrawerElementClicked(event) {
-    const {id, page} = event.model.item;
+
+    const {id, page} = event.model.item;    
     this.__prepToOpenOverlay(id.value, page.value);
   }
 
 
   __avatarClicked(event) {
+
     hijackEvent(event);
 
     this.showAuthUI();
@@ -831,6 +911,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   async __confirmToastUndoButtonClicked() {
+
     try {
       await this.clicked();
       this.$.confirmToast.cancel()
@@ -843,6 +924,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   async __fsToastRenameButtonClicked() {
+
     try {
       await this.clicked();
       this.$.fsToast.cancel();      
@@ -855,6 +937,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   async __fsToastGoButtonClicked() {
+
     try {
       await this.clicked();
       this.$.fsToast.close();      
@@ -867,6 +950,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   async __swToastDismissButtonClicked() {
+
     try {
       await this.clicked();
       this.$.swToast.cancel();      
@@ -879,6 +963,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   async __swToastRefreshButtonClicked() {
+
     try {
       await this.clicked();
       this.$.swToast.close();      
@@ -891,17 +976,20 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
 
   __signOut() {
+
     return this.$.auth.signOut();
   }
 
 
   __userAccount() {
+
     this.__prepToOpenOverlay('account');
   }
 
 
   async __accountReauthNeededHandler() {
-    try {
+
+    try {      
       await this.__signOut();
       this.showAuthUI();
     }

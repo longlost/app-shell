@@ -21,21 +21,22 @@
   *
   **/
 
-import {appUserAndData}             from 'config.js';
-import {AppElement, html}           from '@longlost/app-core/app-element.js';
-import {firebase, loadFirebaseAuth} from '@longlost/app-core/boot/boot.js';
-import {message, schedule}          from '@longlost/app-core/utils.js';
-import htmlString                   from './app-auth.html';
+import {appUserAndData}    from 'config.js';
+import {AppElement, html}  from '@longlost/app-core/app-element.js';
+import firebaseReady       from '@longlost/app-core/firebase.js';
+import {message, schedule} from '@longlost/app-core/utils.js';
+import htmlString          from './app-auth.html';
 import '@longlost/app-core/app-shared-styles.js';
 import '@longlost/app-images/avatar-image.js';
 import '@longlost/app-overlays/app-modal.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-button/paper-button.js';
 import '../app-shell-icons.js';
-// lazy loading signinModal for better first paint.
+// Lazy loading `signin-modal` for better loading performance.
 
 
 class AppAuth extends AppElement {
+
   static get is() { return 'app-auth'; }
 
   static get template() {
@@ -71,6 +72,7 @@ class AppAuth extends AppElement {
 
 
   connectedCallback() {
+
     super.connectedCallback();
 
     this.__initFirebase();
@@ -78,11 +80,13 @@ class AppAuth extends AppElement {
 
 
   __userChanged(user) {
+
     this.fire('auth-userchanged', {user});
   }
 
 
   __firebaseAuthChanged(firebase) {
+
     firebase.auth().onAuthStateChanged(async user => {
 
       if (user) {
@@ -102,7 +106,9 @@ class AppAuth extends AppElement {
 
   async __initFirebase() {
 
-    await loadFirebaseAuth();
+    const {firebase, loadAuth} = await firebaseReady();
+
+    await loadAuth();
 
     const persistenceType = () => {
 
@@ -125,16 +131,19 @@ class AppAuth extends AppElement {
 
   // Anonymous user upgraded account.
   __userUpgraded(event) {
+
     this._user = event.detail.user;
   }
 
 
   __closeAccountModal() {
+
     return this.$.accountModal.close();
   }
 
 
   async __accountModalClicked() {
+
     try {
       await this.clicked();
       return this.__closeAccountModal();
@@ -147,6 +156,7 @@ class AppAuth extends AppElement {
 
 
   async __accountButtonClicked() {
+
     try {
       await this.clicked();
       await this.__closeAccountModal();
@@ -160,6 +170,7 @@ class AppAuth extends AppElement {
 
 
   async __signOutButtonClicked() {
+
     try {
       await this.clicked();
       await this.signOut();
@@ -190,7 +201,10 @@ class AppAuth extends AppElement {
 
 
   async signOut() {
+
     try {
+
+      const {firebase} = await firebaseReady();
 
       await firebase.auth().signOut();
 

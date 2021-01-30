@@ -6,9 +6,13 @@
 
     --drawer-background-color: var(--app-background-color);
     --drawer-color:            var(--app-dark-text);
+    --drawer-width:            256px;
+
     --header-background-color: var(--app-primary-color);
     --header-color:            var(--app-primary-color-text);
     --header-background-image: 'url(#)';
+
+    --toolbar-font-size: 20px;
 
     --drawer-content-container-mixin: {};
 
@@ -26,60 +30,97 @@
     };
   }
 
-  .layout {
-    opacity:    1;
-    transition: opacity 0.2s ease-in;
+  /*
+    Placeholder styles for fast app shell rendering model 
+    used before the elements are upgraded to custom elements.
+  */
+  app-drawer-layout {
+    display:  block;
+    position: relative;
   }
 
-  .layout-unresolved {
-    opacity: 0;
+  app-drawer-layout {
+    --app-drawer-width: var(--drawer-width);
   }
 
-  app-drawer-layout:not([narrow]) [drawer-toggle] {
-    display: none;
+  /*
+    Placeholder styles for fast app shell rendering model 
+    used before the elements are upgraded to custom elements.
+  */
+  app-drawer {
+    position:            fixed;
+    top:                -120px;
+    right:               0px;
+    bottom:             -120px;
+    left:                0px;
+    visibility:          hidden;
+    transition-property: visibility; 
   }
 
-  app-header {
-    color:            var(--header-color);
-    background-color: var(--header-background-color);
-
-    --app-header-background-rear-layer: {
-      background-color: var(--header-background-color);
-    };
-
-    --app-header-background-front-layer: {
-      background-image:    var(--header-background-image);
-      background-position: center center;
-    };
+  /*
+    Placeholder styles for fast app shell rendering model 
+    used before the elements are upgraded to custom elements.
+  */
+  app-drawer[opened] {
+    visibility: visible;
   }
 
-  app-header paper-icon-button {
-    --paper-icon-button-ink-color: var(--header-color);
-  }
+  app-drawer {    
+    --app-drawer-width: var(--drawer-width);
 
-  #drawer {
     --app-drawer-content-container: {
+
       color:            var(--drawer-color);
       background-color: var(--drawer-background-color);
+
       @apply --drawer-content-container-mixin;
     };
   }
-  
-  #make-scrollable {
-    height:   100%; 
-    overflow: auto;
-  }
 
   /* Create a deep shadow when drawer is persitently shown ie. large screens. */
-  app-drawer-layout:not([narrow]) #drawer {
+  app-drawer-layout:not([narrow]) app-drawer {
+
     --app-drawer-content-container: {
+
       color:            var(--drawer-color);
       background-color: var(--drawer-background-color);
       box-shadow:       6px 0px 10px 0px rgba(0, 0, 0, 0.14),
                         1px 0px 18px 0px rgba(0, 0, 0, 0.12),
                         3px 0px 5px -1px rgba(0, 0, 0, 0.4);
+
       @apply --drawer-content-container-mixin;
     };
+  }
+  
+  #make-scrollable {
+    position: relative;
+    height:   100%; 
+    overflow: auto;
+  }
+
+  /*
+    Placeholder styles for fast app shell rendering model 
+    used before the elements are upgraded to custom elements.
+  */
+  #make-scrollable::after {
+    content:          '';
+    position:         absolute;
+    top:              0px;
+    right:            0px;
+    bottom:           0px;
+    left:             0px;
+    transition:       opacity 0.2s ease-in;
+    opacity:          0;
+    pointer-events:   none;    
+    background-color: var(--drawer-background-color);
+  }
+
+  /*
+    Placeholder styles for fast app shell rendering model 
+    used before the elements are upgraded to custom elements.
+  */
+  #make-scrollable.not-loaded::after {
+    opacity: 1;
   }
 
   #drawer-background-slot::slotted(*) {
@@ -89,6 +130,31 @@
     bottom:   0px;
     left:     0px;
     z-index: -1;
+  }
+
+  /*
+    Placeholder styles for fast app shell rendering model 
+    used before the elements are upgraded to custom elements.
+  */
+  app-toolbar {
+    display:        flex;
+    align-items:    center;
+    position:       relative;
+    height:         64px;
+    padding:        0px 16px;
+    pointer-events: none;
+  }
+
+  app-toolbar {    
+    font-size: var(--toolbar-font-size);
+  }
+
+  /*
+    Placeholder styles for fast app shell rendering model 
+    used before the elements are upgraded to custom elements.
+  */
+  app-toolbar * {
+    pointer-events: auto;
   }
 
   .drawer-list {
@@ -122,6 +188,66 @@
     border-top: 2px solid var(--app-divider-color);
   }
 
+  /*
+    Placeholder styles for fast app shell rendering model 
+    used before the elements are upgraded to custom elements.
+  */
+  app-header {    
+    display: block;
+  }
+
+  app-header {
+    color:            var(--header-color);
+    background-color: var(--header-background-color);
+
+    --app-header-background-rear-layer: {
+      background-color: var(--header-background-color);
+    };
+
+    --app-header-background-front-layer: {
+      background-image:    var(--header-background-image);
+      background-position: center center;
+    };
+  }
+
+  #menu-btn-wrapper {
+    position: relative;
+    height:   40px;
+  }
+
+  app-drawer-layout:not([narrow]) #menu-btn-wrapper {
+    display: none;
+  }
+
+  #menu-btn-wrapper.not-loaded {
+    display: block !important;
+  }
+
+  /*
+    Placeholder styles for fast app shell rendering model 
+    used before the elements are upgraded to custom elements.
+  */
+  #menu-btn-placeholder,
+  paper-icon-button {
+    display:     inline-block;
+    position:    relative;
+    padding:     8px;
+    line-height: 1;
+    width:       40px;
+    height:      40px;
+    box-sizing:  border-box;
+  }
+
+  #menu-btn-placeholder {
+    position: absolute;
+    top:      0px;
+    left:     0px;
+  }
+
+  app-header paper-icon-button {
+    --paper-icon-button-ink-color: var(--header-color);
+  }
+
   avatar-image {
     width: 40px;
 
@@ -135,7 +261,7 @@
     width:     100%;
     height:    64px;
     padding:   0px 16px;
-    font-size: var(--app-toolbar-font-size, 20px);
+    font-size: var(--toolbar-font-size);
   }
 
   #bottomToolbar[hidden] {
@@ -147,6 +273,10 @@
 
     /* Safari scroll flicker workaround. */
     transition: opacity 0.2s ease-in;
+  }
+
+  #pages.not-loaded {
+    opacity: 0;
   }
 
   #accountRequiredOverlay {
@@ -200,6 +330,47 @@
     color:            var(--app-secondary-color-text);
   }
 
+  paper-toast.not-loaded {
+    display: none;
+  }
+
+  /*
+    Placeholder styles for fast app shell rendering model 
+    used before the elements are upgraded to custom elements.
+    
+    640px matches `app-drawer-layout` default 'responsive-width' property. 
+  */
+  @media (min-width: 640px) {
+
+    app-drawer {
+      width: var(--drawer-width);
+      visibility:         visible;
+    }
+
+    app-drawer.drawer-align-end {
+      left: unset;
+    }
+    
+    app-header-layout {
+      display:  block;
+      position: absolute;
+      top:      0px;
+      right:    0px;
+      left:     unset;
+      width:    calc(100vw - 256px);
+    }
+
+    app-header-layout.drawer-align-end {
+      right: unset;
+      left:  0px;
+    }
+
+    #menu-btn-wrapper.not-loaded {
+      display: none !important;
+    }
+
+  }
+
 </style>
 
 
@@ -228,16 +399,19 @@
 
 
 <app-drawer-layout id="layout" 
-                   class="layout layout-unresolved" 
                    fullbleed 
                    narrow="{{narrow}}"
                    force-narrow=[[hideMenu]]>
 
   <!-- MENU DRAWER -->
-  <app-drawer id="drawer" 
+
+  <app-drawer id="drawer"
+              align="[[drawerAlign]]"
               slot="drawer" 
-              swipe-open="[[narrow]]">
-    <div id="make-scrollable">
+              swipe-open="[[narrow]]"> 
+
+    <div id="make-scrollable" 
+         class="not-loaded">
 
       <slot id="drawer-background-slot" 
             name="drawer-background-slot">
@@ -319,11 +493,14 @@
       </div>
 
     </div>
+
   </app-drawer>
 
+
   <!-- MAIN HEADER & CONTENT -->
+
   <!-- DO NOT use 'has-scroll-region' in app-header-layout so that 
-       it will use the document scroller for proper ios useage. -->
+       it will use the document scroller for proper iOS useage. -->
   <app-header-layout id="app-shell-main-panel">
     <app-header id="header" 
                 slot="header" 
@@ -334,10 +511,24 @@
 
       <app-toolbar id="topToolbar">
 
-        <paper-icon-button icon="app-shell-icons:menu" 
-                           drawer-toggle 
-                           aria-label="Opens menu drawer">
-        </paper-icon-button>
+        <div id="menu-btn-wrapper"
+             class="not-loaded">
+
+          <div id="menu-btn-placeholder">
+            <svg viewBox="0 0 24 24" 
+                 preserveAspectRatio="xMidYMid meet" 
+                 focusable="false" 
+                 style="pointer-events: none; display: block; width: 100%; height: 100%;">
+              <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+            </svg>
+          </div>
+
+          <paper-icon-button icon="app-shell-icons:menu" 
+                             drawer-toggle
+                             aria-label="Opens menu drawer">
+          </paper-icon-button>
+
+        </div>
 
         <div hidden="[[!title]]" 
              main-title>
@@ -365,7 +556,7 @@
         
       </template>
 
-      <!-- Cannot use app-toobar and paper-tabs with sticky on iOS Safari. -->
+      <!-- Cannot use app-toolbar and paper-tabs with sticky on iOS Safari. -->
       <div id="bottomToolbar" 
            hidden="[[__computeBottomToolbarHidden(headerSize)]]">
 
@@ -380,7 +571,8 @@
           name="under-header-sticky-slot">
     </slot>
 
-    <div id="pages">
+    <div id="pages"
+         class="not-loaded">
 
       <iron-pages selected="[[page]]"
                   attr-for-selected="page"
@@ -442,7 +634,7 @@
 
 <!-- For use with `app-file-system`. -->
 <paper-toast id="fsToast" 
-             class="toasts-w-btn" 
+             class="toasts-w-btn not-loaded" 
              duration="Infinity">
   <paper-button on-click="__fsToastRenameButtonClicked">
     RENAME
@@ -455,21 +647,24 @@
 
 
 <!-- Used by multiple custom elements via `utils.js` message()/warn(). -->
-<paper-toast id="toast"></paper-toast>
+<paper-toast id="toast"
+             class="not-loaded">
+</paper-toast>
 
-<paper-toast id="warningToast">
+<paper-toast id="warningToast"
+             class="not-loaded">
   <iron-icon icon="app-shell-icons:warning"></iron-icon>
 </paper-toast>
 
 <paper-toast id="confirmToast" 
-             class="toasts-w-btn">
+             class="toasts-w-btn not-loaded">
   <paper-button on-click="__confirmToastUndoButtonClicked">
     UNDO
   </paper-button>
 </paper-toast>
 
 <paper-toast id="swToast" 
-             class="toasts-w-btn" 
+             class="toasts-w-btn not-loaded" 
              duration="Infinity" 
              always-on-top>
   <paper-button on-click="__swToastDismissButtonClicked">
