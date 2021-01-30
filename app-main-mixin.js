@@ -190,6 +190,8 @@ export const AppMainMixin = () => {
 
 
     __loadedChanged(loaded) {
+
+      if (!loaded) { return; } // Only fire once, when true.
       
       this.fire('app-loaded-changed', {value: loaded});
     }
