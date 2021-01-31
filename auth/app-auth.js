@@ -81,7 +81,7 @@ class AppAuth extends AppElement {
 
   __userChanged(user) {
 
-    this.fire('auth-userchanged', {user});
+    this.fire('auth-user-changed', {user});
   }
 
 
@@ -160,6 +160,7 @@ class AppAuth extends AppElement {
     try {
       await this.clicked();
       await this.__closeAccountModal();
+
       this.fire('auth-account-button');
     }
     catch (error) {
@@ -174,6 +175,7 @@ class AppAuth extends AppElement {
     try {
       await this.clicked();
       await this.signOut();
+      
       return this.__closeAccountModal();
     }
     catch (error) {
