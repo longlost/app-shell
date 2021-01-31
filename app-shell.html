@@ -8,26 +8,14 @@
     --drawer-color:            var(--app-dark-text);
     --drawer-width:            256px;
 
+    --drawer-item-selected-color:       var(--app-dark-text);
+    --drawer-item-selected-font-weight: bold;
+
     --header-background-color: var(--app-primary-color);
     --header-color:            var(--app-primary-color-text);
     --header-background-image: 'url(#)';
 
     --toolbar-font-size: 20px;
-
-    --drawer-content-container-mixin: {};
-
-    --drawer-item-mixin: {
-      display:         block;
-      padding:         0px 16px;
-      text-decoration: none;
-      color:           var(--app-secondary-text);
-      line-height:     40px;
-    };
-
-    --drawer-item-selected-mixin: {
-      color:       var(--app-dark-text);
-      font-weight: bold;
-    };
   }
 
   /*
@@ -72,8 +60,6 @@
 
       color:            var(--drawer-color);
       background-color: var(--drawer-background-color);
-
-      @apply --drawer-content-container-mixin;
     };
   }
 
@@ -87,12 +73,11 @@
       box-shadow:       6px 0px 10px 0px rgba(0, 0, 0, 0.14),
                         1px 0px 18px 0px rgba(0, 0, 0, 0.12),
                         3px 0px 5px -1px rgba(0, 0, 0, 0.4);
-
-      @apply --drawer-content-container-mixin;
     };
   }
   
-  #make-scrollable {
+  app-shell-drawer-content {
+    display:  block;
     position: relative;
     height:   100%; 
     overflow: auto;
@@ -102,7 +87,7 @@
     Placeholder styles for fast app shell rendering model 
     used before the elements are upgraded to custom elements.
   */
-  #make-scrollable::after {
+  app-shell-drawer-content::after {
     content:          '';
     position:         absolute;
     top:              0px;
@@ -119,17 +104,8 @@
     Placeholder styles for fast app shell rendering model 
     used before the elements are upgraded to custom elements.
   */
-  #make-scrollable.not-loaded::after {
+  app-shell-drawer-content.not-loaded::after {
     opacity: 1;
-  }
-
-  #drawer-background-slot::slotted(*) {
-    position: absolute;
-    top:      0px;  
-    right:    0px;
-    bottom:   0px;
-    left:     0px;
-    z-index: -1;
   }
 
   /*
@@ -155,37 +131,6 @@
   */
   app-toolbar * {
     pointer-events: auto;
-  }
-
-  .drawer-list {
-    display: block;
-  }
-
-  .drawer-item {
-    @apply --drawer-item-mixin;
-  }
-  
-  .drawer-label {
-    cursor: pointer;
-  }
-
-  a {
-    text-decoration: none;
-    color:           var(--app-secondary-text);
-  }
-
-  .drawer-list a.iron-selected {
-    @apply --drawer-item-selected-mixin;
-  }
-
-  .drawer-item iron-icon {
-    top: -2px;
-  }
-
-  .show-divider {
-    margin-top: 12px;
-    padding:    16px 0px;
-    border-top: 2px solid var(--app-divider-color);
   }
 
   /*
@@ -242,6 +187,13 @@
     position: absolute;
     top:      0px;
     left:     0px;
+  }
+
+  #menu-btn-placeholder-svg {
+    display:        block; 
+    width:          100%; 
+    height:         100%;
+    pointer-events: none; 
   }
 
   app-header paper-icon-button {
@@ -343,8 +295,8 @@
   @media (min-width: 640px) {
 
     app-drawer {
-      width: var(--drawer-width);
-      visibility:         visible;
+      width:      var(--drawer-width);
+      visibility: visible;
     }
 
     app-drawer.drawer-align-end {
@@ -374,27 +326,25 @@
 </style>
 
 
-<app-location route="{{route}}" 
-              url-space-regex="^[[_rootPath]]">
-</app-location>
-<app-route route="{{route}}"
-           pattern="[[_rootPath]]:page"
-           data="{{_routeData}}"
-           tail="{{_subroute}}">
-</app-route>
+<app-shell-router root-path="[[rootPath]]"
+                  on-app-shell-router-page-changed="__routerPageChangedHandler">
+</app-shell-router>
 
 
 <app-localstorage-document id="autoColorModeStorage"
                            key="autoColorModeToggle" 
-                           data="[[_autoColorMode]]">
+                           data="[[_autoColorMode]]"
+                           on-data-changed="__autoColorModeChanged">
 </app-localstorage-document>
 <app-localstorage-document id="darkModeStorage"
                            key="darkModeToggle" 
-                           data="[[_darkMode]]">
+                           data="[[_darkMode]]"
+                           on-data-changed="__darkModeChanged">
 </app-localstorage-document>
 <app-localstorage-document id="persistenceStorage"
                            key="persistenceToggle" 
-                           data="[[_persistence]]">
+                           data="[[_persistence]]"
+                           on-data-changed="__persistenceHandler">
 </app-localstorage-document>
 
 
@@ -408,91 +358,26 @@
   <app-drawer id="drawer"
               align="[[drawerAlign]]"
               slot="drawer" 
-              swipe-open="[[narrow]]"> 
+              swipe-open="[[narrow]]">
 
-    <div id="make-scrollable" 
-         class="not-loaded">
+    <app-shell-drawer-content class="not-loaded"
+                              account-icon="[[_accountIcon]]"
+                              bottom-view-items="[[_bottomViewDrawerItems]]"
+                              divider="[[divider]]"
+                              no-users="[[noUsers]]"
+                              overlay-items="[[_overlayDrawerItems]]"
+                              page="[[page]]"
+                              root-path="[[rootPath]]"
+                              view-items="[[_viewDrawerItems]]"
+                              on-app-shell-drawer-content-account-selected="__drawerAccountSelected"
+                              on-app-shell-drawer-content-overlay-selected="__drawerOverlayItemSelected"
+                              on-app-shell-drawer-content-settings-selected="__drawerSettingsSelected">
 
-      <slot id="drawer-background-slot" 
-            name="drawer-background-slot">
+      <slot name="drawer-background-slot"
+            slot="background">
       </slot>
 
-      <app-toolbar>Menu</app-toolbar>
-
-      <iron-selector selected="[[page]]" 
-                     attr-for-selected="page" 
-                     class="drawer-list" 
-                     role="navigation">
-
-        <template is="dom-repeat" 
-                  items="[[_slottedViewElementData]]">
-
-          <a page="[[item.page.value]]" 
-             href="[[_rootPath]][[item.page.value]]">
-            <div class="drawer-item">
-              <iron-icon icon="[[item.icon.value]]" 
-                         hidden="[[__computeHideIcon(item.icon.value)]]">
-              </iron-icon>
-              <span class="drawer-label">[[item.label.value]]</span>
-            </div>
-          </a>
-
-        </template>
-
-      </iron-selector>
-
-      <div class$="[[_showDivider]]">
-
-        <template is="dom-repeat" 
-                  items="[[_slottedOverlayElementData]]">
-          <div class="drawer-item" 
-               on-click="__slottedDrawerElementClicked">
-            <iron-icon icon="[[item.icon.value]]" 
-                       hidden="[[__computeHideIcon(item.icon.value)]]">
-            </iron-icon>
-            <span class="drawer-label">[[item.label.value]]</span>
-          </div>
-        </template>
-
-        <template is="dom-if" 
-                  if="[[!noUsers]]">
-          <div class="drawer-item" 
-               on-click="__drawerAccountClicked">
-            <iron-icon icon="[[_accountIcon]]"></iron-icon>
-            <span class="drawer-label">Account</span>
-          </div>
-        </template> 
-
-        <div class="drawer-item" 
-             on-click="__drawerSettingsClicked">
-          <iron-icon icon="app-icons:settings"></iron-icon>
-          <span class="drawer-label">Settings</span>
-        </div> 
-
-        <iron-selector selected="[[page]]" 
-                       attr-for-selected="page" 
-                       class="drawer-list" 
-                       role="navigation">
-
-          <template is="dom-repeat" 
-                    items="[[_slottedBottomViewElementData]]">
-
-            <a page="[[item.page.value]]" 
-               href="[[_rootPath]][[item.page.value]]">
-              <div class="drawer-item">
-                <iron-icon icon="[[item.icon.value]]" 
-                           hidden="[[__computeHideIcon(item.icon.value)]]">
-                </iron-icon>
-                <span class="drawer-label">[[item.label.value]]</span>
-              </div>
-           </a>
-
-          </template>
-
-        </iron-selector>
-      </div>
-
-    </div>
+    </app-shell-drawer-content>
 
   </app-drawer>
 
@@ -501,13 +386,14 @@
 
   <!-- DO NOT use 'has-scroll-region' in app-header-layout so that 
        it will use the document scroller for proper iOS useage. -->
-  <app-header-layout id="app-shell-main-panel">
+  <app-header-layout id="mainPanel">
     <app-header id="header" 
                 slot="header" 
                 scroll-target="document"
                 threshold="[[threshold]]"
                 condenses
-                effects="waterfall blend-background">
+                effects="waterfall blend-background"
+                on-threshold-triggered-changed="__headerThresholdHandler">
 
       <app-toolbar id="topToolbar">
 
@@ -515,10 +401,10 @@
              class="not-loaded">
 
           <div id="menu-btn-placeholder">
-            <svg viewBox="0 0 24 24" 
+            <svg id="menu-btn-placeholder-svg"
+                 viewBox="0 0 24 24" 
                  preserveAspectRatio="xMidYMid meet" 
-                 focusable="false" 
-                 style="pointer-events: none; display: block; width: 100%; height: 100%;">
+                 focusable="false">
               <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
             </svg>
           </div>
@@ -542,13 +428,13 @@
                       hidden="[[noUsers]]"
                       icon="[[_accountIcon]]"
                       src="[[_avatar]]"
-                      on-avatar-image-clicked="__avatarClicked">
+                      on-avatar-image-clicked="__avatarClickedHandler">
         </avatar-image>
 
       </app-toolbar>
 
       <template is="dom-repeat" 
-                items="[[__createMiddleToolbars(headerSize)]]">
+                items="[[__computeMiddleToolbars(headerSize)]]">
 
         <app-toolbar class="toolbars">
           <slot name="[[item.slotName]]"></slot>
@@ -566,10 +452,6 @@
 
     </app-header>
 
-    <!-- Useful for a sticky search bar with an autocomplete below it. -->    
-    <slot id="underHeaderStickySlot" 
-          name="under-header-sticky-slot">
-    </slot>
 
     <div id="pages"
          class="not-loaded">
@@ -581,11 +463,14 @@
 
         <!-- Dynamically imported. -->
         <slot id="viewsSlot" 
-              name="views-slot">
+              name="views-slot"
+              on-slotchange="__viewsSlotchangeHandler">
         </slot>
 
+        <!-- These elements get a menu item that sits below overlay menu items. -->
         <slot id="viewsBottomSlot" 
-              name="views-bottom-slot">
+              name="views-bottom-slot"
+              on-slotchange="__viewsBottomSlotchangeHandler">
         </slot> 
 
         <view-404 page="view404"></view-404>
@@ -606,7 +491,8 @@
 
 <!-- Overlays. -->
 <slot id="overlaysSlot" 
-      name="overlays-slot">
+      name="overlays-slot"
+      on-slotchange="__overlaysSlotchangeHandler">
 </slot>
 
 
@@ -620,15 +506,22 @@
              on-app-account-signout-clicked="__accountSignoutClickedHandler">
 </app-account>
 
+
 <app-settings id="settings"
               auto-color-mode="[[_autoColorMode]]"
               dark-mode="[[_darkMode]]"
               hide-auto-color-mode="[[_hideAutoColorMode]]"
-              persistence="[[_persistence]]">
+              persistence="[[_persistence]]"
+              on-settings-auto-color-mode-changed="__autoColorModeHandler"
+              on-settings-dark-mode-changed="__darkModeHandler"
+              on-settings-persistence-changed="__persistenceHandler">
 </app-settings>
 
+
 <app-auth id="auth" 
-          avatar="[[_avatar]]">
+          avatar="[[_avatar]]"
+          on-auth-user-changed="__authUserHandler"
+          on-auth-account-button="__authAccountBtnHandler">
 </app-auth>
 
 
@@ -651,10 +544,12 @@
              class="not-loaded">
 </paper-toast>
 
+
 <paper-toast id="warningToast"
              class="not-loaded">
   <iron-icon icon="app-shell-icons:warning"></iron-icon>
 </paper-toast>
+
 
 <paper-toast id="confirmToast" 
              class="toasts-w-btn not-loaded">
@@ -662,6 +557,7 @@
     UNDO
   </paper-button>
 </paper-toast>
+
 
 <paper-toast id="swToast" 
              class="toasts-w-btn not-loaded" 

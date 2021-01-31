@@ -2,7 +2,20 @@
 /**
   * `app-shell`
   *
-  *   App level element that handles switching between views and overlays.
+  *   App level element that includes core competencies that are vital to any PWA.
+  *
+  *   It includes quick rendering by utilizing the 'App Shell' architecture model.
+  *   Essencial elements are initially rendered with minimum styles before being
+  *   hydrated with their JS definitions and being upgraded to Custom Elements.
+  *   This defers expensive DOM work until after the inital fast render.
+  *
+  *   This element also handles Url Routing for Views and controlling Overlays.
+  *
+  *   Several common app necessities are build into `app-shell`, such as complete 
+  *   User Auth and Account workflows, as well as a Settings panel that features
+  *   Light/Dark mode theme controls, and User Data Persistence options.
+  *
+  *
   *
   * @customElement
   * @polymer
@@ -27,27 +40,17 @@ import {
   warn
 } from '@longlost/app-core/utils.js';
 
-import {setRemoveNestedTemplates} from '@polymer/polymer/lib/utils/settings.js';
-import {OverlayControlMixin}      from './overlay-control-mixin.js';
-import htmlString                 from './app-shell.html';
-import './app-shell-icons.js';
+import {OverlayControlMixin} from './shell/overlay-control-mixin.js';
 
-// All custom element definitions imported after window 'load' for
-// improved perceived initial load performance (Lighthouse Performance Score).
-
-// `app-account`, 'services', `app-settings`, `app-auth` overlays are imported dynamically.
+import htmlString from './app-shell.html';
 
 
+// All custom element definitions imported after window 
+// 'load' for improved perceived initial load performance 
+// (Lighthouse Performance Score).
 
-// Polymer globals. These set to improve performance.
-
-// WARNING!
-//
-// setPassiveTouchGestures(true) causes an error in 
-// Chrome 83 when the Polymer Gestures module is used (such as paper-slider).
-// This error causes the document to no longer scroll.
-
-setRemoveNestedTemplates(true);
+// `app-account`, 'services', `app-settings`, `app-auth` 
+// overlays are imported dynamically.
 
 
 const waitForLoaded = async () => {  
@@ -63,7 +66,7 @@ const waitForLoaded = async () => {
 
 
 const hydrateCustomElements = () => 
-  import(/* webpackChunkName: 'view-404' */ './app-shell-imports.js');
+  import(/* webpackChunkName: 'view-404' */ './shell/app-shell-imports.js');
 
 
 const builtInLazyImports = {
@@ -89,6 +92,7 @@ const builtInLazyImport = name => builtInLazyImports[name]();
 
 
 class AppShell extends OverlayControlMixin(AppElement) {
+
   static get is() { return 'app-shell'; }
 
   static get template() {
@@ -156,6 +160,22 @@ class AppShell extends OverlayControlMixin(AppElement) {
       page: String,
 
       revealHeader: Boolean,
+      
+      //  [polymer-root-path]
+      //
+      //  By default, we set `Polymer.rootPath` to the server root path (`/`).
+      //
+      //  Leave this line unchanged if you intend to serve your app from the root
+      //  path (e.g., with URLs like `my.domain/` and `my.domain/view1`).
+      //
+      //  If you intend to serve your app from a non-root path (e.g., with URLs
+      //  like `my.domain/app-main/` and `my.domain/app-main/view1`), edit this line
+      //  to indicate the path from which you'll be serving, including leading
+      //  and trailing slashes (e.g., `/app-main/`).
+      rootPath: {
+        type: String,
+        value: '/'
+      },
 
       // Use in conjunction with app-main _overlayImports.
       // Add overlay ids to this object if you intend
@@ -175,6 +195,12 @@ class AppShell extends OverlayControlMixin(AppElement) {
       // ie. {my-overlay: 'myOverlay'} 
       //
       seoOverlayIds: Object,
+
+      // Read Only.
+      // This boolean becomes true AFTER the window 'load' event,
+      // and AFTER all `app-shell` custom elements have been
+      // imported/upgraded.
+      shellReady: Boolean,
 
       stickyBottomToolbar: Boolean,
 
@@ -226,6 +252,8 @@ class AppShell extends OverlayControlMixin(AppElement) {
         computed: '__computeAvatar(currentUser, _accountAvatarItem)'
       },
 
+      _bottomViewDrawerItems: Array,
+
       // Dark/Light mode state.
       _darkMode: Boolean,
 
@@ -240,37 +268,15 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
       _menuOverlaysSlotNodes: Array,
 
+      _overlayDrawerItems: Array,
+
       _persistence: Boolean,
 
-      _routeData: Object,
+      _routerPage: String,
 
-      /**
-      * [polymer-root-path]
-      *
-      * By default, we set `Polymer.rootPath` to the server root path (`/`).
-      * Leave this line unchanged if you intend to serve your app from the root
-      * path (e.g., with URLs like `my.domain/` and `my.domain/view1`).
-      *
-      * If you intend to serve your app from a non-root path (e.g., with URLs
-      * like `my.domain/app-main/` and `my.domain/app-main/view1`), edit this line
-      * to indicate the path from which you'll be serving, including leading
-      * and trailing slashes (e.g., `/app-main/`).
-      */
-      _rootPath: {
-        type: String,
-        value: '/'
-      },
+      _subroute: String,
 
-      _showDivider: {
-        type: Boolean,
-        computed: '__computeDivider(divider)'
-      },
-
-      _slottedOverlayElementData: Array,
-
-      _slottedViewElementData: Array,
-
-      _subroute: String
+      _viewDrawerItems: Array
 
     };
   }
@@ -281,8 +287,9 @@ class AppShell extends OverlayControlMixin(AppElement) {
       '__drawerAlignChanged(drawerAlign)',
       '__fixedHeaderChanged(fixedHeader)',
       '__pageChanged(page)',
+      '__shellReadyChanged(shellReady)',
       '__revealHeaderChanged(revealHeader)',
-      '__routePageChanged(_routeData.page)',
+      '__routerPageChanged(_routerPage)',
       '__stickyBottomToolbarChanged(stickyBottomToolbar)'
     ];
   }
@@ -292,14 +299,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
     super();
 
-    this.__headerThresholdChanged = this.__headerThresholdChanged.bind(this);    
-    this.__setupMenuItems         = this.__setupMenuItems.bind(this);
-    this.__autoColorModeChanged   = this.__autoColorModeChanged.bind(this);
-    this.__darkModeChanged        = this.__darkModeChanged.bind(this);
-    this.__setPersistence         = this.__setPersistence.bind(this);
-    this.__userChanged            = this.__userChanged.bind(this);
-    this.__userAccount            = this.__userAccount.bind(this);      
-    this.showAuthUI               = this.showAuthUI.bind(this);
+    this.__showAuthUIHandler = this.__showAuthUIHandler.bind(this);
   }
 
 
@@ -309,13 +309,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
     // Wait to load custom element imports to improve 
     // perceived initial loading performance.
-    await waitForLoaded();
-
-    this.$.header.addEventListener('threshold-triggered-changed', this.__headerThresholdChanged);  
-
-    this.__slotListeners();
-    this.__addSettingsListeners();    
-    this.__setupMenuItems();
+    await waitForLoaded(); 
 
     this._descriptionMeta = document.head.querySelector('[name~=description]');
     this._jsonLdScript    = document.head.querySelector('[id~=pageJsonLd]');
@@ -330,11 +324,14 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
     this.__removeNotLoadedClasses();
 
-    if (this.noUsers) { return; }
+    if (!this.noUsers) {
 
-    this.__addUserAccountListeners();
+      this.addEventListener('show-user-ui', this.__showAuthUIHandler);
 
-    builtInLazyImport('auth');
+      await builtInLazyImport('auth');
+    }
+
+    this.shellReady = true;
   }
 
 
@@ -342,42 +339,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
     super.disconnectedCallback();
 
-    this.$.header.removeEventListener('threshold-triggered-changed', this.__headerThresholdChanged);
-    this.$.viewsSlot.removeEventListener('slotchange', this.__setupMenuItems);
-    this.$.overlaysSlot.removeEventListener('slotchange', this.__setupMenuItems);
-    this.$.viewsBottomSlot.removeEventListener('slotchange', this.__setupMenuItems);
-    this.$.autoColorModeStorage.removeEventListener('data-changed', this.__autoColorModeChanged);
-    this.$.darkModeStorage.removeEventListener('data-changed', this.__darkModeChanged);
-    this.$.persistenceStorage.removeEventListener('data-changed', this.__setPersistence);
-    this.$.settings.removeEventListener('settings-auto-color-mode-changed', this.__autoColorModeChanged);
-    this.$.settings.removeEventListener('settings-dark-mode-changed', this.__darkModeChanged);
-    this.$.settings.removeEventListener('settings-persistence-changed', this.__setPersistence);
-    this.removeEventListener('auth-userchanged', this.__userChanged);
-    this.removeEventListener('auth-account-button', this.__userAccount);      
-    this.removeEventListener('show-user-ui', this.showAuthUI);
-  }
-
-
-  __createMiddleToolbars(headerSize) {
-
-    if (headerSize < 3) { return []; }
-
-    const middleToobarCount = headerSize - 2;
-    const slots             = [];
-
-    for (let i = 0; i < middleToobarCount; i += 1) {
-      slots.push({slotName: `middle-toolbar-${i}-slot`});
-    }
-
-    return slots;
-  }
-
-
-  __computeBottomToolbarHidden(headerSize) {
-
-    if (headerSize < 2) { return true; }
-
-    return false;
+    this.removeEventListener('show-user-ui', this.__showAuthUIHandler);
   }
   
 
@@ -399,16 +361,27 @@ class AppShell extends OverlayControlMixin(AppElement) {
     return avatarItem;
   }
 
-  
-  __computeDivider(divider) {
 
-    return divider ? 'show-divider' : '';
+  __computeBottomToolbarHidden(headerSize) {
+
+    if (headerSize < 2) { return true; }
+
+    return false;
   }
 
-  
-  __computeHideIcon(icon) {
 
-    return !icon;
+  __computeMiddleToolbars(headerSize) {
+
+    if (headerSize < 3) { return []; }
+
+    const middleToobarCount = headerSize - 2;
+    const slots             = [];
+
+    for (let i = 0; i < middleToobarCount; i += 1) {
+      slots.push({slotName: `middle-toolbar-${i}-slot`});
+    }
+
+    return slots;
   }
 
 
@@ -416,11 +389,11 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
     if (drawerAlign === 'end') {
       this.$.drawer.classList.add('drawer-align-end');
-      this.$['app-shell-main-panel'].classList.add('drawer-align-end');
+      this.$.mainPanel.classList.add('drawer-align-end');
     }
     else {
       this.$.drawer.classList.remove('drawer-align-end');
-      this.$['app-shell-main-panel'].classList.remove('drawer-align-end');
+      this.$.mainPanel.classList.remove('drawer-align-end');
     }
   }
 
@@ -441,6 +414,12 @@ class AppShell extends OverlayControlMixin(AppElement) {
   __fixedHeaderChanged(bool) {
 
     this.__setHeaderAttribute(bool, 'fixed');
+  }
+
+
+  __pageChanged(page) {
+
+    this.fire('app-shell-page-changed', {value: page});
   }
 
 
@@ -465,35 +444,11 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  __headerThresholdChanged(event) {
-
-    this.fire('app-shell-threshold-triggered-changed', event.detail);
-  }
-
-  // Pick up dynamic changes to views.
-  __slotListeners() {
-
-    this.$.viewsSlot.addEventListener(      'slotchange', this.__setupMenuItems);
-    this.$.overlaysSlot.addEventListener(   'slotchange', this.__setupMenuItems);
-    this.$.viewsBottomSlot.addEventListener('slotchange', this.__setupMenuItems);
-  }
-
-
-  __addSettingsListeners() {
-
-    this.$.autoColorModeStorage.addEventListener('data-changed', this.__autoColorModeChanged);
-    this.$.darkModeStorage.addEventListener(     'data-changed', this.__darkModeChanged);
-    this.$.persistenceStorage.addEventListener(  'data-changed', this.__setPersistence);
-    this.$.settings.addEventListener('settings-auto-color-mode-changed', this.__autoColorModeChanged);
-    this.$.settings.addEventListener('settings-dark-mode-changed',       this.__darkModeChanged);
-    this.$.settings.addEventListener('settings-persistence-changed',     this.__setPersistence);
-  }
-
-
   async __initializePersistence() {
 
     // One time initialization to default to app.config setting.
     await this.$.persistenceStorage.transactionsComplete;
+
     const storedVal = this.$.persistenceStorage.data;
 
     if (storedVal === undefined) {
@@ -501,6 +456,16 @@ class AppShell extends OverlayControlMixin(AppElement) {
       // Cannot set this._persistence here, will not trigger data-changed event.
       this.$.persistenceStorage.data = appUserAndData.trustedDevice;
     }
+  }
+
+
+  __removeNotLoadedClasses() {
+
+    const elements = this.selectAll('.not-loaded');
+
+    elements.forEach(el => {
+      el.classList.remove('not-loaded');
+    });
   }
 
 
@@ -532,20 +497,6 @@ class AppShell extends OverlayControlMixin(AppElement) {
     this.fire('app-shell-dark-mode-changed', {value: dark});
   }
 
-  // Fired from auto color mode app-localstorage-document and app-settings.
-  __autoColorModeChanged(event) {
-
-    this._autoColorMode = event.detail.value;
-  }
-
-  // Fired from dark mode app-localstorage-document and app-settings.
-  __darkModeChanged(event) {
-
-    if (this._autoColorMode) { return; }
-
-    this.__setDarkMode(event.detail.value);
-  }
-
   // Follow device color theme unless user 
   // has turned this off in <app-settings>
   // via _autoColorMode toggle.
@@ -566,6 +517,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
     // Start listening for device changes while app is open.
     mediaQuery('(prefers-color-scheme: dark)').addListener(event => {
+      
       if (!this._autoColorMode) { return; }
 
       if (event.matches) {
@@ -574,6 +526,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
     });
 
     mediaQuery('(prefers-color-scheme: light)').addListener(event => {
+
       if (!this._autoColorMode) { return; }
 
       if (event.matches) {
@@ -600,102 +553,13 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  __removeNotLoadedClasses() {
-
-    const elements = this.selectAll('.not-loaded');
-
-    elements.forEach(el => {
-      el.classList.remove('not-loaded');
-    });
-  }
-
-
-  async __setPersistence(event) {
-
-    const {value} = event.detail;
-
-    // Pass to app-localstorage-document and app-settings.
-    this._persistence = value; 
-
-    if (value) {
-
-      const {default: services} = await import(
-        /* webpackChunkName: 'services' */ 
-        '@longlost/app-core/services/services.js'
-      );
-
-      services.enablePersistence();
-    }
-  }
-
-
-  __setupMenuItems() {
-
-    // Pull out data from slotted view elements to use in routing/lazy-loading.
-    const viewsSlotNodes        = this.slotNodes('#viewsSlot');
-    const allOverlaySlotNodes   = this.slotNodes('#overlaysSlot');
-    const viewsBottomSlotNodes  = this.slotNodes('#viewsBottomSlot');
-
-    // Filter out overlays that don't need a menu item.
-    this._menuOverlaysSlotNodes = allOverlaySlotNodes.
-      filter(({attributes}) => (attributes.label && attributes.page));
-
-    const nodesAttributes = nodes => nodes.map(node => node.attributes);
-
-    this._slottedViewElementData       = nodesAttributes(viewsSlotNodes);
-    this._slottedOverlayElementData    = nodesAttributes(this._menuOverlaysSlotNodes);
-    this._slottedBottomViewElementData = nodesAttributes(viewsBottomSlotNodes);
-  }
-
-
-  __addUserAccountListeners() {
-
-    this.addEventListener('auth-userchanged',    this.__userChanged);
-    this.addEventListener('auth-account-button', this.__userAccount);      
-    this.addEventListener('show-user-ui',        this.showAuthUI);
-  }
-
-
-  __accountAvatarChangedHandler(event) {
-
-    hijackEvent(event);
-
-    this._accountAvatarItem = event.detail.value;
-  }
-
-
-  __accountSignoutClickedHandler(event) {
-
-    hijackEvent(event);
-
-    this.__signOut();
-  }
-
-
-  __userChanged(event) {
-
-    const {user}     = event.detail;
-    this.currentUser = user;
-
-    if (this.accountRequired) { // Whitelist apps.
-
-      if (!user) {
-        this.__showAccountRequiredOverlay();
-      }
-      else {
-        this.__hideAccountRequiredOverlay();
-      }
-    }    
-  }
-
-
   __getPage(page) {
 
     if (page) {
       return page;
     }
 
-    return this._slottedViewElementData[0].page.value; // ie. 'home'.
+    return this._viewDrawerItems[0].page.value; // ie. 'home'.
   }
 
 
@@ -723,6 +587,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
           const id = this.seoOverlayIds[page];
 
           await this.debounce('seo-overlay-debounce', 100);
+
           this.fire('open-overlay', {id});
         }
         catch (error) {
@@ -776,7 +641,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  async __routePageChanged(page) {
+  async __routerPageChanged(page) {
 
     await this.__switchView(page);
     await this.__updateSEOMeta(page);
@@ -786,10 +651,14 @@ class AppShell extends OverlayControlMixin(AppElement) {
     window.scrollTo({top: 0, behavior});
   }
 
+  // This one time event fires AFTER the window 'load' event,
+  // and AFTER all `app-shell` custom elements have been
+  // imported/upgraded.
+  __shellReadyChanged(ready) {
 
-  __pageChanged(page) {
+    if (!ready) { return; }
 
-    this.fire('app-shell-page-changed', {value: page});
+    this.fire('app-shell-ready-changed', {value: true});
   }
 
 
@@ -842,12 +711,6 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  showAuthUI() {
-
-    return this.$.auth.showAuthUI();
-  }
-
-
   async __showAccountRequiredOverlay() {
 
     try {
@@ -869,7 +732,9 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
     try {
       this.$.accountRequiredOverlay.classList.remove('show-account-required');
+
       await wait(200);
+
       this.$.accountRequiredOverlay.style.display = 'none';
     }
     catch (error) {
@@ -878,7 +743,9 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  __drawerAccountClicked() {
+  __drawerAccountSelected(event) {
+
+    hijackEvent(event);
 
     if (this.currentUser) {
       this.__prepToOpenOverlay('account');
@@ -889,24 +756,21 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  __drawerSettingsClicked() {
+  __drawerSettingsSelected(event) {
+
+    hijackEvent(event);
 
     this.__prepToOpenOverlay('settings');
   }
 
 
-  __slottedDrawerElementClicked(event) {
-
-    const {id, page} = event.model.item;    
-    this.__prepToOpenOverlay(id.value, page.value);
-  }
-
-
-  __avatarClicked(event) {
+  __drawerOverlayItemSelected(event) {
 
     hijackEvent(event);
 
-    this.showAuthUI();
+    const {id, page} = event.detail.selected;
+
+    this.__prepToOpenOverlay(id, page);
   }
 
 
@@ -981,16 +845,21 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  __userAccount() {
+  __accountAvatarChangedHandler(event) {
 
-    this.__prepToOpenOverlay('account');
+    hijackEvent(event);
+
+    this._accountAvatarItem = event.detail.value;
   }
 
 
-  async __accountReauthNeededHandler() {
+  async __accountReauthNeededHandler(event) {
 
-    try {      
-      await this.__signOut();
+    try {
+      hijackEvent(event);
+
+      await this.__signOut();      
+
       this.showAuthUI();
     }
     catch (error) {
@@ -999,10 +868,151 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
+  __accountSignoutClickedHandler(event) {
+
+    hijackEvent(event);
+
+    this.__signOut();
+  }
+
+
+  __authAccountBtnHandler(event) {
+
+    hijackEvent(event);
+
+    this.__prepToOpenOverlay('account');
+  }
+
+
+  __authUserHandler(event) {
+
+    hijackEvent(event);
+
+    const {user}     = event.detail;
+    this.currentUser = user;
+
+    if (this.accountRequired) { // Whitelist apps.
+
+      if (!user) {
+        this.__showAccountRequiredOverlay();
+      }
+      else {
+        this.__hideAccountRequiredOverlay();
+      }
+    }    
+  }
+
+  // Fired from auto color mode app-localstorage-document and app-settings.
+  __autoColorModeHandler(event) {
+
+    hijackEvent(event);
+
+    this._autoColorMode = event.detail.value;
+  }
+
+
+  __avatarClickedHandler(event) {
+
+    hijackEvent(event);
+
+    this.showAuthUI();
+  }
+
+  // Fired from dark mode app-localstorage-document and app-settings.
+  __darkModeHandler(event) {
+
+    hijackEvent(event);
+
+    if (this._autoColorMode) { return; }
+
+    this.__setDarkMode(event.detail.value);
+  }
+
+
+  __headerThresholdHandler(event) {
+
+    hijackEvent(event);
+
+    this.fire('app-shell-threshold-triggered-changed', event.detail);
+  }
+
+  // Pull out data from slotted view elements to use in routing/lazy-loading.
+  __overlaysSlotchangeHandler() {
+
+    const nodes = this.slotNodes('#overlaysSlot');
+
+    // Filter out overlays that don't need a menu item.
+    this._menuOverlaysSlotNodes = nodes.filter(({attributes}) => 
+                                    (attributes.label && attributes.page));
+
+    this._overlayDrawerItems = this._menuOverlaysSlotNodes.map(node => 
+                                 node.attributes);
+  }
+
+
+  async __persistenceHandler(event) {
+
+    hijackEvent(event);
+
+    const {value} = event.detail;
+
+    // Pass to app-localstorage-document and app-settings.
+    this._persistence = value; 
+
+    if (value) {
+
+      const {default: services} = await import(
+        /* webpackChunkName: 'services' */ 
+        '@longlost/app-core/services/services.js'
+      );
+
+      services.enablePersistence();
+    }
+  }
+
+
+  __routerPageChangedHandler(event) {
+
+    hijackEvent(event);
+
+    this._routerPage = event.detail.value;
+  }
+
+
+  __showAuthUIHandler(event) {
+
+    hijackEvent(event);
+
+    this.showAuthUI();
+  }
+
+  // Pull out data from slotted view elements to use in routing/lazy-loading.
+  __viewsBottomSlotchangeHandler() {
+
+    const nodes = this.slotNodes('#viewsBottomSlot');
+
+    this._bottomViewDrawerItems = nodes.map(node => node.attributes);
+  }
+
+  // Pull out data from slotted view elements to use in routing/lazy-loading.
+  __viewsSlotchangeHandler() {
+
+    const nodes = this.slotNodes('#viewsSlot');
+
+    this._viewDrawerItems = nodes.map(node => node.attributes);
+  }
+
+
   resetUnderlays() {
     
     // overlay-control-mixin.js
     this.__resetUnderlays();
+  }
+
+
+  showAuthUI() {
+
+    return this.$.auth.showAuthUI();
   }
 
 }

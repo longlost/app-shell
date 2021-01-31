@@ -1,0 +1,154 @@
+
+<style>
+  
+  :host {
+    display:  block;
+    position: relative;
+    height:   100%; 
+    overflow: auto;
+  }
+
+  #background-slot::slotted(*) {
+    position: absolute;
+    top:      0px;  
+    right:    0px;
+    bottom:   0px;
+    left:     0px;
+    z-index: -1;
+  }
+
+  /*
+    Placeholder styles for fast app shell rendering model 
+    used before the elements are upgraded to custom elements.
+  */
+  app-toolbar {
+    display:        flex;
+    align-items:    center;
+    position:       relative;
+    height:         64px;
+    padding:        0px 16px;
+    pointer-events: none;
+  }
+
+  app-toolbar {    
+    font-size: var(--toolbar-font-size);
+  }
+
+  /*
+    Placeholder styles for fast app shell rendering model 
+    used before the elements are upgraded to custom elements.
+  */
+  app-toolbar * {
+    pointer-events: auto;
+  }
+
+  .drawer-list {
+    display: block;
+  }
+
+  .drawer-list app-shell-drawer-item {
+    color: inherit;
+  }
+
+  a {
+    text-decoration: none;
+    outline:         none;
+    color:           var(--app-secondary-text);
+  }
+
+  .drawer-list a.iron-selected {
+    color:       var(--drawer-item-selected-color);
+    font-weight: var(--drawer-item-selected-font-weight);
+  }
+
+  .show-divider {
+    margin-top: 12px;
+    padding:    16px 0px;
+    border-top: 2px solid var(--app-divider-color);
+  }
+
+</style>
+
+
+<slot id="background-slot" 
+      name="background">
+</slot>
+
+
+<app-toolbar>Menu</app-toolbar>
+
+
+<iron-selector selected="[[page]]" 
+               attr-for-selected="page" 
+               class="drawer-list" 
+               role="navigation">
+
+  <template is="dom-repeat" 
+            items="[[viewItems]]">
+
+    <a page="[[item.page.value]]" 
+       href="[[rootPath]][[item.page.value]]">
+
+      <app-shell-drawer-item icon="[[item.icon.value]]"
+                             label="[[item.label.value]]">
+      </app-shell-drawer-item>
+
+    </a>
+
+  </template>
+
+</iron-selector>
+
+
+<div class$="[[_dividerClass]]">
+
+  <template is="dom-repeat" 
+            items="[[overlayItems]]">
+
+    <app-shell-drawer-item icon="[[item.icon.value]]"
+                           label="[[item.label.value]]"
+                           on-click="__overlayItemClicked">
+    </app-shell-drawer-item>
+
+  </template>
+
+
+  <template is="dom-if" 
+            if="[[!noUsers]]">
+
+    <app-shell-drawer-item icon="[[accountIcon]]"
+                           label="Account"
+                           on-click="__accountItemClicked">
+    </app-shell-drawer-item>
+
+  </template>
+
+
+  <app-shell-drawer-item icon="app-icons:settings"
+                         label="Settings"
+                         on-click="__settingsItemClicked">
+  </app-shell-drawer-item>
+
+
+  <iron-selector selected="[[page]]" 
+                 attr-for-selected="page" 
+                 class="drawer-list" 
+                 role="navigation">
+
+    <template is="dom-repeat" 
+              items="[[bottomViewItems]]">
+
+      <a page="[[item.page.value]]" 
+         href="[[rootPath]][[item.page.value]]">
+
+        <app-shell-drawer-item icon="[[item.icon.value]]"
+                               label="[[item.label.value]]">
+        </app-shell-drawer-item>
+
+      </a>
+
+    </template>
+
+  </iron-selector>
+  
+</div>
