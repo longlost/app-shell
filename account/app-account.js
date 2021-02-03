@@ -4,7 +4,7 @@
   *  `app-account`
   *
   *
-  *  Prebuilt overlay to handle editing and updating user account.
+  *  Prebuilt overlay to handle editing and updating user account info.
   *
   *
   *  @customElement
@@ -43,39 +43,18 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-input/paper-input.js';
 import '../app-shell-icons.js';
-// delete-modal, password-modal, reauth-modal, unsaved-edits-modal
-// and account-photo-picker dynamically imported.
 
-
-
-// TODO:
-//      Create a more generic way to get user store credit data.
-//      Should be included in user's data document.
-
-// // Get credit val from user account.
-// const getCredit = async uid => {
-//   try {
-//     const {credit} = await services.get({
-//       coll: `users/${uid}/credit`,
-//       doc:  'asg'
-//     });
-//     return credit;
-//   }
-//   catch (error) {
-//     if (
-//       error.message &&
-//       error.message.includes('No such document!')
-//     ) { 
-//       return '0.00';
-//     }
-//     else {
-//       console.error(error);
-//     }
-//   }
-// };
+// The following modules are lazy loaded:
+//
+//  `account-delete-modal`
+//  `account-password-modal` 
+//  `account-reauth-modal` 
+//  `account-unsaved-edits-modal`
+//  `account-photo-picker`
 
 
 class AppAccount extends AppElement {
+
   static get is() { return 'app-account'; }
 
   static get template() {
@@ -106,16 +85,6 @@ class AppAccount extends AppElement {
       _avatar: {
         type: Object,
         computed: '__computeAvatar(_opened, user, _userData)'
-      },
-
-      _credit: {
-        type: String,
-        value: '0.00'
-      },
-
-      _darkModeClass: {
-        type: String,
-        computed: '__computeDarkModeClass(darkMode)'
       },
 
       // A pointer to the public 'headerImage' object so
@@ -203,6 +172,7 @@ class AppAccount extends AppElement {
   
 
   connectedCallback() {
+
     super.connectedCallback();
 
     this.__editInputChanged = this.__editInputChanged.bind(this);
@@ -214,6 +184,7 @@ class AppAccount extends AppElement {
 
 
   disconnectedCallback() {
+
     super.disconnectedCallback();
 
     this.removeEventListener('edit-input-changed', this.__editInputChanged);
@@ -222,6 +193,7 @@ class AppAccount extends AppElement {
 
 
   __computeAvatar(opened, user, userData) {
+
     if (!opened || !user) { return; }
 
     if (userData) { return userData.avatar; }
@@ -230,36 +202,31 @@ class AppAccount extends AppElement {
   }
 
 
-  __computeDarkModeClass(darkMode) {
-    return darkMode ? 'dark' : '';
-  }
-
-
   __computeDisplayNamePlaceholder(displayName) {
+
     return displayName ? displayName : 'No display name';
   }
 
 
   __computeEmailLabel(verified) {
+
     return verified ? 'Email Verified' : 'Email';
   }
 
   __computeEmailPlaceholder(email) {
+
     return email ? email : 'No email';
   }
 
 
-  __computeHideCredit(credit) {
-    return !credit || Number(credit) <= 0;
-  }
-
-
   __computePhonePlaceholder(number) {
+
     return number ? number : 'No phone number';
   }
 
 
   __computeProfileBackground(opened, placeholder, userDataSnapshot, userData) {
+
     if (!opened) { return; }
 
     // If user removes the background, the display the placeholder.
@@ -274,6 +241,7 @@ class AppAccount extends AppElement {
 
 
   __computeUnsavedEdits(obj) {
+
     if (!obj || !obj.base) { return false; }
 
     const {base: unsaved} = obj; 
@@ -284,22 +252,18 @@ class AppAccount extends AppElement {
 
 
   __avatarChanged(avatar) {
+
     this.fire('app-account-avatar-changed', {value: avatar});
   }
 
 
   async __userChanged(user) {
+
     try {
       if (user && user.uid) {
         const {uid} = user;
 
         this._userDataSnapshot = await services.get({coll: 'users', doc: uid});
-
-        // TODO:
-        //      Create a more generic way to get user store credit data.
-        //      Should be included in user's data document.
-
-        // this._credit   = await getCredit(uid);
       }
     }
     catch (error) { console.error(error); }
