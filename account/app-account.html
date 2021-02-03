@@ -16,8 +16,7 @@
   }
 
   avatar-image {
-    width: 64px;
-
+    width:            64px;
     background-color: var(--app-secondary-color);
   }
   
@@ -148,9 +147,9 @@
 
     <div id="grid">
       <div class="grid-item">
-        <h3>My Profile
-          <span hidden="[[__computeHideCredit(_credit)]]"> - Credit $[[_credit]]</span>
-        </h3>
+
+        <h3>My Profile</h3>
+
         <div id="verified-wrapper"
              hidden="[[!user.emailVerified]]">
           <iron-icon icon="app-shell-icons:verified-user"></iron-icon>
@@ -164,7 +163,7 @@
           <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
                        autocapitalize
                        auto-validate
-                       label="Display Name"
+                       label="Profile Name"
                        placeholder="[[__computeDisplayNamePlaceholder(user.displayName)]]"
                        tabindex="0">
           </paper-input>
@@ -208,18 +207,27 @@
 
       </div>
 
-      <div id="first-divider" class="divider shared-bottom-divider"></div>
 
-      <div class="grid-item">    
+      <div id="first-divider" 
+           class="divider shared-bottom-divider">
+      </div>
+
+
+      <div class="grid-item">  
+
         <h3>My Shipping</h3>
+
         <shipping-inputs id="shipping"
                          hide-name-input
                          data="[[_userMeta]]">
         </shipping-inputs>
-      </div>      
+      </div>  
+
     </div>    
 
+
     <div class="divider shared-bottom-divider"></div>
+
 
     <div class="max-width-wrapper">
       <div id="bottom-btns-container">
@@ -252,13 +260,16 @@
                         on-password-modal-confirm="__passwordModalConfirm">
 </account-password-modal>
 
+
 <account-reauth-modal id="reauthModal" 
                       on-reauth-modal-reauth="__reauthenticate">
 </account-reauth-modal>
 
+
 <account-delete-modal id="deleteModal" 
                       on-delete-modal-delete="__deleteUser">
 </account-delete-modal>
+
 
 <account-unsaved-edits-modal id="unsavedEditsModal"
                              on-unsaved-edits-modal-exit="__exitWithoutSavingChanges"
