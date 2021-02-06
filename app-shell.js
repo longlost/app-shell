@@ -36,6 +36,7 @@ import {
   hijackEvent,
   listenOnce,
   schedule,
+  message,
   wait,
   warn
 } from '@longlost/app-core/utils.js';
