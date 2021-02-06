@@ -276,6 +276,8 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
       _subroute: String,
 
+      _userDataUnsub: Object,
+
       _viewDrawerItems: Array
 
     };
@@ -287,6 +289,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
       '__drawerAlignChanged(drawerAlign)',
       '__fixedHeaderChanged(fixedHeader)',
       '__pageChanged(page)',
+      '__persistenceChanged(_persistence)',
       '__shellReadyChanged(shellReady)',
       '__revealHeaderChanged(revealHeader)',
       '__routerPageChanged(_routerPage)',
@@ -420,6 +423,28 @@ class AppShell extends OverlayControlMixin(AppElement) {
   __pageChanged(page) {
 
     this.fire('app-shell-page-changed', {value: page});
+  }
+
+
+  async __lazyLoadServices() {
+
+    const {default: services} = await import(
+      /* webpackChunkName: 'services' */ 
+      '@longlost/app-core/services/services.js'
+    );
+
+    return services;
+  }
+
+
+  async __persistenceChanged(persistence) {
+
+    if (persistence) {
+
+      const services = await this.__lazyLoadServices();
+
+      services.enablePersistence();
+    }
   }
 
 
@@ -845,11 +870,92 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
+  __unsubFromUserData() {
+
+    if (this._userDataUnsub) {
+      this._userDataUnsub();
+      this._userDataUnsub = undefined;
+    }
+  }
+
+
+  __openQuickStart() {
+
+    console.log('TODO: app-shell - open quick-start');
+  }
+
+
+  async __welcomeUser(user) {
+
+    if (!user) { 
+
+      this.__unsubFromUserData();
+
+      return; 
+    }
+
+    const services = await this.__lazyLoadServices();
+
+    const callback = async data => {
+
+      if (!data) { return; }
+
+
+      if (data.verificationEmailSent && data.onboarded) {
+
+        this.__unsubFromUserData();
+        
+        const {displayName} = user;
+        const name          = displayName ? ` ${displayName}` : '';
+
+        message(`Welcome${name}!`);
+      }
+
+
+      if (!data.verificationEmailSent) {
+
+        await user.sendEmailVerification();
+
+        await services.set({
+          coll: 'users',
+          doc:   user.uid,
+          data: {verificationEmailSent: true}
+        });
+      }
+
+
+      if (!data.onboarded) {
+
+        this.__openQuickStart();
+      }
+    };
+
+    const errorCallback = error => {
+      console.error(error);
+    };
+ 
+    this._userDataUnsub = await services.subscribe({
+      callback,
+      coll: 'users',
+      doc:   user.uid,
+      errorCallback
+    });
+  }
+
+
   __accountAvatarChangedHandler(event) {
 
     hijackEvent(event);
 
     this._accountAvatarItem = event.detail.value;
+  }
+
+
+  __accountClearPersistenceHandler(event) {
+
+    hijackEvent(event);
+
+    this._persistence = false;
   }
 
 
@@ -899,7 +1005,9 @@ class AppShell extends OverlayControlMixin(AppElement) {
       else {
         this.__hideAccountRequiredOverlay();
       }
-    }    
+    }
+
+    this.__welcomeUser(user);   
   }
 
   // Fired from auto color mode app-localstorage-document and app-settings.
@@ -950,24 +1058,12 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  async __persistenceHandler(event) {
+  __persistenceHandler(event) {
 
     hijackEvent(event);
 
-    const {value} = event.detail;
-
     // Pass to app-localstorage-document and app-settings.
-    this._persistence = value; 
-
-    if (value) {
-
-      const {default: services} = await import(
-        /* webpackChunkName: 'services' */ 
-        '@longlost/app-core/services/services.js'
-      );
-
-      services.enablePersistence();
-    }
+    this._persistence = event.detailvalue; 
   }
 
 
