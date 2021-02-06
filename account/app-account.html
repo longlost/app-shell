@@ -169,15 +169,36 @@
           </paper-input>
         </edit-input>
 
-        <edit-input icon="app-shell-icons:security"
-                    kind="password">
-          <paper-input id="passwordInput"
-                       allowed-pattern="[^/\f/\n/\r/\t/\v]"
+        <edit-input icon="app-icons:label-outline"
+                    kind="first">
+          <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                       autocapitalize
                        auto-validate
-                       label="Password"
-                       placeholder="*****"
-                       tabindex="0"
-                       type="password">
+                       label="First Name"
+                       placeholder="[[__computeFirstNamePlaceholder(_userDataSnapshot.first)]]"
+                       tabindex="0">
+          </paper-input>
+        </edit-input>
+
+        <edit-input icon="app-icons:label-outline"
+                    kind="middle">
+          <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                       autocapitalize
+                       auto-validate
+                       label="Middle Name (not required)"
+                       placeholder="[[__computeMiddleNamePlaceholder(_userDataSnapshot.middle)]]"
+                       tabindex="0">
+          </paper-input>
+        </edit-input>
+
+        <edit-input icon="app-icons:label-outline"
+                    kind="last">
+          <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                       autocapitalize
+                       auto-validate
+                       label="Last Name"
+                       placeholder="[[__computeLastNamePlaceholder(_userDataSnapshot.last)]]"
+                       tabindex="0">
           </paper-input>
         </edit-input>
 
@@ -196,13 +217,25 @@
         </edit-input>
 
         <edit-input icon="app-icons:call"
-                    kind="phoneNumber">
+                    kind="phone">
           <gold-phone-input auto-validate
-                            label="Phone Number"
+                            label="Phone Number (not required)"
                             maxlength="12"
-                            placeholder="[[__computePhonePlaceholder(_userMeta.phoneNumber)]]" 
+                            placeholder="[[__computePhonePlaceholder(_userDataSnapshot.phone)]]" 
                             tabindex="0">
           </gold-phone-input>
+        </edit-input>
+
+        <edit-input icon="app-shell-icons:security"
+                    kind="password">
+          <paper-input id="passwordInput"
+                       allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                       auto-validate
+                       label="Password"
+                       placeholder="*****"
+                       tabindex="0"
+                       type="password">
+          </paper-input>
         </edit-input>
 
       </div>
@@ -219,7 +252,7 @@
 
         <shipping-inputs id="shipping"
                          hide-name-input
-                         data="[[_userMeta]]">
+                         data="[[_userDataSnapshot]]">
         </shipping-inputs>
       </div>  
 
@@ -251,7 +284,9 @@
 </app-header-overlay>
 
 
-<app-spinner id="spinner" full-screen></app-spinner>
+<app-spinner id="spinner" 
+             full-screen>
+</app-spinner>
 
 
 <!-- Dynamically imported. -->

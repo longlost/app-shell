@@ -42,6 +42,7 @@ import '@longlost/app-overlays/app-modal.js';
 
 
 class SigninModal extends AppElement {
+  
   static get is() { return 'signin-modal'; }
 
   static get template() {
@@ -132,6 +133,7 @@ class SigninModal extends AppElement {
 
 
   constructor() {
+
     super();
 
     this.__modalClicked = this.__modalClicked.bind(this);
@@ -139,6 +141,7 @@ class SigninModal extends AppElement {
 
 
   disconnectedCallback() {
+
     super.disconnectedCallback();
 
     if (this.$.modal) {
@@ -166,11 +169,13 @@ class SigninModal extends AppElement {
 
   // Ignore card clicks.
   __cardClicked(event) {
+
     hijackEvent(event);
   }
 
 
   __getFirebaseUiConfig(firebase, ui) {
+
     return {
 
       // Whether to upgrade anonymous users should be explicitly provided.
@@ -180,6 +185,7 @@ class SigninModal extends AppElement {
       autoUpgradeAnonymousUsers: false,
 
       callbacks: {
+
         signInSuccessWithAuthResult: () => {
 
           // Return type determines whether we (return false) continue the redirect automatically
@@ -190,6 +196,7 @@ class SigninModal extends AppElement {
         // signInFailure callback must be provided to handle merge conflicts which
         // occur when an existing credential is linked to an anonymous user.
         signInFailure: async error => {
+
           try {
 
             // For merge conflicts, the error.code will be
@@ -238,11 +245,9 @@ class SigninModal extends AppElement {
         }
       },
 
+      
 
-      // Account chooser does not work in ios standalone/pwa mode
-      // if you logout then try to log back in, 
-      // as of 1/9/2019 "firebaseui": "^3.5.1" CB
-      // credentialHelper: ui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM,
+      // Use firebaseui.auth.CredentialHelper.GOOGLE_YOLO for one-tap signin.
       credentialHelper: ui.auth.CredentialHelper.NONE,
 
 
@@ -306,6 +311,7 @@ class SigninModal extends AppElement {
 
 
   async __modalClicked() {
+
     try {
       await this.clicked();
       await this.close();
@@ -318,11 +324,13 @@ class SigninModal extends AppElement {
 
 
   close() {
+
     return this.$.modal.close();
   }
 
 
   async open() {
+
     await this.$.modal.open();
 
     if (!this._firebaseUi) {
@@ -343,6 +351,7 @@ class SigninModal extends AppElement {
 
 
   reset() {
+
     if (this._firebaseUi) {
       this._firebaseUi.reset();
     }

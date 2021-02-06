@@ -89,16 +89,12 @@ class AppAuth extends AppElement {
 
     firebase.auth().onAuthStateChanged(async user => {
 
-      if (user) {
-        const {displayName} = user;
-        const name          = displayName ? ` ${displayName}` : '';
-        message(`Welcome${name}!`);
-      }
-
       this._user = user;
 
     }, error => {
+
       console.error(error);
+
       this._user = null;
     });
   }
@@ -145,7 +141,7 @@ class AppAuth extends AppElement {
   async __accountModalClicked() {
 
     try {
-      await this.clicked();
+      await  this.clicked();
       return this.__closeAccountModal();
     }
     catch (error) {
@@ -188,7 +184,7 @@ class AppAuth extends AppElement {
   async showAuthUI() {
 
     if (this._user) {
-      await schedule();
+      await  schedule();
       return this.$.accountModal.open();
     }
 

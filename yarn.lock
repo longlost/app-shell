@@ -599,10 +599,10 @@
     "@polymer/paper-ripple" "^3.0.2"
     "@polymer/polymer" "^3.4.1"
 
-"@longlost/app-inputs@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@longlost/app-inputs/-/app-inputs-2.0.1.tgz#c0c06da4070e46e6a8771d1a3a4495700e943beb"
-  integrity sha512-hBjWnnPwpyDqAEJEu5CH/OuRlgJaDSV3qpEgvxqSusYW9hl5ZhwLVVLs3k0nq4lEqUdQIeImhr688OsJs/7j2A==
+"@longlost/app-inputs@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@longlost/app-inputs/-/app-inputs-2.0.2.tgz#01cc0b5a3e02c9b656199305487bc0d151578647"
+  integrity sha512-xsA3MMTQG4Q+0RKDuPZUrYAR/zl6LlYkjHtZCET4e89PIHHyg/iHlONCrbQzNmOWQIvlRuk3Fna1CmMYnUa6Ug==
   dependencies:
     "@longlost/app-core" "^2.2.0"
     "@longlost/icon-to-spinner" "^2.0.0"
@@ -1629,10 +1629,10 @@ camelcase@^6.0.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.2.0.tgz#924af881c9d525ac9d87f40d964e5cea982a1809"
   integrity sha512-c7wVvbw3f37nuobQNtgsgG9POC9qMbNuMQmTCqZv23b6MIz0fcYpBiOlv9gEN/hdLdnZTDQhg6e9Dq5M1vKvfg==
 
-chai@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/chai/-/chai-4.2.0.tgz#760aa72cf20e3795e84b12877ce0e83737aa29e5"
-  integrity sha512-XQU3bhBukrOsQCuwZndwGcCVQHyZi53fQ6Ys1Fym7E4olpIqqZZhhoFJoaKVvV17lWQoXYwgWN2nF5crA8J2jw==
+chai@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/chai/-/chai-4.3.0.tgz#5523a5faf7f819c8a92480d70a8cccbadacfc25f"
+  integrity sha512-/BFd2J30EcOwmdOgXvVsmM48l0Br0nmZPlO0uOW4XKh6kpsUumRXBgPV+IlaqFaqr9cYbeoZAM1Npx0i4A+aiA==
   dependencies:
     assertion-error "^1.1.0"
     check-error "^1.0.2"
@@ -1939,10 +1939,10 @@ firebase@^8.2.5:
     "@firebase/storage" "0.4.2"
     "@firebase/util" "0.3.4"
 
-firebaseui@^4.7.2:
-  version "4.7.2"
-  resolved "https://registry.yarnpkg.com/firebaseui/-/firebaseui-4.7.2.tgz#ef5b59c9e0eb0ab71dc61257bebaa2877d1ac4ab"
-  integrity sha512-AmfOR7U6GVRA2fiilAZDLnzPTbc5YnKuWCLUJWd0GuYKPu615002O/NYOHPcNxX+HkAz0QXKY1xY+hDBqq5Vmw==
+firebaseui@^4.7.3:
+  version "4.7.3"
+  resolved "https://registry.yarnpkg.com/firebaseui/-/firebaseui-4.7.3.tgz#9f7601610a8e5822ad76a33c86b104a459ac4f27"
+  integrity sha512-KKeZQS2fO2SrZFIsEmG6GrTm/+Na8Vk+OM9wnNgP8FtUw6h4S5oCPtebBREr9ETlDFvIK88gaHvp5bvF96yogA==
   dependencies:
     dialog-polyfill "^0.4.7"
     material-design-lite "^1.2.0"

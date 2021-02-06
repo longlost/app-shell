@@ -20,12 +20,14 @@ import {
 } from '@longlost/app-core/app-element.js';
 
 import {
-  confirm,
   hijackEvent,
   message,
   schedule,
+  wait,
   warn
 } from '@longlost/app-core/utils.js';
+
+import {init as initDb} from '@longlost/app-core/services/db.js';
 
 import services   from '@longlost/app-core/services/services.js';
 import htmlString from './app-account.html';
@@ -51,6 +53,13 @@ import '../app-shell-icons.js';
 //  `account-reauth-modal` 
 //  `account-unsaved-edits-modal`
 //  `account-photo-picker`
+
+
+const notRequired = str => (
+  str === 'address2' ||
+  str === 'middle'   ||
+  str === 'phone'
+);
 
 
 class AppAccount extends AppElement {
@@ -99,8 +108,11 @@ class AppAccount extends AppElement {
           'address1', 
           'address2', 
           'city', 
-          'country', 
-          'phoneNumber', 
+          'country',
+          'first',
+          'last',
+          'middle',
+          'phone', 
           'state', 
           'zip'
         ]
@@ -140,18 +152,20 @@ class AppAccount extends AppElement {
       _userData: Object,
 
       // An initial recording of the user's data.
-      // Used to allow applied edits to be undone.
       _userDataSnapshot: {
         type: Object,
         value: () => ({
-          phoneNumber: null,
-          fullName:    null,
           address1:    null, 
           address2:    null,
           city:        null,
-          state:       null,
-          zip:         null,
           country:     null,
+          displayName: null,
+          first:       null,
+          last:        null,
+          middle:      null,
+          phone:       null,
+          state:       null,
+          zip:         null
         })
       },
 
@@ -204,7 +218,25 @@ class AppAccount extends AppElement {
 
   __computeDisplayNamePlaceholder(displayName) {
 
-    return displayName ? displayName : 'No display name';
+    return displayName ? displayName : 'No profile name';
+  }
+
+
+  __computeFirstNamePlaceholder(firstName) {
+
+    return firstName ? firstName : 'No first name';
+  }
+
+
+  __computeMiddleNamePlaceholder(middleName) {
+
+    return middleName ? middleName : 'No middle name';
+  }
+
+
+  __computeLastNamePlaceholder(lastName) {
+
+    return lastName ? lastName : 'No last name';
   }
 
 
@@ -289,6 +321,7 @@ class AppAccount extends AppElement {
 
 
   async __startUserDataSub() {
+
     if (this._userDataUnsubscribe) { return; }
 
     const callback = dbData => {
@@ -311,6 +344,7 @@ class AppAccount extends AppElement {
 
 
   __stopUserDataSub() {
+
     if (this._userDataUnsubscribe) {
       this._userDataUnsubscribe();
       this._userDataUnsubscribe = undefined;
@@ -319,17 +353,20 @@ class AppAccount extends AppElement {
 
 
   __editInputChanged(event) {
+
     const {kind, value} = event.detail;
     this.set(`_unsavedEditsObj.${kind}`, value);
   }
 
 
   __reset() {
+
     this._opened = false;
   }
 
 
   async __reauthenticate() {
+
     try {
       await this.$.overlay.close();
 
@@ -340,6 +377,7 @@ class AppAccount extends AppElement {
 
 
   async __openUnsavedEditsModal() {
+
     try {
       await import(
         /* webpackChunkName: 'account-unsaved-edits-modal' */ 
@@ -352,6 +390,7 @@ class AppAccount extends AppElement {
 
 
   __exitWithoutSavingChanges() {
+
     this.$.overlay.back();
   }
 
@@ -369,6 +408,7 @@ class AppAccount extends AppElement {
 
 
   async __signOutButtonClicked() {
+
     try {
       await this.clicked();
       await this.$.overlay.close();
@@ -383,6 +423,7 @@ class AppAccount extends AppElement {
 
 
   async __openPhotoPicker() {
+
     try {
       if (!this.user) {
         throw new Error('User is not logged in before attempting to add/edit the profile avatar.');
@@ -406,6 +447,7 @@ class AppAccount extends AppElement {
 
 
   async __changeBackgroundButtonClicked() {
+
     try {
       await this.clicked();
 
@@ -421,12 +463,14 @@ class AppAccount extends AppElement {
 
 
   __avatarClicked() {
+
     this._photoPickerType = 'avatar';
     this.__openPhotoPicker();
   }
 
 
   __photoPickerOpenedChangedHandler(event) {
+
     hijackEvent(event);
 
     this._photoPickerOpened = event.detail.value;
@@ -434,6 +478,7 @@ class AppAccount extends AppElement {
 
 
   async __openPasswordModal() {
+
     await import(
       /* webpackChunkName: 'account-password-modal' */ 
       './account-password-modal.js'
@@ -443,6 +488,7 @@ class AppAccount extends AppElement {
 
 
   async __openReauthenticateModal() {
+
     try {
       await import(
         /* webpackChunkName: 'account-reauth-modal' */ 
@@ -465,6 +511,7 @@ class AppAccount extends AppElement {
 
 
   async __weakPassword() {
+
     this.$.passwordInput.errorMessage = 'Weak password';
     this.$.passwordInput.invalid      = true;
 
@@ -475,6 +522,7 @@ class AppAccount extends AppElement {
 
 
   __invalidEmail() {
+
     this.$.emailInput.errorMessage = 'Invalid email address';
     this.$.emailInput.invalid      = true;
 
@@ -483,6 +531,7 @@ class AppAccount extends AppElement {
 
 
   __emailAlreadyInUse() {
+
     this.$.emailInput.errorMessage = 'Email already in use';
     this.$.emailInput.invalid      = true;
 
@@ -524,6 +573,7 @@ class AppAccount extends AppElement {
 
 
   async __passwordModalConfirm(event) {
+
     const {password, stopSpinner} = event.detail;
 
     try {
@@ -532,6 +582,7 @@ class AppAccount extends AppElement {
         await this.user.updatePassword(password);
         await stopSpinner();
         await this.$.passwordModal.close();
+
         message('Your password has been updated.');
 
         if (this._passwordPromiseResolver) {
@@ -541,6 +592,7 @@ class AppAccount extends AppElement {
       }
       else {
         await stopSpinner();
+
         warn('Your new password inputs do not match. Please try again.');
 
         if (this._passwordPromiseRejecter) {
@@ -564,6 +616,7 @@ class AppAccount extends AppElement {
   
 
   __sendVerificationEmail() {
+
     if (!this.user) { return; }
 
     return this.user.sendEmailVerification();
@@ -571,50 +624,44 @@ class AppAccount extends AppElement {
 
 
   async __confirmEdit(event) {
+
     const {kind, reset, stopSpinner, value} = event.detail;
 
     try {
 
-      // Bail if a required value is empty, address2 not required.
-      if (!value && (kind !== 'address2' || !value.trim())) {
+      // Bail if a required value is empty, 
+      // middle, phone and address2 are not required.
+      if (!value && (!notRequired(kind) || !value.trim())) {
+
         await warn('Sorry, this is a required field.');
+
         stopSpinner();
       }
 
+
       const saveEditToDb = async str => {
+
         const oldVal = this._userDataSnapshot[kind];
 
         if (oldVal !== value) { // Ignore if there is no change.
+
           const data = {};
           data[kind] = value;
 
           await services.set({coll: 'users', doc: this.user.uid, data});
 
           this.set(`_userDataSnapshot.${kind}`, value);
-          const event = await confirm(`${str} updated.`);
-          const undo  = event.detail.canceled;
 
-          if (undo) {
-            data[kind] = oldVal || null; // Firebase does not accept undefined as a value.
-
-            await services.set({coll: 'users', doc: this.user.uid, data});
-
-            this.set(`_userDataSnapshot.${kind}`, oldVal);
-            reset();
-
-            await stopSpinner();
-
-            message('Change undone.');
-
-            return;
-          }
+          await message(`${str} updated.`);
         }
 
         stopSpinner();
       };
 
       switch (kind) {
+
         case 'displayName':
+
           const previousDisplayName = this.user.displayName;
 
           // Profile obj === {displayName: nullable string, photoURL: nullable string}.
@@ -623,30 +670,22 @@ class AppAccount extends AppElement {
 
           this.notifyPath('user.displayName'); // Cannot write to Firebase user.
 
-          const event = await confirm('Display name updated.');
-          const undo  = event.detail.canceled;
+          await message('Profile name updated.');
 
-          if (undo) {
-            await this.user.updateProfile({displayName: previousDisplayName});
-
-            this.notifyPath('user.displayName');
-            await stopSpinner();
-
-            reset();
-            message('Change undone.');
-          } 
-          else {
-            stopSpinner();
-          }
+          stopSpinner();
 
           break;
 
-        case 'password':
-          this._newPassword = value;
+        case 'first':
+          await saveEditToDb('First name');
+          break;
 
-          await stopSpinner();
-          await this.__openPasswordModal();
+        case 'middle':
+          await saveEditToDb('Middle name');
+          break;
 
+        case 'last':
+          await saveEditToDb('Last name');
           break;
 
         case 'email':
@@ -662,12 +701,17 @@ class AppAccount extends AppElement {
 
           break;
 
-        case 'phoneNumber':
+        case 'phone':
           await saveEditToDb('Phone number');
           break;
 
-        case 'fullName':
-          await saveEditToDb('Full name');
+        case 'password':
+
+          this._newPassword = value;
+
+          await stopSpinner();
+          await this.__openPasswordModal();
+
           break;
 
         case 'address1':
@@ -709,13 +753,16 @@ class AppAccount extends AppElement {
 
 
   async __saveAll() {
+
     try {
       await this.$.spinner.show('Saving edits.');
 
       const pwEdit = this._unsavedEditsObj['password'];
 
-      if (pwEdit && pwEdit.trim()) {        
+      if (pwEdit && pwEdit.trim()) {   
+
         this._newPassword = pwEdit;
+
         await this.__openPasswordModal();
 
         // Password modal controls how this promise resolves.
@@ -728,10 +775,11 @@ class AppAccount extends AppElement {
       }
       
       const normalSaves = this._normalKeys.reduce((accum, key) => {
+
         const val = this._unsavedEditsObj[key];
 
         // 'address2' can be empty string, not required.
-        if (val && (key === 'address2' || val.trim())) {
+        if (val && (notRequired(key) || val.trim())) {
           accum[key] = val;
         }
 
@@ -754,10 +802,12 @@ class AppAccount extends AppElement {
       };
 
       const saveEmail = async email => {
+
         await this.user.updateEmail(email);
 
         // Sends an email to user for them to verify.
         await this.__sendVerificationEmail();
+
         this.notifyPath('user.email');
       };
 
@@ -794,12 +844,14 @@ class AppAccount extends AppElement {
       await this.__handleFirebaseErrors(error);
     }
     finally {
+      await  this.$.overlay.reset();
       return this.$.spinner.hide();
     }
   }
 
 
   async __saveAllButtonClicked() {
+
     try {
       await this.clicked();
       await this.__saveAll();
@@ -812,26 +864,56 @@ class AppAccount extends AppElement {
 
 
   async __deleteUser() {
+
     try {
 
+      await this.$.spinner.show('Deleting your account. Please wait.');
+
       // Delete and signout user.
-      await this.user.delete();
-      await schedule(); 
+      await Promise.all([
+        this.user.delete(),
+        wait(1000)
+      ]);
+
+      await this.$.spinner.show('Deleting app data from this device. Please wait.');
+
+      // Get the currently running firestore instance.
+      const db = await initDb();
+
+      // Shutdown and remove cached user data from device.
+      await db.terminate();
+      await db.clearPersistence();
+
+      this.fire('app-account-clear-persistence');
+
+      // Start a new firestore instance.
+      await initDb();
+
+      await schedule();
+
+      await this.$.spinner.hide();
+
       await this.$.overlay.close();
     }
     catch (error) {
+
+      await this.$.spinner.hide();
+
       this.__handleFirebaseErrors(error);
     }
   }
 
 
   async __deleteUserButtonClicked() {
+
     try {
       await this.clicked();
+
       await import(
         /* webpackChunkName: 'account-delete-modal' */ 
         './account-delete-modal.js'
       );
+
       this.$.deleteModal.open();
     }
     catch (error) {
@@ -842,6 +924,7 @@ class AppAccount extends AppElement {
 
 
   async open() {
+
     try {
       await this.$.overlay.open();
       await schedule();
