@@ -81,7 +81,7 @@ export const AppMainMixin = () => {
 
       this.addEventListener('app-shell-dark-mode-changed', this.__darkModeChangedHandler);
       this.addEventListener('app-shell-page-changed',      this.__pageChangedHandler);
-      this.addEventListener('auth-userchanged',            this.__userChangedHandler);
+      this.addEventListener('app-shell-user-changed',      this.__userChangedHandler);
       this.addEventListener('open-overlay',                this.__openOverlayHandler);  
     }
 
@@ -92,7 +92,7 @@ export const AppMainMixin = () => {
 
       this.removeEventListener('app-shell-dark-mode-changed', this.__darkModeChangedHandler);
       this.removeEventListener('app-shell-page-changed',      this.__pageChangedHandler);
-      this.removeEventListener('auth-userchanged',            this.__userChangedHandler);
+      this.removeEventListener('app-shell-user-changed',      this.__userChangedHandler);
       this.removeEventListener('open-overlay',                this.__openOverlayHandler); 
     }
 
@@ -117,7 +117,7 @@ export const AppMainMixin = () => {
 
       hijackEvent(event);
 
-      this.user = event.detail.user;
+      this.user = event.detail.value;
     }
 
     // May be called directly by implementation.

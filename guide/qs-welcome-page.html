@@ -1,0 +1,57 @@
+
+<style include="app-shared-styles">
+  
+  :host {
+    display:          flex;
+    flex-direction:   column;
+    justify-content:  center;
+    align-items:      center;
+    padding:          16px;
+    text-align:       center;
+    background-color: inherit;
+
+    /* Adjust styles that are automatically applied by `tab-pages`. */
+    bottom: 0px;
+  }
+
+  h2 {
+    font-size: 46px;
+    margin:    0px;
+  }
+
+  h2.shared-single-line-truncate {
+    font-size: 34px;
+    margin:    0px 0px 16px 0px;
+    max-width: 100%;
+  }
+
+  responsive-image {
+    width:            50vmin;
+    max-width:        256px;
+    background-color: inherit;
+  }
+
+  p {
+    font-size: 20px;
+    margin:    16px 0px 0px 0px;
+  }
+
+  #p-2 {
+    margin: 16px 0px;
+  }
+
+</style>
+
+
+<h2>Hello</h2>
+
+<h2 class="shared-single-line-truncate">[[user.displayName]]</h2>
+
+<responsive-image alt="App logo"
+                  sizing="contain" 
+                  src="[[_logo]]">
+</responsive-image>
+
+<p>Thank you for signing up today!</p>
+
+<p id="p-2">Let's show you around.</p>
