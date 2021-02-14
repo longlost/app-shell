@@ -116,12 +116,6 @@ class AppShell extends OverlayControlMixin(AppElement) {
       // For whitelisted apps such as CMS.
       accountRequired: Boolean,
 
-      // Important for first paint.
-      currentUser: { 
-        type: Object,
-        value: null
-      },
-
       // When dev sets this prop, dark mode is
       // defaulted when browser does not support
       // the 'prefers-color-scheme' media-query.
@@ -227,7 +221,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
       // Show 'account-circle' icon when user is logged in.
       _accountIcon: {
         type: String,
-        computed: '__computeAccountIcon(currentUser)'
+        computed: '__computeAccountIcon(_user)'
       },
 
       // If true, app color theme mode will
@@ -250,7 +244,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
       // attempt to reduce user and app owner data charges at scale.
       _avatar: {
         type: Object,
-        computed: '__computeAvatar(currentUser, _accountAvatarItem)'
+        computed: '__computeAvatar(_user, _accountAvatarItem)'
       },
 
       _bottomViewDrawerItems: Array,
@@ -276,6 +270,11 @@ class AppShell extends OverlayControlMixin(AppElement) {
       _routerPage: String,
 
       _subroute: String,
+
+      _user: { 
+        type: Object,
+        value: null
+      },
 
       _userDataUnsub: Object,
 
@@ -773,7 +772,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
     hijackEvent(event);
 
-    if (this.currentUser) {
+    if (this._user) {
       this.__prepToOpenOverlay('account');
     }
     else {
@@ -880,12 +879,19 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  __openQuickStart() {
+  async __openQuickStart() {
 
-    console.log('TODO: app-shell - open quick-start');
+    await import(
+      /* webpackChunkName: 'app-quick-start' */ 
+      './guide/app-quick-start.js'
+    );
+
+    this.$.quickStart.open();
   }
 
-
+  // Subscribe to user data, which is created by
+  // a cloud function which is triggered by the 
+  // Firebase Auth onCreate event.
   async __welcomeUser(user) {
 
     if (!user) { 
@@ -995,8 +1001,8 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
     hijackEvent(event);
 
-    const {user}     = event.detail;
-    this.currentUser = user;
+    const {user} = event.detail;
+    this._user   = user;
 
     if (this.accountRequired) { // Whitelist apps.
 
@@ -1008,7 +1014,9 @@ class AppShell extends OverlayControlMixin(AppElement) {
       }
     }
 
-    this.__welcomeUser(user);   
+    this.__welcomeUser(user);
+
+    this.fire('app-shell-user-changed', {value: user});
   }
 
   // Fired from auto color mode app-localstorage-document and app-settings.

@@ -1,0 +1,109 @@
+
+<style include="app-shared-styles">
+  
+  :host {
+    display:          flex;
+    flex-direction:   column;
+    justify-content:  center;
+    align-items:      center;
+    padding:          16px;
+    background-color: inherit;
+
+    /* Adjust styles that are automatically applied by `tab-pages`. */
+    bottom: 0px;
+  }
+
+  h2 {
+    font-size:  34px;
+    text-align: center;
+    margin:     0px 0px 16px 0px;
+  }
+
+  #send-icon {
+    height:        48px;
+    width:         48px;
+    margin-bottom: 32px;
+  }
+
+  .animate-send {
+    animation-name:            fly;
+    animation-duration:        0.8s;
+    animation-timing-function: var(--app-custom-ease);
+    opacity:                   0;
+  }
+
+  @keyframes fly {
+
+    0% {
+      transform: rotate(0deg) translateX(0px);
+      opacity:   1;
+    }
+
+    20% {
+      transform: rotate(10deg) translateX(-16px);
+      opacity:   1;
+    }
+
+    60% {
+      opacity: 1;
+    }
+
+    80% {
+      opacity: 0;
+    }
+
+    100% {
+      transform: rotate(-30deg) translateX(192px);
+      opacity:   0;
+    }
+  }
+
+  p {    
+    max-width: 414px;
+    font-size: 18px;
+    margin:    0px 0px 24px 0px;
+  }
+
+  strong {
+    font-size: 20px;
+  }
+
+  .secondary {
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  .secondary strong {
+    font-size: 16px;
+  }
+
+  p iron-icon {
+    bottom: 2px;
+    margin: 0px 4px;
+  }
+
+  #arrow {
+    position: relative;
+    bottom:   2px;
+    margin:   0px 4px 0px 8px;
+  }
+
+</style>
+
+
+<h2>Verification Sent</h2>
+
+<iron-icon id="send-icon"
+           class$="[[_animateIconClass]]"
+           icon="app-shell-icons:send">
+</iron-icon>
+
+<p>We've sent an email to <strong>[[user.email]]</strong> so that we can confirm your email address.</p>
+
+<p class="secondary">
+  You should receive it within the hour. If not, please double check that your address is correct.
+</p>
+
+<p class="secondary">
+  To update your address and have the verification email resent, navigate to <iron-icon icon="app-shell-icons:menu"></iron-icon><strong>Menu</strong><span id="arrow">→</span><iron-icon icon="app-shell-icons:account-circle"></iron-icon><strong>Account</strong>.
+</p>

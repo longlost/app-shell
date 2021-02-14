@@ -498,7 +498,7 @@
 
 <app-account id="account"
              dark-mode="[[_darkMode]]"
-             user="[[currentUser]]"
+             user="[[_user]]"
              header-image="[[accountHeaderImage]]"
              header-size="[[accountHeaderSize]]"
              on-app-account-avatar-changed="__accountAvatarChangedHandler"
@@ -517,6 +517,11 @@
               on-settings-dark-mode-changed="__darkModeHandler"
               on-settings-persistence-changed="__persistenceHandler">
 </app-settings>
+
+
+<app-quick-start id="quickStart"
+                 user="[[_user]]">
+</app-quick-start>
 
 
 <app-auth id="auth" 

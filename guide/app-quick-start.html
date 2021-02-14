@@ -1,0 +1,207 @@
+
+<style include="app-shared-styles">
+
+  :host {
+    background: linear-gradient(
+      135deg, 
+      var(--app-primary-dark-color), 
+      var(--app-secondary-dark-color)
+    );
+    background-color: var(--app-primary-dark-color);
+    color:            var(--app-primary-dark-color-text);
+  }
+
+  #overlay {
+    background:       inherit;
+    background-color: inherit;
+    color:            currentColor;
+  }
+
+  tab-pages {
+    height:     100%;
+    min-height: unset !important;
+  }
+
+  paper-icon-button {
+    position: absolute;
+    top:      12px;
+    right:    12px;
+    color:    currentColor;
+  }
+
+  #nav {
+    display:         flex;
+    justify-content: space-between;
+    position:        absolute;
+    bottom:          16px;
+    left:            50%;
+    transform:       translateX(-50%);
+    width:           100%;
+    max-width:       446px; /* 414px plus 16px padding both sides. */
+  }
+
+  paper-button {
+    margin: 0px 16px;
+  }
+
+  #back-btn { 
+    background-color: var(--app-constant-light-text);
+    color:            var(--app-constant-dark-text);
+  }
+
+  #back-btn iron-icon {
+    margin-right: 4px;
+  }
+
+  #back-btn span {
+    margin-right: 8px;
+  }
+
+  #next-btn {
+    background-color: var(--app-secondary-light-color);
+    color:            var(--app-secondary-light-color-text);
+  }
+
+  #next-btn span {
+    margin-left: 8px;
+  }
+
+  #next-btn iron-icon {
+    margin-left: 4px;
+  }
+
+  .hide-btn {
+    transition: transform 0.3s var(--app-custom-ease), 
+                opacity 0.1s ease-out 0.05s;
+
+    transform:      translateY(100%);
+    opacity:        0;
+    pointer-events: none;
+  }
+
+  .show-btn {
+    transform:      none;
+    opacity:        1;
+    pointer-events: auto;
+  }
+
+  paper-progress {
+    position: absolute;
+    bottom:   0px;
+    left:     0px;
+    width:    100%;
+
+    --paper-progress-container-color: transparent;
+    --paper-progress-active-color:    var(--app-primary-color);
+    --paper-progress-secondary-color: var(--app-secondary-color);
+  }
+
+
+
+
+
+
+  /*TESTING ONLY!!*/
+  
+
+
+  dark-mode-page {
+    display: block;
+    bottom: 0px;
+    background-color: dodgerblue;
+  }
+
+  installed-mode-page {
+    display: block;
+    bottom: 0px;
+    background-color: aquamarine;
+  }
+
+  conclusion-page {
+    display: block;
+    bottom: 0px;
+    background-color: wheat;
+  }
+
+
+
+</style>
+
+
+<app-overlay id="overlay"
+             above-safari-nav
+             modal
+             prebuilt-animation="from-bottom"
+             on-overlay-reset="__overlayResetHandler">
+
+  <tab-pages attr-for-selected="page"
+             selected="[[_selectedPage]]"
+             on-tab-pages-page-changed="__tabPageChangedHandler">
+
+    
+    <qs-welcome-page page="welcome"
+                     user="[[user]]">
+    </qs-welcome-page>
+
+    <qs-verification-page current="[[_currentPage]]"
+                          page="verification"
+                          user="[[user]]">
+    </qs-verification-page>
+
+
+    <slot id="defaultSlot" 
+          on-slotchange="__defaultSlotChangeHandler">
+    </slot>
+
+
+    <qs-persistence-page page="persistence"></qs-persistence-page>
+
+    <dark-mode-page current="[[_currentPage]]"
+                    page="dark"
+                    selected="[[_selectedPage]]">
+    </dark-mode-page>
+
+    <installed-mode-page current="[[_currentPage]]"
+                         page="installed"
+                         selected="[[_selectedPage]]">
+    </installed-mode-page>
+
+    <conclusion-page current="[[_currentPage]]"
+                     page="conclusion"
+                     selected="[[_selectedPage]]">
+    </conclusion-page>
+
+  </tab-pages>
+
+
+  <paper-icon-button icon="app-icons:close"
+                     on-click="__closeBtnClicked">
+  </paper-icon-button>
+
+
+  <div id="nav">
+    <paper-button id="back-btn"
+                  class$="shared-paper-button-with-icon hide-btn [[_showBackBtnClass]]"
+                  raised
+                  on-click="__backBtnClicked">
+      <iron-icon icon="app-icons:chevron-l"></iron-icon>
+      <span>BACK</span>
+    </paper-button>
+
+    <paper-button id="next-btn"
+                  class$="shared-paper-button-with-icon hide-btn [[_showNextBtnClass]]"
+                  raised
+                  on-click="__nextBtnClicked">
+      <span>NEXT</span>
+      <iron-icon icon="app-icons:chevron-r"></iron-icon>
+    </paper-button>
+  </div>
+
+
+  <paper-progress class="transiting"
+                  max="[[_max]]"
+                  secondary-progress="[[_progress]]"
+                  value="[[_currentProgress]]">
+  </paper-progress>
+
+</app-overlay>
