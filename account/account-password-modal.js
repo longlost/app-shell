@@ -21,10 +21,11 @@ import '@longlost/app-overlays/app-modal.js';
 import '@longlost/icon-to-spinner/icon-to-spinner.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-button/paper-button.js';
-import '../app-shell-icons.js';
+import '../shared/app-shell-icons.js';
 
 
 class AccountPasswordModal extends AppElement {
+
   static get is() { return 'account-password-modal'; }
 
   static get template() {
@@ -45,23 +46,29 @@ class AccountPasswordModal extends AppElement {
 
 
   __computeColor(invalid, focused) {
+
     if (invalid) { return 'invalid'; }
     if (focused) { return 'focused'; }
+
     return '';
   }
 
 
   __computeDisabled(pw, invalid) {
+
     if (invalid) { return true; }
     if (pw)      { return false; }
+
     return true;
   }
 
 
   async __closeThenFireDismiss() {
+
     try {
       await this.clicked();
       await this.close();
+
       this.fire('password-modal-dismiss');
     }
     catch (error) {
@@ -72,16 +79,19 @@ class AccountPasswordModal extends AppElement {
 
 
   __passwordModalClicked() {
+
     this.__closeThenFireDismiss();
   }
 
 
   __dismissButtonClicked() {
+
     this.__closeThenFireDismiss();
   }
 
 
   async __confirmClicked() {
+
     try {
       if (!this._password) { return; }
       
@@ -101,13 +111,16 @@ class AccountPasswordModal extends AppElement {
 
 
   async close() {
+
     await this.$.modal.close();
+
     this.$.inputIcon.stopSpinner();
     this._password = '';
   }
 
 
   open() {
+    
     return this.$.modal.open();
   }
 

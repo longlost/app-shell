@@ -50,10 +50,11 @@ import '@longlost/app-camera/picker/acs-picker-overlay.js';
 import '@longlost/app-images/app-image.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
-import '../app-shell-icons.js';
+import '../shared/app-shell-icons.js';
 
 
 class AccountPhotoPicker extends AppElement {
+
   static get is() { return 'account-photo-picker'; }
 
   static get template() {
@@ -151,16 +152,19 @@ class AccountPhotoPicker extends AppElement {
 
 
   __computeAspect(type) {
+
     return type === 'avatar' ? 'square' : 'landscape';
   }
 
 
   __computeDisableBtns(user, processing) {
+
     return (!user || processing);
   }
 
 
   __computeHideRemoveBtn(type, data, selected) {
+
     if (!data || !data[type]) { return true; }
 
     return Boolean(selected);
@@ -168,26 +172,31 @@ class AccountPhotoPicker extends AppElement {
 
 
   __computeHideClearBtn(user, selected) {
+
     return (!user || !selected);
   }
 
 
   __computeHideSaveBtn(user, selected) {
+
     return (!user || !selected);
   }
 
 
   __computeImgIcon(type) {
+
     return type === 'avatar' ? 'app-shell-icons:account-circle' : 'app-image-icons:image';
   }
 
 
   __computeSaveBtnText(type) {
+
     return type === 'avatar' ? 'SET AVATAR' : 'SET BACKGROUND';
   }
 
 
   __computeSrc(type, data, selected, opened) {
+
     if (!opened) { return; }
 
     if (selected) { return selected; }
@@ -203,11 +212,13 @@ class AccountPhotoPicker extends AppElement {
 
 
   __computeTitle(type) {
+
     return type === 'avatar' ? 'Change Avatar' : 'Change Background Image';
   }
 
 
   __unsubFromSelectedItem() {
+
     if (this._selectedItemUnsubscribe) {
       this._selectedItemUnsubscribe();
       this._selectedItemUnsubscribe = undefined;
@@ -216,6 +227,7 @@ class AccountPhotoPicker extends AppElement {
 
 
   __openedChanged(opened) {
+
     if (!opened) {
       this.__unsubFromSelectedItem();
     }
@@ -225,6 +237,7 @@ class AccountPhotoPicker extends AppElement {
 
 
   __openedChangedHandler(event) {
+
     hijackEvent(event);
 
     this._opened = event.detail.value;
@@ -232,6 +245,7 @@ class AccountPhotoPicker extends AppElement {
 
 
   __processingChangedHandler(event) {
+
     hijackEvent(event);
 
     this._processing = event.detail.value;
@@ -262,6 +276,7 @@ class AccountPhotoPicker extends AppElement {
 
 
   __selectedChangedHandler(event) {
+
     hijackEvent(event);
 
     this.__unsubFromSelectedItem();
@@ -275,12 +290,14 @@ class AccountPhotoPicker extends AppElement {
 
 
   __cleanupSelected() {
+
     this.__unsubFromSelectedItem();
     this._selected = undefined;
   }
 
 
   async __removeBtnClicked() {
+
     try {
 
       if (!this.user || this._selected) { return; }
@@ -305,6 +322,7 @@ class AccountPhotoPicker extends AppElement {
 
   
   async __clearBtnClicked() {
+
     try {
 
       if (!this._selected) { return; }
@@ -321,6 +339,7 @@ class AccountPhotoPicker extends AppElement {
 
   
   async __saveBtnClicked() {
+
     try {
 
       if (!this.user || !this._selected) { return; }
@@ -363,6 +382,7 @@ class AccountPhotoPicker extends AppElement {
 
   // Remove the photo from user's account profile.
   async __removePhotoConfirmedHandler(event) {
+
     try {
       hijackEvent(event);
 
@@ -389,6 +409,7 @@ class AccountPhotoPicker extends AppElement {
 
 
   open() {
+    
     return this.$.picker.open();
   }
 

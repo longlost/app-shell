@@ -11,21 +11,21 @@
   *
   **/
 
-// Must use module resolution in webpack config and include app.config.js file in root
-// of src folder (ie. resolve: {modules: [path.resolve(__dirname, 'src'), 'node_modules'],})
-import {appUserAndData}   from 'config.js';
+
 import {AppElement, html} from '@longlost/app-core/app-element.js';
+import {hijackEvent}      from '@longlost/app-core/utils.js';
 import htmlString         from './app-settings.html';
 import '@longlost/app-core/app-shared-styles.js';
 import '@longlost/app-overlays/app-header-overlay.js';
 import '@longlost/app-overlays/app-modal.js';
-import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import '@polymer/paper-button/paper-button.js';
-import '@polymer/iron-icon/iron-icon.js';
-import '../app-shell-icons.js';
+import '../shared/app-shell-icons.js';
+import '../shared/dark-mode-selector.js';
+import './offline-persistence-selector.js';
 
 
 class AppSettings extends AppElement {
+
   static get is() { return 'app-settings'; }
 
   static get template() {
@@ -49,103 +49,40 @@ class AppSettings extends AppElement {
       hideAutoColorMode: Boolean,
 
       // <app-shell>.
-      persistence: Boolean,
-
-      _autoColorModeLabel: {
-        type: String,
-        value: 'On',
-        computed: '__computeLabel(autoColorMode)'
-      },
-
-      _darkModeLabel: {
-        type: String,
-        value: 'Off',
-        computed: '__computeLabel(darkMode)'
-      },
-
-      _persistenceLabel: {
-        type: String,
-        value: 'On',
-        computed: '__computeLabel(persistence)'
-      },
-
-      // Hide/show trusted device toggle button.
-      _trustedConfig: {
-        type: Boolean,
-        value: appUserAndData.trustedDevice
-      }
+      persistence: Boolean
 
     };
   }
 
 
-  __computeLabel(bool) {
-    return bool ? 'On' : 'Off';
-  }
-  
+  __autoColorModeChangedHandler(event) {
 
-  __computeHighlightedToggleClass(bool) {
-    return bool ? 'highlighted' : '';
+    hijackEvent(event);
+
+    this.fire('settings-auto-color-mode-changed', event.detail);  
   }
 
 
-  __computeDisabledClass(bool) {
-    return bool ? 'disabled' : '';
+  __darkModeChangedHandler(event) {
+
+    hijackEvent(event);
+
+    this.fire('settings-dark-mode-changed', event.detail);  
   }
 
 
-  __computeTrustedToggleHidden(bool) {
-    return !bool;
-  }
+  __persistenceChangedHandler(event) {
 
+    hijackEvent(event);
 
-  async __toggleAutoColorMode(event) {
-    try {
-      await this.clicked();
+    this.fire('settings-persistence-changed', event.detail);
 
-      const {value} = event.detail;
-
-      this.fire('settings-auto-color-mode-changed', {value});        
-    }
-    catch (error) {
-      if (error === 'click debounced') { return; }
-      console.error(error);
-    }
-  }
-
-
-  async __toggleDarkMode(event) {
-    try {
-      await this.clicked();
-
-      const {value} = event.detail;
-
-      this.fire('settings-dark-mode-changed', {value});        
-    }
-    catch (error) {
-      if (error === 'click debounced') { return; }
-      console.error(error);
-    }
-  }
-
-
-  async __toggleTrusted(event) {
-    try {
-      await this.clicked();
-
-      const {value} = event.detail;
-
-      this.fire('settings-persistence-changed', {value});
-      this.$.refreshModal.open();
-    }
-    catch (error) {
-      if (error === 'click debounced') { return; }
-      console.error(error);
-    }
+    this.$.refreshModal.open();
   }
 
 
   async __modalDismissButtonClicked() {
+
     try {
       await this.clicked();
 
@@ -159,6 +96,7 @@ class AppSettings extends AppElement {
 
 
   async __modalRefreshButtonClicked() {
+
     try {
       await this.clicked();
       
@@ -172,6 +110,7 @@ class AppSettings extends AppElement {
 
 
   open() {
+
     return this.$.overlay.open();
   }
 

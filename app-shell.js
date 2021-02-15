@@ -1072,7 +1072,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
     hijackEvent(event);
 
     // Pass to app-localstorage-document and app-settings.
-    this._persistence = event.detailvalue; 
+    this._persistence = event.detail.value; 
   }
 
 

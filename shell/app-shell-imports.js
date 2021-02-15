@@ -13,6 +13,6 @@ import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-toast/paper-toast.js';
-import '../app-shell-icons.js';
+import '../shared/app-shell-icons.js';
 import './app-shell-router.js';
 import './app-shell-drawer-content.js';

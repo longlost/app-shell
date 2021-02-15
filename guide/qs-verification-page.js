@@ -15,7 +15,7 @@
 import {AppElement, html} from '@longlost/app-core/app-element.js';
 import htmlString         from './qs-verification-page.html';
 import '@polymer/iron-icon/iron-icon.js';
-import '../app-shell-icons.js';
+import '../shared/app-shell-icons.js';
 
 
 class QuickStartVerificationPage extends AppElement {
