@@ -44,7 +44,7 @@ import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-input/paper-input.js';
-import '../app-shell-icons.js';
+import '../shared/app-shell-icons.js';
 
 // The following modules are lazy loaded:
 //

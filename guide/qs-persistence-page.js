@@ -17,7 +17,7 @@ import {AppElement, html} from '@longlost/app-core/app-element.js';
 import htmlString         from './qs-persistence-page.html';
 import '@longlost/app-core/app-icons.js';
 import '@polymer/iron-icon/iron-icon.js';
-import '../app-shell-icons.js';
+import '../shared/app-shell-icons.js';
 
 
 class QuickStartPersistencePage extends AppElement {

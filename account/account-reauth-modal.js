@@ -21,10 +21,11 @@ import '@longlost/app-core/app-shared-styles.js';
 import '@longlost/app-overlays/app-modal.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-button/paper-button.js';
-import '../app-shell-icons.js';
+import '../shared/app-shell-icons.js';
 
 
 class AccountReauthModal extends AppElement {
+
   static get is() { return 'account-reauth-modal'; }
 
   static get template() {
@@ -33,6 +34,7 @@ class AccountReauthModal extends AppElement {
 
 
   async __closeThenFireDismiss() {
+
     try {
       await this.clicked();
       await this.close();
@@ -46,16 +48,19 @@ class AccountReauthModal extends AppElement {
 
 
   __reauthModalClicked() {
+
     this.__closeThenFireDismiss();
   }
 
 
   __dismissButtonClicked() {
+
     this.__closeThenFireDismiss();
   }
 
 
   async __reauthButtonClicked() {
+
     try {
       await this.clicked();
       await this.close();
@@ -69,11 +74,13 @@ class AccountReauthModal extends AppElement {
 
 
   close() {
+
     return this.$.modal.close();
   }
 
 
   open() {
+    
     return this.$.modal.open();
   }
   

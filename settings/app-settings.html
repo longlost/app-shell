@@ -5,49 +5,6 @@
     padding: 32px 16px;
   }
 
-  .max-width {
-    width:     100%;
-    max-width: 414px;
-    margin:    0px auto;
-  }
-
-  .row {
-    display:         flex;
-    justify-content: space-between;
-    align-items:     center;
-    margin:          32px 0px;
-
-    color: var(--app-dark-text);
-  }
-
-  .row-title {
-    font-size: 20px;
-  }
-
-  .disabled {
-    color: var(--app-disabled-text);
-  }
-
-  .highlighted {
-    color: var(--app-secondary-color);
-  }
-
-  iron-icon {
-    margin-right: 8px;
-  }
-
-  paper-toggle-button {
-    margin-left: 8px;
-    --paper-toggle-button-checked-button-color: var(--app-secondary-color);
-    --paper-toggle-button-checked-bar-color:    var(--app-secondary-color);
-    --paper-toggle-button-checked-ink-color:    var(--app-secondary-color);
-    --paper-toggle-button-label-color:          var(--app-dark-text);
-  }
-
-  paper-toggle-button[disabled] {
-    --paper-toggle-button-label-color: var(--app-disabled-text);
-  }
-
   p {
     color: var(--app-secondary-text);
   }
@@ -80,10 +37,6 @@
     color: var(--app-secondary-color);
   }
 
-  *[hidden] {
-    display: none;
-  }
-
 </style>
 
 
@@ -95,64 +48,24 @@
 
   <div slot="content">
 
-    <div class="option">
-      <div class="max-width">
 
-        <div class$="row [[__computeHighlightedToggleClass(autoColorMode)]]"
-             hidden="[[hideAutoColorMode]]">
-          <span class="row-title">
-            <iron-icon icon="app-shell-icons:settings-brightness"></iron-icon>
-            Use Device Color Mode
-          </span>
-          <paper-toggle-button checked="[[autoColorMode]]"
-                               on-checked-changed="__toggleAutoColorMode">
-            [[_autoColorModeLabel]]
-          </paper-toggle-button>
-        </div>
+    <dark-mode-selector class="option"
+                        auto-color-mode="[[autoColorMode]]"
+                        dark-mode="[[darkMode]]"
+                        hide-auto-color-mode="[[hideAutoColorMode]]"
+                        on-dark-mode-selector-auto-color-mode-changed="__autoColorModeChangedHandler"
+                        on-dark-mode-selector-dark-mode-changed="__darkModeChangedHandler">
+    </dark-mode-selector>
 
-        <div class="row">
-          <span class$="row-title [[__computeDisabledClass(autoColorMode)]]">
-            <iron-icon icon="app-shell-icons:brightness-medium"></iron-icon>
-            Dark Mode
-          </span>
-          <paper-toggle-button checked="[[darkMode]]"
-                               disabled="[[autoColorMode]]"
-                               on-checked-changed="__toggleDarkMode">
-            [[_darkModeLabel]]
-          </paper-toggle-button>
-        </div>
 
-      </div>      
-    </div>
+    <div class="shared-divider"></div>
 
-    <div class="option shared-divider" 
-         hidden="[[__computeTrustedToggleHidden(_trustedConfig)]]">
-      <div class="max-width">
 
-        <div class$="row [[__computeHighlightedToggleClass(persistence)]]">
-          <span class="row-title">
-            <iron-icon icon="app-shell-icons:security"></iron-icon>
-            Trusted Device
-          </span>
-          <paper-toggle-button checked="[[persistence]]"
-                               on-checked-changed="__toggleTrusted">
-            [[_persistenceLabel]]
-          </paper-toggle-button>
-        </div>
+    <offline-persistence-selector class="option"
+                                  persistence="[[persistence]]"
+                                  on-offline-persistence-selector-persistence-changed="__persistenceChangedHandler">
+    </offline-persistence-selector>
 
-        <p>
-          Is this your <strong>personal</strong> device, or is it <strong>shared</strong>?
-        </p>
-        <p>
-          If you <strong>trust</strong> this device, the app will keep a <strong>copy</strong> of <strong>your data</strong> on this device for use when you are <strong>offline</strong> or when you have a <strong>slow connection</strong>.
-          This is the <strong>default</strong> behavior.
-        </p>
-        <p>
-          If this is a <strong>shared</strong> device, it is <strong>recommended</strong> to turn this feature <strong>off</strong>.
-        </p>
-
-      </div>      
-    </div>
 
   </div>
 

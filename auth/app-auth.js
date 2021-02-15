@@ -31,7 +31,7 @@ import '@longlost/app-images/avatar-image.js';
 import '@longlost/app-overlays/app-modal.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-button/paper-button.js';
-import '../app-shell-icons.js';
+import '../shared/app-shell-icons.js';
 // Lazy loading `signin-modal` for better loading performance.
 
 
