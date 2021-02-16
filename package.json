@@ -17,11 +17,11 @@
   },
   "homepage": "https://github.com/longlost/app-shell#readme",
   "dependencies": {
-    "@longlost/app-camera": "^1.18.5",
+    "@longlost/app-camera": "^1.18.6",
     "@longlost/app-core": "^2.2.2",
     "@longlost/app-images": "^2.1.1",
     "@longlost/app-inputs": "^2.0.2",
-    "@longlost/app-overlays": "^1.3.11",
+    "@longlost/app-overlays": "^2.0.0",
     "@longlost/app-spinner": "^1.2.1",
     "@longlost/icon-to-spinner": "^2.0.0",
     "@longlost/tab-pages": "^1.2.2",

@@ -12,27 +12,24 @@
   }
 
   #overlay {
+    padding:          0px;
     background:       inherit;
     background-color: inherit;
     color:            currentColor;
+
+    --header-background-color: transparent;
+    --header-color:            currentColor;
+    --header-shadow:           none;
   }
 
   tab-pages {
-    height:     100%;
-    min-height: unset !important;
-  }
-
-  paper-icon-button {
-    position: absolute;
-    top:      12px;
-    right:    12px;
-    color:    currentColor;
+    margin-bottom: 64px; 
   }
 
   #nav {
     display:         flex;
     justify-content: space-between;
-    position:        absolute;
+    position:        fixed;
     bottom:          16px;
     left:            50%;
     transform:       translateX(-50%);
@@ -86,7 +83,7 @@
   }
 
   paper-progress {
-    position: absolute;
+    position: fixed;
     bottom:   0px;
     left:     0px;
     width:    100%;
@@ -128,14 +125,20 @@
 </style>
 
 
-<app-overlay id="overlay"
-             above-safari-nav
-             modal
-             prebuilt-animation="from-bottom"
-             on-overlay-reset="__overlayResetHandler">
+<app-header-overlay id="overlay"
+                    close-button
+                    header-size="1"
+                    fixed-header
+                    no-back-button
+                    prebuilt-animation="from-bottom"
+                    title=""
+                    on-header-overlay-close="__closeBtnClicked"
+                    on-overlay-reset="__overlayResetHandler">
+
 
   <tab-pages attr-for-selected="page"
              selected="[[_selectedPage]]"
+             slot="content"
              on-tab-pages-page-changed="__tabPageChangedHandler">
 
     
@@ -174,12 +177,9 @@
   </tab-pages>
 
 
-  <paper-icon-button icon="app-icons:close"
-                     on-click="__closeBtnClicked">
-  </paper-icon-button>
+  <div id="nav"
+       slot="content">
 
-
-  <div id="nav">
     <paper-button id="back-btn"
                   class$="shared-paper-button-with-icon hide-btn [[_showBackBtnClass]]"
                   raised
@@ -195,13 +195,16 @@
       <span>NEXT</span>
       <iron-icon icon="app-icons:chevron-r"></iron-icon>
     </paper-button>
+
   </div>
 
 
   <paper-progress class="transiting"
                   max="[[_max]]"
                   secondary-progress="[[_progress]]"
+                  slot="content"
                   value="[[_currentProgress]]">
   </paper-progress>
 
-</app-overlay>
+
+</app-header-overlay>

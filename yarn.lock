@@ -418,19 +418,19 @@
     lodash.camelcase "^4.3.0"
     protobufjs "^6.8.6"
 
-"@longlost/app-camera@^1.18.5":
-  version "1.18.5"
-  resolved "https://registry.yarnpkg.com/@longlost/app-camera/-/app-camera-1.18.5.tgz#4c9c693659313f64d689170189ffb8a4b2d2583d"
-  integrity sha512-mW/47RwOVIOXLZMch0j5ST+7QTu//lt419arNSYODqwIhjK/O9IoroLtnyA26IfY/i37TLveXz3WLDd9tidEgA==
+"@longlost/app-camera@^1.18.6":
+  version "1.18.6"
+  resolved "https://registry.yarnpkg.com/@longlost/app-camera/-/app-camera-1.18.6.tgz#3b4526826762c0a2b9ef15ddb5117fe77d5538ec"
+  integrity sha512-LwjWSWW4RH4rzAYHsOq1G6P4dZwrQeFyhL7J3/SvBdmB3kuELBkwcx+3ffODovC6NitMk9KR59WAiMbPRsEbiQ==
   dependencies:
-    "@longlost/app-core" "^2.0.0"
-    "@longlost/app-file-system" "^2.5.2"
-    "@longlost/app-images" "^2.1.0"
+    "@longlost/app-core" "^2.2.2"
+    "@longlost/app-file-system" "^2.5.4"
+    "@longlost/app-images" "^2.1.1"
     "@longlost/app-media" "^2.1.1"
-    "@longlost/app-overlays" "^1.3.11"
+    "@longlost/app-overlays" "^2.0.0"
     "@longlost/app-spinner" "^1.2.1"
     "@longlost/pinch-to-zoom" "^1.1.2"
-    "@longlost/tab-pages" "^1.2.1"
+    "@longlost/tab-pages" "^1.2.2"
     "@polymer/iron-icon" "^3.0.1"
     "@polymer/iron-iconset-svg" "^3.0.1"
     "@polymer/paper-button" "^3.0.1"
@@ -475,21 +475,6 @@
     scroll-behavior-polyfill "^2.0.13"
     workbox-window "^6.0.2"
 
-"@longlost/app-core@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@longlost/app-core/-/app-core-1.1.1.tgz#0b9c24a7eafa23e449e3482683176013855f9133"
-  integrity sha512-InHtobwngPLv4WXOkpBZcuCXm4xwFBi80tYi1OO4UgBGbllJ06A6JXxeBr/XzXLvgAscQXDCtc4PEcb3cJVeZg==
-  dependencies:
-    "@polymer/iron-iconset-svg" "^3.0.1"
-    "@polymer/paper-styles" "^3.0.1"
-    "@polymer/polymer" "^3.4.1"
-    "@ungap/global-this" "^0.4.2"
-    comlink "^4.3.0"
-    firebase "^8.1.2"
-    mime-types "^2.1.27"
-    scroll-behavior-polyfill "^2.0.13"
-    workbox-window "^6.0.2"
-
 "@longlost/app-core@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@longlost/app-core/-/app-core-1.1.2.tgz#8b01b43f9d105592e182d2b1269290b87e67ee1a"
@@ -519,21 +504,6 @@
     mime-types "^2.1.27"
     scroll-behavior-polyfill "^2.0.13"
     workbox-window "^6.0.2"
-
-"@longlost/app-core@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@longlost/app-core/-/app-core-2.0.0.tgz#c8bfd7a41f353649d25945a4612c3acf4a9ffec8"
-  integrity sha512-b+ke5Nu60v4x3lNUcOkFXDgmwTtU59e3tgYmH4WOaYNxRY+390lViIhq6astgpXQQS9pPcRQU4YiZJQ6A/POWw==
-  dependencies:
-    "@polymer/iron-iconset-svg" "^3.0.1"
-    "@polymer/paper-styles" "^3.0.1"
-    "@polymer/polymer" "^3.4.1"
-    "@ungap/global-this" "^0.4.4"
-    comlink "^4.3.0"
-    firebase "^8.2.5"
-    mime-types "^2.1.28"
-    scroll-behavior-polyfill "^2.0.13"
-    workbox-window "^6.1.0"
 
 "@longlost/app-core@^2.2.0":
   version "2.2.0"
@@ -580,25 +550,25 @@
     scroll-behavior-polyfill "^2.0.13"
     workbox-window "^6.1.0"
 
-"@longlost/app-file-system@^2.5.2":
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/@longlost/app-file-system/-/app-file-system-2.5.2.tgz#995254e43fc05ed901c738c79b4ce274f1d250b1"
-  integrity sha512-z8z7d15NS8gCNaXBi10/nqHSkR20uSEQs4el4dLsmteGct+EwPb0Qzwx72c/fQfVaQ+YvzGOCGTVlazFQ5Cslw==
+"@longlost/app-file-system@^2.5.4":
+  version "2.5.4"
+  resolved "https://registry.yarnpkg.com/@longlost/app-file-system/-/app-file-system-2.5.4.tgz#9a55a8aed04ef697ae2670ed44b05ec77a45efc8"
+  integrity sha512-YS0wuhUdTXi63h64OqXrUe1iaosVkY6nNVUZB3wwyjPp4excv9uZB+nlJ4xpxU9GI/hMrHZIhaTHGAZB2Yg7Sg==
   dependencies:
     "@ffmpeg-installer/ffmpeg" "^1.0.20"
     "@longlost/app-carousels" "^3.0.1"
-    "@longlost/app-core" "^2.0.0"
-    "@longlost/app-images" "^2.1.0"
-    "@longlost/app-inputs" "^2.0.0"
-    "@longlost/app-map" "^1.5.1"
-    "@longlost/app-overlays" "^1.3.11"
+    "@longlost/app-core" "^2.2.2"
+    "@longlost/app-images" "^2.1.1"
+    "@longlost/app-inputs" "^2.0.2"
+    "@longlost/app-map" "^1.5.3"
+    "@longlost/app-overlays" "^2.0.0"
     "@longlost/app-spinner" "^1.2.1"
     "@longlost/badged-icon-button" "^1.1.3"
     "@longlost/drag-drop-list" "^2.0.5"
     "@longlost/lazy-video" "^2.5.1"
     "@longlost/paper-gauge" "^1.0.2"
     "@longlost/pinch-to-zoom" "^1.1.2"
-    "@longlost/tab-pages" "^1.2.1"
+    "@longlost/tab-pages" "^1.2.2"
     "@longlost/wasm-imagemagick" "^2.2.1"
     "@longlost/webgl-filter" "^1.0.0"
     "@polymer/app-storage" "^3.0.3"
@@ -619,7 +589,7 @@
     "@polymer/polymer" "^3.4.1"
     child-process-promise "^2.2.1"
     comlink "^4.3.0"
-    cropperjs "^1.5.9"
+    cropperjs "^1.5.10"
     mime-types "^2.1.28"
     mkdirp "^1.0.4"
     multi-download "^3.0.0"
@@ -647,29 +617,6 @@
     "@polymer/iron-iconset-svg" "^3.0.1"
     "@polymer/iron-image" "^3.0.2"
     "@polymer/paper-button" "^3.0.1"
-
-"@longlost/app-inputs@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@longlost/app-inputs/-/app-inputs-2.0.0.tgz#3e2ae760ff562efd7ed8cb15e9172b746190dbbf"
-  integrity sha512-iequeDPDJeH61rl32DBHjBXSoSamwj4HDa+Lj2qy6VEEqIwoykKRWXNOSTJF3fK7MzaQwAJCneovJY6pFUyWyw==
-  dependencies:
-    "@longlost/app-core" "^1.0.0"
-    "@longlost/icon-to-spinner" "^2.0.0"
-    "@longlost/pencil-to-check-icon" "^1.0.3"
-    "@polymer/gold-phone-input" "^3.0.1"
-    "@polymer/iron-a11y-keys" "^3.0.1"
-    "@polymer/iron-form-element-behavior" "^3.0.1"
-    "@polymer/iron-icon" "^3.0.1"
-    "@polymer/iron-iconset-svg" "^3.0.1"
-    "@polymer/iron-input" "^3.0.1"
-    "@polymer/paper-button" "^3.0.1"
-    "@polymer/paper-dropdown-menu" "^3.1.0"
-    "@polymer/paper-icon-button" "^3.0.2"
-    "@polymer/paper-input" "^3.2.1"
-    "@polymer/paper-item" "^3.0.1"
-    "@polymer/paper-listbox" "^3.0.1"
-    "@polymer/paper-ripple" "^3.0.2"
-    "@polymer/polymer" "^3.4.1"
 
 "@longlost/app-inputs@^2.0.2":
   version "2.0.2"
@@ -702,14 +649,14 @@
     "@longlost/app-core" "^1.1.4"
     "@polymer/polymer" "^3.4.1"
 
-"@longlost/app-map@^1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@longlost/app-map/-/app-map-1.5.1.tgz#2f26d1b3faa1cc348122143b21856870d75e5138"
-  integrity sha512-W1sxZJ/NRs7TCdONUTR5Y4raw2aXfyTfqpwhN8RGfOvVti3waSSX+xBob7101Juioo8ysXH2AdqB8wlsKb8H3Q==
+"@longlost/app-map@^1.5.3":
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@longlost/app-map/-/app-map-1.5.3.tgz#0ee60856ac996736c36373691c0338e77b9e8ceb"
+  integrity sha512-B7xt7a+FnegyyrJSB9FdgrV68TQVdN10Y8dMqr22s0Gy3LRRDuy96yG7mobhdjesMPfnl/IeV4sq/ZE1hcsuow==
   dependencies:
-    "@longlost/app-core" "^2.0.0"
-    "@longlost/app-inputs" "^2.0.0"
-    "@longlost/app-overlays" "^1.3.11"
+    "@longlost/app-core" "^2.2.2"
+    "@longlost/app-inputs" "^2.0.2"
+    "@longlost/app-overlays" "^2.0.0"
     "@longlost/app-spinner" "^1.2.1"
     "@polymer/iron-icon" "^3.0.1"
     "@polymer/iron-iconset-svg" "^3.0.1"
@@ -727,12 +674,12 @@
     "@polymer/polymer" "^3.4.1"
     image-capture "^0.4.0"
 
-"@longlost/app-overlays@^1.3.11":
-  version "1.3.11"
-  resolved "https://registry.yarnpkg.com/@longlost/app-overlays/-/app-overlays-1.3.11.tgz#23c69d5ac36fef95a37f4fc043e4f9494f74626f"
-  integrity sha512-J5m1tFgCipIDQTgeoGDlFXs0o2oiXrXkure9bgfHq4xiRc0exEtJJatMBC+NvW6Pr9RceX8fyfcdDrWd9ZDIRg==
+"@longlost/app-overlays@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@longlost/app-overlays/-/app-overlays-2.0.0.tgz#1b085d5d4e00f44260a2a4897f49d0f388d2f490"
+  integrity sha512-i/IwBPcnWm20ivPcuBTqoXyc9rB8i/3SEbigG6EvxSnZ2YyFbB3IQitHdE/VxjsDfeJL576AbnzUYFtma4YuRg==
   dependencies:
-    "@longlost/app-core" "^1.1.1"
+    "@longlost/app-core" "^2.2.2"
     "@polymer/app-layout" "^3.1.0"
     "@polymer/paper-card" "^3.0.1"
     "@polymer/paper-icon-button" "^3.0.2"
@@ -807,13 +754,6 @@
     "@longlost/app-core" "^1.1.2"
     "@polymer/polymer" "^3.4.1"
     pinch-zoom-element "^1.1.1"
-
-"@longlost/tab-pages@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@longlost/tab-pages/-/tab-pages-1.2.1.tgz#f3c5b1cf723a1a6538f338ff21d6777f1e4faf8b"
-  integrity sha512-GyI3aehOpobaoG6E63lQs/kcneTNpPtWj2SFffx5/gXgO/mRKFIOzqpPGcDOfzrEEsO1QKzPoA16ps2VR+qilg==
-  dependencies:
-    "@longlost/app-core" "^1.0.0"
 
 "@longlost/tab-pages@^1.2.2":
   version "1.2.2"
@@ -1802,10 +1742,10 @@ core-js@3.6.5:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.6.5.tgz#7395dc273af37fb2e50e9bd3d9fe841285231d1a"
   integrity sha512-vZVEEwZoIsI+vPEuoF9Iqf5H7/M3eeQqWlQnYa8FSKKePuYTf5MWnxb5SDAzCa60b3JBRS5g9b+Dq7b1y/RCrA==
 
-cropperjs@^1.5.9:
-  version "1.5.9"
-  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.5.9.tgz#4ff9d31e02ad04d2fc5df0044207c2ad53d99da8"
-  integrity sha512-aPWlg43sLIcYN4GBXIdyvM09wNPgn1ug+vNVwV8jlb3dbgEX/B34Iw6hrjGSajkUDQBmaCi6uPOevFb7N0yUsw==
+cropperjs@^1.5.10:
+  version "1.5.10"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.5.10.tgz#ac0c240feb2a3b397ef52b57c03375cd17041a8e"
+  integrity sha512-Zlggv+unsBXVc7EQip6rnOqFnFpHOIc4f8HqzAj3RQNEUNjrCCJyE7OlT/V8S0lO2m4ytRoceTlgzEh1DNMU0Q==
 
 cross-spawn@^4.0.2:
   version "4.0.2"

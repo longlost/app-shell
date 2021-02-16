@@ -921,6 +921,12 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
       if (!data.verificationEmailSent) {
 
+        
+
+        console.warn('sending email verification, user data: ', data);
+
+
+
         await user.sendEmailVerification();
 
         await services.set({
