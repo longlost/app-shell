@@ -8,15 +8,24 @@
     align-items:      center;
     padding:          16px;
     background-color: inherit;
-
-    /* Adjust styles that are automatically applied by `tab-pages`. */
-    bottom: 0px;
   }
 
   h2 {
     font-size:  34px;
     text-align: center;
     margin:     0px 0px 16px 0px;
+  }
+
+  #connection-icon-wrapper {
+    display:         flex;
+    justify-content: center;
+    margin-bottom:   32px;
+  }
+
+  .connection-icon {
+    height: 40px;
+    width:  40px;
+    margin: 0px 16px;
   }
 
   p {    
@@ -52,18 +61,29 @@
 </style>
 
 
-<h2>Work Offline</h2>
+<h2>Use Offline</h2>
+
+
+<div id="connection-icon-wrapper">
+  <iron-icon class="connection-icon"
+             icon="app-shell-icons:signal-wifi-off">
+  </iron-icon>
+  <iron-icon class="connection-icon"
+             icon="app-shell-icons:signal-cellular-connected-no-internet-1-bar">
+  </iron-icon>
+</div>
+
 
 <p>
-  Whether you're fully offline, or you've ventured off the beaten path where your connection is less than stellar, [[_appName]] can save your changes locally, on this device. 
+  Whether you're offline, or your connection is flaky, we can save your changes locally, on this device. 
 </p>
 
 <p>
-  Once you're back online, your updates will be seemlessly uploaded in the background.
+  Once you're back online, your updates will upload seemlessly in the background.
 </p>
 
 <p class="secondary">If this is a public or shared device, we recommend turning this feature off.</p>
 
 <p class="secondary">
-  Change offline persistence anytime by navigating to <iron-icon icon="app-shell-icons:menu"></iron-icon><strong>Menu</strong><span id="arrow">→</span><iron-icon icon="app-icons:settings"></iron-icon><strong>Settings</strong>.
+  Change offline persistence by navigating to <iron-icon icon="app-shell-icons:menu"></iron-icon><strong>Menu</strong><span id="arrow">→</span><iron-icon icon="app-icons:settings"></iron-icon><strong>Settings</strong>.
 </p>

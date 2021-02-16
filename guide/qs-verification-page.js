@@ -13,6 +13,7 @@
   
 
 import {AppElement, html} from '@longlost/app-core/app-element.js';
+import {wait}             from '@longlost/app-core/utils.js';
 import htmlString         from './qs-verification-page.html';
 import '@polymer/iron-icon/iron-icon.js';
 import '../shared/app-shell-icons.js';
@@ -38,18 +39,41 @@ class QuickStartVerificationPage extends AppElement {
 
       _animateIconClass: {
         type: String,
-        computed: '__computeAnimateIconClass(current, page)'
+        value: ''
+      },
+
+      _isCurrentPage: {
+        type: Boolean,
+        computed: '__computeIsCurrentPage(current, page)'
       }
 
     };
   }
 
 
-  __computeAnimateIconClass(current, page) {
+  static get observers() {
+    return [
+      '__updateAnimateIconClass(_isCurrentPage)'
+    ];
+  }
 
-    if (!current || !page) { return ''; }
 
-    return current === page ? 'animate-send' : ''; 
+  __computeIsCurrentPage(current, page) {
+
+    if (!current || !page) { return false; }
+
+    return current === page; 
+  }
+
+
+  async __updateAnimateIconClass(isCurrentPage) {
+
+    if (isCurrentPage) {
+
+      await wait(500);
+      
+      this._animateIconClass = 'animate-send';
+    }
   }
 
 }

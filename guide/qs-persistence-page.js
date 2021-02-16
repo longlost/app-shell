@@ -12,7 +12,6 @@
   **/
   
 
-import {webpackConfig}    from 'config.js';
 import {AppElement, html} from '@longlost/app-core/app-element.js';
 import htmlString         from './qs-persistence-page.html';
 import '@longlost/app-core/app-icons.js';
@@ -26,23 +25,6 @@ class QuickStartPersistencePage extends AppElement {
 
   static get template() {
     return html([htmlString]);
-  }
-
-
-  static get properties() {
-    return {
-
-      _appName: String
-
-    };
-  }
-
-
-  connectedCallback() {
-
-    super.connectedCallback();
-
-    this._appName = webpackConfig.name;
   }
 
 }
