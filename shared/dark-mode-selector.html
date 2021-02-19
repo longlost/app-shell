@@ -2,80 +2,73 @@
 <style include="app-shared-styles">  
 
   :host {
-    display: block;
+    display:       block;
+    width:         100%;
+    max-width:     414px;
   }
 
-  .max-width {
-    width:     100%;
-    max-width: 414px;
-    margin:    0px auto;
+  :host([hidden]) {
+    display: none;
   }
 
   .row {
     display:         flex;
     justify-content: space-between;
     align-items:     center;
-    margin:          32px 0px;
+    padding:         24px 16px;
+    color:           var(--app-dark-text);
+  }
 
-    color: var(--app-dark-text);
+  .row[hidden] {
+    display: none;
   }
 
   .row-title {
-    margin-right: 8px;
-    font-size:    20px;
-  }
-
-  .disabled {
-    color: var(--app-disabled-text);
-  }
-
-  .highlighted {
-    color: var(--app-primary-color);
+    display:     inline-flex;
+    align-items: center;
+    font-size:   18px;
   }
 
   iron-icon {
     margin-right: 8px;
   }
 
-  *[hidden] {
-    display: none;
+  .disabled {
+    color: var(--app-disabled-text);
   }
 
 </style>
 
 
-<div class="max-width">
+<div class="row"
+     hidden="[[hideAutoColorMode]]">
 
-  <div class$="row [[__computeHighlightedClass(autoColorMode)]]"
-       hidden="[[hideAutoColorMode]]">
+  <span class="row-title">
+    <iron-icon icon="app-shell-icons:settings-brightness"></iron-icon>
+    <span>Use Device Mode</span>
+  </span>
 
-    <span class="row-title">
-      <iron-icon icon="app-shell-icons:settings-brightness"></iron-icon>
-      Use Device Color Mode
-    </span>
+  <paper-toggle-button class="shared-paper-toggle-button"
+                       checked="[[autoColorMode]]"
+                       on-checked-changed="__autoColorModeCheckedChangedHandler">
+    [[_autoColorModeLabel]]
+  </paper-toggle-button>
 
-    <paper-toggle-button class="shared-paper-toggle-button"
-                         checked="[[autoColorMode]]"
-                         on-checked-changed="__autoColorModeCheckedChangedHandler">
-      [[_autoColorModeLabel]]
-    </paper-toggle-button>
+</div>
 
-  </div>
 
-  <div class="row">
+<div class="row">
 
-    <span class$="row-title [[__computeDisabledClass(autoColorMode)]]">
-      <iron-icon icon="app-shell-icons:brightness-medium"></iron-icon>
-      Dark Mode
-    </span>
+  <span class$="row-title [[__computeDisabledClass(autoColorMode)]]">
+    <iron-icon icon="app-shell-icons:brightness-medium"></iron-icon>
+    <span>Dark Mode</span>
+  </span>
 
-    <paper-toggle-button class="shared-paper-toggle-button"
-                         checked="[[darkMode]]"
-                         disabled="[[autoColorMode]]"
-                         on-checked-changed="__darkModeCheckedChangedHandler">
-      [[_darkModeLabel]]
-    </paper-toggle-button>
-    
-  </div>
-
+  <paper-toggle-button class="shared-paper-toggle-button"
+                       checked="[[darkMode]]"
+                       disabled="[[autoColorMode]]"
+                       on-checked-changed="__darkModeCheckedChangedHandler">
+    [[_darkModeLabel]]
+  </paper-toggle-button>
+  
 </div>

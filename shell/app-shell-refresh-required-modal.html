@@ -1,0 +1,59 @@
+
+<style include="app-shared-styles"> 
+
+  app-modal {
+    --modal-card-header-color: var(--app-dark-text);
+  }
+
+  .modal-card-content {
+    position:  relative;
+    max-width: 500px;
+  }
+
+  strong {
+    font-size: 18px;
+  }
+
+  .confirm-btn {
+    background-color: var(--app-secondary-color);
+    color:            var(--app-secondary-color-text);
+  }
+
+  .dismiss-btn {
+    color: var(--app-secondary-color);
+  }
+
+</style>
+
+
+<app-modal id="overlay"
+           heading="Refresh Required">
+
+
+  <div class="modal-card-content" 
+       slot="card-content-slot">
+    <p>
+      The app <strong>must</strong> be <strong>refreshed</strong> before this change can be applied!
+    </p>
+  </div>
+
+  
+  <paper-button class="dismiss-btn"
+                slot="card-actions-slot"
+                on-click="__dismissButtonClicked">
+    DISMISS
+  </paper-button> 
+
+  <paper-button class="confirm-btn shared-paper-button-with-icon"
+                slot="card-actions-slot"
+                on-click="__refreshButtonClicked">
+
+    <iron-icon class="shared-iron-icon-inside-paper-button"
+               icon="app-shell-icons:refresh">
+    </iron-icon>
+    <span>REFRESH</span>
+
+  </paper-button>
+
+  
+</app-modal>

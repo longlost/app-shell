@@ -12,9 +12,6 @@
   **/
 
   
-// Must use module resolution in webpack config and include app.config.js file in root
-// of src folder (ie. resolve: {modules: [path.resolve(__dirname, 'src'), 'node_modules'],})
-import {appUserAndData}   from 'config.js';
 import {AppElement, html} from '@longlost/app-core/app-element.js';
 import htmlString         from './offline-persistence-selector.html';
 import '@longlost/app-core/app-shared-styles.js';
@@ -35,40 +32,15 @@ class OfflinePersistenceSelector extends AppElement {
   static get properties() {
     return {
 
-      hidden: {
-        type: Boolean,
-        value: false,
-        computed: '__computeHidden(_trustedConfig)',
-        reflectToAttribute: true
-      },
-
       persistence: Boolean,
 
       _label: {
         type: String,
         value: 'On',
         computed: '__computeLabel(persistence)'
-      },
-
-      // Hide/show trusted device toggle button.
-      _trustedConfig: {
-        type: Boolean,
-        value: appUserAndData.trustedDevice
       }
 
     };
-  }
-
-
-  __computeHidden(bool) {
-
-    return !bool;
-  }
-  
-
-  __computeHighlightedClass(bool) {
-
-    return bool ? 'highlighted' : '';
   }
 
 

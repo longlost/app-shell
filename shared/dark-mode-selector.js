@@ -63,12 +63,6 @@ class DarkModeSelector extends AppElement {
 
     return bool ? 'disabled' : '';
   }
-  
-
-  __computeHighlightedClass(bool) {
-
-    return bool ? 'highlighted' : '';
-  }
 
 
   __computeLabel(bool) {
