@@ -263,9 +263,17 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
       _menuOverlaysSlotNodes: Array,
 
+      // The current state of the main menu drawer and layout.
+      _narrow: Boolean,
+
       _overlayDrawerItems: Array,
 
       _persistence: Boolean,
+
+      _quickStartPage: {
+        type: String,
+        value: 'welcome'
+      },
 
       _routerPage: String,
 
@@ -381,7 +389,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
     const slots             = [];
 
     for (let i = 0; i < middleToobarCount; i += 1) {
-      slots.push({slotName: `middle-toolbar-${i}-slot`});
+      slots.push({slotName: `middle-toolbar-${i}`});
     }
 
     return slots;
@@ -690,7 +698,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
   __waitForDrawerToClose() {
 
     // Only close drawer in narrow layouts (ie. mobile portrait).
-    if (this.narrow && this.$.drawer.opened) { 
+    if (this._narrow && this.$.drawer.opened) { 
       this.$.drawer.close();
 
       return listenOnce(this, 'app-drawer-transitioned');
@@ -964,14 +972,6 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  __accountClearPersistenceHandler(event) {
-
-    hijackEvent(event);
-
-    this._persistence = false;
-  }
-
-
   async __accountReauthNeededHandler(event) {
 
     try {
@@ -992,6 +992,16 @@ class AppShell extends OverlayControlMixin(AppElement) {
     hijackEvent(event);
 
     this.__signOut();
+  }
+
+
+  __accountUserDeletedHandler(event) {
+
+    hijackEvent(event);
+
+    this._autoColorMode  = true;
+    this._persistence    = appUserAndData.trustedDevice;
+    this._quickStartPage = 'welcome';
   }
 
 
@@ -1052,6 +1062,14 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
+  __drawerLayoutNarrowChangedHandler(event) {
+
+    hijackEvent(event);
+
+    this._narrow = event.detail.value;
+  }
+
+
   __headerThresholdHandler(event) {
 
     hijackEvent(event);
@@ -1073,12 +1091,30 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  __persistenceHandler(event) {
+  async __persistenceHandler(event) {
 
     hijackEvent(event);
 
     // Pass to app-localstorage-document and app-settings.
-    this._persistence = event.detail.value; 
+    this._persistence = event.detail.value;
+
+    if (event.type === 'offline-persistence-selector-persistence-changed') {
+
+      await import(
+        /* webpackChunkName: 'app-shell-refresh-required-modal' */
+        './shell/app-shell-refresh-required-modal.js'
+      );
+
+      this.$.refreshRequiredModal.open();
+    }
+  }
+
+
+  __quickStartPageHandler(event) {
+
+    hijackEvent(event);
+
+    this._quickStartPage = event.detail.value;
   }
 
 

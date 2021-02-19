@@ -12,16 +12,15 @@
   **/
 
 
+// Must use module resolution in webpack config and include app.config.js file in root
+// of src folder (ie. resolve: {modules: [path.resolve(__dirname, 'src'), 'node_modules'],})
+import {appUserAndData}   from 'config.js';
 import {AppElement, html} from '@longlost/app-core/app-element.js';
-import {hijackEvent}      from '@longlost/app-core/utils.js';
 import htmlString         from './app-settings.html';
 import '@longlost/app-core/app-shared-styles.js';
 import '@longlost/app-overlays/app-header-overlay.js';
-import '@longlost/app-overlays/app-modal.js';
-import '@polymer/paper-button/paper-button.js';
-import '../shared/app-shell-icons.js';
 import '../shared/dark-mode-selector.js';
-import './offline-persistence-selector.js';
+import '../shared/offline-persistence-selector.js';
 
 
 class AppSettings extends AppElement {
@@ -49,63 +48,32 @@ class AppSettings extends AppElement {
       hideAutoColorMode: Boolean,
 
       // <app-shell>.
-      persistence: Boolean
+      persistence: Boolean,
+
+      _hidePersistence: {
+        type: Boolean,
+        value: false,
+        computed: '__computeHidePersistence(_persistenceConfig)'
+      },
+
+      // Hide/show offline persistence section.
+      _persistenceConfig: Boolean
 
     };
   }
 
 
-  __autoColorModeChangedHandler(event) {
+  constructor() {
 
-    hijackEvent(event);
+    super();
 
-    this.fire('settings-auto-color-mode-changed', event.detail);  
+    this._persistenceConfig = appUserAndData.trustedDevice;
   }
 
 
-  __darkModeChangedHandler(event) {
+  __computeHidePersistence(bool) {
 
-    hijackEvent(event);
-
-    this.fire('settings-dark-mode-changed', event.detail);  
-  }
-
-
-  __persistenceChangedHandler(event) {
-
-    hijackEvent(event);
-
-    this.fire('settings-persistence-changed', event.detail);
-
-    this.$.refreshModal.open();
-  }
-
-
-  async __modalDismissButtonClicked() {
-
-    try {
-      await this.clicked();
-
-      this.$.refreshModal.close();
-    }
-    catch (error) {
-      if (error === 'click debounced') { return; }
-      console.error(error);
-    }
-  }
-
-
-  async __modalRefreshButtonClicked() {
-
-    try {
-      await this.clicked();
-      
-      window.location.reload();
-    }
-    catch (error) {
-      if (error === 'click debounced') { return; }
-      console.error(error);
-    }
+    return !bool;
   }
 
 

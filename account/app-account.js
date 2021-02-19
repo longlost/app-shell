@@ -884,7 +884,7 @@ class AppAccount extends AppElement {
       await db.terminate();
       await db.clearPersistence();
 
-      this.fire('app-account-clear-persistence');
+      this.fire('app-account-user-deleted');
 
       // Start a new firestore instance.
       await initDb();

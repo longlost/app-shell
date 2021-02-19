@@ -4,7 +4,6 @@
   :host {
     display:          flex;
     flex-direction:   column;
-    justify-content:  center;
     align-items:      center;
     padding:          16px;
     background-color: inherit;
@@ -13,13 +12,13 @@
   h2 {
     font-size:  34px;
     text-align: center;
-    margin:     0px 0px 16px 0px;
+    margin:     0px;
   }
 
   #connection-icon-wrapper {
     display:         flex;
     justify-content: center;
-    margin-bottom:   32px;
+    margin:          16px 0px 24px 0px;
   }
 
   .connection-icon {
@@ -31,31 +30,42 @@
   p {    
     max-width: 414px;
     font-size: 18px;
-    margin:    0px 0px 24px 0px;
+    margin:    16px 0px;
   }
 
   strong {
     font-size: 20px;
   }
 
+  offline-persistence-selector {    
+    margin:        24px auto;
+    border-radius: 8px;
+    box-shadow:    0px 0px 0px 4px currentColor inset;
+  }
+
   .secondary {
     font-size: 14px;
-    margin-bottom: 16px;
+    margin:    12px 0px;
   }
 
-  .secondary strong {
-    font-size: 16px;
+  span {
+    white-space: nowrap;
   }
 
-  p iron-icon {
+  span iron-icon {
     bottom: 2px;
     margin: 0px 4px;
   }
 
+  span strong {
+    font-size: 16px;
+  }
+
   #arrow {
-    position: relative;
-    bottom:   2px;
-    margin:   0px 4px 0px 8px;
+    position:    relative;
+    bottom:      2px;
+    margin:      0px 4px 0px 8px;
+    white-space: normal;
   }
 
 </style>
@@ -75,15 +85,27 @@
 
 
 <p>
-  Whether you're offline, or your connection is flaky, we can save your changes locally, on this device. 
+  You don't have to stop what you're doing because you go offline, or your connection gets flaky. <sup>*</sup>
+</p>
+
+<p>
+  We can automatically save your changes locally on this device, so you don't miss a beat.  
 </p>
 
 <p>
   Once you're back online, your updates will upload seemlessly in the background.
 </p>
 
-<p class="secondary">If this is a public or shared device, we recommend turning this feature off.</p>
+<offline-persistence-selector persistence="[[persistence]]"></offline-persistence-selector>
 
 <p class="secondary">
-  Change offline persistence by navigating to <iron-icon icon="app-shell-icons:menu"></iron-icon><strong>Menu</strong><span id="arrow">→</span><iron-icon icon="app-icons:settings"></iron-icon><strong>Settings</strong>.
+  If this is a public or shared device, we recommend turning this feature off.
+</p>
+
+<p class="secondary">
+  Change offline persistence by navigating to <span><iron-icon hidden="[[!narrow]]" icon="app-shell-icons:menu"></iron-icon><strong>Menu</strong></span><span id="arrow"> → </span><span><iron-icon icon="app-icons:settings"></iron-icon><strong>Settings</strong></span>.
+</p>
+
+<p class="secondary">
+  <sup>*</sup> Some features may require an internet connection.
 </p>

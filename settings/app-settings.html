@@ -2,39 +2,27 @@
 <style include="app-shared-styles">  
 
   .option {
-    padding: 32px 16px;
+    margin: 32px auto;
   }
 
   p {
-    color: var(--app-secondary-text);
+    max-width: 414px;
+    margin:    24px auto;
+    padding:   0px 16px;
+    font-size: 16px;
   }
 
-  app-modal {
-    --modal-card-header-color: var(--app-dark-text);
+  strong {
+    font-size: 18px;
   }
 
-  .modal-card-content {
-    position:  relative;
-    max-width: 500px;
+  .secondary {
+    font-size: 14px;
+    margin:    16px auto;
   }
 
-  .dismiss-confirm-buttons {
-    display:         flex;
-    justify-content: flex-end;
-  }
-
-  .confirm-btn {
-    background-color: var(--app-secondary-color);
-    color:            var(--app-secondary-color-text);
-  }
-
-  .confirm-btn[disabled] {
-    background-color: var(--app-disabled-color);
-    color:            var(--app-disabled-text);
-  }
-
-  .dismiss-btn {
-    color: var(--app-secondary-color);
+  *[hidden] {
+    display: none;
   }
 
 </style>
@@ -52,46 +40,40 @@
     <dark-mode-selector class="option"
                         auto-color-mode="[[autoColorMode]]"
                         dark-mode="[[darkMode]]"
-                        hide-auto-color-mode="[[hideAutoColorMode]]"
-                        on-dark-mode-selector-auto-color-mode-changed="__autoColorModeChangedHandler"
-                        on-dark-mode-selector-dark-mode-changed="__darkModeChangedHandler">
+                        hide-auto-color-mode="[[hideAutoColorMode]]">
     </dark-mode-selector>
 
 
-    <div class="shared-divider"></div>
+    <div class="shared-divider" 
+         hidden="[[_hidePersistence]]">           
+    </div>
 
 
     <offline-persistence-selector class="option"
-                                  persistence="[[persistence]]"
-                                  on-offline-persistence-selector-persistence-changed="__persistenceChangedHandler">
+                                  hidden="[[_hidePersistence]]"
+                                  persistence="[[persistence]]">
     </offline-persistence-selector>
+   
+
+    <p hidden="[[_hidePersistence]]">
+      When this setting is <strong>on</strong>, the app will keep a <strong>copy</strong> of your <strong>data</strong> on this device.
+    </p>
+
+    <p hidden="[[_hidePersistence]]">
+      The local copy is used as a <strong>fallback</strong> when you are <strong>offline</strong>, or when you have a <strong>poor connection</strong>.
+    </p>
+
+    <p class="secondary"
+       hidden="[[_hidePersistence]]">
+      If this is a public or shared device, we recommend turning this feature off.
+    </p>
+
+    <p class="secondary"
+       hidden="[[_hidePersistence]]">
+      Some features may require an internet connection.
+    </p>
 
 
   </div>
 
 </app-header-overlay>
-
-
-<app-modal id="refreshModal"
-           heading="Refresh Required">
-
-  <div class="modal-card-content" 
-       slot="card-content-slot">
-    <p>
-      The app <strong>must</strong> be <strong>refreshed</strong> before this change can be applied!
-    </p>
-  </div>
-
-  <div class="dismiss-confirm-buttons" 
-       slot="card-actions-slot">
-    <paper-button class="dismiss-btn" 
-                  on-click="__modalDismissButtonClicked">
-      DISMISS
-    </paper-button>   
-    <paper-button class="confirm-btn" 
-                  on-click="__modalRefreshButtonClicked">
-      REFRESH
-    </paper-button>      
-  </div>
-  
-</app-modal>

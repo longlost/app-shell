@@ -19,26 +19,32 @@
 
     --header-background-color: transparent;
     --header-color:            currentColor;
-    --header-shadow:           none;
   }
 
   tab-pages {
-    margin-bottom: 64px; 
+    margin-bottom: 128px; 
   }
 
   #nav {
     display:         flex;
     justify-content: space-between;
     position:        fixed;
-    bottom:          16px;
+    bottom:          0px;
     left:            50%;
     transform:       translateX(-50%);
     width:           100%;
     max-width:       446px; /* 414px plus 16px padding both sides. */
+    padding:         16px 0px;
+    border-radius:   16px 16px 0px 0px;
+
+    background-color:        rgba(255, 255, 255, 0.4);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter:         blur(6px);
   }
 
   paper-button {
-    margin: 0px 16px;
+    border-radius: 8px;
+    margin:        0px 16px;
   }
 
   #back-btn { 
@@ -128,25 +134,29 @@
 <app-header-overlay id="overlay"
                     close-button
                     header-size="1"
-                    fixed-header
                     no-back-button
                     prebuilt-animation="from-bottom"
+                    threshold="8"
                     title=""
                     on-header-overlay-close="__closeBtnClicked"
+                    on-header-overlay-threshold-triggered-changed="__thresholdTriggeredHandler"
                     on-overlay-reset="__overlayResetHandler">
 
 
   <tab-pages attr-for-selected="page"
-             selected="[[_selectedPage]]"
+             selected="[[_tabPage]]"
              slot="content"
-             on-tab-pages-page-changed="__tabPageChangedHandler">
+             on-tab-pages-page-changed="__tabPageChangedHandler"
+             on-tab-pages-ready="__tabPagesReadyHandler">
 
     
     <qs-welcome-page page="welcome"
                      user="[[user]]">
     </qs-welcome-page>
 
+
     <qs-verification-page current="[[_currentPage]]"
+                          narrow="[[narrow]]"
                           page="verification"
                           user="[[user]]">
     </qs-verification-page>
@@ -157,22 +167,29 @@
     </slot>
 
 
-    <qs-persistence-page page="persistence"></qs-persistence-page>
-
-    <dark-mode-page current="[[_currentPage]]"
-                    page="dark"
-                    selected="[[_selectedPage]]">
+    <dark-mode-page auto-color-mode="[[autoColorMode]]"
+                    dark-mode="[[darkMode]]"
+                    hide-auto-color-mode="[[hideAutoColorMode]]"
+                    narrow="[[narrow]]"
+                    page="dark">
     </dark-mode-page>
 
+
+    <qs-persistence-page narrow="[[narrow]]"
+                         page="persistence"
+                         persistence="[[persistence]]">
+    </qs-persistence-page>
+
+
     <installed-mode-page current="[[_currentPage]]"
-                         page="installed"
-                         selected="[[_selectedPage]]">
+                         page="installed">
     </installed-mode-page>
 
+
     <conclusion-page current="[[_currentPage]]"
-                     page="conclusion"
-                     selected="[[_selectedPage]]">
+                     page="conclusion">
     </conclusion-page>
+
 
   </tab-pages>
 

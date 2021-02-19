@@ -4,7 +4,6 @@
   :host {
     display:          flex;
     flex-direction:   column;
-    justify-content:  center;
     align-items:      center;
     padding:          16px;
     background-color: inherit;
@@ -13,13 +12,13 @@
   h2 {
     font-size:  34px;
     text-align: center;
-    margin:     0px 0px 16px 0px;
+    margin:     0px;
   }
 
   #send-icon {
-    height:        40px;
-    width:         40px;
-    margin-bottom: 32px;
+    height: 40px;
+    width:  40px;
+    margin: 16px 0px 24px 0px;
   }
 
   .animate-send {
@@ -58,7 +57,7 @@
   p {    
     max-width: 414px;
     font-size: 18px;
-    margin:    0px 0px 24px 0px;
+    margin:    16px 0px;
   }
 
   strong {
@@ -67,22 +66,27 @@
 
   .secondary {
     font-size: 14px;
-    margin-bottom: 16px;
+    margin:    12px 0px;
   }
 
-  .secondary strong {
-    font-size: 16px;
+  span {
+    white-space: nowrap;
   }
 
-  p iron-icon {
+  span iron-icon {
     bottom: 2px;
     margin: 0px 4px;
   }
 
+  span strong {
+    font-size: 16px;
+  }
+
   #arrow {
-    position: relative;
-    bottom:   2px;
-    margin:   0px 4px 0px 8px;
+    position:    relative;
+    bottom:      2px;
+    margin:      0px 4px 0px 8px;
+    white-space: normal;
   }
 
 </style>
@@ -98,9 +102,9 @@
 <p>We've sent an email to <strong>[[user.email]]</strong> so that we can confirm your email address.</p>
 
 <p class="secondary">
-  You should receive it within the hour. If not, please double check that your address is correct.
+  You should receive it within an hour.  If not, please check your email blocking and spam settings.  Also, make sure that your address is entered correctly.
 </p>
 
 <p class="secondary">
-  To update your address and have the verification email resent, navigate to <iron-icon icon="app-shell-icons:menu"></iron-icon><strong>Menu</strong><span id="arrow">→</span><iron-icon icon="app-shell-icons:account-circle"></iron-icon><strong>Account</strong>.
+  To update your address and/or have the verification email resent, navigate to <span><iron-icon hidden="[[!narrow]]" icon="app-shell-icons:menu"></iron-icon><strong>Menu</strong></span><span id="arrow"> → </span><span><iron-icon icon="app-shell-icons:account-circle"></iron-icon><strong>Account</strong></span>.
 </p>

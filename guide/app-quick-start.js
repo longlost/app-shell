@@ -9,37 +9,76 @@
   *
   *   The guide includes the following default pages:
   *
-  *     Welcome
+  *     - Welcome
   *
-  *     Verification email acknowledgment
+  *     - Verification email acknowledgment
   *
-  *     Offline persistence setup
+  *     - Dark mode setup
   *
-  *     Dark mode setup
+  *     - Offline persistence setup 
+  *         (only included if config.js appUserAndData.trustedDevice set to true)
   *
-  *     Installed PWA mode info with links to browser specific instructions
+  *     - Installed PWA mode info with links to browser specific instructions
   *
-  *     Conclusion
+  *     - Conclusion
   *
-  *  
+  * 
+  *
+  *   The implementation can customize the guide by including custom pages 
+  *   that will be inserted between the verification and dark mode pages.
+  *
+  *   This is exposed as a 'quick-start' slot via `app-shell`.
   *
   *   
   *
   *   Api:
   *
   *
-  *    
-  *     Styling:
-  *
-  *
-  *       --carousel-dot-size - default 8px.
-  *
-  *
   *
   *     Properties:
   *
   *
-  *       user - <Object> undefined, the current app user.
+  *       autoColorMode - <Boolean> undefined
+  *
+  *         The current state of dark mode following the device theme setting.
+  *
+  *
+  *
+  *       darkMode - <Boolean> undefined
+  *
+  *         The current state of the dark mode setting.
+  *
+  *
+  *
+  *       hideAutoColorMode - <Boolean> undefined
+  *
+  *         Hide the auto color mode option when not supported.
+  *
+  *
+  *
+  *       narrow - <Boolean> undefined
+  *
+  *         The current state of the main menu drawer and layout.
+  *         Show "Menu" icons in nav hints when in narrow mode.
+  *
+  *
+  *
+  *       page - <String> undefined
+  *
+  *         The user selected page, chosen with 'back' and 'next' buttons.
+  *         Also set with localstorage value from `app-shell`.
+  *
+  *
+  *
+  *       persistence - <Boolean> undefined
+  *
+  *         The current state of offline persistence setting.
+  *
+  *
+  *
+  *       user - <Object> undefined
+  *
+  *         The current app user.
   *
   *
   *
@@ -55,12 +94,15 @@
   *     Events:
   *
   *
+  *       'app-quick-start-current-page-changed', detail - {value: page <String>}
+  *
+  *         Fired after a new page has finished animating into view.
+  *
+  *
+  *
   *       'app-quick-start-closed', detail - {}
   *
   *         Fired each time a guide is closed.
-  *
-  *
-  *
   *      
   *
   *       
@@ -72,20 +114,25 @@
   *
   **/
   
-
+// Must use module resolution in webpack config and include app.config.js file in root
+// of src folder (ie. resolve: {modules: [path.resolve(__dirname, 'src'), 'node_modules'],})
+import {appUserAndData}            from 'config.js';
 import {AppElement, html}          from '@longlost/app-core/app-element.js';
 import {consumeEvent, hijackEvent} from '@longlost/app-core/utils.js';
 import htmlString                  from './app-quick-start.html';
 import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.js';
 import '@longlost/app-overlays/app-header-overlay.js';
-import '@longlost/tab-pages/tab-pages.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-progress/paper-progress.js';
 import './qs-welcome-page.js';
 import './qs-verification-page.js';
-import './qs-persistence-page.js';
+
+// `tab-pages` and `qs-persistence-page` imported lazily.
+//
+//    Tab-pages must wait for dynamic `qs-persistence-page`
+//    import before it can take measurements.
 
 
 class AppQuickStartGuide extends AppElement {
@@ -100,16 +147,27 @@ class AppQuickStartGuide extends AppElement {
   static get properties() {
     return {
 
+      autoColorMode: Boolean,
+
+      darkMode: Boolean,
+
+      hideAutoColorMode: Boolean,
+
+      // The current state of the main menu drawer and layout.
+      // Show "Menu" icons in nav hints when in narrow mode.
+      narrow: Boolean,
+
+      // The user selected page, chosen with 'back' and 'next' buttons.
+      // Also set with localstorage value from `app-shell`.
+      page: String,
+
+      persistence: Boolean,
+
       user: Object,
 
       _afterDefaultSlotPages: {
         type: Array,
-        value: [
-          'persistence',
-          'dark',
-          'installed',
-          'conclusion'
-        ]
+        computed: '__computeAfterDefaultSlotPages(_includePersistencePage)'
       },
 
       _beforeDefaultSlotPages: {
@@ -121,15 +179,22 @@ class AppQuickStartGuide extends AppElement {
       },
 
       // The selected tab value AFTER tab-pages animation finishes.
-      _currentPage: {
-        type: String,
-        value: 'welcome'
-      },      
+      // Initialized at runtime from `app-shell` localstorage value.
+      _currentPage: String,
 
       _currentProgress: {
         type: Number,
         computed: '__computeCurrentProgress(_pages, _currentPage)'
       },
+
+      _defaultSlotNodes: Array,
+
+      _defaultSlotPages: {
+        type: Array,
+        computed: '__computeDefaultSlotPages(_defaultSlotNodes)'
+      },
+
+      _headerThresholdTriggered: Boolean,
 
       _max: {
         type: Number,
@@ -141,15 +206,12 @@ class AppQuickStartGuide extends AppElement {
         computed: '__computePages(_afterDefaultSlotPages, _beforeDefaultSlotPages, _defaultSlotPages)'
       },
 
+      // From 'config.js' appUserAndData.trustedDevice setting.
+      _includePersistencePage: Boolean,
+
       _progress: {
         type: Number,
         value: 0
-      },
-
-      // The upcomming page chosen with 'back' and 'next' buttons.
-      _selectedPage: {
-        type: String,
-        value: 'welcome'
       },
 
       _showBackBtnClass: {
@@ -162,12 +224,13 @@ class AppQuickStartGuide extends AppElement {
         computed: '__computeShowNextBtnClass(_currentPage)'
       },
 
-      _defaultSlotNodes: Array,
+      // Directly drives `tab-pages`.
+      _tabPage: {
+        type: String,
+        value: 'welcome'
+      },
 
-      _defaultSlotPages: {
-        type: Array,
-        computed: '__computeDefaultSlotPages(_defaultSlotNodes)'
-      }
+      _tabPagesReady: Boolean
 
     };
   }
@@ -176,15 +239,51 @@ class AppQuickStartGuide extends AppElement {
   static get observers() {
     return [
       '__currentPageChanged(_currentPage)',
-      '__selectedPageChanged(_selectedPage)',
-      '__updateProgress(_currentProgress)'
+      '__updateProgress(_currentProgress)',
+      '__updateTabPage(page, _headerThresholdTriggered, _tabPagesReady)'
+    ];
+  }
+
+
+  constructor() {
+
+    super();
+
+    this._includePersistencePage = appUserAndData.trustedDevice;
+  }
+
+
+  connectedCallback() {
+
+    super.connectedCallback();
+
+    // Initialize value from `app-shell` localstorage value.
+    this._currentPage = this.page;
+  }
+
+
+  __computeAfterDefaultSlotPages(includePersistence) {
+
+    if (includePersistence) {
+      return [
+        'dark',
+        'persistence',
+        'installed',
+        'conclusion'
+      ];
+    }
+
+    return [
+      'dark',
+      'installed',
+      'conclusion'
     ];
   }
 
 
   __computeCurrentProgress(pages, current) {
 
-    if (!Array.isArray(pages)) { return 0; }
+    if (!Array.isArray(pages) || !current) { return 0; }
 
     return pages.indexOf(current);
   }
@@ -199,6 +298,8 @@ class AppQuickStartGuide extends AppElement {
 
 
   __computePages(after, before, slotted = []) {
+
+    if (!after || !before) { return; }
 
     return [...before, ...slotted, ...after];
   }
@@ -228,15 +329,33 @@ class AppQuickStartGuide extends AppElement {
   }
 
 
-  __selectedPageChanged(page) {
-
-    this.fire('app-quick-start-selected-page-changed', {value: page});
-  }
-
-
   __updateProgress(currentProgress = 0) {
 
     this._progress = Math.max(this._progress, currentProgress);
+  }
+
+  // Scroll back to top before showing next page.
+  __updateTabPage(page, thresholdTriggered, ready) {
+
+    if (!page || !ready) { return; }
+
+    if (page === this._tabPage) { return; }
+
+    if (thresholdTriggered) {
+      window.scrollTo({top: 0, behavior: 'smooth'});
+
+      return;
+    }
+
+    this._tabPage = page;
+  }
+
+
+  __thresholdTriggeredHandler(event) {
+
+    hijackEvent(event);
+
+    this._headerThresholdTriggered = event.detail.value;
   }
 
 
@@ -268,6 +387,14 @@ class AppQuickStartGuide extends AppElement {
   }
 
 
+  __tabPagesReadyHandler(event) {
+
+    hijackEvent(event);
+
+    this._tabPagesReady = true;
+  }
+
+
   __defaultSlotChangeHandler(event) {
 
     consumeEvent(event); // Stops interference with `tab-pages`.
@@ -283,7 +410,7 @@ class AppQuickStartGuide extends AppElement {
 
       const nextIndex = Math.max(this._currentProgress - 1, 0);
 
-      this._selectedPage = this._pages[nextIndex];
+      this.page = this._pages[nextIndex];
     }
     catch (error) {
       if (error === 'click debounced') { return; }
@@ -299,7 +426,7 @@ class AppQuickStartGuide extends AppElement {
 
       const nextIndex = Math.min(this._currentProgress + 1, this._pages.length - 1);
 
-      this._selectedPage = this._pages[nextIndex];
+      this.page = this._pages[nextIndex];
     }
     catch (error) {
       if (error === 'click debounced') { return; }
@@ -308,7 +435,22 @@ class AppQuickStartGuide extends AppElement {
   }
 
 
-  open() {
+  async open() {
+
+    if (this._includePersistencePage) {
+      await import(
+        /* webpackChunkName: 'app-shell-qs-persistence-page' */ 
+        './qs-persistence-page.js'
+      );
+    }
+
+    // Wait for `qs-persistence-page` to 
+    // load before `tab-pages` can taking 
+    // measurements during initialization.
+    await import(
+      /* webpackChunkName: 'tab-pages' */ 
+      '@longlost/tab-pages/tab-pages.js'
+    );
 
     return this.$.overlay.open();
   }

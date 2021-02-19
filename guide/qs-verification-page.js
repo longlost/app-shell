@@ -33,6 +33,8 @@ class QuickStartVerificationPage extends AppElement {
 
       current: String,
 
+      narrow: Boolean,
+
       page: String,
 
       user: Object,
@@ -70,7 +72,7 @@ class QuickStartVerificationPage extends AppElement {
 
     if (isCurrentPage) {
 
-      await wait(500);
+      await wait(1000);
       
       this._animateIconClass = 'animate-send';
     }
