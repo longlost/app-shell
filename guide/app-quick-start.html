@@ -1,7 +1,17 @@
 
-<style include="app-shared-styles">
+<style include="app-shared-styles">  
 
-  :host {
+  :host([theme="light"]) {
+    background: linear-gradient(
+      135deg, 
+      var(--app-primary-light-color), 
+      var(--app-secondary-light-color)
+    );
+    background-color: var(--app-primary-light-color);
+    color:            var(--app-primary-light-color-text);
+  }
+
+  :host([theme="dark"]) {
     background: linear-gradient(
       135deg, 
       var(--app-primary-dark-color), 
@@ -25,6 +35,14 @@
     margin-bottom: 128px; 
   }
 
+  :host([theme="light"]) #nav {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+
+  :host([theme="dark"]) #nav {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
   #nav {
     display:         flex;
     justify-content: space-between;
@@ -36,8 +54,7 @@
     max-width:       446px; /* 414px plus 16px padding both sides. */
     padding:         16px 0px;
     border-radius:   16px 16px 0px 0px;
-
-    background-color:        rgba(255, 255, 255, 0.4);
+    
     -webkit-backdrop-filter: blur(6px);
     backdrop-filter:         blur(6px);
   }
@@ -48,8 +65,8 @@
   }
 
   #back-btn { 
-    background-color: var(--app-constant-light-text);
-    color:            var(--app-constant-dark-text);
+    background-color: var(--app-body-color);
+    color:            var(--app-dark-text);
   }
 
   #back-btn iron-icon {
@@ -60,7 +77,12 @@
     margin-right: 8px;
   }
 
-  #next-btn {
+  :host([theme="light"]) #next-btn {
+    background-color: var(--app-secondary-color);
+    color:            var(--app-secondary-color-text);
+  }
+
+  :host([theme="dark"]) #next-btn {
     background-color: var(--app-secondary-light-color);
     color:            var(--app-secondary-light-color-text);
   }
@@ -106,13 +128,6 @@
 
   /*TESTING ONLY!!*/
   
-
-
-  dark-mode-page {
-    display: block;
-    bottom: 0px;
-    background-color: dodgerblue;
-  }
 
   installed-mode-page {
     display: block;
@@ -167,12 +182,12 @@
     </slot>
 
 
-    <dark-mode-page auto-color-mode="[[autoColorMode]]"
-                    dark-mode="[[darkMode]]"
-                    hide-auto-color-mode="[[hideAutoColorMode]]"
-                    narrow="[[narrow]]"
-                    page="dark">
-    </dark-mode-page>
+    <qs-dark-mode-page auto-color-mode="[[autoColorMode]]"
+                       dark-mode="[[darkMode]]"
+                       hide-auto-color-mode="[[hideAutoColorMode]]"
+                       narrow="[[narrow]]"
+                       page="dark">
+    </qs-dark-mode-page>
 
 
     <qs-persistence-page narrow="[[narrow]]"

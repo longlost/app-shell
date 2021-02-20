@@ -13,11 +13,14 @@
   
 
 import {AppElement, html} from '@longlost/app-core/app-element.js';
+import {hijackEvent}      from '@longlost/app-core/utils.js';
 import htmlString         from './dark-mode-selector.html';
+import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import './app-shell-icons.js';
+import './dark-mode-app-model.js';
 
 
 class DarkModeSelector extends AppElement {
@@ -46,16 +49,26 @@ class DarkModeSelector extends AppElement {
       _autoColorModeLabel: {
         type: String,
         value: 'On',
-        computed: '__computeLabel(autoColorMode)'
+        computed: '__computeAutoColorLabel(autoColorMode)'
       },
 
-      _darkModeLabel: {
+      _modeLabel: {
         type: String,
-        value: 'Off',
-        computed: '__computeLabel(darkMode)'
+        computed: '__computeModeLabel(darkMode)'
+      },
+
+      _modeIcon: {
+        type: String,
+        computed: '__computeModeIcon(autoColorMode)'
       }
 
     };
+  }
+
+
+  __computeAutoColorLabel(bool) {
+
+    return bool ? 'On' : 'Off';
   }
 
 
@@ -65,9 +78,15 @@ class DarkModeSelector extends AppElement {
   }
 
 
-  __computeLabel(bool) {
+  __computeModeIcon(bool) {
 
-    return bool ? 'On' : 'Off';
+    return bool ? 'app-icons:lock' : 'app-icons:lock-open';
+  }
+
+
+  __computeModeLabel(bool) {
+
+    return bool ? 'Dark' : 'Light';
   }
 
 
@@ -87,19 +106,14 @@ class DarkModeSelector extends AppElement {
   }
 
 
-  async __darkModeCheckedChangedHandler(event) {
+  __appModelSelectedHandler(event) {
 
-    try {
-      await this.clicked();
+    hijackEvent(event);
 
-      const {value} = event.detail;
+    const {selected} = event.detail;
+    const darkMode   = selected === 'dark';
 
-      this.fire('dark-mode-selector-dark-mode-changed', {value});        
-    }
-    catch (error) {
-      if (error === 'click debounced') { return; }
-      console.error(error);
-    }
+    this.fire('dark-mode-selector-dark-mode-changed', {value: darkMode});
   }
 
 }
