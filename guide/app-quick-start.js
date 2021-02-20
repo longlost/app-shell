@@ -128,6 +128,7 @@ import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-progress/paper-progress.js';
 import './qs-welcome-page.js';
 import './qs-verification-page.js';
+import './qs-dark-mode-page.js';
 
 // `tab-pages` and `qs-persistence-page` imported lazily.
 //
@@ -162,6 +163,13 @@ class AppQuickStartGuide extends AppElement {
       page: String,
 
       persistence: Boolean,
+
+      theme: {
+        type: String,
+        value: 'light',
+        reflectToAttribute: true,
+        computed: '__computeTheme(darkMode)'
+      },
 
       user: Object,
 
@@ -289,6 +297,12 @@ class AppQuickStartGuide extends AppElement {
   }
 
 
+  __computeDefaultSlotPages(nodes = []) {
+
+    return nodes.map(node => node.page);
+  }
+
+
   __computeMax(pages) {
 
     if (!Array.isArray(pages)) { return 0; }
@@ -317,9 +331,9 @@ class AppQuickStartGuide extends AppElement {
   }
 
 
-  __computeDefaultSlotPages(nodes = []) {
+  __computeTheme(darkMode) {
 
-    return nodes.map(node => node.page);
+    return darkMode ? 'dark' : 'light';
   }
 
 

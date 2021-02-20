@@ -1,0 +1,192 @@
+
+<style include="app-shared-styles">  
+
+  :host {
+    display:        block;
+    width:          50%;
+    max-width:      160px;
+    overflow:       visible;
+    pointer-events: none;
+  }
+
+  :host([mode="light"]) {
+    margin-right: 8px;
+
+    --button-background-color: var(--light-mode-body);
+    --button-color:            var(--light-mode-dark-text);
+    --card-background-color:   var(--light-mode-background);
+  }
+
+  :host([mode="dark"]) {
+    margin-left: 8px;
+
+    --button-background-color: var(--dark-mode-body);
+    --button-color:            var(--dark-mode-dark-text);
+    --card-background-color:   var(--dark-mode-background);
+  }
+
+  :host([selected]) paper-button::after {
+    box-shadow: 0px 0px 0px 4px currentColor inset;
+  }
+
+  paper-button {
+    display:          block;
+    border-radius:    16px;
+    padding:          0px;
+    margin:           0px;
+    overflow:         hidden;
+    pointer-events:   auto;
+    background-color: var(--button-background-color);
+    color:            var(--button-color);
+  }
+
+  paper-button[disabled] {
+    opacity: 0.5;
+  }
+
+  paper-button::after {
+    content:       '';
+    position:      absolute;
+    top:           0px;
+    right:         0px;
+    bottom:        0px;
+    left:          0px;
+    border-radius: inherit;
+  }
+
+  #header {
+    display:  flex;
+    position: relative;
+    height:   64px;
+    padding:  8px;
+
+    background-color: var(--app-primary-color);
+  }
+
+  #header .icon,
+  #header #title {
+    background-color: var(--app-primary-color-text);
+  }
+
+  .icon {
+    display:       inline-block;
+    height:        16px;
+    width:         16px;
+    margin-right:  4px;
+    border-radius: 50%;
+  }
+
+  #menu {
+    border-radius: 4px;
+    margin-left:   0px;
+    margin-right:  auto;
+  }
+
+  #title {
+    position: absolute;
+    bottom:   8px;
+    left:     8px;
+    height:   22px;
+    width:    80px;
+  }
+
+  #content {
+    padding: 8px;
+  }
+
+  .card {
+    border-radius:    8px;
+    padding:          8px;
+    margin-bottom:    8px;
+    background-color: var(--card-background-color);
+  }
+
+  .card-header {
+    display:       flex;
+    align-items:   center;
+    margin-bottom: 12px;
+  }
+
+  .avatar,
+  .heading {
+    display:          inline-block;
+    background-color: var(--app-secondary-color);
+  }
+
+  .avatar {
+    height:           28px;
+    width:            28px;
+    margin-right:     4px;
+    border-radius:    50%;
+  }
+
+  .heading {
+    height:  18px;
+    width:   48px;
+  }
+
+  .line {
+    height:           8px;
+    width:            100%;
+    margin-bottom:    4px;
+    background-color: currentColor;
+  }
+
+  .third-line {
+    width: 66.66%;
+  }
+ 
+</style>
+
+
+<paper-button disabled="[[disabled]]" 
+              raised
+              on-click="__btnClicked">
+  
+  <div id="header"
+       class="shared-card-shadow">
+    
+    <div id="menu" 
+         class="icon">
+    </div>
+
+    <div class="icon shared-border-radius-mask"></div>
+    <div class="icon shared-border-radius-mask"></div>
+
+    <div id="title"></div>
+
+  </div>
+
+
+  <div id="content">
+    
+    <div class="card shared-card-shadow">
+
+      <div class="card-header">      
+        <div class="avatar"></div>
+        <div class="heading"></div>
+      </div>
+
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line third-line"></div>
+
+    </div>
+
+
+    <div class="card shared-card-shadow">
+
+      <div class="card-header">      
+        <div class="avatar"></div>
+        <div class="heading"></div>
+      </div>
+
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line third-line"></div>
+
+    </div>
+
+  </div>
+
+</paper-button>
