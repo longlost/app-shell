@@ -15,10 +15,16 @@
     margin:     0px;
   }
 
-  #theme-icon {
+  #icon-wrapper {
+    display:         flex;
+    justify-content: center;
+    margin:          16px 0px 24px 0px;
+  }
+
+  .icon {
     height: 40px;
     width:  40px;
-    margin: 16px 0px 24px 0px;
+    margin: 0px 16px;
   }
 
   p {    
@@ -68,13 +74,18 @@
 <h2>Light and Dark Modes</h2>
 
 
-<iron-icon id="theme-icon"
-           icon="app-shell-icons:brightness-medium">
-</iron-icon>
+<div id="icon-wrapper">
+  <iron-icon class="icon"
+             icon="app-shell-icons:light-mode">
+  </iron-icon>
+  <iron-icon class="icon"
+             icon="app-shell-icons:dark-mode">
+  </iron-icon>
+</div>
 
 
 <p>
-  Choose your perfered app-wide theme, or let the app follow your device's native setting.
+  Choose your perfered app-wide theme, or let the app automatically follow your device's setting.
 </p>
 
 

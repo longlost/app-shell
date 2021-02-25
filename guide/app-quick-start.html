@@ -127,18 +127,11 @@
 
 
   /*TESTING ONLY!!*/
-  
-
-  installed-mode-page {
-    display: block;
-    bottom: 0px;
-    background-color: aquamarine;
-  }
 
   conclusion-page {
     display: block;
     bottom: 0px;
-    background-color: wheat;
+    background-color: rebeccapurple;
   }
 
 
@@ -196,9 +189,10 @@
     </qs-persistence-page>
 
 
-    <installed-mode-page current="[[_currentPage]]"
-                         page="installed">
-    </installed-mode-page>
+    <qs-pwa-install-page dark-mode="[[darkMode]]"
+                         narrow="[[narrow]]"
+                         page="install">
+    </qs-pwa-install-page>
 
 
     <conclusion-page current="[[_currentPage]]"
