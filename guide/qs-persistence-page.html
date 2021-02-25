@@ -68,6 +68,11 @@
     white-space: normal;
   }
 
+  .shared-divider {
+    width:  100%;
+    margin: 32px 0px;
+  }
+
 </style>
 
 
@@ -89,14 +94,16 @@
 </p>
 
 <p>
-  We can automatically save your changes locally on this device, so you don't miss a beat.  
+  We can automatically save your changes locally on this device, so you don't miss a beat. <sup>**</sup> 
 </p>
 
 <p>
   Once you're back online, your updates will upload seemlessly in the background.
 </p>
 
+
 <offline-persistence-selector persistence="[[persistence]]"></offline-persistence-selector>
+
 
 <p class="secondary">
   If this is a public or shared device, we recommend turning this feature off.
@@ -106,6 +113,14 @@
   Change offline persistence by navigating to <span><iron-icon hidden="[[!narrow]]" icon="app-shell-icons:menu"></iron-icon><strong>Menu</strong></span><span id="arrow"> → </span><span><iron-icon icon="app-icons:settings"></iron-icon><strong>Settings</strong></span>.
 </p>
 
+
+<div class="shared-divider"></div>
+
+
 <p class="secondary">
   <sup>*</sup> Some features may require an internet connection.
+</p>
+
+<p class="secondary">
+  <sup>**</sup> Some devices may purge the app's cache and storage when the app is inactive for a certain period of time.  This timeframe varies widely, and can be as short as a few hours, but is typically 1 to 2 weeks.
 </p>

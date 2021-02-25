@@ -116,10 +116,21 @@
   
 // Must use module resolution in webpack config and include app.config.js file in root
 // of src folder (ie. resolve: {modules: [path.resolve(__dirname, 'src'), 'node_modules'],})
-import {appUserAndData}            from 'config.js';
-import {AppElement, html}          from '@longlost/app-core/app-element.js';
-import {consumeEvent, hijackEvent} from '@longlost/app-core/utils.js';
-import htmlString                  from './app-quick-start.html';
+import {appUserAndData} from 'config.js';
+
+import {
+  AppElement, 
+  html
+} from '@longlost/app-core/app-element.js';
+
+import {
+  consumeEvent,
+  hijackEvent
+} from '@longlost/app-core/utils.js';
+
+import {mode as pwaDisplayMode} from '@longlost/app-core/boot/install.js';
+
+import htmlString from './app-quick-start.html';
 import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.js';
 import '@longlost/app-overlays/app-header-overlay.js';
@@ -130,10 +141,10 @@ import './qs-welcome-page.js';
 import './qs-verification-page.js';
 import './qs-dark-mode-page.js';
 
-// `tab-pages` and `qs-persistence-page` imported lazily.
+// `tab-pages`, `qs-persistence-page` and `qs-pwa-install-page` imported lazily.
 //
-//    Tab-pages must wait for dynamic `qs-persistence-page`
-//    import before it can take measurements.
+//    Tab-pages must wait for dynamic `qs-persistence-page` and 
+//    `qs-pwa-install-page` imports before it can take measurements.
 
 
 class AppQuickStartGuide extends AppElement {
@@ -175,7 +186,7 @@ class AppQuickStartGuide extends AppElement {
 
       _afterDefaultSlotPages: {
         type: Array,
-        computed: '__computeAfterDefaultSlotPages(_includePersistencePage)'
+        computed: '__computeAfterDefaultSlotPages(_includePersistencePage, _includePWAInstallPage)'
       },
 
       _beforeDefaultSlotPages: {
@@ -216,6 +227,10 @@ class AppQuickStartGuide extends AppElement {
 
       // From 'config.js' appUserAndData.trustedDevice setting.
       _includePersistencePage: Boolean,
+
+      // Hide the `qs-pwa-install-page` to those 
+      // who have already installed the app.
+      _includePWAInstallPage: Boolean,
 
       _progress: {
         type: Number,
@@ -258,6 +273,7 @@ class AppQuickStartGuide extends AppElement {
     super();
 
     this._includePersistencePage = appUserAndData.trustedDevice;
+    this._includePWAInstallPage  = pwaDisplayMode === 'browser';
   }
 
 
@@ -270,22 +286,19 @@ class AppQuickStartGuide extends AppElement {
   }
 
 
-  __computeAfterDefaultSlotPages(includePersistence) {
+  __computeAfterDefaultSlotPages(includePersistence, includeInstall) {
+
+    const base = ['dark'];
 
     if (includePersistence) {
-      return [
-        'dark',
-        'persistence',
-        'installed',
-        'conclusion'
-      ];
+      base.push('persistence');
     }
 
-    return [
-      'dark',
-      'installed',
-      'conclusion'
-    ];
+    if (includeInstall) {
+      base.push('install');
+    }
+
+    return [...base, 'conclusion'];
   }
 
 
@@ -455,6 +468,13 @@ class AppQuickStartGuide extends AppElement {
       await import(
         /* webpackChunkName: 'app-shell-qs-persistence-page' */ 
         './qs-persistence-page.js'
+      );
+    }
+
+    if (this._includePWAInstallPage) {
+      await import(
+        /* webpackChunkName: 'app-shell-qs-pwa-install-page' */ 
+        './qs-pwa-install-page.js'
       );
     }
 

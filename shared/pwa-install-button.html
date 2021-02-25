@@ -1,0 +1,93 @@
+
+<style include="app-shared-styles">
+
+  :host {
+    display:       block;
+    width:         100%;
+    max-width:     414px;
+  }
+
+  .row {
+    display:         flex;
+    justify-content: center;
+    align-items:     center;
+    padding:         24px 16px;
+    color:           var(--app-dark-text);
+  }
+
+  p {    
+    margin: 0px;
+  }
+
+  responsive-image {
+    display:          inline-block;
+    position:         relative;
+    top:              8px;
+    width:            32px;
+    margin:           0px 4px;
+    background-color: transparent;
+  }
+
+  :host([icon-mode="dark"]) responsive-image {
+    filter: invert(100%);
+  }
+
+  paper-button {
+    background-color: var(--app-primary-color);
+    color:            var(--app-primary-color-text);
+  }
+
+  paper-button[disabled] {
+    background-color: var(--app-disabled-color);
+    color:            var(--app-disabled-text);
+  }
+
+  #success {
+    display:     flex;
+    align-items: center;
+    font-size:   18px;
+  }
+
+  #success iron-icon {
+    min-height: 32px;
+    min-width:  32px;
+  }
+
+  p[hidden],
+  #success {
+    display: none;
+  }
+
+</style>
+
+
+<div class="row">
+
+  <p hidden="[[_installable]]">
+    To install on mobile, tap<responsive-image alt="Safari share icon" src="[[_safariShareIcon]]"></responsive-image>then "Add to Home Screen".
+  </p>
+
+
+  <paper-button class="shared-paper-button-with-icon"
+                disabled="[[_disableBtn]]" 
+                hidden="[[!_installable]]"
+                raised 
+                on-click="__btnClicked">
+
+    <iron-icon class="shared-iron-icon-inside-paper-button" 
+               icon="app-shell-icons:system-update">
+    </iron-icon>
+    <span>INSTALL</span>
+
+  </paper-button>
+
+
+  <p id="success" 
+     hidden="[[!_installed]]">
+    <iron-icon class="shared-iron-icon-inside-paper-button" 
+               icon="app-icons:check">
+    </iron-icon>
+    <span>App successfully installed!</span>
+  </p>
+
+</div> 
