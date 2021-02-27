@@ -1,0 +1,270 @@
+
+<style include="app-shared-styles">  
+
+  :host {
+    display:       block;
+    position:      relative;
+    /*width:         50%;
+    max-width:     160px;*/
+    border-radius: 16px;
+    overflow:      hidden;
+
+    background-color: var(--app-body-color);
+  }
+
+  #browser-top-chrome {
+    display:          flex;
+    justify-content:  space-between;
+    align-items:      center;
+    padding-top:      4px;
+    background-color: var(--app-secondary-dark-color);
+  }
+
+  .top-chrome-item {
+    height:           4px;
+    width:            16px;
+    margin:           4px 8px;
+    border-radius:    2px;
+    background-color: var(--app-constant-light-text);
+  }
+
+  .second-chrome-item {
+    width: 12px;
+  }
+
+  #browser-url-bar {
+    display:          none;
+    padding:          4px 8px 6px 8px;
+    background-color: var(--app-secondary-dark-color);
+  }
+
+  :host([chrome]) #browser-url-bar {
+    display: block;
+  }
+
+  #url-input {
+    display:          flex;
+    justify-content:  space-between;
+    align-items:      center;
+    height:           24px;
+    padding:          0px 12px;
+    border-radius:    6px;
+    background-color: var(--app-secondary-light-color);
+  }
+
+  #url-text {
+    height:           8px;
+    width:            33.33%;
+    border-radius:    2px;
+    background-color: var(--app-constant-light-text);
+  }
+
+  #search-icon {
+    height:           12px;
+    width:            12px;
+    border-radius:    50%;
+    background-color: var(--app-constant-light-text);
+  }
+
+  #header {
+    display:  flex;
+    position: relative;
+    height:   64px;
+    padding:  8px;
+
+    background-color: var(--app-secondary-color);
+  }
+
+  #header .icon,
+  #header #title {
+    background-color: var(--app-secondary-color-text);
+  }
+
+  .icon {
+    display:       inline-block;
+    height:        16px;
+    width:         16px;
+    margin-right:  4px;
+    border-radius: 50%;
+  }
+
+  #menu {
+    border-radius: 4px;
+    margin-left:   0px;
+    margin-right:  auto;
+  }
+
+  #title {
+    position: absolute;
+    bottom:   8px;
+    left:     8px;
+    height:   22px;
+    width:    80px;
+  }
+
+  #content {
+    position: relative;
+    padding:  8px;
+  }
+
+  .card {
+    border-radius:    8px;
+    padding:          8px;
+    margin-bottom:    8px;
+    background-color: var(--app-background-color);
+  }
+
+  .card-header {
+    display:       flex;
+    align-items:   center;
+    margin-bottom: 12px;
+  }
+
+  .avatar,
+  .heading {
+    display:          inline-block;
+    background-color: var(--app-primary-color);
+  }
+
+  .avatar {
+    height:           28px;
+    width:            28px;
+    margin-right:     4px;
+    border-radius:    50%;
+  }
+
+  .heading {
+    height:  18px;
+    width:   48px;
+  }
+
+  .line {
+    height:           8px;
+    width:            100%;
+    margin-bottom:    4px;
+    background-color: currentColor;
+  }
+
+  .third-line {
+    width: 66.66%;
+  }
+
+  .last-card {
+    position: absolute;
+    right:    8px;
+    left:     8px;
+  }
+
+  #browser-bottom-nav {
+    display:          none;
+    justify-content:  space-between;
+    align-items:      center;
+    position:         absolute;
+    right:            0px;
+    bottom:           0px;
+    left:             0px;
+    background-color: var(--app-secondary-dark-color);
+  }
+
+  :host([chrome]) #browser-bottom-nav {
+    display: flex;
+  }
+
+  .bottom-nav-item {
+    height:           12px;
+    width:            12px;
+    margin:           8px 12px;
+    border-radius:    2px;
+    background-color: var(--app-constant-light-text);
+  }
+ 
+</style>
+
+
+<div id="browser-top-chrome">
+  
+  <div class="top-chrome-item"></div>
+  <div class="top-chrome-item second-chrome-item"></div>
+  <div class="top-chrome-item"></div>
+
+</div>
+  
+<div id="browser-url-bar">  
+  <div id="url-input">
+    
+    <div id="url-text"></div>
+    <div id="search-icon"></div>
+
+  </div>
+</div>
+
+  
+<div id="header"
+     class="shared-card-shadow">
+  
+  <div id="menu" 
+       class="icon">
+  </div>
+
+  <div class="icon shared-border-radius-mask"></div>
+  <div class="icon shared-border-radius-mask"></div>
+
+  <div id="title"></div>
+
+</div>
+
+
+<div id="content">
+  
+  <div class="card shared-card-shadow">
+
+    <div class="card-header">      
+      <div class="avatar"></div>
+      <div class="heading"></div>
+    </div>
+
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line third-line"></div>
+
+  </div>
+
+
+  <div class="card shared-card-shadow">
+
+    <div class="card-header">      
+      <div class="avatar"></div>
+      <div class="heading"></div>
+    </div>
+
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line third-line"></div>
+
+  </div>
+
+
+  <div class="card last-card shared-card-shadow">
+
+    <div class="card-header">      
+      <div class="avatar"></div>
+      <div class="heading"></div>
+    </div>
+
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line third-line"></div>
+
+  </div>
+
+</div>
+
+
+<div id="browser-bottom-nav">
+  
+  <div class="bottom-nav-item"></div>
+  <div class="bottom-nav-item"></div>
+  <div class="bottom-nav-item"></div>
+  <div class="bottom-nav-item"></div>
+
+</div>

@@ -31,6 +31,41 @@
     font-size: 20px;
   }
 
+  #models {
+    display:               grid;
+    grid-template-columns: minmax(128px, 176px) minmax(16px, 1fr) minmax(128px, 176px);
+    grid-template-rows:    auto 320px;
+    grid-template-areas:   
+      'left-label . right-label'
+      'left-model . right-model';
+
+    width:     100%;
+    max-width: 414px;
+    margin:    16px auto;
+  }
+
+  #models p {
+    font-size:  16px;
+    text-align: center;
+    margin:     12px 0px;
+  }
+
+  #left-label {
+    grid-area: left-label;
+  }
+
+  #right-label {
+    grid-area: right-label;
+  }
+
+  #left-model {
+    grid-area: left-model;
+  }
+
+  #right-model {
+    grid-area: right-model;
+  }
+
   pwa-install-button {    
     margin:        24px auto;
     border-radius: 8px;
@@ -80,6 +115,14 @@
 <p>
   You'll get an easy-to-find launcher icon and a dedicated fullscreen version of the app.
 </p>
+
+
+<div id="models">
+  <p id="left-label">Browser</p>
+  <p id="right-label">Installed</p>
+  <install-app-model id="left-model" chrome></install-app-model>
+  <install-app-model id="right-model"></install-app-model>
+</div>
 
 
 <pwa-install-button dark-mode="[[darkMode]]"></pwa-install-button>

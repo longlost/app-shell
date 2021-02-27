@@ -23,7 +23,7 @@ import {
   prompt
 } from '@longlost/app-core/boot/install.js';
 
-import safariShareIcon from '../assets/safari-share-icon.png';
+import safariShareIcon from '../images/safari-share-icon.png';
 import htmlString      from './pwa-install-button.html';
 import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.js';
