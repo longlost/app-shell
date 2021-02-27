@@ -1,6 +1,6 @@
 {
   "name": "@longlost/app-shell",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "This element bundles core functionalities that are essential to any app.",
   "main": "app-shell.js",
   "scripts": {
@@ -17,14 +17,14 @@
   },
   "homepage": "https://github.com/longlost/app-shell#readme",
   "dependencies": {
-    "@longlost/app-camera": "^1.18.6",
-    "@longlost/app-core": "^2.3.0",
+    "@longlost/app-camera": "^1.18.7",
+    "@longlost/app-core": "^2.4.0",
     "@longlost/app-images": "^2.1.1",
     "@longlost/app-inputs": "^2.0.2",
     "@longlost/app-overlays": "^2.0.0",
     "@longlost/app-spinner": "^1.2.1",
     "@longlost/icon-to-spinner": "^2.0.0",
-    "@longlost/tab-pages": "^1.2.2",
+    "@longlost/tab-pages": "^1.2.3",
     "@polymer/app-layout": "^3.1.0",
     "@polymer/app-route": "^3.0.2",
     "@polymer/app-storage": "^3.0.3",
