@@ -1,72 +1,5 @@
 
-<style include="app-shared-styles">
-  
-  :host {
-    display:          flex;
-    flex-direction:   column;
-    align-items:      center;
-    padding:          16px;
-    background-color: inherit;
-  }
-
-  h2 {
-    font-size:  34px;
-    text-align: center;
-    margin:     0px;
-  }
-
-  #connection-icon-wrapper {
-    display:         flex;
-    justify-content: center;
-    margin:          16px 0px 24px 0px;
-  }
-
-  .connection-icon {
-    height: 40px;
-    width:  40px;
-    margin: 0px 16px;
-  }
-
-  p {    
-    max-width: 414px;
-    font-size: 18px;
-    margin:    16px 0px;
-  }
-
-  strong {
-    font-size: 20px;
-  }
-
-  offline-persistence-selector {    
-    margin:        24px auto;
-    border-radius: 8px;
-    box-shadow:    0px 0px 0px 4px currentColor inset;
-  }
-
-  .secondary {
-    font-size: 14px;
-    margin:    12px 0px;
-  }
-
-  span {
-    white-space: nowrap;
-  }
-
-  span iron-icon {
-    bottom: 2px;
-    margin: 0px 4px;
-  }
-
-  span strong {
-    font-size: 16px;
-  }
-
-  #arrow {
-    position:    relative;
-    bottom:      2px;
-    margin:      0px 4px 0px 8px;
-    white-space: normal;
-  }
+<style include="app-shared-styles qs-page-shared-styles">
 
   .shared-divider {
     width:  100%;
@@ -76,14 +9,14 @@
 </style>
 
 
-<h2>Use Offline</h2>
+<h3>Use Offline</h3>
 
 
-<div id="connection-icon-wrapper">
-  <iron-icon class="connection-icon"
+<div id="icon-wrapper">
+  <iron-icon class="icon"
              icon="app-shell-icons:signal-wifi-off">
   </iron-icon>
-  <iron-icon class="connection-icon"
+  <iron-icon class="icon"
              icon="app-shell-icons:signal-cellular-connected-no-internet-1-bar">
   </iron-icon>
 </div>
@@ -102,7 +35,9 @@
 </p>
 
 
-<offline-persistence-selector persistence="[[persistence]]"></offline-persistence-selector>
+<offline-persistence-selector class="actions" 
+                              persistence="[[persistence]]">
+</offline-persistence-selector>
 
 
 <p class="secondary">

@@ -1,6 +1,6 @@
 
 /**
-  * `qs-verification-page`
+  * `qs-conclusion-page`
   * 
   *   
   *
@@ -14,15 +14,17 @@
 
 import {AppElement, html} from '@longlost/app-core/app-element.js';
 import {wait}             from '@longlost/app-core/utils.js';
-import htmlString         from './qs-verification-page.html';
+import htmlString         from './qs-conclusion-page.html';
+import '@longlost/app-core/app-icons.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '../shared/app-shell-icons.js';
 import './qs-page-shared-styles.js';
+import './conclusion-thumbs-up.js';
 
 
-class QuickStartVerificationPage extends AppElement {
+class QuickStartConclusionPage extends AppElement {
 
-  static get is() { return 'qs-verification-page'; }
+  static get is() { return 'qs-conclusion-page'; }
 
   static get template() {
     return html([htmlString]);
@@ -40,16 +42,9 @@ class QuickStartVerificationPage extends AppElement {
 
       page: String,
 
-      user: Object,
-
-      _animateIconClass: {
-        type: String,
-        value: ''
-      },
-
-      _isCurrentPage: {
+      _canPlayThumbs: {
         type: Boolean,
-        computed: '__computeIsCurrentPage(current, page, opened)'
+        computed: '__computeCanPlayThumbs(current, page, opened)'
       }
 
     };
@@ -58,29 +53,29 @@ class QuickStartVerificationPage extends AppElement {
 
   static get observers() {
     return [
-      '__updateAnimateIconClass(_isCurrentPage)'
+      '__canPlayThumbsChanged(_canPlayThumbs)'
     ];
   }
 
 
-  __computeIsCurrentPage(current, page, opened) {
+  __computeCanPlayThumbs(current, page, opened) {
 
     if (!current || !page || !opened) { return false; }
 
-    return current === page; 
+    return current === page;
   }
 
 
-  async __updateAnimateIconClass(isCurrentPage) {
+  async __canPlayThumbsChanged(canPlay) {
 
-    if (isCurrentPage) {
+    if (canPlay) {
 
       await wait(500);
-      
-      this._animateIconClass = 'animate';
+
+      this.$.thumbs.play();
     }
   }
 
 }
 
-window.customElements.define(QuickStartVerificationPage.is, QuickStartVerificationPage);
+window.customElements.define(QuickStartConclusionPage.is, QuickStartConclusionPage);

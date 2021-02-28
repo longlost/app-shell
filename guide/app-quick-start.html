@@ -116,24 +116,6 @@
     --paper-progress-secondary-color: var(--app-secondary-color);
   }
 
-
-
-
-
-
-  /*TESTING ONLY!!*/
-
-  conclusion-page {
-    display: block;
-    bottom: 0px;
-    background-color: rebeccapurple;
-
-
-    /*height: 150vh;*/
-  }
-
-
-
 </style>
 
 
@@ -163,6 +145,7 @@
 
     <qs-verification-page current="[[_currentPage]]"
                           narrow="[[narrow]]"
+                          opened="[[_opened]]"
                           page="verification"
                           user="[[user]]">
     </qs-verification-page>
@@ -193,9 +176,11 @@
     </qs-pwa-install-page>
 
 
-    <conclusion-page current="[[_currentPage]]"
-                     page="conclusion">
-    </conclusion-page>
+    <qs-conclusion-page current="[[_currentPage]]"
+                        narrow="[[narrow]]"
+                        opened="[[_opened]]"
+                        page="conclusion">
+    </qs-conclusion-page>
 
 
   </tab-pages>

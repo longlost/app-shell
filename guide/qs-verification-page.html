@@ -1,27 +1,7 @@
 
-<style include="app-shared-styles">
-  
-  :host {
-    display:          flex;
-    flex-direction:   column;
-    align-items:      center;
-    padding:          16px;
-    background-color: inherit;
-  }
+<style include="app-shared-styles qs-page-shared-styles">
 
-  h2 {
-    font-size:  34px;
-    text-align: center;
-    margin:     0px;
-  }
-
-  #send-icon {
-    height: 40px;
-    width:  40px;
-    margin: 16px 0px 24px 0px;
-  }
-
-  .animate-send {
+  .animate {
     animation-name:            fly;
     animation-duration:        0.8s;
     animation-timing-function: var(--app-custom-ease);
@@ -54,48 +34,13 @@
     }
   }
 
-  p {    
-    max-width: 414px;
-    font-size: 18px;
-    margin:    16px 0px;
-  }
-
-  strong {
-    font-size: 20px;
-  }
-
-  .secondary {
-    font-size: 14px;
-    margin:    12px 0px;
-  }
-
-  span {
-    white-space: nowrap;
-  }
-
-  span iron-icon {
-    bottom: 2px;
-    margin: 0px 4px;
-  }
-
-  span strong {
-    font-size: 16px;
-  }
-
-  #arrow {
-    position:    relative;
-    bottom:      2px;
-    margin:      0px 4px 0px 8px;
-    white-space: normal;
-  }
-
 </style>
 
 
-<h2>Verification Sent</h2>
+<h3>Verification Sent</h3>
 
 <iron-icon id="send-icon"
-           class$="[[_animateIconClass]]"
+           class$="icon [[_animateIconClass]]"
            icon="app-shell-icons:send">
 </iron-icon>
 

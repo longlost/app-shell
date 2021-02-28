@@ -18,6 +18,7 @@ import '@longlost/app-core/app-icons.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '../shared/app-shell-icons.js';
 import '../shared/offline-persistence-selector.js';
+import './qs-page-shared-styles.js';
 
 
 class QuickStartPersistencePage extends AppElement {
