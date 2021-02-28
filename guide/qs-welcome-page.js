@@ -17,6 +17,7 @@ import htmlString         from './qs-welcome-page.html';
 import logo               from 'images/manifest/icon.png';
 import '@longlost/app-core/app-shared-styles.js';
 import '@longlost/app-images/responsive-image.js';
+import './qs-page-shared-styles.js';
 
 
 class QuickStartWelcomePage extends AppElement {

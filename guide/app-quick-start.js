@@ -140,6 +140,7 @@ import '@polymer/paper-progress/paper-progress.js';
 import './qs-welcome-page.js';
 import './qs-verification-page.js';
 import './qs-dark-mode-page.js';
+import './qs-conclusion-page.js';
 
 // `tab-pages`, `qs-persistence-page` and `qs-pwa-install-page` imported lazily.
 //
@@ -219,6 +220,8 @@ class AppQuickStartGuide extends AppElement {
         type: Number,
         computed: '__computeMax(_pages)'
       },
+
+      _opened: Boolean,
 
       _pages: {
         type: Array,
@@ -486,7 +489,9 @@ class AppQuickStartGuide extends AppElement {
       '@longlost/tab-pages/tab-pages.js'
     );
 
-    return this.$.overlay.open();
+    await this.$.overlay.open();
+
+    this._opened = true;
   }
 
 }

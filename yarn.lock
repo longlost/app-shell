@@ -706,6 +706,21 @@
     scroll-behavior-polyfill "^2.0.13"
     workbox-window "^6.1.1"
 
+"@longlost/app-core@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@longlost/app-core/-/app-core-2.5.0.tgz#5ff3683898a8dc1599e62e2ff22518a3deb7910d"
+  integrity sha512-TbRF4jgM9Snt8bXhG6OqhKw3NHOSYDyZqL50IaHlSZfY0zPRiERTQOo3WcCvN7r8iWSlv/0X+3jn5f2EXcGz5Q==
+  dependencies:
+    "@polymer/iron-iconset-svg" "^3.0.1"
+    "@polymer/paper-styles" "^3.0.1"
+    "@polymer/polymer" "^3.4.1"
+    "@ungap/global-this" "^0.4.4"
+    comlink "^4.3.0"
+    firebase "^8.2.9"
+    mime-types "^2.1.29"
+    scroll-behavior-polyfill "^2.0.13"
+    workbox-window "^6.1.1"
+
 "@longlost/app-file-system@^2.5.5":
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/@longlost/app-file-system/-/app-file-system-2.5.5.tgz#4241b085223d7526835f6d309c6bf28150014c9c"

@@ -1,0 +1,110 @@
+
+<style include="app-shared-styles">
+
+  :host {
+    display:         flex;
+    flex-direction:  column;
+    justify-content: center;
+    align-items:     center;
+    position:        relative;
+    margin:          32px 0px;
+  }
+
+  #close-icon {
+    position: absolute;
+    top:      16px;
+    right:    16px;
+  }
+
+  #circle-container {
+    position: relative;
+  }
+
+  #circle-border {
+    position:         absolute;
+    top:              50%;
+    left:             50%;
+    transform:        translate(-50%, -50%);
+    height:           200px;
+    width:            200px;
+    border-radius:    50%;
+    background-color: var(--app-primary-light-color);
+  }
+
+  #top-circle-mask {
+    position: absolute;
+    bottom:   50%;
+    height:   100%;
+    width:    100%;
+    overflow: hidden;
+  }
+
+  #circle-top {
+    position: relative;
+    top:      50%;
+  }
+
+  .circle {
+    display:          flex;
+    justify-content:  center;
+    align-items:      center;
+    height:           192px;
+    width:            192px;  
+    border-radius:    50%;
+    background-color: var(--app-primary-dark-color);
+  }
+
+  .thumb-icon {
+    height: 144px;
+    width:  144px;
+    color:  var(--app-primary-light-color);
+
+    transform-origin: 40px 88px;
+    transform:        translateY(100%) rotate(15deg);
+  }
+
+  .enter {
+    animation-name:            thumb;
+    animation-duration:        0.8s; 
+    animation-timing-function: var(--app-custom-ease);
+
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  @keyframes thumb {
+    0% {
+      transform: translateY(100%) rotate(15deg);
+    }
+    50% {
+      transform: translateY(-35%) rotate(-30deg);
+    }
+    100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+  }
+
+</style>
+
+
+<div id="circle-container">
+
+  <div id="circle-border" 
+       class="shared-card-shadow">
+  </div>      
+
+  <div class="shared-border-radius-mask circle">
+    <iron-icon class="thumb-icon" 
+               icon="app-shell-icons:thumb-up">
+    </iron-icon>
+  </div>
+
+  <div id="top-circle-mask">
+    <div id="circle-top" 
+         class="circle">
+      <iron-icon class="thumb-icon" 
+                 icon="app-shell-icons:thumb-up">
+      </iron-icon>
+    </div>
+  </div>
+
+</div>
