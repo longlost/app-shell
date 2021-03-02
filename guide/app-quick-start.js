@@ -138,14 +138,14 @@ import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-progress/paper-progress.js';
 import './qs-welcome-page.js';
-import './qs-verification-page.js';
 import './qs-dark-mode-page.js';
 import './qs-conclusion-page.js';
 
-// `tab-pages`, `qs-persistence-page` and `qs-pwa-install-page` imported lazily.
+// `tab-pages`, `qs-persistence-page`, `qs-pwa-install-page`, 
+// and `qs-verification-page` imported lazily.
 //
-//    Tab-pages must wait for dynamic `qs-persistence-page` and 
-//    `qs-pwa-install-page` imports before it can take measurements.
+//    Tab-pages must wait for dynamic page 
+//    imports before it can take measurements.
 
 
 class AppQuickStartGuide extends AppElement {
@@ -192,10 +192,7 @@ class AppQuickStartGuide extends AppElement {
 
       _beforeDefaultSlotPages: {
         type: Array,
-        value: [
-          'welcome',
-          'verification'
-        ]
+        computed: '__computeBeforeDefaultSlotPages(_includeVerificationPage)'
       },
 
       // The selected tab value AFTER tab-pages animation finishes.
@@ -234,6 +231,11 @@ class AppQuickStartGuide extends AppElement {
       // Hide the `qs-pwa-install-page` to those 
       // who have already installed the app.
       _includePWAInstallPage: Boolean,
+
+      _includeVerificationPage: {
+        type: Boolean,
+        computed: '__computeIncludeVerificationPage(user)'
+      },
 
       _progress: {
         type: Number,
@@ -305,6 +307,18 @@ class AppQuickStartGuide extends AppElement {
   }
 
 
+  __computeBeforeDefaultSlotPages(includeVerification) {
+
+    const base = ['welcome'];
+
+    if (includeVerification) {
+      base.push('verification');
+    }
+    
+    return base;
+  }
+
+
   __computeCurrentProgress(pages, current) {
 
     if (!Array.isArray(pages) || !current) { return 0; }
@@ -316,6 +330,12 @@ class AppQuickStartGuide extends AppElement {
   __computeDefaultSlotPages(nodes = []) {
 
     return nodes.map(node => node.page);
+  }
+
+
+  __computeIncludeVerificationPage(user) {
+
+    return !Boolean(user?.emailVerified);
   }
 
 
@@ -467,19 +487,30 @@ class AppQuickStartGuide extends AppElement {
 
   async open() {
 
+    const promises = [];
+
     if (this._includePersistencePage) {
-      await import(
+      promises.push(import(
         /* webpackChunkName: 'app-shell-qs-persistence-page' */ 
         './qs-persistence-page.js'
-      );
+      ));
     }
 
     if (this._includePWAInstallPage) {
-      await import(
+      promises.push(import(
         /* webpackChunkName: 'app-shell-qs-pwa-install-page' */ 
         './qs-pwa-install-page.js'
-      );
+      ));
     }
+
+    if (this._includeVerificationPage) {
+      promises.push(import(
+        /* webpackChunkName: 'app-shell-qs-verification-page' */ 
+        './qs-verification-page.js'
+      ));
+    }
+
+    await Promise.all(promises);
 
     // Wait for `qs-persistence-page` to 
     // load before `tab-pages` can taking 

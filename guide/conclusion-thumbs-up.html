@@ -10,6 +10,18 @@
     margin:          32px 0px;
   }
 
+  :host([mode="light"]) {
+    --border-color: var(--app-primary-dark-color);
+    --circle-color: var(--app-primary-light-color);
+    --thumb-color:  var(--app-primary-dark-color);
+  }
+
+  :host([mode="dark"]) {
+    --border-color: var(--app-primary-light-color);
+    --circle-color: var(--app-primary-dark-color);
+    --thumb-color:  var(--app-primary-light-color);
+  }
+
   #close-icon {
     position: absolute;
     top:      16px;
@@ -28,7 +40,7 @@
     height:           200px;
     width:            200px;
     border-radius:    50%;
-    background-color: var(--app-primary-light-color);
+    background-color: var(--border-color);
   }
 
   #top-circle-mask {
@@ -51,13 +63,13 @@
     height:           192px;
     width:            192px;  
     border-radius:    50%;
-    background-color: var(--app-primary-dark-color);
+    background-color: var(--circle-color);
   }
 
   .thumb-icon {
     height: 144px;
     width:  144px;
-    color:  var(--app-primary-light-color);
+    color:  var(--thumb-color);
 
     transform-origin: 40px 88px;
     transform:        translateY(100%) rotate(15deg);

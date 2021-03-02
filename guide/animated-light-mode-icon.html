@@ -1,0 +1,134 @@
+
+<style>
+
+  :host {
+    display: inline-block;
+  }
+  
+  svg {
+    display:        inline-block;
+    height:         100%;
+    width:          100%; 
+    fill:           currentColor;
+    pointer-events: none;
+
+    animation-name:            sun;
+    animation-duration:        24s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes sun {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  g {
+    transform-origin: 12px 12px;
+  }
+
+  #angled-45 {
+    transform: rotate(45deg);
+  }
+
+  #angled-90 {
+    transform: rotate(90deg);
+  }
+
+  #angled-135 {
+    transform: rotate(135deg);
+  }
+
+  #angled-180 {
+    transform: rotate(180deg);
+  }
+
+  #angled-225 {
+    transform: rotate(225deg);
+  }
+
+  #angled-270 {
+    transform: rotate(270deg);
+  }
+
+  #angled-315 {
+    transform: rotate(315deg);
+  }
+
+  rect {
+    transform-origin: 0px 5px;
+  }
+
+  .long,
+  .short {
+    animation-direction:       alternate;
+    animation-duration:        1s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+
+  .long {    
+    animation-name: long;
+  } 
+
+  .short {    
+    animation-name: short;    
+  }
+
+  @keyframes long {
+    to {
+      transform: scale(1, 0.75);
+    }
+  }
+
+  @keyframes short {
+    from {
+      transform: scale(1, 0.75);
+    }
+  }
+
+</style>
+
+
+<svg viewBox="0 0 24 24" 
+     preserveAspectRatio="xMidYMid meet" 
+     focusable="false">
+    
+  <g>    
+    <circle id="center" cx="12" cy="12" r="5px"/>   
+  </g>
+    
+  <g id="angled-0">
+    <rect class="long" x="11" y="1" width="2" height="4" rx="1"/>
+  </g>
+  
+  <g id="angled-45">
+    <rect class="short" x="11" y="1" width="2" height="4" rx="1"/>
+  </g>
+  
+  <g id="angled-90">    
+    <rect class="long" x="11" y="1" width="2" height="4" rx="1"/>    
+  </g>
+  
+  <g id="angled-135">
+    <rect class="short" x="11" y="1" width="2" height="4" rx="1"/>
+  </g>
+  
+  <g id="angled-180">    
+    <rect class="long" x="11" y="1" width="2" height="4" rx="1"/>    
+  </g>
+  
+  <g id="angled-225">
+    <rect class="short" x="11" y="1" width="2" height="4" rx="1"/>
+  </g>
+  
+  <g id="angled-270">    
+    <rect class="long" x="11" y="1" width="2" height="4" rx="1"/>    
+  </g>
+  
+  <g id="angled-315">
+    <rect class="short" x="11" y="1" width="2" height="4" rx="1"/>
+  </g>
+  
+</svg>

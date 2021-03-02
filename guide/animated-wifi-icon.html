@@ -1,0 +1,137 @@
+
+<style>
+
+  :host {
+    display:  inline-block;
+    position: relative;
+  }
+  
+  .wrapper {
+    position:  absolute;
+    top:      -50%;
+    right:    -50%;
+    bottom:   -50%;
+    left:     -50%;
+    transform: rotate(45deg);
+
+    overflow:            hidden;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+  }
+
+  .wrapper,
+  .wrapper iron-icon {
+    animation-delay:           1s;
+    animation-direction:       alternate;
+    animation-duration:        2s;
+    animation-fill-mode:       both;
+    animation-iteration-count: infinite;
+    animation-timing-function: var(--app-custom-ease);
+  }
+
+  iron-icon {
+    height:    50%;
+    width:     50%;
+    margin:    25%;
+    transform: rotate(-45deg);
+  }
+
+  #off-wrapper {
+    animation-name: off-wrapper;
+  }
+
+  #off-wrapper iron-icon {
+    animation-name: off-icon;
+  }
+
+  @keyframes off-wrapper {
+    0% {
+      transform: rotate(45deg) translateX(-100%);
+    }
+
+    30% {
+      transform: rotate(45deg) translateX(-100%);
+    }
+
+    70% {
+      transform: rotate(45deg) translateX(0px);
+    }
+
+    100% {
+      transform: rotate(45deg) translateX(0px);
+    }
+  }
+
+  @keyframes off-icon {
+    0% {
+      transform: rotate(-45deg) translate(141.5%, 141.5%);
+    }
+
+    30% {
+      transform: rotate(-45deg) translate(141.5%, 141.5%);
+    }
+
+    70% {
+      transform: rotate(-45deg) translate(0px, 0px);
+    }
+
+    100% {
+      transform: rotate(-45deg) translate(0px, 0px);
+    }
+  }
+
+  #on-wrapper {
+    animation-name: on-wrapper;
+  }
+
+  #on-wrapper iron-icon {
+    animation-name: on-icon;
+  }
+
+  @keyframes on-wrapper {
+    0% {
+      transform: rotate(45deg) translateX(0px);
+    }
+
+    30% {
+      transform: rotate(45deg) translateX(0px);
+    }
+
+    70% {
+      transform: rotate(45deg) translateX(calc(100% - 1px));
+    }
+
+    100% {
+      transform: rotate(45deg) translateX(calc(100% - 1px));
+    }
+  }
+
+  @keyframes on-icon {
+    0% {
+      transform: rotate(-45deg) translate(0px, 0px);
+    }
+
+    30% {
+      transform: rotate(-45deg) translate(0px, 0px);
+    }
+
+    70% {
+      transform: rotate(-45deg) translate(calc(-141.5% + 1px), calc(-141.5% + 1px));
+    }
+
+    100% {
+      transform: rotate(-45deg) translate(calc(-141.5% + 1px), calc(-141.5% + 1px));
+    }
+  }
+
+</style>
+
+
+<div id="off-wrapper" 
+     class="wrapper">
+  <iron-icon icon="app-shell-icons:signal-wifi-off"></iron-icon>
+</div>
+
+<div id="on-wrapper" 
+     class="wrapper">
+  <iron-icon icon="app-shell-icons:signal-wifi-4-bar"></iron-icon>
+</div>

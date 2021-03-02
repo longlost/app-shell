@@ -932,10 +932,11 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
     const callback = async data => {
 
-      if (!data) { return; }
+      if (!data) { return; }      
 
+      const verifiedOrVerificationSent = (user.emailVerified || data.verificationEmailSent);      
 
-      if (data.verificationEmailSent && data.onboarded) {
+      if (verifiedOrVerificationSent && data.onboarded) {
 
         this.__unsubFromUserData();
         
@@ -945,8 +946,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
         message(`Welcome${name}!`);
       }
 
-
-      if (!data.verificationEmailSent) {
+      if (!verifiedOrVerificationSent) {
 
         await user.sendEmailVerification();
 
@@ -956,7 +956,6 @@ class AppShell extends OverlayControlMixin(AppElement) {
           data: {verificationEmailSent: true}
         });
       }
-
 
       if (!data.onboarded) {
 

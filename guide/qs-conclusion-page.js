@@ -36,6 +36,8 @@ class QuickStartConclusionPage extends AppElement {
 
       current: String,
 
+      darkMode: Boolean,
+
       narrow: Boolean,
 
       opened: Boolean,
