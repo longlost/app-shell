@@ -16,14 +16,15 @@
   **/
 
 
-import {AppElement, html}  from '@longlost/app-core/app-element.js';
-import htmlString          from './conclusion-thumbs-up.html';
+import {AppElement, html} from '@longlost/app-core/app-element.js';
+import htmlString         from './conclusion-thumbs-up.html';
 import '@longlost/app-core/app-shared-styles.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '../shared/app-shell-icons.js';
 
 
 class ConclusionThumbsUp extends AppElement {
+
   static get is() { return 'conclusion-thumbs-up'; }
 
   static get template() {
@@ -33,6 +34,15 @@ class ConclusionThumbsUp extends AppElement {
 
   static get properties() {
     return {
+
+      darkMode: Boolean,
+
+      mode: {
+        type: String,
+        value: 'light',
+        reflectToAttribute: true,
+        computed: '__computeMode(darkMode)'
+      },
 
       _thumbs: Array
 
@@ -44,6 +54,12 @@ class ConclusionThumbsUp extends AppElement {
     super.connectedCallback();
 
     this._thumbs = this.selectAll('.thumb-icon');
+  }
+
+
+  __computeMode(dark) {
+
+    return dark ? 'dark' : 'light';
   }
   
 

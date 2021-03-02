@@ -1,15 +1,35 @@
 
-<style include="app-shared-styles qs-page-shared-styles"></style>
+<style include="app-shared-styles qs-page-shared-styles">
+  
+  #moon {
+    animation-name:            moon;    
+    animation-direction:       alternate;
+    animation-duration:        1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;    
+    transform-origin:          12px 12px;
+  }
+
+  @keyframes moon {
+    from {
+      transform: translateY(-2px);
+    }
+  
+    to {
+      transform: translateY(2px);
+    }
+  }
+
+</style>
 
 
 <h3>Light and Dark Modes</h3>
 
 
 <div id="icon-wrapper">
-  <iron-icon class="icon"
-             icon="app-shell-icons:light-mode">
-  </iron-icon>
-  <iron-icon class="icon"
+  <animated-light-mode-icon class="icon"></animated-light-mode-icon>
+  <iron-icon id="moon" 
+             class="icon"
              icon="app-shell-icons:dark-mode">
   </iron-icon>
 </div>
