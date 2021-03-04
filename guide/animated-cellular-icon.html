@@ -1,0 +1,453 @@
+
+<style>
+
+  :host {
+    display:  inline-block;
+    position: relative;
+  }
+
+  /*
+    Wrapper divs clip their child svgs to give 
+    the illusion of animating negative spaces.
+
+    The wrappers are butted up against each other
+    so as one reveals its child, the other hides
+    its contents, without a visible seam.
+
+    The children are translated in distance 
+    equally but in opposite directions of their 
+    parent so hey remain static from the 
+    observers perspective.
+  */
+  
+  .wrapper,
+  svg {
+    position: absolute;
+    top:      0px;
+    right:    0px;
+    bottom:   0px;
+    left:     0px;
+
+    overflow:            hidden;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+  }
+
+  svg {
+    display:        block;
+    fill:           currentColor;
+    pointer-events: none;
+  }
+
+  .wrapper,
+  .background {
+    animation-fill-mode: both;
+  }
+
+  .background {
+    fill-opacity: 0.3;
+  }
+
+  .enter {    
+    animation-duration:        2s;
+    animation-timing-function: var(--app-custom-ease);
+  }
+
+  .exit {    
+    animation-duration:        1s;
+    animation-timing-function: ease-out;
+  }
+
+  #notchWrapper.enter {
+    animation-name: notch-wrapper-enter;
+  }
+
+  #notchWrapper.entered {
+    transform: translateY(-8%);
+  }
+
+  #notch.enter {
+    animation-name: notch-enter;
+  }
+
+  #notch.entered {
+    transform: translateY(8%);
+  }
+
+  #notchWrapper.exit {
+    animation-name:      notch-wrapper-enter;
+    animation-direction: reverse;
+  }
+
+  #notchWrapper.exited {
+    transform: translateY(92%);
+  }
+
+  #notch.exit {
+    animation-name:      notch-enter;
+    animation-direction: reverse;
+  }
+
+  #notch.exited {
+    transform: translateY(-92%);
+  }
+
+  @keyframes notch-wrapper-enter {
+    0% {
+      transform: translateY(92%);
+    }
+
+    30% {
+      transform: translateY(92%);
+    }
+
+    70% {
+      transform: translateY(-8%);
+    }
+
+    100% {
+      transform: translateY(-8%);
+    }
+  }
+
+  @keyframes notch-enter {
+    0% {
+      transform: translateY(-92%);
+    }
+
+    30% {
+      transform: translateY(-92%);
+    }
+
+    70% {
+      transform: translateY(8%);
+    }
+
+    100% {
+      transform: translateY(8%);
+    }
+  }
+
+  #fullWrapper.enter {
+    animation-name: full-wrapper-enter;
+  }
+
+  #fullWrapper.entered {
+    transform: translateY(calc(-108%));
+  }
+
+  #full.enter {
+    animation-name: full-enter;
+  }
+
+  #full.entered {
+    transform: translateY(calc(108%));
+  }
+
+  #fullWrapper.exit {
+    animation-name:      full-wrapper-enter;
+    animation-direction: reverse;
+  }
+
+  #fullWrapper.exited {
+    transform: translateY(-8%);
+  }
+
+  #full.exit {
+    animation-name:      full-enter;
+    animation-direction: reverse;
+  }
+
+  #full.exited {
+    transform: translateY(8%);
+  }
+
+  @keyframes full-wrapper-enter {
+    0% {
+      transform: translateY(-8%);
+    }
+
+    30% {
+      transform: translateY(-8%);
+    }
+
+    70% {
+      transform: translateY(-108%);
+    }
+
+    100% {
+      transform: translateY(-108%);
+    }
+  }
+
+  @keyframes full-enter {
+    0% {
+      transform: translateY(8%);
+    }
+
+    30% {
+      transform: translateY(8%);
+    }
+
+    70% {
+      transform: translateY(108%);
+    }
+
+    100% {
+      transform: translateY(108%);
+    }
+  }
+
+  #signal {    
+    transform:        scale(1.2, 1.2);
+    transform-origin: 2px 22px;
+  }
+
+  .signal-flaky {
+    animation-name:            signal-flaky;
+    animation-duration:        5s;
+    animation-fill-mode:       both;
+    animation-iteration-count: 3;
+    animation-timing-function: ease-in-out;
+  }
+
+  @keyframes signal-flaky {
+    0% {
+      transform: scale(1.2, 1.2);
+    }
+    10% {
+      transform: scale(1, 1);
+    }
+    20% {
+      transform: scale(1, 1);
+    }
+    30% {
+      transform: scale(0.8, 0.8);
+    }
+    40% {
+      transform: scale(0.8, 0.8);
+    }
+    50% {
+      transform: scale(1, 1);
+    }
+    60% {
+      transform: scale(1, 1);
+    }
+    70% {
+      transform: scale(0.9, 0.9);
+    }
+    80% {
+      transform: scale(0.9, 0.9);
+    }
+    90% {
+      transform: scale(1.2, 1.2);
+    }
+    100% {
+      transform: scale(1.2, 1.2);
+    }
+  }
+
+  #exclamation {    
+    transform-origin: 88% 88%;
+  }
+
+  .exclamation-wiggle {
+    animation-name:            exclamation-wiggle;
+    animation-duration:        5s;
+    animation-iteration-count: 3;
+    animation-timing-function: ease-in-out;
+  }
+
+  @keyframes exclamation-wiggle {
+    0% {
+      transform: rotate(0deg);
+    }
+    5% {
+      transform: rotate(2deg);
+    }
+    7.5% {
+      transform: rotate(-4deg);
+    }
+    10% {
+      transform: rotate(5deg);
+    }
+    12.5% {
+      transform: rotate(-5deg);
+    }
+    15% {
+      transform: rotate(3deg);
+    }
+    17.5% {
+      transform: rotate(-1deg);
+    }
+    20% {
+      transform: rotate(0.5deg);
+    }  
+    22.5% {
+      transform: rotate(0deg);
+    }
+    70% {
+      transform: translateY(0px) scale(1, 1);
+    }
+    72% {
+      transform: translateY(-1%) scale(1.2, 1.1);
+    }
+    76% {
+      transform: translateY(0px) scale(1, 1);
+    }
+    100% {
+      transform: rotate(0deg) translateY(0px) scale(1, 1);
+    }
+  }
+
+  #bar {
+    transform-origin: 21px 10px;
+    transform:        translateY(12px) scale(1, 0);
+  }
+
+  .bar-enter {
+    animation-name:            bar-enter;
+    animation-delay:           0.8s;
+    animation-duration:        0.5s;
+    animation-fill-mode:       both;
+    animation-fill-mode:       forwards;
+    animation-timing-function: ease-in-out;
+  }
+
+  @keyframes bar-enter {
+    0% {
+      transform: translateY(12px) scale(1, 0);
+    }
+    50% {
+      transform: translateY(-2px) scale(1, 1.75);
+    }
+    80% {
+      transform: translateY(0px) scale(1, 0.9);
+    }
+    100% {
+      transform: translateY(0px) scale(1, 1);
+    }
+  }
+
+  .bar-exit {
+    animation-name:            bar-exit;
+    animation-delay:           0.2s;
+    animation-duration:        0.4s;
+    animation-fill-mode:       both;
+    animation-timing-function: ease-in-out;
+  }
+
+  @keyframes bar-exit {
+    0% {
+      transform: translateY(0px) scale(1, 1);
+    }
+    50% {
+      transform: translateY(-2px) scale(1, 1.2);
+    }
+    100% {
+      transform: translateY(12px) scale(1, 0);
+    }
+  }
+
+  #point {    
+    transform:        translateY(2px) scale(1, 0);
+    transform-origin: 21px 20px;
+  }
+
+  .point-enter {
+    animation-name:            point-enter;
+    animation-delay:           1.1s;
+    animation-duration:        0.5s;
+    animation-fill-mode:       both;
+    animation-timing-function: ease-in-out;
+  }
+
+  @keyframes point-enter {
+    0% {
+      transform: translateY(2px) scale(1, 0);
+    }
+    50% {
+      transform: translateY(-1px) scale(1, 1.6);
+    }
+    80% {
+      transform: translateY(0px) scale(1, 0.9);
+    }
+    100% {
+      transform: translateY(0px) scale(1, 1);
+    }
+  }
+
+  .point-exit {
+    animation-name:            point-exit;
+    animation-duration:        0.4s;
+    animation-fill-mode:       both;
+    animation-timing-function: ease-in-out;
+  }
+
+  @keyframes point-exit {
+    0% {
+      transform: translateY(0px) scale(1, 1);
+    }
+    50% {
+      transform: translateY(-1px) scale(1, 1.3);
+    }
+    100% {
+      transform: translateY(2px) scale(1, 0);
+    }
+  }
+
+</style>
+
+
+<div id="notchWrapper" 
+     class="wrapper">
+  <svg id="notch" 
+       class="background" 
+       viewBox="0 0 24 24" 
+       preserveAspectRatio="xMidYMid meet" 
+       focusable="false"
+       on-animationend="__notchAnimationendHandler">
+
+    <path d="M22 8V2L2 22h16V8z"/> 
+
+  </svg>
+</div>
+
+
+<div id="fullWrapper" 
+     class="wrapper">
+  <svg id="full"
+       class="background" 
+       viewBox="0 0 24 24" 
+       preserveAspectRatio="xMidYMid meet" 
+       focusable="false">
+  
+    <polygon points="2,22 22,22 22,2"/>
+
+  </svg>
+</div>
+
+
+<svg viewBox="0 0 24 24" 
+     preserveAspectRatio="xMidYMid meet" 
+     focusable="false"> 
+  
+  <polygon id="signal" 
+           points="2,22 12,22 12,12" 
+           on-animationend="__signalAnimationendHandler"/>
+</svg>
+
+
+<svg id="exclamation" 
+     viewBox="0 0 24 24" 
+     preserveAspectRatio="xMidYMid meet" 
+     focusable="false"> 
+
+  <rect id="bar" x="20" y="10" width="2" height="8"/>
+
+  <rect id="point" 
+        x="20" 
+        y="20" 
+        width="2" 
+        height="2"/>
+
+</svg>

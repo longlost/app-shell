@@ -20,6 +20,7 @@ import '../shared/app-shell-icons.js';
 import '../shared/offline-persistence-selector.js';
 import './qs-page-shared-styles.js';
 import './animated-wifi-icon.js';
+import './animated-cellular-icon.js';
 
 
 class QuickStartPersistencePage extends AppElement {
