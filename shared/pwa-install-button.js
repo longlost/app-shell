@@ -23,11 +23,9 @@ import {
   prompt
 } from '@longlost/app-core/boot/install.js';
 
-import safariShareIcon from '../images/safari-share-icon.png';
-import htmlString      from './pwa-install-button.html';
+import htmlString from './pwa-install-button.html';
 import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.js';
-import '@longlost/app-images/responsive-image.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-button/paper-button.js';
 import '../shared/app-shell-icons.js';
@@ -45,15 +43,6 @@ class PWAInstallButton extends AppElement {
   static get properties() {
     return {
 
-      darkMode: Boolean,
-
-      iconMode: {
-        type: String,
-        value: 'light',
-        reflectToAttribute: true,
-        computed: '__computeIconMode(darkMode)'
-      },
-
       _disableBtn: {
         type: Boolean,
         value: true,
@@ -70,9 +59,7 @@ class PWAInstallButton extends AppElement {
         value: false
       },
 
-      _prompted: Boolean,
-
-      _safariShareIcon: Object
+      _prompted: Boolean
 
     };
   }
@@ -81,8 +68,6 @@ class PWAInstallButton extends AppElement {
   async connectedCallback() {
 
     super.connectedCallback();
-
-    this._safariShareIcon = safariShareIcon;
 
     await installable;
 
@@ -97,12 +82,6 @@ class PWAInstallButton extends AppElement {
   __computeDisableBtn(installable, prompted) {
 
     return (!installable || prompted);
-  }
-
-
-  __computeIconMode(darkMode) {
-
-    return darkMode ? 'dark' : 'light';
   }
 
 

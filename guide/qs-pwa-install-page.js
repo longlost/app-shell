@@ -34,8 +34,6 @@ class QuickStartPWAInstallPage extends AppElement {
   static get properties() {
     return {
 
-      darkMode: Boolean,
-
       narrow: Boolean
 
     };
