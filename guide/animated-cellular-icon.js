@@ -88,7 +88,7 @@ class AnimatedCellularIcon extends AppElement {
       el.classList.add('exited');
     });
 
-    await wait(3000);
+    await wait(1000);
 
     this.__enter();
   }

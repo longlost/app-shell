@@ -20,11 +20,8 @@
 
   .wrapper,
   .wrapper iron-icon {
-    animation-delay:           1s;
-    animation-direction:       alternate;
     animation-duration:        2s;
     animation-fill-mode:       both;
-    animation-iteration-count: infinite;
     animation-timing-function: var(--app-custom-ease);
   }
 
@@ -35,103 +32,251 @@
     transform: rotate(-45deg);
   }
 
-  #off-wrapper {
-    animation-name: off-wrapper;
+  .enter,
+  .exit {    
+    animation-delay: 1s;
   }
 
-  #off-wrapper iron-icon {
-    animation-name: off-icon;
+  #offWrapper.enter {
+    animation-name: off-wrapper-enter;
   }
 
-  @keyframes off-wrapper {
+  #offWrapper.entered {
+    transform: rotate(45deg) translateX(0px);
+  }
+
+  #offWrapper.exit {
+    animation-name: off-wrapper-exit;
+  }
+
+  #offWrapper.exited {
+    transform: rotate(45deg) translateX(-100%);
+  }
+
+  #offWrapper.enter iron-icon {
+    animation-name: off-icon-enter;
+  }
+
+  #offWrapper.entered iron-icon {
+    transform: rotate(-45deg) translate(0px, 0px);
+  }
+
+  #offWrapper.exit iron-icon {
+    animation-name: off-icon-exit;
+  }
+
+  #offWrapper.exited iron-icon {
+    transform: rotate(-45deg) translate(141.5%, 141.5%);
+  }
+
+  @keyframes off-wrapper-enter {
     0% {
       transform: rotate(45deg) translateX(-100%);
     }
-
-    30% {
+    60% {
       transform: rotate(45deg) translateX(-100%);
     }
-
-    70% {
-      transform: rotate(45deg) translateX(0px);
-    }
-
     100% {
       transform: rotate(45deg) translateX(0px);
     }
   }
 
-  @keyframes off-icon {
+  @keyframes off-icon-enter {
     0% {
       transform: rotate(-45deg) translate(141.5%, 141.5%);
     }
-
-    30% {
+    60% {
       transform: rotate(-45deg) translate(141.5%, 141.5%);
     }
-
-    70% {
-      transform: rotate(-45deg) translate(0px, 0px);
-    }
-
     100% {
       transform: rotate(-45deg) translate(0px, 0px);
     }
   }
 
-  #on-wrapper {
-    animation-name: on-wrapper;
-  }
-
-  #on-wrapper iron-icon {
-    animation-name: on-icon;
-  }
-
-  @keyframes on-wrapper {
+  @keyframes off-wrapper-exit {
     0% {
       transform: rotate(45deg) translateX(0px);
     }
-
-    30% {
+    60% {
       transform: rotate(45deg) translateX(0px);
     }
-
-    70% {
-      transform: rotate(45deg) translateX(calc(100% - 1px));
+    100% {
+      transform: rotate(45deg) translateX(-100%);      
     }
+  }
 
+  @keyframes off-icon-exit {
+    0% {
+      transform: rotate(-45deg) translate(0px, 0px);
+    }
+    60% {
+      transform: rotate(-45deg) translate(0px, 0px);
+    }
+    100% {
+      transform: rotate(-45deg) translate(141.5%, 141.5%);      
+    }
+  }
+
+  #offWrapper.wiggle {
+    animation-name:            wiggle;
+    animation-timing-function: ease-in-out;
+  }
+
+  @keyframes wiggle {
+    0% {
+      transform: rotate(45deg);
+    }
+    5% {
+      transform: rotate(47deg);
+    }
+    7.5% {
+      transform: rotate(41deg);
+    }
+    10% {
+      transform: rotate(50deg);
+    }
+    12.5% {
+      transform: rotate(40deg);
+    }
+    15% {
+      transform: rotate(48deg);
+    }
+    17.5% {
+      transform: rotate(44deg);
+    }
+    20% {
+      transform: rotate(45.5deg);
+    }  
+    22.5% {
+      transform: rotate(45deg);
+    }
+    100% {
+      transform: rotate(45deg);
+    }
+  }
+
+  #onWrapper.enter {
+    animation-name: on-wrapper-enter;
+  }
+
+  #onWrapper.entered {
+    transform: rotate(45deg) translateX(calc(100% - 1px));
+  }
+
+  #onWrapper.exit {
+    animation-name: on-wrapper-exit;
+  }
+
+  #onWrapper.exited {
+    transform: rotate(45deg) translateX(0px);
+  }
+
+  #onWrapper.enter iron-icon {
+    animation-name: on-icon-enter;
+  }
+
+  #onWrapper.entered iron-icon {
+    transform: rotate(-45deg) translate(calc(-141.5% + 1px), calc(-141.5% + 1px));
+  }
+
+  #onWrapper.exit iron-icon {
+    animation-name: on-icon-exit;
+  }
+
+  #onWrapper.exited iron-icon {
+    transform: rotate(-45deg) translate(0px, 0px);
+  }
+
+  @keyframes on-wrapper-enter {
+    0% {
+      transform: rotate(45deg) translateX(0px);
+    }
+    60% {
+      transform: rotate(45deg) translateX(0px);
+    }
     100% {
       transform: rotate(45deg) translateX(calc(100% - 1px));
     }
   }
 
-  @keyframes on-icon {
+  @keyframes on-icon-enter {
     0% {
       transform: rotate(-45deg) translate(0px, 0px);
     }
-
-    30% {
+    60% {
       transform: rotate(-45deg) translate(0px, 0px);
     }
-
-    70% {
-      transform: rotate(-45deg) translate(calc(-141.5% + 1px), calc(-141.5% + 1px));
-    }
-
     100% {
       transform: rotate(-45deg) translate(calc(-141.5% + 1px), calc(-141.5% + 1px));
+    }
+  }
+
+  @keyframes on-wrapper-exit {
+    0% {
+      transform: rotate(45deg) translateX(calc(100% - 1px));
+    }
+    60% {
+      transform: rotate(45deg) translateX(calc(100% - 1px));
+    }
+    100% {
+      transform: rotate(45deg) translateX(0px);
+    }
+  }
+
+  @keyframes on-icon-exit {
+    0% {
+      transform: rotate(-45deg) translate(calc(-141.5% + 1px), calc(-141.5% + 1px));
+    }
+    60% {
+      transform: rotate(-45deg) translate(calc(-141.5% + 1px), calc(-141.5% + 1px));
+    }
+    100% {
+      transform: rotate(-45deg) translate(0px, 0px);
+    }
+  }
+
+  #onWrapper.hop {
+    animation-name:            hop;
+    animation-timing-function: ease-in;
+  }
+
+  @keyframes hop {    
+    0% {
+      transform: rotate(45deg) translate(0%, 0%);
+    }
+    8% {
+      transform: rotate(45deg) translate(-3%, -3%);
+    }
+    13% {
+      transform: rotate(45deg) translate(0%, 0%);
+    }
+    18% {
+      transform: rotate(45deg) translate(-0.8%, -0.8%);
+    }
+    23% {
+      transform: rotate(45deg) translate(0%, 0%);
+    }
+    100% {
+      transform: rotate(45deg) translate(0%, 0%);
     }
   }
 
 </style>
 
 
-<div id="off-wrapper" 
-     class="wrapper">
-  <iron-icon icon="app-shell-icons:signal-wifi-off"></iron-icon>
+<div id="offWrapper" 
+     class="wrapper"
+     on-animationend="__offWrapperAnimationendHandler">
+  <iron-icon id="offIcon" 
+             icon="app-shell-icons:signal-wifi-off">
+  </iron-icon>
 </div>
 
-<div id="on-wrapper" 
-     class="wrapper">
-  <iron-icon icon="app-shell-icons:signal-wifi-4-bar"></iron-icon>
+
+<div id="onWrapper" 
+     class="wrapper"
+     on-animationend="__onWrapperAnimationendHandler">
+  <iron-icon id="onIcon" 
+             icon="app-shell-icons:signal-wifi-4-bar">
+  </iron-icon>
 </div>

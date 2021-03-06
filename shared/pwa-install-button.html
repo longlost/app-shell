@@ -19,17 +19,8 @@
     margin: 0px;
   }
 
-  responsive-image {
-    display:          inline-block;
-    position:         relative;
-    width:            32px;
-    margin:           0px 4px;
-    vertical-align:   bottom;
-    background-color: transparent;
-  }
-
-  :host([icon-mode="dark"]) responsive-image {
-    filter: invert(100%);
+  #share-icon {
+    vertical-align: text-bottom;
   }
 
   paper-button {
@@ -64,7 +55,7 @@
 <div class="row">
 
   <p hidden="[[_installable]]">
-    To install on mobile, tap<responsive-image alt="Safari share icon" src="[[_safariShareIcon]]"></responsive-image>then "Add to Home Screen".
+    To install on mobile, tap <iron-icon id="share-icon" icon="app-shell-icons:ios-share"></iron-icon> then "Add to Home Screen".
   </p>
 
 
