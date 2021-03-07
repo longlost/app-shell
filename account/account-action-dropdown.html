@@ -1,0 +1,53 @@
+
+<style include="app-shared-styles">
+
+  #container {
+    position: fixed;
+    top:      16px;
+    right:    16px;
+    left:     unset;
+    z-index:  1;
+  }
+
+  paper-listbox {
+    --paper-listbox-background-color: var(--app-background-color);
+    --paper-listbox-color:            var(--app-dark-text);
+  }
+
+  iron-icon {
+    min-height:   24px;
+    min-width:    24px;
+    margin-right: 8px;
+  }
+
+  span {
+    white-space: nowrap;
+  }
+
+</style>
+
+
+<grow-shrink-container id="container">
+
+  <paper-listbox attr-for-selected="item" 
+                 on-selected-changed="__selectedChangedHandler">
+
+    <paper-item item="sign-out">
+      <iron-icon icon="app-shell-icons:person-off"></iron-icon>
+      <span>Sign Out</span>
+    </paper-item>
+
+    <paper-item item="resend">
+      <iron-icon icon="app-shell-icons:send"></iron-icon>
+      <span>Resend Verification</span>
+    </paper-item>
+
+    <paper-item item="quick-start">
+      <iron-icon icon="app-shell-icons:book"></iron-icon>
+      <span>Quick Start</span>
+    </paper-item>
+
+  </paper-listbox>
+
+</grow-shrink-container>
+    

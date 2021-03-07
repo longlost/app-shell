@@ -10,16 +10,8 @@
     max-width:     100%;
   }
 
-  #h4-1 {
-    margin-bottom: 16px;
-  }
-
-  #h4-1,
-  #h4-2 {
-    margin-top: 0px;
-  }
-
   #logo-wrapper {
+    margin-bottom:    24px;
     border-radius:    50%;
     background-color: var(--app-constant-light-text);
   }
@@ -33,6 +25,10 @@
     background-color: inherit;
   }
 
+  h4 {
+    margin: 8px 0px 0px 0px;
+  }
+
 </style>
 
 
@@ -40,13 +36,13 @@
 
 <h3 class="shared-single-line-truncate">[[user.displayName]]</h3>
 
-<h4 id="h4-1">Thank you for signing up today!</h4>
-
-<h4 id="h4-2">Let's show you around.</h4>
-
 <div id="logo-wrapper">
   <responsive-image alt="App logo"
                     sizing="contain" 
                     src="[[_logo]]">
   </responsive-image>
 </div>
+
+<h4>Thank you for signing up today!</h4>
+
+<h4>Let's show you around.</h4>

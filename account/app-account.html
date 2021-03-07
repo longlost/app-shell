@@ -125,15 +125,17 @@
              src="[[_profileBackground]]">
   </app-image>
 
-  <paper-button slot="top-toolbar-buttons-slot" 
-                on-click="__signOutButtonClicked">
-    SIGN OUT
-  </paper-button>
 
   <paper-icon-button icon="app-shell-icons:wallpaper"
                      slot="top-toolbar-buttons-slot"
                      on-click="__changeBackgroundButtonClicked">
   </paper-icon-button>
+
+  <paper-icon-button icon="app-icons:more-vert"
+                     slot="top-toolbar-buttons-slot"
+                     on-click="__moreBtnClicked">
+  </paper-icon-button>
+
 
   <avatar-image button
                 raised
@@ -285,6 +287,13 @@
 </app-header-overlay>
 
 
+<account-actions-dropdown id="actions"
+                          on-account-actions-dropdown-quick-start="__actionsQuickStartHandler"
+                          on-account-actions-dropdown-resend="__actionsResendHandler"
+                          on-account-actions-dropdown-sign-out="__actionsSignOutHandler">
+</account-actions-dropdown>
+
+
 <app-spinner id="spinner" 
              full-screen>
 </app-spinner>
@@ -300,6 +309,12 @@
 <account-reauth-modal id="reauthModal" 
                       on-reauth-modal-reauth="__reauthenticate">
 </account-reauth-modal>
+
+
+<account-resend-verification-modal id="resendVerificationModal"
+                                   user="[[user]]"
+                                   on-resend-verification-modal-resend="__sendVerificationEmail">
+</account-resend-verification-modal>
 
 
 <account-delete-modal id="deleteModal" 

@@ -247,9 +247,14 @@ class AppQuickStartGuide extends AppElement {
         computed: '__computeShowBackBtnClass(_currentPage)'
       },
 
-      _showNextBtnClass: {
+      _nextToCloseBtnClass: {
         type: String,
-        computed: '__computeShowNextBtnClass(_currentPage)'
+        computed: '__computeNextToCloseBtnClass(_currentPage)'
+      },
+
+      _nextToCloseBtnText: {
+        type: String,
+        computed: '__computeNextToCloseBtnText(_currentPage)'
       },
 
       // Directly drives `tab-pages`.
@@ -361,9 +366,15 @@ class AppQuickStartGuide extends AppElement {
   }
 
 
-  __computeShowNextBtnClass(page) {
+  __computeNextToCloseBtnClass(page) {
 
-    return page === 'conclusion' ? '' : 'show-btn';
+    return page === 'conclusion' ? 'close-btn' : 'next-btn';
+  }
+
+
+  __computeNextToCloseBtnText(page) {
+
+    return page === 'conclusion' ? 'CLOSE' : 'NEXT';
   }
 
 
@@ -477,6 +488,10 @@ class AppQuickStartGuide extends AppElement {
       const nextIndex = Math.min(this._currentProgress + 1, this._pages.length - 1);
 
       this.page = this._pages[nextIndex];
+
+      if (this._currentPage === 'conclusion') {
+        this.$.overlay.close();
+      }
     }
     catch (error) {
       if (error === 'click debounced') { return; }

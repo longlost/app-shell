@@ -72,24 +72,6 @@
     margin-right: 8px;
   }
 
-  :host([theme="light"]) #next-btn {
-    background-color: var(--app-secondary-color);
-    color:            var(--app-secondary-color-text);
-  }
-
-  :host([theme="dark"]) #next-btn {
-    background-color: var(--app-secondary-light-color);
-    color:            var(--app-secondary-light-color-text);
-  }
-
-  #next-btn span {
-    margin-left: 8px;
-  }
-
-  #next-btn iron-icon {
-    margin-left: 4px;
-  }
-
   .hide-btn {
     transition: transform 0.3s var(--app-custom-ease), 
                 opacity 0.1s ease-out 0.05s;
@@ -103,6 +85,42 @@
     transform:      none;
     opacity:        1;
     pointer-events: auto;
+  }
+
+  :host([theme="light"]) #next-btn.next-btn {
+    background-color: var(--app-secondary-color);
+    color:            var(--app-secondary-color-text);
+  }
+
+  :host([theme="dark"]) #next-btn.next-btn {
+    background-color: var(--app-secondary-light-color);
+    color:            var(--app-secondary-light-color-text);
+  }
+
+  :host([theme="light"]) #next-btn.close-btn {
+    background-color: var(--app-primary-color);
+    color:            var(--app-primary-color-text);
+  }
+
+  :host([theme="dark"]) #next-btn.close-btn {
+    background-color: var(--app-primary-light-color);
+    color:            var(--app-primary-light-color-text);
+  }
+
+  #next-btn span {
+    margin-left: 8px;
+  }
+
+  #next-btn.close-btn span {
+    margin-left: 0px;
+  }
+
+  #next-btn iron-icon {
+    margin-left: 4px;
+  }
+
+  #next-btn.close-btn iron-icon {
+    display: none;
   }
 
   paper-progress {
@@ -198,10 +216,10 @@
     </paper-button>
 
     <paper-button id="next-btn"
-                  class$="shared-paper-button-with-icon hide-btn [[_showNextBtnClass]]"
+                  class$="shared-paper-button-with-icon [[_nextToCloseBtnClass]]"
                   raised
                   on-click="__nextBtnClicked">
-      <span>NEXT</span>
+      <span>[[_nextToCloseBtnText]]</span>
       <iron-icon icon="app-icons:chevron-r"></iron-icon>
     </paper-button>
 
