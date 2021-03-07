@@ -882,6 +882,13 @@
     "@longlost/app-core" "^1.0.0"
     "@polymer/polymer" "^3.4.1"
 
+"@longlost/grow-shrink-container@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@longlost/grow-shrink-container/-/grow-shrink-container-1.0.0.tgz#d93f8eaf6c0595ab4ad23a90a0982917f6d0c158"
+  integrity sha512-ibrOxy+Lu4vwFCVizz2ESNI0ciPv8innQ727wLxDK8ipElJuVGETNfaOu1zdlKSTljL7KdjN3fyLu4HN8Rccew==
+  dependencies:
+    "@longlost/app-core" "^2.5.0"
+
 "@longlost/icon-to-spinner@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@longlost/icon-to-spinner/-/icon-to-spinner-2.0.0.tgz#3cf81ddc69a2e484a6d84fa268c9686f5ac8fb86"

@@ -948,11 +948,11 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
       if (!verifiedOrVerificationSent) {
 
-        await user.sendEmailVerification();
+        await this._user.sendEmailVerification();
 
-        await services.set({
+        services.set({
           coll: 'users',
-          doc:   user.uid,
+          doc:   this._user.uid,
           data: {verificationEmailSent: true}
         });
       }

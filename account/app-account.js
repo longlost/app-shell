@@ -45,6 +45,7 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-input/paper-input.js';
 import '../shared/app-shell-icons.js';
+import './account-actions-dropdown.js';
 
 // The following modules are lazy loaded:
 //
@@ -407,18 +408,30 @@ class AppAccount extends AppElement {
   }
 
 
-  async __signOutButtonClicked() {
+  async __actionsQuickStartHandler() {
 
-    try {
-      await this.clicked();
-      await this.$.overlay.close();
+    await this.$.overlay.close();
 
-      this.fire('app-account-signout-clicked');
-    }
-    catch (error) { 
-      if (error === 'click debounced') { return; }
-      console.error(error); 
-    }
+    this.fire('app-account-open-quick-start');
+  }
+
+
+  async __actionsResendHandler() {
+
+    await import(
+      /* webpackChunkName: 'account-resend-verification-modal' */ 
+      './account-resend-verification-modal.js'
+    );
+
+    this.$.resendVerificationModal.open();
+  }
+
+
+  async __actionsSignOutHandler() {
+
+    await this.$.overlay.close();
+
+    this.fire('app-account-signout-clicked');
   }
 
 
@@ -460,6 +473,20 @@ class AppAccount extends AppElement {
       console.error(error); 
     }
   }
+  
+
+  async __moreBtnClicked() {
+
+    try {
+      await this.clicked();
+
+      this.$.actions.open();
+    }
+    catch (error) {
+      if (error === 'click debounced') { return; }
+      console.error(error);
+    }
+  }
 
 
   __avatarClicked() {
@@ -483,6 +510,7 @@ class AppAccount extends AppElement {
       /* webpackChunkName: 'account-password-modal' */ 
       './account-password-modal.js'
     );
+
     this.$.passwordModal.open();
   }
 
@@ -615,11 +643,13 @@ class AppAccount extends AppElement {
   }
   
 
-  __sendVerificationEmail() {
+  async __sendVerificationEmail() {
 
     if (!this.user) { return; }
 
-    return this.user.sendEmailVerification();
+    await this.user.sendEmailVerification();
+
+    return message('Account verification email sent.');
   }
 
 

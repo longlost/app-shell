@@ -1,0 +1,58 @@
+
+<style include="app-shared-styles">
+
+  strong {
+    font-size: 18px;
+  }
+
+  #dismiss-btn {
+    color: var(--app-primary-color);
+  }
+
+  #resend-btn {
+    background-color: var(--app-primary-color);
+    color:            var(--app-primary-color-text);
+  }
+
+</style>
+
+
+<app-modal id="modal"
+           heading="Resend Verification Email"
+           on-click="__dismissButtonClicked">
+
+
+  <div slot="card-content-slot">
+    <p>
+      Please confirm that you want to receive an account verification email.
+    </p>
+    <p>
+      It will be sent to <strong>[[user.email]]</strong>
+    </p>
+    <p>
+      You should receive it within an hour.
+    </p>
+    <p>
+      Please check your email blocking and spam settings.  Also, make sure that your address is entered correctly.
+    </p>
+  </div>
+
+  
+  <paper-button id="dismiss-btn"
+                slot="card-actions-slot"
+                on-click="__dismissButtonClicked">
+    DISMISS
+  </paper-button>
+
+  <paper-button id="resend-btn"
+                class="shared-paper-button-with-icon"
+                slot="card-actions-slot"
+                on-click="__resendButtonClicked">
+    <iron-icon icon="app-shell-icons:send"
+               class="shared-iron-icon-inside-paper-button">
+    </iron-icon>
+    RESEND
+  </paper-button>
+
+  
+</app-modal>

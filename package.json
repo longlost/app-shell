@@ -23,6 +23,7 @@
     "@longlost/app-inputs": "^2.0.2",
     "@longlost/app-overlays": "^2.0.0",
     "@longlost/app-spinner": "^1.2.1",
+    "@longlost/grow-shrink-container": "^1.0.0",
     "@longlost/icon-to-spinner": "^2.0.0",
     "@longlost/tab-pages": "^1.2.3",
     "@polymer/app-layout": "^3.1.0",
