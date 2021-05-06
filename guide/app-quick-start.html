@@ -134,6 +134,14 @@
     --paper-progress-secondary-color: var(--app-secondary-color);
   }
 
+  @media (min-width: 768px) {
+
+    tab-pages {
+      margin-top: 64px;
+    }
+
+  }
+
 </style>
 
 
@@ -189,15 +197,16 @@
 
 
     <qs-pwa-install-page narrow="[[narrow]]"
-                         page="install">
+                         page="install"
+                         theme="[[theme]]">
     </qs-pwa-install-page>
 
 
     <qs-conclusion-page current="[[_currentPage]]"
-                        dark-mode="[[darkMode]]"
                         narrow="[[narrow]]"
                         opened="[[_opened]]"
-                        page="conclusion">
+                        page="conclusion"
+                        theme="[[theme]]">
     </qs-conclusion-page>
 
 

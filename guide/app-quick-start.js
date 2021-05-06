@@ -24,10 +24,12 @@
   *
   * 
   *
-  *   The implementation can customize the guide by including custom pages 
+  *   The developer can customize the guide by including custom pages 
   *   that will be inserted between the verification and dark mode pages.
   *
   *   This is exposed as a 'quick-start' slot via `app-shell`.
+  *
+  *   Import app-specific slotted pages before the guide opens.
   *
   *   
   *
@@ -499,7 +501,9 @@ class AppQuickStartGuide extends AppElement {
     }
   }
 
-
+  // DEV NOTE:
+  //
+  //    Import app-specific slotted pages before the guide opens.
   async open() {
 
     const promises = [];

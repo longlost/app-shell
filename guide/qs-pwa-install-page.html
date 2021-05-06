@@ -36,6 +36,23 @@
     grid-area: right-model;
   }
 
+  @media (min-width: 768px) {
+
+    #grid {
+      display:               grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows:    min-content 1fr;
+      grid-column-gap:       32px;
+      margin-top:            32px;
+    }
+
+    #models {
+      grid-row:   span 3;
+      margin-top: 8px;
+    }
+
+  }
+
 </style>
 
 
@@ -47,26 +64,42 @@
 </iron-icon>
 
 
-<p>
-  To get the best experience, consider installing this app to your home screen.
-</p>
+<div id="grid">
 
-<p>
-  You'll get an easy-to-find launcher icon and a dedicated fullscreen version of the app.
-</p>
+  <section>
+
+    <p>
+      To get the best experience, consider installing this app to your home screen.
+    </p>
+
+    <p>
+      You'll get an easy-to-find launcher icon and a dedicated fullscreen version of the app.
+    </p>
+
+  </section>
 
 
-<div id="models">
-  <p id="left-label">Web Browser</p>
-  <p id="right-label">Installed</p>
-  <install-app-model id="left-model" chrome></install-app-model>
-  <install-app-model id="right-model"></install-app-model>
+  <div id="models">
+    <p id="left-label">Web Browser</p>
+    <p id="right-label">Installed</p>
+
+    <install-app-model id="left-model" 
+                       chrome 
+                       theme="[[theme]]">
+    </install-app-model>
+
+    <install-app-model id="right-model"
+                       theme="[[theme]]">
+    </install-app-model>
+    
+  </div>
+
+
+  <pwa-install-button class="actions"></pwa-install-button>
+
+
+  <p class="secondary">
+    You can install the app to your home screen later by going to <span><iron-icon hidden="[[!narrow]]" icon="app-shell-icons:menu"></iron-icon><strong>Menu</strong></span><span class="arrow"> → </span><span><iron-icon icon="app-icons:settings"></iron-icon><strong>Settings</strong></span>.
+  </p>
+
 </div>
-
-
-<pwa-install-button class="actions"></pwa-install-button>
-
-
-<p class="secondary">
-  You can install the app to your home screen later by going to <span><iron-icon hidden="[[!narrow]]" icon="app-shell-icons:menu"></iron-icon><strong>Menu</strong></span><span class="arrow"> → </span><span><iron-icon icon="app-icons:settings"></iron-icon><strong>Settings</strong></span>.
-</p>
