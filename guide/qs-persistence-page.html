@@ -6,6 +6,25 @@
     margin: 32px 0px;
   }
 
+  @media (min-width: 768px) {
+
+    #grid {
+      display:               grid;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap:       32px;
+      margin-top:            32px;
+    }
+
+    #grid .actions {
+      margin-top: 16px;
+    }
+
+    #footnotes {
+      grid-column: span 2;
+    }
+
+  }
+
 </style>
 
 
@@ -18,40 +37,55 @@
 </div>
 
 
-<p>
-  You don't have to stop what you're doing because you go offline, or your connection gets flaky. <sup>*</sup>
-</p>
+<div id="grid">
 
-<p>
-  We can automatically save your changes locally on this device, so you don't miss a beat. <sup>**</sup> 
-</p>
+  <section>
 
-<p>
-  Once you're back online, your updates will upload seemlessly in the background.
-</p>
+    <p>
+      You don't have to stop what you're doing because you go offline or your connection gets flaky. <sup>*</sup>
+    </p>
 
+    <p>
+      We can automatically save your offline changes locally on this device, so you don't miss a beat. <sup>**</sup> 
+    </p>
 
-<offline-persistence-selector class="actions" 
-                              persistence="[[persistence]]">
-</offline-persistence-selector>
+    <p>
+      Once you're back online, your updates will seemlessly sync to the cloud, in the background.
+    </p>
 
-
-<p class="secondary">
-  If this is a public or shared device, we recommend turning this feature off.
-</p>
-
-<p class="secondary">
-  Change offline persistence by navigating to <span><iron-icon hidden="[[!narrow]]" icon="app-shell-icons:menu"></iron-icon><strong>Menu</strong></span><span class="arrow"> → </span><span><iron-icon icon="app-icons:settings"></iron-icon><strong>Settings</strong></span>.
-</p>
+  </section>
 
 
-<div class="shared-divider"></div>
+  <section>
+
+    <offline-persistence-selector class="actions" 
+                                  persistence="[[persistence]]">
+    </offline-persistence-selector>
 
 
-<p class="secondary">
-  <sup>*</sup> Some features may require an internet connection.
-</p>
+    <p class="secondary">
+      If this is a public or shared device, we recommend turning this feature off.
+    </p>
 
-<p class="secondary">
-  <sup>**</sup> Some devices may purge the app's cache and storage when the app is inactive for a certain period of time.  This timeframe varies widely, and can be as short as a few hours, but is typically 1 to 2 weeks.
-</p>
+    <p class="secondary">
+      Change offline persistence by navigating to <span><iron-icon hidden="[[!narrow]]" icon="app-shell-icons:menu"></iron-icon><strong>Menu</strong></span><span class="arrow"> → </span><span><iron-icon icon="app-icons:settings"></iron-icon><strong>Settings</strong></span>.
+    </p>
+
+  </section>
+
+
+  <section id="footnotes">    
+
+    <div class="shared-divider"></div>
+
+    <p class="secondary">
+      <sup>*</sup> Some features may require an internet connection.
+    </p>
+
+    <p class="secondary">
+      <sup>**</sup> Some devices may purge the app's cache and storage when the app is inactive for a certain period of time.  This timeframe varies widely, and can be as short as a few hours, but is typically 1 to 2 weeks.  Plan mission-critical offline use accordingly.
+    </p>
+
+  </section>
+
+</div>

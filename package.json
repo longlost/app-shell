@@ -1,6 +1,6 @@
 {
   "name": "@longlost/app-shell",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "description": "This element bundles core functionalities that are essential to any app.",
   "main": "app-shell.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "@longlost/app-camera": "^1.18.7",
     "@longlost/app-core": "^2.5.0",
     "@longlost/app-images": "^2.1.1",
-    "@longlost/app-inputs": "^2.0.2",
+    "@longlost/app-inputs": "^2.0.3",
     "@longlost/app-overlays": "^2.0.0",
     "@longlost/app-spinner": "^1.2.1",
     "@longlost/grow-shrink-container": "^1.0.0",
@@ -49,14 +49,14 @@
     "@polymer/paper-toast": "^3.0.1",
     "@polymer/paper-toggle-button": "^3.0.1",
     "@polymer/polymer": "^3.4.1",
-    "firebaseui": "^4.7.3"
+    "firebaseui": "^4.8.0"
   },
   "devDependencies": {
     "@polymer/iron-demo-helpers": "^3.1.0",
     "@polymer/test-fixture": "^4.0.2",
     "@webcomponents/webcomponentsjs": "^2.5.0",
-    "chai": "^4.3.3",
-    "mocha": "^8.3.1",
+    "chai": "^4.3.4",
+    "mocha": "^8.3.2",
     "wct-mocha": "^1.1.0"
   }
 }

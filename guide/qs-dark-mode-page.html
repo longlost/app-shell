@@ -20,6 +20,23 @@
     }
   }
 
+  @media (min-width: 768px) {
+
+    #grid {
+      display:               grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows:    min-content 1fr;
+      grid-column-gap:       32px;
+      margin-top:            32px;
+    }
+
+    #grid .actions {
+      grid-row:   span 2;
+      margin-top: 16px;
+    }
+
+  }
+
 </style>
 
 
@@ -35,18 +52,22 @@
 </div>
 
 
-<p>
-  Choose your perfered app-wide theme, or let the app automatically follow your device's setting.
-</p>
+<div id="grid">
+
+  <p>
+    Let the app automatically follow your device's mode, or choose your preferred app-wide theme.
+  </p>
 
 
-<dark-mode-selector class="actions"
-                    auto-color-mode="[[autoColorMode]]"
-                    dark-mode="[[darkMode]]"
-                    hide-auto-color-mode="[[hideAutoColorMode]]">
-</dark-mode-selector>
+  <dark-mode-selector class="actions"
+                      auto-color-mode="[[autoColorMode]]"
+                      dark-mode="[[darkMode]]"
+                      hide-auto-color-mode="[[hideAutoColorMode]]">
+  </dark-mode-selector>
 
 
-<p class="secondary">
-  You can change light/dark mode at any time by going to <span><iron-icon hidden="[[!narrow]]" icon="app-shell-icons:menu"></iron-icon><strong>Menu</strong></span><span class="arrow"> → </span><span><iron-icon icon="app-icons:settings"></iron-icon><strong>Settings</strong></span>.
-</p>
+  <p class="secondary">
+    You can change light/dark mode at any time by going to <span><iron-icon hidden="[[!narrow]]" icon="app-shell-icons:menu"></iron-icon><strong>Menu</strong></span><span class="arrow"> → </span><span><iron-icon icon="app-icons:settings"></iron-icon><strong>Settings</strong></span>.
+  </p>
+
+</div>
