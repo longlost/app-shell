@@ -37,6 +37,8 @@ import {htmlLiteral} from '@polymer/polymer/lib/utils/html-tag.js';
 
 import styles          from 'firebaseui/dist/firebaseui.css';
 import * as firebaseui from 'firebaseui';
+
+
 import '@longlost/app-overlays/app-modal.js';
 // 'services.js' lazy-loaded.
 
@@ -174,7 +176,134 @@ class SigninModal extends AppElement {
   }
 
 
-  __getFirebaseUiConfig(firebase, ui) {
+  // __getFirebaseUiConfig(firebase, ui) {
+
+  //   return {
+
+  //     // Whether to upgrade anonymous users should be explicitly provided.
+  //     // The user must already be signed in anonymously before FirebaseUI is
+  //     // rendered.
+  //     // Imperitively set to true if user.isAnonymous is true in __startFirebaseUI.
+  //     autoUpgradeAnonymousUsers: false,
+
+  //     callbacks: {
+
+  //       signInSuccessWithAuthResult: () => {
+
+  //         // Return type determines whether we (return false) continue the redirect automatically
+  //         // or whether we (return true) leave that to developer to handle.
+  //         return false;
+  //       },
+
+  //       // signInFailure callback must be provided to handle merge conflicts which
+  //       // occur when an existing credential is linked to an anonymous user.
+  //       signInFailure: async error => {
+
+  //         try {
+
+  //           // For merge conflicts, the error.code will be
+  //           // 'firebaseui/anonymous-upgrade-merge-conflict'.
+  //           if (error.code !== 'firebaseui/anonymous-upgrade-merge-conflict') {
+  //             return;
+  //           }
+
+  //           // The credential the user tried to sign in with.
+  //           const cred = error.credential;
+
+  //           // The anonymous user data has to be copied to the non-anonymous user.
+  //           // Save anonymous user data first.
+  //           const coll = 'users';
+
+  //           const {default: services} = await import(
+  //             /* webpackChunkName: 'services' */ 
+  //             '@longlost/app-core/services/services.js'
+  //           );
+
+  //           const anonymousUserData = await services.get({coll, doc: this.user.uid});
+
+  //           // This will trigger onAuthStateChanged listener which
+  //           // could trigger a redirect to another page.
+  //           // Ensure the upgrade flow is not interrupted by that callback
+  //           // and that this is given enough time to complete before
+  //           // redirection.
+  //           const newUser = await firebase.auth().signInWithCredential(cred);
+
+  //           // Original Anonymous Auth instance now has the new user.
+  //           await services.set({coll, doc: newUser.uid, data: anonymousUserData});
+
+  //           // Delete anonymnous user.
+  //           await this.user.delete();
+
+  //           this.fire('user-upgraded', {user: newUser});
+
+  //           // FirebaseUI will reset and the UI cleared when this promise
+  //           // resolves.
+  //           // signInSuccess will not run. Successful sign-in logic has to be
+  //           // run explicitly.
+  //         }
+  //         catch (error) {
+  //           console.warn('signInFailure anonymous-upgrade-merge-conflict error: ', error);
+  //         }
+  //       }
+  //     },
+
+      
+
+  //     // Use firebaseui.auth.CredentialHelper.GOOGLE_YOLO for one-tap signin.
+  //     credentialHelper: ui.auth.CredentialHelper.NONE,
+
+
+
+  //     signInFlow: 'redirect', // Or 'popup', must use redirect for single page apps.
+
+  //     signInOptions: [
+
+  //       // Leave the lines as is for the providers you want to offer your users.
+  //       {
+  //         provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+
+  //         // Whether the display name should be displayed in the Sign Up page.
+  //         requireDisplayName: true
+  //       }//,
+
+
+  //       // Google oauth is currenly inop on iOS PWA modes.
+  //       // It causes all sorts of issues even if we test 
+  //       // for ios standalone mode in js and only use email signup
+  //       // until it is fixed, DO NOT USE! 
+  //       // as of 1/9/2019 "firebaseui": "^3.5.1" CB        
+  //       // firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+
+
+  //       // TODO:
+  //       //      Signup for fb, twitter and github auth
+
+
+  //       // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+  //       // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+  //       // firebase.auth.GithubAuthProvider.PROVIDER_ID
+  //     ],
+
+  //     // Terms of service url.
+  //     tosUrl: termsOfServiceUrl,
+  //     privacyPolicyUrl
+  //   };
+  // }
+
+
+
+
+  __getFirebaseUiConfig(fbAuth, ui) {
+ 
+    const {
+      EmailAuthProvider,
+      FacebookAuthProvider,
+      GithubAuthProvider,
+      GoogleAuthProvider,
+      TwitterAuthProvider,
+      auth, 
+      signInWithCredential
+    } = fbAuth;
 
     return {
 
@@ -224,7 +353,7 @@ class SigninModal extends AppElement {
             // Ensure the upgrade flow is not interrupted by that callback
             // and that this is given enough time to complete before
             // redirection.
-            const newUser = await firebase.auth().signInWithCredential(cred);
+            const newUser = await signInWithCredential(auth, cred);
 
             // Original Anonymous Auth instance now has the new user.
             await services.set({coll, doc: newUser.uid, data: anonymousUserData});
@@ -248,7 +377,7 @@ class SigninModal extends AppElement {
       
 
       // Use firebaseui.auth.CredentialHelper.GOOGLE_YOLO for one-tap signin.
-      credentialHelper: ui.auth.CredentialHelper.NONE,
+      // credentialHelper: ui.auth.CredentialHelper.NONE,
 
 
 
@@ -258,7 +387,7 @@ class SigninModal extends AppElement {
 
         // Leave the lines as is for the providers you want to offer your users.
         {
-          provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+          provider: EmailAuthProvider.PROVIDER_ID,
 
           // Whether the display name should be displayed in the Sign Up page.
           requireDisplayName: true
@@ -270,16 +399,16 @@ class SigninModal extends AppElement {
         // for ios standalone mode in js and only use email signup
         // until it is fixed, DO NOT USE! 
         // as of 1/9/2019 "firebaseui": "^3.5.1" CB        
-        // firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        // GoogleAuthProvider.PROVIDER_ID,
 
 
         // TODO:
-        //      Signup for fb, twitter and github auth
+        //      Signup for apple, fb, twitter and github auth
 
-
-        // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-        // firebase.auth.GithubAuthProvider.PROVIDER_ID
+        // apple.com,
+        // FacebookAuthProvider.PROVIDER_ID,
+        // TwitterAuthProvider.PROVIDER_ID,
+        // GithubAuthProvider.PROVIDER_ID
       ],
 
       // Terms of service url.
@@ -289,13 +418,36 @@ class SigninModal extends AppElement {
   }
 
 
+
+
+  // async __setupFirebaseUI() {
+
+  //   const {firebase} = await firebaseReady();
+
+  //   this._firebaseUIConfig = this.__getFirebaseUiConfig(firebase, firebaseui);
+  //   this._firebaseUi       = new firebaseui.auth.AuthUI(firebase.auth());
+  // }
+
+
+
   async __setupFirebaseUI() {
 
-    const {firebase} = await firebaseReady();
+    const {loadAuth} = await firebaseReady();
+    // const {firebaseApp, loadAuth} = await firebaseReady();
+    const fbAuth     = await loadAuth();
 
-    this._firebaseUIConfig = this.__getFirebaseUiConfig(firebase, firebaseui);
-    this._firebaseUi       = new firebaseui.auth.AuthUI(firebase.auth());
+    this._firebaseUIConfig = this.__getFirebaseUiConfig(fbAuth, firebaseui);
+    this._firebaseUi       = new firebaseui.auth.AuthUI(fbAuth.auth);
+
+
+    // await import(/* webpackChunkName: 'firebase/compat/auth' */'firebase/compat/auth');
+
+    // this._firebaseUi = new firebaseui.auth.AuthUI(firebaseApp.auth());
   }
+
+
+
+
 
 
   __startFirebaseUI() {
