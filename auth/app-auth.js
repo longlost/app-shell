@@ -85,9 +85,26 @@ class AppAuth extends AppElement {
   }
 
 
-  __firebaseAuthChanged(firebase) {
+  // __firebaseAuthChanged(firebase) {
 
-    firebase.auth().onAuthStateChanged(async user => {
+  //   firebase.auth().onAuthStateChanged(async user => {
+
+  //     this._user = user;
+
+  //   }, error => {
+
+  //     console.error(error);
+
+  //     this._user = null;
+  //   });
+  // }
+
+
+  __firebaseAuthChanged(fbAuth) {
+
+    const {auth, onAuthStateChanged} = fbAuth;
+
+    onAuthStateChanged(auth, async user => {
 
       this._user = user;
 
@@ -100,11 +117,44 @@ class AppAuth extends AppElement {
   }
 
 
+  // async __initFirebase() {
+
+  //   const {firebase, loadAuth} = await firebaseReady();
+
+  //   await loadAuth();
+
+  //   const persistenceType = () => {
+
+  //     // local:   User and data reset only when signed out explicitly.
+  //     // session: User and data persisted for current session or tab.
+  //     // none:    User and data cleared on window refresh.
+  //     if (appUserAndData.trustedDevice) {
+  //       return firebase.auth.Auth.Persistence.LOCAL;
+  //     }
+
+  //     return firebase.auth.Auth.Persistence.SESSION;
+  //   };
+
+  //   firebase.auth().useDeviceLanguage();
+
+  //   await firebase.auth().setPersistence(persistenceType());
+
+  //   this.__firebaseAuthChanged(firebase);
+  // }
+
+
   async __initFirebase() {
 
-    const {firebase, loadAuth} = await firebaseReady();
+    const {loadAuth} = await firebaseReady();
+    const fbAuth     = await loadAuth();
 
-    await loadAuth();
+    const {
+      auth, 
+      browserLocalPersistence,
+      browserSessionPersistence,
+      setPersistence, 
+      useDeviceLanguage
+    } = fbAuth;
 
     const persistenceType = () => {
 
@@ -112,18 +162,20 @@ class AppAuth extends AppElement {
       // session: User and data persisted for current session or tab.
       // none:    User and data cleared on window refresh.
       if (appUserAndData.trustedDevice) {
-        return firebase.auth.Auth.Persistence.LOCAL;
+        return browserLocalPersistence;
       }
 
-      return firebase.auth.Auth.Persistence.SESSION;
+      return browserSessionPersistence;
     };
 
-    firebase.auth().useDeviceLanguage();
+    useDeviceLanguage(auth);
 
-    await firebase.auth().setPersistence(persistenceType());
+    await setPersistence(auth, persistenceType());
 
-    this.__firebaseAuthChanged(firebase);
+    this.__firebaseAuthChanged(fbAuth);
   }
+
+
 
   // Anonymous user upgraded account.
   __userUpgraded(event) {
@@ -198,13 +250,35 @@ class AppAuth extends AppElement {
   }
 
 
+  // async signOut() {
+
+  //   try {
+
+  //     const {firebase} = await firebaseReady();
+
+  //     await firebase.auth().signOut();
+
+  //     if (this.$.signinModal.reset) {
+  //       this.$.signinModal.reset();
+  //     }
+      
+  //     message('You are signed out.');
+  //   }
+  //   catch (error) {
+  //     console.error(error);
+  //   }
+  // }
+
+
+
   async signOut() {
 
     try {
 
-      const {firebase} = await firebaseReady();
+      const {loadAuth}      = await firebaseReady();
+      const {auth, signOut} = await loadAuth();
 
-      await firebase.auth().signOut();
+      await signOut(auth);
 
       if (this.$.signinModal.reset) {
         this.$.signinModal.reset();
@@ -216,6 +290,7 @@ class AppAuth extends AppElement {
       console.error(error);
     }
   }
+
 
 }
 
