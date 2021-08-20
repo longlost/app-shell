@@ -1,0 +1,248 @@
+
+<style>
+
+  :host {
+    display:  inline-block;
+    position: relative;
+  }
+
+  * {
+    animation-duration:        8s;
+    animation-iteration-count: infinite; 
+  }
+
+  svg {
+    position: absolute;
+    top:      0px;
+    left:    -4%; /* The original icon's path was not horizontally centered to the container. */
+    height:   100%;
+    width:    100%;
+    fill:     currentColor;
+  }
+
+  #bezel {    
+    animation-name:            bezel-shrink-grow;
+    animation-timing-function: ease-in-out;    
+    transform-origin:          6px 6px;
+  }
+
+  @keyframes bezel-shrink-grow {
+    
+    0% {
+      transform: scale(1, 1);
+    }
+
+    2% {
+      transform: scale(1, 0);
+    }
+
+    54% {
+      transform: scale(1, 0);
+    }
+
+    56% {
+      transform: scale(1, 1);
+    }
+
+    100% {
+      transform: scale(1, 1);
+    }
+  }
+
+  #box {    
+    animation-name:            box-shrink-grow;
+    animation-timing-function: ease-in;    
+    transform-origin:          48% 36%;
+  }
+
+  @keyframes box-shrink-grow {
+    
+    0% {
+      transform: scale(0, 0);
+    }
+
+    52% {
+      transform: scale(0, 0);
+    }
+
+    54% {
+      transform: scale(1.2, 1.2);
+    }
+
+    56% {
+      transform: scale(1, 1);
+    }
+
+    90% {
+      transform: scale(1, 1);
+    }
+
+    92% {
+      transform: scale(1.2, 1.2);
+    }
+
+    94% {
+      transform: scale(0, 0);
+    }
+
+    100% {
+      transform: scale(0, 0);
+    }
+  }
+
+  #arrow {
+    animation-name:            arrow-shrink;
+    animation-timing-function: ease-in;
+    transform-origin:          48% 36%;
+  }
+
+  @keyframes arrow-shrink {
+
+    0% {
+      transform: scale(1, 1);
+    }
+
+    50% {
+      transform: scale(1, 1);
+    }
+
+    52% {
+      transform: scale(1.1, 1.1);
+    }
+
+    54% {
+      transform: scale(0, 0);
+    }
+
+    100% {
+      transform: scale(0, 0);
+    }
+  }
+
+  #arrow-head-left {
+    animation-name:   head-left-entry; 
+    transform-origin: 11.3px 9.7px; 
+  }
+
+  @keyframes head-left-entry {
+
+    0% {
+      opacity:   0;
+      transform: rotate(-45deg);
+    }
+
+    5% {
+      opacity:   0;
+      transform: rotate(-45deg);
+    }
+
+    6% {
+      opacity: 1;
+    }
+
+    7% {
+      opacity:   1;
+      transform: rotate(15deg);
+    }
+
+    9% {
+      transform: rotate(-5deg);
+    }
+
+    11% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  #arrow-head-right {
+    animation-name:   head-right-entry;
+    transform-origin: 10.3px 8.7px;
+  }
+
+  @keyframes head-right-entry {
+
+    0% {
+      opacity:   0;
+      transform: rotate(45deg);
+    }
+
+    5% {
+      opacity:   0;
+      transform: rotate(45deg);
+    }
+
+    6% {
+      opacity: 1;
+    }
+
+    7% {
+      opacity:   1;
+      transform: rotate(-15deg);
+    }
+
+    9% {
+      transform: rotate(5deg);
+    }
+
+    11% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  #arrow-shaft {
+    animation-name:            shaft-entry;
+    animation-timing-function: ease-in-out;  
+    transform:                 rotate(45deg);  
+    transform-origin:          3.5px 16.5px;
+  }
+
+  @keyframes shaft-entry {
+
+    0% {
+      transform: rotate(45deg) scale(1, 0);
+    }
+
+    2% {
+      transform: rotate(45deg) scale(1, 0);
+    }
+
+    7% {
+      transform: rotate(45deg) scale(1, 1);
+    }
+
+    100% {
+      transform: rotate(45deg) scale(1, 1);
+    }
+  }
+
+</style>
+
+
+<svg id="device" viewbox="0 0 24 24">
+
+  <path d="M18 1.01L8 1c-1.1 0-2 .9-2 2v3h2V5h10v14H8v-1H6v3c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99z"/>
+
+  <rect id="bezel" x="6" y="6" width="2" height="12"/>
+
+  <rect id="box" x="10" y="7" width="3" height="3" rx="0.8"/>
+
+</svg>  
+
+
+<svg id="arrow" viewbox="0 0 24 24">  
+    
+  <rect id="arrow-head-left" x="5" y="8" width="7" height="2"/>
+    
+  <rect id="arrow-head-right" x="10" y="8" width="2" height="7"/>
+  
+  <rect id="arrow-shaft" x="2.5" y="5.5" width="2" height="10.6"/>  
+  
+</svg>
