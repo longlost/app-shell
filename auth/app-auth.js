@@ -85,21 +85,6 @@ class AppAuth extends AppElement {
   }
 
 
-  // __firebaseAuthChanged(firebase) {
-
-  //   firebase.auth().onAuthStateChanged(async user => {
-
-  //     this._user = user;
-
-  //   }, error => {
-
-  //     console.error(error);
-
-  //     this._user = null;
-  //   });
-  // }
-
-
   __firebaseAuthChanged(fbAuth) {
 
     const {auth, onAuthStateChanged} = fbAuth;
@@ -115,32 +100,6 @@ class AppAuth extends AppElement {
       this._user = null;
     });
   }
-
-
-  // async __initFirebase() {
-
-  //   const {firebase, loadAuth} = await firebaseReady();
-
-  //   await loadAuth();
-
-  //   const persistenceType = () => {
-
-  //     // local:   User and data reset only when signed out explicitly.
-  //     // session: User and data persisted for current session or tab.
-  //     // none:    User and data cleared on window refresh.
-  //     if (appUserAndData.trustedDevice) {
-  //       return firebase.auth.Auth.Persistence.LOCAL;
-  //     }
-
-  //     return firebase.auth.Auth.Persistence.SESSION;
-  //   };
-
-  //   firebase.auth().useDeviceLanguage();
-
-  //   await firebase.auth().setPersistence(persistenceType());
-
-  //   this.__firebaseAuthChanged(firebase);
-  // }
 
 
   async __initFirebase() {
@@ -174,8 +133,6 @@ class AppAuth extends AppElement {
 
     this.__firebaseAuthChanged(fbAuth);
   }
-
-
 
   // Anonymous user upgraded account.
   __userUpgraded(event) {
@@ -250,27 +207,6 @@ class AppAuth extends AppElement {
   }
 
 
-  // async signOut() {
-
-  //   try {
-
-  //     const {firebase} = await firebaseReady();
-
-  //     await firebase.auth().signOut();
-
-  //     if (this.$.signinModal.reset) {
-  //       this.$.signinModal.reset();
-  //     }
-      
-  //     message('You are signed out.');
-  //   }
-  //   catch (error) {
-  //     console.error(error);
-  //   }
-  // }
-
-
-
   async signOut() {
 
     try {
@@ -290,7 +226,6 @@ class AppAuth extends AppElement {
       console.error(error);
     }
   }
-
 
 }
 

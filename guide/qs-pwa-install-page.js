@@ -19,6 +19,7 @@ import '@polymer/iron-icon/iron-icon.js';
 import '../shared/app-shell-icons.js';
 import '../shared/pwa-install-button.js';
 import './qs-page-shared-styles.js';
+import './animated-aths-icon.js';
 import './install-app-model.js';
 
 
