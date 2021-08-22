@@ -44,7 +44,8 @@ import {
 
 import {allProcessingRan} from '@longlost/app-core/img-utils.js';
 
-import services   from '@longlost/app-core/services/services.js';
+import {set, subscribe} from '@longlost/app-core/services/services.js';
+
 import htmlString from './account-photo-picker.html';
 import '@longlost/app-camera/picker/acs-picker-overlay.js';
 import '@longlost/app-images/app-image.js';
@@ -266,7 +267,7 @@ class AccountPhotoPicker extends AppElement {
       console.error(error);
     };
  
-    this._selectedItemUnsubscribe = await services.subscribe({
+    this._selectedItemUnsubscribe = await subscribe({
       coll, 
       doc, 
       callback, 
@@ -313,7 +314,9 @@ class AccountPhotoPicker extends AppElement {
       await this.$.modal.open();
     }
     catch (error) {
+      
       if (error === 'click debounced') { return; }
+
       console.error(error);
 
       warn('Sorry, your profile was not updated.');
@@ -347,7 +350,7 @@ class AccountPhotoPicker extends AppElement {
       await this.clicked();
 
       // Set the recently selected photo as the new profile photo.
-      await services.set({
+      await set({
         coll: `users`,
         doc:   this.user.uid,
         data: {
@@ -386,7 +389,7 @@ class AccountPhotoPicker extends AppElement {
     try {
       hijackEvent(event);
 
-      await services.set({
+      await set({
         coll: `users`,
         doc:   this.user.uid,
         data: {
