@@ -27,9 +27,13 @@ import {
   warn
 } from '@longlost/app-core/utils.js';
 
-import {init as initDb} from '@longlost/app-core/services/db.js';
+import {
+  get, 
+  initDb, 
+  set, 
+  subscribe
+} from '@longlost/app-core/services/services.js';
 
-import services   from '@longlost/app-core/services/services.js';
 import htmlString from './app-account.html';
 import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.js';
@@ -296,7 +300,7 @@ class AppAccount extends AppElement {
       if (user && user.uid) {
         const {uid} = user;
 
-        this._userDataSnapshot = await services.get({coll: 'users', doc: uid});
+        this._userDataSnapshot = await get({coll: 'users', doc: uid});
       }
     }
     catch (error) { console.error(error); }
@@ -335,7 +339,7 @@ class AppAccount extends AppElement {
       console.error(error);
     };
 
-    this._userDataUnsubscribe = await services.subscribe({
+    this._userDataUnsubscribe = await subscribe({
       callback,
       coll: 'users',
       doc:   this.user.uid,
@@ -678,7 +682,7 @@ class AppAccount extends AppElement {
           const data = {};
           data[kind] = value;
 
-          await services.set({coll: 'users', doc: this.user.uid, data});
+          await set({coll: 'users', doc: this.user.uid, data});
 
           this.set(`_userDataSnapshot.${kind}`, value);
 
@@ -816,7 +820,7 @@ class AppAccount extends AppElement {
         return accum; 
       }, {});
 
-      const normalSavePromise = services.set({
+      const normalSavePromise = set({
         coll: 'users', 
         doc:  this.user.uid, 
         data: normalSaves

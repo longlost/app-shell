@@ -224,12 +224,12 @@ class SigninModal extends AppElement {
             // Save anonymous user data first.
             const coll = 'users';
 
-            const {default: services} = await import(
+            const {get, set} = await import(
               /* webpackChunkName: 'services' */ 
               '@longlost/app-core/services/services.js'
             );
 
-            const anonymousUserData = await services.get({coll, doc: this.user.uid});
+            const anonymousUserData = await get({coll, doc: this.user.uid});
 
             // This will trigger onAuthStateChanged listener which
             // could trigger a redirect to another page.
@@ -239,7 +239,7 @@ class SigninModal extends AppElement {
             const newUser = await signInWithCredential(auth, cred);
 
             // Original Anonymous Auth instance now has the new user.
-            await services.set({coll, doc: newUser.uid, data: anonymousUserData});
+            await set({coll, doc: newUser.uid, data: anonymousUserData});
 
             // Delete anonymnous user.
             await this.user.delete();

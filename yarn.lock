@@ -2,16 +2,22 @@
 # yarn lockfile v1
 
 
+"@ffmpeg-installer/darwin-arm64@4.1.5":
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/@ffmpeg-installer/darwin-arm64/-/darwin-arm64-4.1.5.tgz#b7b5c262dd96d1aea4807514e1cdcf6e11f82743"
+  integrity sha512-hYqTiP63mXz7wSQfuqfFwfLOfwwFChUedeCVKkBtl/cliaTM7/ePI9bVzfZ2c+dWu3TqCwLDRWNSJ5pqZl8otA==
+
 "@ffmpeg-installer/darwin-x64@4.1.0":
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/@ffmpeg-installer/darwin-x64/-/darwin-x64-4.1.0.tgz#48e1706c690e628148482bfb64acb67472089aaa"
   integrity sha512-Z4EyG3cIFjdhlY8wI9aLUXuH8nVt7E9SlMVZtWvSPnm2sm37/yC2CwjUzyCQbJbySnef1tQwGG2Sx+uWhd9IAw==
 
-"@ffmpeg-installer/ffmpeg@^1.0.20":
-  version "1.0.20"
-  resolved "https://registry.yarnpkg.com/@ffmpeg-installer/ffmpeg/-/ffmpeg-1.0.20.tgz#d3c9c2bbcd76149468fb0886c2b3fe9e4795490b"
-  integrity sha512-wbgd//6OdwbFXYgV68ZyKrIcozEQpUKlvV66XHaqO2h3sFbX0jYLzx62Q0v8UcFWN21LoxT98NU2P+K0OWsKNA==
+"@ffmpeg-installer/ffmpeg@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@ffmpeg-installer/ffmpeg/-/ffmpeg-1.1.0.tgz#87fdb9e7d180e8d78f7903f9441e36f978938a90"
+  integrity sha512-Uq4rmwkdGxIa9A6Bd/VqqYbT7zqh1GrT5/rFwCwKM70b42W5gIjWeVETq6SdcL0zXqDtY081Ws/iJWhr1+xvQg==
   optionalDependencies:
+    "@ffmpeg-installer/darwin-arm64" "4.1.5"
     "@ffmpeg-installer/darwin-x64" "4.1.0"
     "@ffmpeg-installer/linux-arm" "4.1.3"
     "@ffmpeg-installer/linux-arm64" "4.1.4"
@@ -914,13 +920,13 @@
     protobufjs "^6.10.0"
     yargs "^16.1.1"
 
-"@longlost/app-camera@^1.18.7":
-  version "1.18.7"
-  resolved "https://registry.yarnpkg.com/@longlost/app-camera/-/app-camera-1.18.7.tgz#0dbc46ab8f6713242e87eb33c36fc468c9c98969"
-  integrity sha512-2fKn1UfUokxqFtZ8KBGONtMHAPo6UjH1Gjrdlz+MxLd/idM/sbW58MhEVMLrez/YmHE7259xS3WwfQYjut5xWg==
+"@longlost/app-camera@^1.18.8":
+  version "1.18.8"
+  resolved "https://registry.yarnpkg.com/@longlost/app-camera/-/app-camera-1.18.8.tgz#95ff86ae300ce96d94a857518ef0851bda4f37ee"
+  integrity sha512-6NuSX0nXAt49xvqJdvHw/dSqpjb0TSE01OYquPuAlGyfTHc8iTeN67SN/tu82lMnzYYu8Pqho+ygnJWmG6meyA==
   dependencies:
-    "@longlost/app-core" "^2.4.0"
-    "@longlost/app-file-system" "^2.5.5"
+    "@longlost/app-core" "^4.0.0"
+    "@longlost/app-file-system" "^2.5.6"
     "@longlost/app-images" "^2.1.1"
     "@longlost/app-media" "^2.1.1"
     "@longlost/app-overlays" "^2.0.0"
@@ -936,11 +942,11 @@
     "@polymer/paper-tabs" "^3.1.0"
     "@polymer/polymer" "^3.4.1"
     "@tensorflow-models/face-landmarks-detection" "^0.0.3"
-    "@tensorflow/tfjs" "^3.2.0"
-    comlink "^4.3.0"
-    mime-types "^2.1.29"
+    "@tensorflow/tfjs" "^3.8.0"
+    comlink "^4.3.1"
+    mime-types "^2.1.32"
     o9n "^2.1.0"
-    three "^0.126.0"
+    three "^0.131.3"
 
 "@longlost/app-carousels@^3.0.2":
   version "3.0.2"
@@ -1076,10 +1082,10 @@
     scroll-behavior-polyfill "^2.0.13"
     workbox-window "^6.1.1"
 
-"@longlost/app-core@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@longlost/app-core/-/app-core-3.0.2.tgz#a51f81a87febdded08be2a1f7a01685493af5f2e"
-  integrity sha512-isXbWkt7mVbV9Mrok7/fZP4cHsgKv1ylP5kWhYwPKLdEZjk03d92w4iecXpsKg54sdeGEk8TBztX/bI+feQv9w==
+"@longlost/app-core@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@longlost/app-core/-/app-core-4.0.0.tgz#99870cb6b6d0ce45ef9ab6b31f80744653dc8b73"
+  integrity sha512-XJH2eCYegyD2AythQ8wvfcMGO5CwUKUahcMhpBU4tfgr6fI4YlFPu8Wd9xqjo1RGOBAm7FupJa6mbksmyPlnOg==
   dependencies:
     "@polymer/iron-iconset-svg" "^3.0.1"
     "@polymer/paper-styles" "^3.0.1"
@@ -1091,17 +1097,17 @@
     scroll-behavior-polyfill "^2.0.13"
     workbox-window "^6.2.4"
 
-"@longlost/app-file-system@^2.5.5":
-  version "2.5.5"
-  resolved "https://registry.yarnpkg.com/@longlost/app-file-system/-/app-file-system-2.5.5.tgz#4241b085223d7526835f6d309c6bf28150014c9c"
-  integrity sha512-2d8ErZnpfETn+hxpRS0LvGd8jmuYehk1kayL3r+T1/1QH8rJQW9SHq2FOigaV4b+TmduECi1t+hfuIbdNsot/A==
+"@longlost/app-file-system@^2.5.6":
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/@longlost/app-file-system/-/app-file-system-2.5.6.tgz#dc288e4b82636bb6649a0b3f3a7c4043110defb8"
+  integrity sha512-LOWKQeKtX56XehVTeLFhyfhM2hLJDPEbxkIspN0gUxSH5GXyROuaP0OCHOB9kg+SdmBAX6TPABrrC+6jMU1TQw==
   dependencies:
-    "@ffmpeg-installer/ffmpeg" "^1.0.20"
+    "@ffmpeg-installer/ffmpeg" "^1.1.0"
     "@longlost/app-carousels" "^3.0.2"
-    "@longlost/app-core" "^2.4.0"
+    "@longlost/app-core" "^4.0.0"
     "@longlost/app-images" "^2.1.1"
-    "@longlost/app-inputs" "^2.0.2"
-    "@longlost/app-map" "^1.5.3"
+    "@longlost/app-inputs" "^2.0.3"
+    "@longlost/app-map" "^1.5.4"
     "@longlost/app-overlays" "^2.0.0"
     "@longlost/app-spinner" "^1.2.1"
     "@longlost/badged-icon-button" "^1.1.3"
@@ -1123,18 +1129,18 @@
     "@polymer/paper-fab" "^3.0.1"
     "@polymer/paper-icon-button" "^3.0.2"
     "@polymer/paper-input" "^3.2.1"
-    "@polymer/paper-menu-button" "^3.0.1"
+    "@polymer/paper-menu-button" "^3.1.0"
     "@polymer/paper-progress" "^3.0.1"
     "@polymer/paper-slider" "^3.0.1"
     "@polymer/paper-tabs" "^3.1.0"
     "@polymer/polymer" "^3.4.1"
     child-process-promise "^2.2.1"
-    comlink "^4.3.0"
-    cropperjs "^1.5.11"
-    mime-types "^2.1.29"
+    comlink "^4.3.1"
+    cropperjs "^1.5.12"
+    mime-types "^2.1.32"
     mkdirp "^1.0.4"
     multi-download "^3.0.0"
-    nanoid "^3.1.20"
+    nanoid "^3.1.25"
     print-js "^1.6.0"
 
 "@longlost/app-images@^2.1.0":
@@ -1158,29 +1164,6 @@
     "@polymer/iron-iconset-svg" "^3.0.1"
     "@polymer/iron-image" "^3.0.2"
     "@polymer/paper-button" "^3.0.1"
-
-"@longlost/app-inputs@^2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@longlost/app-inputs/-/app-inputs-2.0.2.tgz#01cc0b5a3e02c9b656199305487bc0d151578647"
-  integrity sha512-xsA3MMTQG4Q+0RKDuPZUrYAR/zl6LlYkjHtZCET4e89PIHHyg/iHlONCrbQzNmOWQIvlRuk3Fna1CmMYnUa6Ug==
-  dependencies:
-    "@longlost/app-core" "^2.2.0"
-    "@longlost/icon-to-spinner" "^2.0.0"
-    "@longlost/pencil-to-check-icon" "^1.0.3"
-    "@polymer/gold-phone-input" "^3.0.1"
-    "@polymer/iron-a11y-keys" "^3.0.1"
-    "@polymer/iron-form-element-behavior" "^3.0.1"
-    "@polymer/iron-icon" "^3.0.1"
-    "@polymer/iron-iconset-svg" "^3.0.1"
-    "@polymer/iron-input" "^3.0.1"
-    "@polymer/paper-button" "^3.0.1"
-    "@polymer/paper-dropdown-menu" "^3.1.0"
-    "@polymer/paper-icon-button" "^3.0.2"
-    "@polymer/paper-input" "^3.2.1"
-    "@polymer/paper-item" "^3.0.1"
-    "@polymer/paper-listbox" "^3.0.1"
-    "@polymer/paper-ripple" "^3.0.2"
-    "@polymer/polymer" "^3.4.1"
 
 "@longlost/app-inputs@^2.0.3":
   version "2.0.3"
@@ -1214,13 +1197,13 @@
     "@longlost/app-core" "^1.1.4"
     "@polymer/polymer" "^3.4.1"
 
-"@longlost/app-map@^1.5.3":
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/@longlost/app-map/-/app-map-1.5.3.tgz#0ee60856ac996736c36373691c0338e77b9e8ceb"
-  integrity sha512-B7xt7a+FnegyyrJSB9FdgrV68TQVdN10Y8dMqr22s0Gy3LRRDuy96yG7mobhdjesMPfnl/IeV4sq/ZE1hcsuow==
+"@longlost/app-map@^1.5.4":
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/@longlost/app-map/-/app-map-1.5.4.tgz#0b1d618f2b6ab9f61a11afab9c8a73da0cb00b21"
+  integrity sha512-/6VBvdN1OdU6rsSEfRMjgLdtSqiijW5a/ZpgQ5iQ7XnNs6+SyFmEHe4SvLAanGZbYbA4h/7WHRqtM9aX/ciHQg==
   dependencies:
-    "@longlost/app-core" "^2.2.2"
-    "@longlost/app-inputs" "^2.0.2"
+    "@longlost/app-core" "^4.0.0"
+    "@longlost/app-inputs" "^2.0.3"
     "@longlost/app-overlays" "^2.0.0"
     "@longlost/app-spinner" "^1.2.1"
     "@polymer/iron-icon" "^3.0.1"
@@ -1465,6 +1448,13 @@
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/iron-fit-behavior/-/iron-fit-behavior-3.0.1.tgz#e5c26b0b4d9e74f0c3d6d56b9cfd460e84bddf0d"
   integrity sha512-/M0B1L30k31vmwNBaGuZcxzUAhJSHoGccb/DF0CDKI/hT8UlkTvcyemaWdOpmHHLgY52ceKIkRwA3AeXrKyvaQ==
+  dependencies:
+    "@polymer/polymer" "^3.0.0"
+
+"@polymer/iron-fit-behavior@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@polymer/iron-fit-behavior/-/iron-fit-behavior-3.1.0.tgz#8197a61e0ce2234e9bf8fbd7a1ae53d1a06026b0"
+  integrity sha512-ABcgIYqrjhmUT8tiuolqeGttF/8pd3sEymUDrO1vXbZu4FWIvoLNndrMDFvs++AGd12Mjf5pYy84NJc6dB8Vig==
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
@@ -1757,7 +1747,7 @@
     "@polymer/paper-styles" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
 
-"@polymer/paper-menu-button@^3.0.0-pre.26", "@polymer/paper-menu-button@^3.0.1":
+"@polymer/paper-menu-button@^3.0.0-pre.26":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/paper-menu-button/-/paper-menu-button-3.0.1.tgz#318fc4d884a01d42ed0f3f3b5a6f78548d64befa"
   integrity sha512-Rxte2Fp7N2BMI2FMM7tB25IkvD11DhjMklcg97JP1jnlHbJNrXPh5SSX2bdtabz49UE8vejIsrxZ+AGsB5nqIQ==
@@ -1766,6 +1756,19 @@
     "@polymer/iron-behaviors" "^3.0.0-pre.26"
     "@polymer/iron-dropdown" "^3.0.0-pre.26"
     "@polymer/iron-fit-behavior" "^3.0.0-pre.26"
+    "@polymer/neon-animation" "^3.0.0-pre.26"
+    "@polymer/paper-styles" "^3.0.0-pre.26"
+    "@polymer/polymer" "^3.0.0"
+
+"@polymer/paper-menu-button@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@polymer/paper-menu-button/-/paper-menu-button-3.1.0.tgz#3eb2fb88ba3cdaa4c39be6ae3530efa40b1eccf3"
+  integrity sha512-q0G0/rvYD/FFmIBMGCQWjfXzRqwFw9+WHSYV4uOQzM1Ln8LMXSAd+2CENsbVwtMh6fmBePj15ZlU8SM2dt1WDQ==
+  dependencies:
+    "@polymer/iron-a11y-keys-behavior" "^3.0.0-pre.26"
+    "@polymer/iron-behaviors" "^3.0.0-pre.26"
+    "@polymer/iron-dropdown" "^3.0.0-pre.26"
+    "@polymer/iron-fit-behavior" "^3.1.0"
     "@polymer/neon-animation" "^3.0.0-pre.26"
     "@polymer/paper-styles" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.0.0"
@@ -1964,66 +1967,68 @@
     "@tensorflow-models/blazeface" "0.0.7"
     rimraf "^3.0.2"
 
-"@tensorflow/tfjs-backend-cpu@3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-cpu/-/tfjs-backend-cpu-3.2.0.tgz#847a50375586c7329c63208d8d9af791a4bd850d"
-  integrity sha512-L3Pp7FHO92BaeG8Uuc/RJMJ/e61UrIbKgFHS3MKr0zcbmEsqGfos6/5yR1EHj7SoYG2nPlC5+6HxbYy0zp22IA==
+"@tensorflow/tfjs-backend-cpu@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-cpu/-/tfjs-backend-cpu-3.8.0.tgz#1b0655d5ca1b57370c1ea9586d571f3d63ca7393"
+  integrity sha512-iSwHrqX0Ixh1kelfmxIgChKft/KrcZk9EMHQcX+878XnX7mxB2HfWUqfiJVIcq+Fyr4I3oE4ncbbpmlKMxA85A==
   dependencies:
     "@types/seedrandom" "2.4.27"
     seedrandom "2.4.3"
 
-"@tensorflow/tfjs-backend-webgl@3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-webgl/-/tfjs-backend-webgl-3.2.0.tgz#e80f2c6cf47321fd89a6e83491cf37f8afb662ae"
-  integrity sha512-WORXpDt5Ey5/+a4NioyrJkfbJUlleaSELpHnxeDsGt6BpRC2P/1pVJS1IjnBD/f4QlOm3mhouN2Oq28dRhRvqA==
+"@tensorflow/tfjs-backend-webgl@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-webgl/-/tfjs-backend-webgl-3.8.0.tgz#35fc3c69979805a0f84a5ffa99fe431512c72f6b"
+  integrity sha512-Pjv+oWPf+7YS8kz/UFh2QBeD3F74R63AEU48a44LVh63YHXvdRg/M/Mvhjd55Oe0crDbBLej287SgVB8DHjUXg==
   dependencies:
-    "@tensorflow/tfjs-backend-cpu" "3.2.0"
+    "@tensorflow/tfjs-backend-cpu" "3.8.0"
     "@types/offscreencanvas" "~2019.3.0"
     "@types/seedrandom" "2.4.27"
     "@types/webgl-ext" "0.0.30"
     "@types/webgl2" "0.0.5"
     seedrandom "2.4.3"
 
-"@tensorflow/tfjs-converter@3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-converter/-/tfjs-converter-3.2.0.tgz#4e80ced274aad2a3581a66a158237eeda7370a64"
-  integrity sha512-iE2Q0naHR8OVcMc9RluebMObsPysru7X1y+mWtkPNnYlNUJORxfkEitrMbVDAKw6lsivIfo4Ar5UcstiG8/ckQ==
+"@tensorflow/tfjs-converter@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-converter/-/tfjs-converter-3.8.0.tgz#78dd1c96acd775ceb112cd0c30deb5120a8a7536"
+  integrity sha512-IWalZtKNfsSHt9He3Tvfje71gwMnFg5msQEiEnAtVnz1Zly0Yi0mycGLp5TPyqPhZCcJ+i9OhgkAlL4sbjP1hw==
 
-"@tensorflow/tfjs-core@3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-core/-/tfjs-core-3.2.0.tgz#cae4d3d2e58dacae7a260b8d960126e0efb09417"
-  integrity sha512-MZnTk9wcJai5lTfkC8T1rr6/M9C4eO0DfojZghopZXDflCTndLPIKcudx6E8qfrmZOkRSqMIwB7A8UFs7f+3Kg==
+"@tensorflow/tfjs-core@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-core/-/tfjs-core-3.8.0.tgz#b7390db21bbcbf4c3da0c540d9318164d987767c"
+  integrity sha512-0VKqNpnTiXIeOql3dnEyPOxKA9yDA366onv3sphm6k8KAzkr+is+GHOHzmo8mL7+AujiOb6o0J7BYhr7yvpNjA==
   dependencies:
+    "@types/long" "^4.0.1"
     "@types/offscreencanvas" "~2019.3.0"
     "@types/seedrandom" "2.4.27"
     "@types/webgl-ext" "0.0.30"
+    long "4.0.0"
     node-fetch "~2.6.1"
     seedrandom "2.4.3"
 
-"@tensorflow/tfjs-data@3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-data/-/tfjs-data-3.2.0.tgz#886f22309e91e69d686f27fba1d339d693bc7f1a"
-  integrity sha512-fG4rYJlxh/B9fzgc+/qdj5gPI485RsDUM99mErxovlh3UMIdRgMeHHdFse44VlyAShEAgsOehuWovhY5520kEw==
+"@tensorflow/tfjs-data@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-data/-/tfjs-data-3.8.0.tgz#eb60485c35f5e493cab675e3071dc814d1c0dc5d"
+  integrity sha512-TuzI2ggCKb3lLUAsTGT/CMOkMZgrmgu1dQckEnft621RDJSQTN1o7xC0YLDmuwLwfUmWJax8TvsSxXBy2M5GSg==
   dependencies:
     "@types/node-fetch" "^2.1.2"
     node-fetch "~2.6.1"
 
-"@tensorflow/tfjs-layers@3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-layers/-/tfjs-layers-3.2.0.tgz#2f243c5044685ed22e288c1ceb063b817b29e569"
-  integrity sha512-TgTpH6RI+NmL4s8pQ76wkq15p79SfSQLOfFL2rGmJgatQRuA/mxLlH5GLir5HwwER3a0Vj8lMbexxCAGTqr2Xg==
+"@tensorflow/tfjs-layers@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-layers/-/tfjs-layers-3.8.0.tgz#f8afbc375aacab7457ac5d6a83d5c5b292105681"
+  integrity sha512-O7r0zkGFM2DTS2NdWhGUrKNgoY1GR7IX5aGIj50SQ8WnPWwY9gaVI7b+euP2Yg7A6kDiFXJIST+MY9EottyqSA==
 
-"@tensorflow/tfjs@^3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs/-/tfjs-3.2.0.tgz#503e62a7996204cdd3103d488babdbf8bf622954"
-  integrity sha512-rgcHHhzI+JVl206eMbYO8WzBW3DO9pinEbgtUWdxjfk+a4ojlqvJ34RPEISMSQZRR5KRCA7E/dHFv9+EULfqmw==
+"@tensorflow/tfjs@^3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs/-/tfjs-3.8.0.tgz#76e9e5447c1d1725bcc25904c2c8c21f615acb0f"
+  integrity sha512-4tVMEfGT8l8JBei/O0K0j7pcNbWR7C9r6WAuvoFXQBiu6FkwUhnM+rNrBHoh1/UaYKKm1enVbiyAP9+sbSFRaw==
   dependencies:
-    "@tensorflow/tfjs-backend-cpu" "3.2.0"
-    "@tensorflow/tfjs-backend-webgl" "3.2.0"
-    "@tensorflow/tfjs-converter" "3.2.0"
-    "@tensorflow/tfjs-core" "3.2.0"
-    "@tensorflow/tfjs-data" "3.2.0"
-    "@tensorflow/tfjs-layers" "3.2.0"
+    "@tensorflow/tfjs-backend-cpu" "3.8.0"
+    "@tensorflow/tfjs-backend-webgl" "3.8.0"
+    "@tensorflow/tfjs-converter" "3.8.0"
+    "@tensorflow/tfjs-core" "3.8.0"
+    "@tensorflow/tfjs-data" "3.8.0"
+    "@tensorflow/tfjs-layers" "3.8.0"
     argparse "^1.0.10"
     chalk "^4.1.0"
     core-js "3"
@@ -2335,10 +2340,10 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
-cropperjs@^1.5.11:
-  version "1.5.11"
-  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.5.11.tgz#502ae6d8ca098b124de6813601cca70015879fc0"
-  integrity sha512-SJUeBBhtNBnnn+UrLKluhFRIXLJn7XFPv8QN1j49X5t+BIMwkgvDev541f96bmu8Xe0TgCx3gON22KmY/VddaA==
+cropperjs@^1.5.12:
+  version "1.5.12"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.5.12.tgz#d9c0db2bfb8c0d769d51739e8f916bbc44e10f50"
+  integrity sha512-re7UdjE5UnwdrovyhNzZ6gathI4Rs3KGCBSc8HCIjUo5hO42CtzyblmWLj6QWVw7huHyDMfpKxhiO2II77nhDw==
 
 cross-spawn@^4.0.2:
   version "4.0.2"
@@ -2793,7 +2798,7 @@ log-symbols@4.1.0:
     chalk "^4.1.0"
     is-unicode-supported "^0.1.0"
 
-long@^4.0.0:
+long@4.0.0, long@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/long/-/long-4.0.0.tgz#9a7b71cfb7d361a194ea555241c92f7468d5bf28"
   integrity sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==
@@ -2927,10 +2932,10 @@ nanoid@3.1.23:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.23.tgz#f744086ce7c2bc47ee0a8472574d5c78e4183a81"
   integrity sha512-FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw==
 
-nanoid@^3.1.20:
-  version "3.1.20"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.20.tgz#badc263c6b1dcf14b71efaa85f6ab4c1d6cfc788"
-  integrity sha512-a1cQNyczgKbLX9jwbS/+d7W8fX/RfgYR7lVWwWOGIPNgK2m0MWvrGF6/m4kk6U3QcFMnZf3RIhL0v2Jgh/0Uxw==
+nanoid@^3.1.25:
+  version "3.1.25"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.25.tgz#09ca32747c0e543f0e1814b7d3793477f9c8e152"
+  integrity sha512-rdwtIXaXCLFAQbnfqDRnI6jaRHp9fTcYBjtFKE8eezcZ7LuLjhUaQGNeMXf1HmRoCH32CLz6XwX0TtxEOS/A3Q==
 
 node-fetch@2.6.1, node-fetch@~2.6.1:
   version "2.6.1"
@@ -3297,10 +3302,10 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-three@^0.126.0:
-  version "0.126.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.126.0.tgz#924818341cd4441ef247e3cbf236f6160b90a216"
-  integrity sha512-/MecvboUefStCkUfXLImoJxthN+FoLPcEP7pz1r1Dd9i8BPGGuj+S1sOPRvW4Z+ViZjP2oWWm1inNC/MT52ybA==
+three@^0.131.3:
+  version "0.131.3"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.131.3.tgz#406fd210c603ca9154937ae3582996fbfd3cb716"
+  integrity sha512-VkZAv8ZTJqiE/fyEmoWLxcNHImpVcjqW7RO0GzMu3tRpwO0KUvK9pjTmJzJcAbc51BOeB2G38zh80yjHTbP8gQ==
 
 tmp@^0.2.1:
   version "0.2.1"

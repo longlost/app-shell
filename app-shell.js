@@ -446,12 +446,12 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
   async __lazyLoadServices() {
 
-    const {default: services} = await import(
+    const {enablePersistence, set, subscribe} = await import(
       /* webpackChunkName: 'services' */ 
       '@longlost/app-core/services/services.js'
     );
 
-    return services;
+    return {enablePersistence, set, subscribe};
   }
 
 
