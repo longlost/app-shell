@@ -21,10 +21,10 @@
   *
   **/
 
-import {appUserAndData}    from 'config.js';
+
 import {AppElement, html}  from '@longlost/app-core/app-element.js';
-import firebaseReady       from '@longlost/app-core/firebase.js';
 import {message, schedule} from '@longlost/app-core/utils.js';
+import {initAuth}          from './auth.js';
 import htmlString          from './app-auth.html';
 import '@longlost/app-core/app-shared-styles.js';
 import '@longlost/app-images/avatar-image.js';
@@ -73,9 +73,9 @@ class AppAuth extends AppElement {
 
   connectedCallback() {
 
-    super.connectedCallback();
+    super.connectedCallback();    
 
-    this.__initFirebase();
+    this.__initAuth();
   }
 
 
@@ -85,9 +85,9 @@ class AppAuth extends AppElement {
   }
 
 
-  __firebaseAuthChanged(fbAuth) {
+  async __initAuth() {
 
-    const {auth, onAuthStateChanged} = fbAuth;
+    const {auth, onAuthStateChanged} = await initAuth();
 
     onAuthStateChanged(auth, async user => {
 
@@ -99,39 +99,6 @@ class AppAuth extends AppElement {
 
       this._user = null;
     });
-  }
-
-
-  async __initFirebase() {
-
-    const {loadAuth} = await firebaseReady();
-    const fbAuth     = await loadAuth();
-
-    const {
-      auth, 
-      browserLocalPersistence,
-      browserSessionPersistence,
-      setPersistence, 
-      useDeviceLanguage
-    } = fbAuth;
-
-    const persistenceType = () => {
-
-      // local:   User and data reset only when signed out explicitly.
-      // session: User and data persisted for current session or tab.
-      // none:    User and data cleared on window refresh.
-      if (appUserAndData.trustedDevice) {
-        return browserLocalPersistence;
-      }
-
-      return browserSessionPersistence;
-    };
-
-    useDeviceLanguage(auth);
-
-    await setPersistence(auth, persistenceType());
-
-    this.__firebaseAuthChanged(fbAuth);
   }
 
   // Anonymous user upgraded account.
@@ -211,8 +178,7 @@ class AppAuth extends AppElement {
 
     try {
 
-      const {loadAuth}      = await firebaseReady();
-      const {auth, signOut} = await loadAuth();
+      const {auth, signOut} = await initAuth();
 
       await signOut(auth);
 

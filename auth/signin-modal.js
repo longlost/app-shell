@@ -14,6 +14,7 @@
   *
   **/
 
+
 import {
   appUserAndData,      
   firebaseConfig,
@@ -26,19 +27,15 @@ import {
   html
 } from '@longlost/app-core/app-element.js';
 
-import firebaseReady from '@longlost/app-core/firebase.js';
-
 import {
   hijackEvent, 
   schedule
 } from '@longlost/app-core/utils.js';
 
-import {htmlLiteral} from '@polymer/polymer/lib/utils/html-tag.js';
-
+import {htmlLiteral}   from '@polymer/polymer/lib/utils/html-tag.js';
+import {initAuth}      from './auth.js';
 import styles          from 'firebaseui/dist/firebaseui.css';
 import * as firebaseui from 'firebaseui';
-
-
 import '@longlost/app-overlays/app-modal.js';
 // 'services.js' lazy-loaded.
 
@@ -303,8 +300,7 @@ class SigninModal extends AppElement {
 
   async __setupFirebaseUI() {
 
-    const {loadAuth} = await firebaseReady();
-    const fbAuth     = await loadAuth();
+    const fbAuth = await initAuth();
 
     this._firebaseUIConfig = this.__getFirebaseUiConfig(fbAuth, firebaseui);
     this._firebaseUi       = new firebaseui.auth.AuthUI(fbAuth.auth);

@@ -1097,6 +1097,21 @@
     scroll-behavior-polyfill "^2.0.13"
     workbox-window "^6.2.4"
 
+"@longlost/app-core@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@longlost/app-core/-/app-core-5.0.0.tgz#2f2e1f6ea6c1a7b2a1638403d8fd13726f970301"
+  integrity sha512-yPHx8Fub8Yujlfz5s6LlEJQblCMduE19w0xyEGn+zM2d3VN381GVpjCuplOz50/ZeaFFs58uOF29QccktL3p8A==
+  dependencies:
+    "@polymer/iron-iconset-svg" "^3.0.1"
+    "@polymer/paper-styles" "^3.0.1"
+    "@polymer/polymer" "^3.4.1"
+    "@ungap/global-this" "^0.4.4"
+    comlink "^4.3.1"
+    firebase "^9.0.0-2021724205917"
+    mime-types "^2.1.32"
+    scroll-behavior-polyfill "^2.0.13"
+    workbox-window "^6.2.4"
+
 "@longlost/app-file-system@^2.5.6":
   version "2.5.6"
   resolved "https://registry.yarnpkg.com/@longlost/app-file-system/-/app-file-system-2.5.6.tgz#dc288e4b82636bb6649a0b3f3a7c4043110defb8"
@@ -1160,6 +1175,17 @@
   integrity sha512-iWh+k+B4cxqYfs93hgDc0/90yluBG36xgy9A+Wsu6e9FARLRhEn1AbPOB8Dduk9M7fXeoaayYEpZgbh+8grbGw==
   dependencies:
     "@longlost/app-core" "^2.2.0"
+    "@polymer/iron-icon" "^3.0.1"
+    "@polymer/iron-iconset-svg" "^3.0.1"
+    "@polymer/iron-image" "^3.0.2"
+    "@polymer/paper-button" "^3.0.1"
+
+"@longlost/app-images@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@longlost/app-images/-/app-images-2.2.0.tgz#ca202becc809fe7497f3a5229ed4410e2bb90328"
+  integrity sha512-3UPJUXmmkAMJyo+1ntYsiYL8/b2kkz9jf0AQBKrejLw6U3eBs3UpMzJ85wqTe3dznz6C+q3gsRcgLc9CdvPuKA==
+  dependencies:
+    "@longlost/app-core" "^5.0.0"
     "@polymer/iron-icon" "^3.0.1"
     "@polymer/iron-iconset-svg" "^3.0.1"
     "@polymer/iron-image" "^3.0.2"
@@ -2536,7 +2562,7 @@ firebase@^8.2.9:
     "@firebase/storage" "0.4.3"
     "@firebase/util" "0.3.4"
 
-firebase@^9.0.0-2021720181311:
+firebase@^9.0.0-2021720181311, firebase@^9.0.0-2021724205917:
   version "9.0.0-beta.8"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-9.0.0-beta.8.tgz#c1912f76abcef9c3a015a5693f4c5986b2eeb9f5"
   integrity sha512-QPqBJ/oRe+Afwm7dkFQ0Uy85T4+Q+w0yyk5sOyOh6Tx5rpMdBHcPLTje8Nf4qq0k1tOyNrXPTKnVxX/gPjZ7cA==
