@@ -205,6 +205,9 @@
 
     --avatar-image-icon-height: 28px;
     --avatar-image-icon-width:  28px;
+
+    /* aria-label hack. Using clear text to provide the right label */
+    --avatar-image-text-color: transparent; 
   }
  
   /* Cannot use app-toolbar with paper-tabs set to sticky on iOS Safari. */
@@ -426,11 +429,13 @@
 
         <slot name="top-toolbar"></slot>
 
+        <!-- "text" prop set for aria use only. It is set to transparent in css above. -->
         <avatar-image alt="Account sign in or sign up."
                       button
                       hidden="[[noUsers]]"
                       icon="[[_accountIcon]]"
                       src="[[_avatar]]"
+                      text="sign in"
                       on-avatar-image-clicked="__avatarClickedHandler">
         </avatar-image>
 
