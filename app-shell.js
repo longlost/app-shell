@@ -43,6 +43,8 @@ import {
 
 import {OverlayControlMixin} from './shell/overlay-control-mixin.js';
 
+import {setEnableDbPersistence} from '@longlost/app-core/services/settings.js';
+
 import htmlString from './app-shell.html';
 
 
@@ -444,24 +446,11 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  async __lazyLoadServices() {
-
-    const {enablePersistence, set, subscribe} = await import(
-      /* webpackChunkName: 'services' */ 
-      '@longlost/app-core/services/services.js'
-    );
-
-    return {enablePersistence, set, subscribe};
-  }
-
-
   async __persistenceChanged(persistence) {
 
     if (persistence) {
 
-      const services = await this.__lazyLoadServices();
-
-      services.enablePersistence();
+      setEnableDbPersistence();
     }
   }
 
@@ -928,7 +917,10 @@ class AppShell extends OverlayControlMixin(AppElement) {
       return; 
     }
 
-    const services = await this.__lazyLoadServices();
+    const {set, subscribe} = await import(
+      /* webpackChunkName: 'services' */ 
+      '@longlost/app-core/services/services.js'
+    );
 
     const callback = async data => {
 
@@ -950,7 +942,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
         await this._user.sendEmailVerification();
 
-        services.set({
+        set({
           coll: 'users',
           doc:   this._user.uid,
           data: {verificationEmailSent: true}
@@ -967,7 +959,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
       console.error(error);
     };
  
-    this._userDataUnsub = await services.subscribe({
+    this._userDataUnsub = await subscribe({
       callback,
       coll: 'users',
       doc:   user.uid,
