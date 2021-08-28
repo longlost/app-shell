@@ -12,13 +12,22 @@
   **/
   
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import {hijackEvent}      from '@longlost/app-core/utils.js';
-import htmlString         from './dark-mode-selector.html';
-import '@longlost/app-core/app-icons.js';
+import {
+  AppElement, 
+  html
+} from '@longlost/app-core/app-element.js';
+
+import {
+  getRootTarget, 
+  hijackEvent, 
+  wait
+} from '@longlost/app-core/utils.js';
+
+import htmlString from './dark-mode-selector.html';
 import '@longlost/app-core/app-shared-styles.js';
 import '@polymer/iron-icon/iron-icon.js';
-import '@polymer/paper-toggle-button/paper-toggle-button.js';
+import '@polymer/paper-radio-group/paper-radio-group.js';
+import '@polymer/paper-radio-button/paper-radio-button.js';
 import './app-shell-icons.js';
 import './dark-mode-app-model.js';
 
@@ -46,10 +55,22 @@ class DarkModeSelector extends AppElement {
       // 'prefers-color-scheme' media-query.
       hideAutoColorMode: Boolean,
 
-      _autoColorModeLabel: {
+      _autoLabel: {
         type: String,
-        value: 'On',
-        computed: '__computeAutoColorLabel(autoColorMode)'
+        value: 'Auto',
+        computed: '__computeAutoLabel(autoColorMode)'
+      },
+
+      _icon: {
+        type: String,
+        computed: '__computeIcon(autoColorMode, darkMode)'
+      },
+
+      // Drives 'paper-radio-group' 'selected' attribute.
+      _mode: {
+        type: String,
+        value: 'auto',
+        computed: '__computeMode(hideAutoColorMode, autoColorMode, darkMode)'
       },
 
       _modeLabel: {
@@ -57,30 +78,32 @@ class DarkModeSelector extends AppElement {
         computed: '__computeModeLabel(darkMode)'
       },
 
-      _modeIcon: {
-        type: String,
-        computed: '__computeModeIcon(autoColorMode)'
-      }
+      _radioEl: Object,
+
+      _selected: String // 'auto', 'light', 'dark'
 
     };
   }
 
 
-  __computeAutoColorLabel(bool) {
-
-    return bool ? 'On' : 'Off';
+  static get observers() {
+    return [
+      '__selectedChanged(_selected)'
+    ];
   }
 
 
-  __computeDisabledClass(bool) {
+  __computeAutoLabel(bool) {
 
-    return bool ? 'disabled' : '';
+    return bool ? 'Auto ' : '';
   }
 
 
-  __computeModeIcon(bool) {
+  __computeIcon(auto, dark) {
 
-    return bool ? 'app-icons:lock' : 'app-icons:lock-open';
+    if (auto) { return 'app-shell-icons:brightness-auto'; }
+
+    return dark ? 'app-shell-icons:dark-mode' : 'app-shell-icons:light-mode';
   }
 
 
@@ -90,14 +113,51 @@ class DarkModeSelector extends AppElement {
   }
 
 
-  async __autoColorModeCheckedChangedHandler(event) {
+  __computeMode(hideAuto, auto, dark) {
+
+    const theme = dark ? 'dark' : 'light';
+
+    if (hideAuto) { return theme; }
+
+    return auto ? 'auto' : theme;
+  }
+
+
+  // Initialize '_radioEl' with the default selected radio button.
+  __radioGroupItemsChangedHandler(event) {
+
+    hijackEvent(event);
+
+    this._radioEl = event.detail.addedNodes.find(el => 
+                      el?.classList.contains('iron-selected'));
+  }
+
+
+  async __radioSelectedChangedHandler(event) {
+
+    hijackEvent(event);
+
+    this._selected = event.detail.value;
+
+    // Fixes 'paper-radio-button' broken ripple behavior.
+    this._radioEl = getRootTarget(event).selectedItem;
+  }
+
+  // Fixes issue with 'paper-radio' internal 'paper-ripple' not finishing.
+  async __labelClicked() {
 
     try {
+
+      // CANNOT use 'hijackEvent' here, because it 
+      // prevents the radio from being selected properly.
+
       await this.clicked();
 
-      const {value} = event.detail;
+      if (!this._radioEl) { return; }
 
-      this.fire('dark-mode-selector-auto-color-mode-changed', {value});        
+      await wait(100);
+
+      this._radioEl.blur();
     }
     catch (error) {
       if (error === 'click debounced') { return; }
@@ -105,15 +165,20 @@ class DarkModeSelector extends AppElement {
     }
   }
 
+  // 'selected' values 'auto', 'light' or 'dark'.
+  __selectedChanged(selected) {
 
-  __appModelSelectedHandler(event) {
+    if (!selected) { return; }
 
-    hijackEvent(event);
+    const auto = selected === 'auto';
 
-    const {selected} = event.detail;
-    const darkMode   = selected === 'dark';
+    this.fire('dark-mode-selector-auto-color-mode-changed', {value: auto});
 
-    this.fire('dark-mode-selector-dark-mode-changed', {value: darkMode});
+    if (auto) { return; }
+
+    const dark = selected === 'dark';
+
+    this.fire('dark-mode-selector-dark-mode-changed', {value: dark});
   }
 
 }

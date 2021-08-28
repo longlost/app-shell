@@ -2,6 +2,9 @@
 <style include="app-shared-styles">  
 
   :host {
+
+    --dark-mode-app-model-disabled-opacity: 0.5;
+
     display:        block;
     width:          50%;
     max-width:      160px;
@@ -41,7 +44,7 @@
   }
 
   paper-button[disabled] {
-    opacity: 0.5;
+    opacity: var(--dark-mode-app-model-disabled-opacity);
   }
 
   paper-button::after {
