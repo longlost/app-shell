@@ -41,11 +41,11 @@ import {
   warn
 } from '@longlost/app-core/utils.js';
 
-import {OverlayControlMixin} from './shell/overlay-control-mixin.js';
-
+import {waitForLoaded}          from './shell/utils.js';
+import {OverlayControlMixin}    from './shell/overlay-control-mixin.js';
+import {ThemeMixin}             from './shell/theme-mixin.js';
 import {setEnableDbPersistence} from '@longlost/app-core/services/settings.js';
-
-import htmlString from './app-shell.html';
+import htmlString               from './app-shell.html';
 
 
 // All custom element definitions imported after window 
@@ -55,17 +55,6 @@ import htmlString from './app-shell.html';
 // `app-account`, 'services', `app-settings`, `app-auth` 
 // overlays are imported dynamically.
 
-
-const waitForLoaded = async () => {  
-
-  const app = document.querySelector('#app');
-
-  // For improving Lighthouse Performance score.
-  // Delay loading large modules.
-  if (!app.loaded) {
-    await listenOnce(app, 'app-loaded-changed');
-  }
-};
 
 
 const hydrateCustomElements = () => 
@@ -94,7 +83,7 @@ const builtInLazyImports = {
 const builtInLazyImport = name => builtInLazyImports[name]();
 
 
-class AppShell extends OverlayControlMixin(AppElement) {
+class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
 
   static get is() { return 'app-shell'; }
 
@@ -117,11 +106,6 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
       // For whitelisted apps such as CMS.
       accountRequired: Boolean,
-
-      // When dev sets this prop, dark mode is
-      // defaulted when browser does not support
-      // the 'prefers-color-scheme' media-query.
-      darkModeDefault: Boolean,
 
       // Menu drawer divider between views and overlays.
       divider: Boolean,
@@ -226,15 +210,6 @@ class AppShell extends OverlayControlMixin(AppElement) {
         computed: '__computeAccountIcon(_user)'
       },
 
-      // If true, app color theme mode will
-      // follow the device's color theme setting.
-      // When false, user can manually change
-      // the theme.
-      _autoColorMode: {
-        type: Boolean,
-        value: true
-      },
-
       // User's profile avatar photo.
       //
       // Favors the '_accountAvatarItem', which contains the most up-to-date
@@ -251,15 +226,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
       _bottomViewDrawerItems: Array,
 
-      // Dark/Light mode state.
-      _darkMode: Boolean,
-
       _descriptionMeta: Object,
-
-      // Hide <app-settings> toggle when
-      // browser does not support the 
-      // 'prefers-color-scheme' media query.
-      _hideAutoColorMode: Boolean,
 
       _jsonLdScript: Object,
 
@@ -281,6 +248,9 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
       _subroute: String,
 
+      // Drives 'dom-if' template that wraps 'app-quick-start'
+      _stampQuickStart: Boolean,
+
       _user: { 
         type: Object,
         value: null
@@ -296,7 +266,6 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
   static get observers() {
     return [
-      '__autoColorModeChanged(_autoColorMode)',
       '__drawerAlignChanged(drawerAlign)',
       '__fixedHeaderChanged(fixedHeader)',
       '__pageChanged(page)',
@@ -313,9 +282,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
     super();
 
-    this.__darkModeMediaQueryHandler  = this.__darkModeMediaQueryHandler.bind(this);
-    this.__lightModeMediaQueryHandler = this.__lightModeMediaQueryHandler.bind(this);
-    this.__showAuthUIHandler          = this.__showAuthUIHandler.bind(this);
+    this.__showAuthUIHandler = this.__showAuthUIHandler.bind(this);
   }
 
 
@@ -396,15 +363,6 @@ class AppShell extends OverlayControlMixin(AppElement) {
     }
 
     return slots;
-  }
-
-
-  async __autoColorModeChanged() {
-
-    await waitForLoaded();      
-    await this.$.autoModeStorage.transactionsComplete;
-
-    this.__setupAutoColorModeMediaQueries();
   }
 
 
@@ -501,104 +459,9 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
-  __setDarkMode(dark) {
-
-    if (dark) {
-      ShadyCSS.styleDocument({
-        '--app-background-color':   'var(--dark-mode-background)',
-        '--app-body-color':         'var(--dark-mode-body)',
-        '--app-dark-text':          'var(--dark-mode-dark-text)',
-        '--app-light-text':         'var(--dark-mode-light-text)',
-        '--app-text-truncate-fade': 'var(--dark-mode-truncate)'
-      });
-    }
-    else {
-      ShadyCSS.styleDocument({
-        '--app-background-color':   'var(--light-mode-background)',
-        '--app-body-color':         'var(--light-mode-body)',
-        '--app-dark-text':          'var(--light-mode-dark-text)',
-        '--app-light-text':         'var(--light-mode-light-text)',
-        '--app-text-truncate-fade': 'var(--light-mode-truncate)'
-      });
-    }
-
-    // Sets app-localstorage-document data val.
-    this._darkMode = dark;
-
-    // Use this event for all changes including localstorage cache updates.
-    this.fire('app-shell-dark-mode-changed', {value: dark});
-  }
-
-
-  __darkModeMediaQueryHandler(event) {
-
-    if (!this._autoColorMode) { return; }
-
-    if (event.matches) {
-      this.__setDarkMode(true);
-    }
-  }
-
-  __lightModeMediaQueryHandler(event) {
-    
-    if (!this._autoColorMode) { return; }
-
-    if (event.matches) {
-      this.__setDarkMode(false);
-    }
-  }
-
-  // Follow device color theme unless user 
-  // has turned this off in <app-settings>
-  // via _autoColorMode toggle.
-  // If browser supports 'prefers-color-scheme'
-  // it will respect the setting for light or dark mode.
-  __setupAutoColorModeMediaQueries() {
-
-    const mediaQuery = window.matchMedia;
-
-    // Bail if user has set the 'Auto Color Mode' toggle off.
-    if (!this._autoColorMode) {
-      mediaQuery('(prefers-color-scheme: dark)').removeListener(this.__darkModeMediaQueryHandler);
-      mediaQuery('(prefers-color-scheme: light)').removeListener(this.__lightModeMediaQueryHandler);
-
-      return; 
-    }
-
-    // Take immediate readings.   
-    const isDarkMode     = mediaQuery('(prefers-color-scheme: dark)').matches
-    const isLightMode    = mediaQuery('(prefers-color-scheme: light)').matches
-    const isNotSpecified = mediaQuery('(prefers-color-scheme: no-preference)').matches
-    const hasNoSupport   = !isDarkMode && !isLightMode && !isNotSpecified;
-
-    // Start listening for device changes while app is open.
-    mediaQuery('(prefers-color-scheme: dark)').addListener(this.__darkModeMediaQueryHandler);
-    mediaQuery('(prefers-color-scheme: light)').addListener(this.__lightModeMediaQueryHandler);
-
-    if (isDarkMode) {
-      this.__setDarkMode(true);
-    }
-    else if (isLightMode) {
-      this.__setDarkMode(false);
-    }
-    else if (isNotSpecified) {
-      this.__setDarkMode(this.darkModeDefault);
-    }
-    else if (hasNoSupport) {  
-      this._autoColorMode = false;
-
-      // Hide the toggle in <app-settings> when not supported.
-      this._hideAutoColorMode = true;   
-      this.__setDarkMode(this.darkModeDefault);
-    }
-  }
-
-
   __getPage(page) {
 
-    if (page) {
-      return page;
-    }
+    if (page) { return page; }
 
     return this._viewDrawerItems[0].page.value; // ie. 'home'.
   }
@@ -706,7 +569,8 @@ class AppShell extends OverlayControlMixin(AppElement) {
   __waitForDrawerToClose() {
 
     // Only close drawer in narrow layouts (ie. mobile portrait).
-    if (this._narrow && this.$.drawer.opened) { 
+    if (this._narrow && this.$.drawer.opened) {
+
       this.$.drawer.close();
 
       return listenOnce(this, 'app-drawer-transitioned');
@@ -717,6 +581,7 @@ class AppShell extends OverlayControlMixin(AppElement) {
   async __prepToOpenOverlay(id, page) {
 
     try {
+
       await this.clicked();
       await this.__waitForDrawerToClose();
 
@@ -895,6 +760,16 @@ class AppShell extends OverlayControlMixin(AppElement) {
   }
 
 
+  __waitForQSTemplateToStamp() {
+
+    if (this._stampQuickStart) { return; }
+
+    this._stampQuickStart = true;
+
+    return listenOnce(this.$.qsTemplate, 'dom-change');
+  }
+
+
   async __openQuickStart() {
 
     await import(
@@ -902,7 +777,9 @@ class AppShell extends OverlayControlMixin(AppElement) {
       './guide/app-quick-start.js'
     );
 
-    this.$.quickStart.open();
+    await this.__waitForQSTemplateToStamp();
+
+    this.select('#quickStart').open();
   }
 
   // Subscribe to user data, which is created by
@@ -923,6 +800,13 @@ class AppShell extends OverlayControlMixin(AppElement) {
     );
 
     const callback = async data => {
+
+      if (!this._user) { 
+
+        this.__unsubFromUserData();
+
+        return; 
+      }
 
       if (!data) { return; }      
 
@@ -1039,30 +923,12 @@ class AppShell extends OverlayControlMixin(AppElement) {
     this.fire('app-shell-user-changed', {value: user});
   }
 
-  // Fired from auto color mode app-localstorage-document and app-settings.
-  __autoColorModeHandler(event) {
-
-    hijackEvent(event);
-
-    this._autoColorMode = event.detail.value;
-  }
-
 
   __avatarClickedHandler(event) {
 
     hijackEvent(event);
 
     this.showAuthUI();
-  }
-
-  // Fired from dark mode app-localstorage-document and app-settings.
-  __darkModeHandler(event) {
-
-    hijackEvent(event);
-
-    if (this._autoColorMode) { return; }
-
-    this.__setDarkMode(event.detail.value);
   }
 
 
@@ -1111,6 +977,25 @@ class AppShell extends OverlayControlMixin(AppElement) {
 
       this.$.refreshRequiredModal.open();
     }
+  }
+
+
+  async __quickStartClosedHandler(event) {
+
+    hijackEvent(event);
+
+    this._stampQuickStart = false;
+
+    const {set} = await import(
+      /* webpackChunkName: 'services' */ 
+      '@longlost/app-core/services/services.js'
+    );
+
+    set({
+      coll: 'users',
+      doc:   this._user.uid,
+      data: {onboarded: true}
+    });
   }
 
 

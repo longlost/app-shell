@@ -13,6 +13,8 @@
   
 
 import {AppElement, html} from '@longlost/app-core/app-element.js';
+import {hexToRGBA}        from '@longlost/app-core/lambda.js';
+import {getComputedStyle} from '@longlost/app-core/utils.js';   
 import htmlString         from './install-app-model.html';
 
 
@@ -36,6 +38,18 @@ class InstallAppModel extends AppElement {
       }
 
     };
+  }
+
+
+  connectedCallback() {
+
+    super.connectedCallback();
+
+    const hex = getComputedStyle(this, '--blur-background-color-hex');
+
+    this.updateStyles({
+      '--blur-background-color-rgba': hexToRGBA(hex, 0.5)
+    });
   }
 
 }

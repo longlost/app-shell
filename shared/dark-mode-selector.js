@@ -129,7 +129,7 @@ class DarkModeSelector extends AppElement {
     hijackEvent(event);
 
     this._radioEl = event.detail.addedNodes.find(el => 
-                      el?.classList.contains('iron-selected'));
+                      el.classList?.contains('iron-selected'));
   }
 
 
