@@ -4,12 +4,39 @@
   :host {
     display:       block;
     position:      relative;
-    /*width:         50%;
-    max-width:     160px;*/
     border-radius: 16px;
     overflow:      hidden;
 
     background-color: var(--app-body-color);
+
+    /* NOT part of public API! */
+    --blur-background-color-hex:  var(--app-background-color);
+    --blur-background-color-rgba: rgba(255, 255, 255, 0.5);
+  }
+
+  #blur-overlay {
+    display:         flex;
+    justify-content: flex-start;
+    position:        absolute;
+    top:             16px;
+    right:           0px;
+    bottom:          0px;
+    left:            0px;
+
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter:         blur(4px);
+
+    background-color: var(--blur-background-color-rgba);
+    box-shadow:       0px 0px 0px 4px currentColor inset;
+    border-radius:    0px 0px 16px 16px;
+  }
+
+  :host([chrome]) #blur-overlay {
+    justify-content: flex-end;
+    top:             50px;
+    bottom:          28px;
+
+    border-radius: 0px;
   }
 
   #browser-top-chrome {
@@ -177,6 +204,39 @@
     border-radius:    2px;
     background-color: var(--app-constant-light-text);
   }
+
+  svg {
+    position: absolute;
+    width:    64px;
+    fill:     currentColor;
+  }
+
+  #top-arrow {
+    align-self: flex-start;
+    top:        4px;
+  }
+
+  .arrow-head-left {
+    transform-origin: 15px 8.5px;
+    transform:        rotate(-45deg);
+  }
+
+  .arrow-head-right {
+    transform-origin: 12.5px 0px;
+    transform:        rotate(45deg);
+  }
+
+  #shaft {
+    width:            6px;
+    margin:           7px 29px;
+    background-color: currentColor;
+  }
+
+  #bottom-arrow {
+    align-self: flex-end;
+    bottom:     4px;
+    transform:  rotate(180deg);
+  }
  
 </style>
 
@@ -266,5 +326,32 @@
   <div class="bottom-nav-item"></div>
   <div class="bottom-nav-item"></div>
   <div class="bottom-nav-item"></div>
+
+</div>
+
+
+<div id="blur-overlay">
+
+  <svg id="top-arrow"
+       viewbox="0 0 24 24">  
+      
+    <rect class="arrow-head-left"  x="12" y="0" width="7" height="2"/>
+      
+    <rect class="arrow-head-right" x="12" y="0" width="7" height="2"/>
+    
+  </svg>
+
+  <div id="shaft"></div>
+
+
+  <svg id="bottom-arrow" 
+       viewbox="0 0 24 24">  
+      
+    <rect class="arrow-head-left"  x="12" y="0" width="7" height="2"/>
+      
+    <rect class="arrow-head-right" x="12" y="0" width="7" height="2"/>
+    
+  </svg>
+
 
 </div>

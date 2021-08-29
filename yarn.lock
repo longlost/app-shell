@@ -1441,10 +1441,10 @@
     scroll-behavior-polyfill "^2.0.13"
     workbox-window "^6.2.4"
 
-"@longlost/app-core@^6.0.1":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@longlost/app-core/-/app-core-6.0.1.tgz#d5e7020d0580fddde8a415ab389eaa6dec2e6cb4"
-  integrity sha512-WNWQjjwTVgOc4QVt67JQlMahb7fHt+InHd7cdS0Gg7gmSHRWpXoZ6ix1/MiBRwWqCm4afgipovraAuqMglkHDQ==
+"@longlost/app-core@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@longlost/app-core/-/app-core-6.0.2.tgz#847aae4faf50edd74f383c6fe33885fab3ea6024"
+  integrity sha512-IL/Y0MFpae9k1YOmu3kDMnA3AGreN1rBIUCp8or7uI0tVX5wRpTiHFsBdvmc5H0sLcuA3DjPnTqv4aNhGXufRQ==
   dependencies:
     "@polymer/iron-iconset-svg" "^3.0.1"
     "@polymer/paper-styles" "^3.0.1"

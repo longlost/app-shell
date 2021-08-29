@@ -504,22 +504,28 @@
 </slot>
 
 
-<app-quick-start id="quickStart"
-                 auto-color-mode="[[_autoColorMode]]"
-                 dark-mode="[[_darkMode]]"
-                 hide-auto-color-mode="[[_hideAutoColorMode]]"
-                 narrow="[[_narrow]]"
-                 page="[[_quickStartPage]]"
-                 persistence="[[_persistence]]"
-                 user="[[_user]]"
-                 on-app-quick-start-current-page-changed="__quickStartPageHandler"
-                 on-dark-mode-selector-auto-color-mode-changed="__autoColorModeHandler"
-                 on-dark-mode-selector-dark-mode-changed="__darkModeHandler"
-                 on-offline-persistence-selector-persistence-changed="__persistenceHandler">
+<template id="qsTemplate"
+          if="[[_stampQuickStart]]" 
+          is="dom-if" 
+          restamp>
+  <app-quick-start id="quickStart"
+                   auto-color-mode="[[_autoColorMode]]"
+                   dark-mode="[[_darkMode]]"
+                   hide-auto-color-mode="[[_hideAutoColorMode]]"
+                   narrow="[[_narrow]]"
+                   page="[[_quickStartPage]]"
+                   persistence="[[_persistence]]"
+                   user="[[_user]]"
+                   on-app-quick-start-closed="__quickStartClosedHandler"
+                   on-app-quick-start-current-page-changed="__quickStartPageHandler"
+                   on-dark-mode-selector-auto-color-mode-changed="__autoColorModeHandler"
+                   on-dark-mode-selector-dark-mode-changed="__darkModeHandler"
+                   on-offline-persistence-selector-persistence-changed="__persistenceHandler">
 
-  <slot name="quick-start"></slot>
+    <slot name="quick-start"></slot>
 
-</app-quick-start>
+  </app-quick-start>
+</template>
 
 
 <app-account id="account"
