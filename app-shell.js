@@ -248,6 +248,9 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
 
       _subroute: String,
 
+      // Drives 'dom-if' template that wraps 'app-settings'
+      _stampSettings: Boolean,
+
       // Drives 'dom-if' template that wraps 'app-quick-start'
       _stampQuickStart: Boolean,
 
@@ -578,7 +581,19 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
   }
 
 
-  async __prepToOpenOverlay(id, page) {
+  __waitForTemplateToStamp(stampIf, domIfId) {
+
+    if (this[stampIf]) { return; }
+
+    const template = this.select(`#${domIfId}`);
+
+    this[stampIf] = true;
+
+    return listenOnce(template, 'dom-change');
+  }
+
+
+  async __prepToOpenOverlay({domIfId, id, page, stampIf}) {
 
     try {
 
@@ -588,6 +603,7 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
       const getOverlay = async () => {
 
         if (page) {
+
           const dynamicImport = this.imports[page];
 
           await dynamicImport();
@@ -597,7 +613,11 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
 
         await builtInLazyImport(id);
 
-        return this.$[id];
+        if (domIfId) {
+          await this.__waitForTemplateToStamp(stampIf, domIfId);
+        }
+
+        return this.select(`#${id}`);
       };
       
       const overlay = await getOverlay();
@@ -654,7 +674,7 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
     hijackEvent(event);
 
     if (this._user) {
-      this.__prepToOpenOverlay('account');
+      this.__prepToOpenOverlay({id: 'account'});
     }
     else {
       this.showAuthUI();
@@ -666,7 +686,11 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
 
     hijackEvent(event);
 
-    this.__prepToOpenOverlay('settings');
+    this.__prepToOpenOverlay({
+      id:      'settings', 
+      domIfId: 'settingsTemplate',
+      stampIf: '_stampSettings'
+    });
   }
 
 
@@ -674,9 +698,7 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
 
     hijackEvent(event);
 
-    const {id, page} = event.detail.selected;
-
-    this.__prepToOpenOverlay(id, page);
+    this.__prepToOpenOverlay(event.detail.selected);
   }
 
 
@@ -760,16 +782,6 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
   }
 
 
-  __waitForQSTemplateToStamp() {
-
-    if (this._stampQuickStart) { return; }
-
-    this._stampQuickStart = true;
-
-    return listenOnce(this.$.qsTemplate, 'dom-change');
-  }
-
-
   async __openQuickStart() {
 
     await import(
@@ -777,7 +789,7 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
       './guide/app-quick-start.js'
     );
 
-    await this.__waitForQSTemplateToStamp();
+    await this.__waitForTemplateToStamp('_stampQuickStart', 'qsTemplate');
 
     this.select('#quickStart').open();
   }
@@ -897,7 +909,7 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
 
     hijackEvent(event);
 
-    this.__prepToOpenOverlay('account');
+    this.__prepToOpenOverlay({id: 'account'});
   }
 
 
@@ -958,6 +970,14 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
 
     this._overlayDrawerItems = this._menuOverlaysSlotNodes.map(node => 
                                  node.attributes);
+  }
+
+
+  __settingsClosedHandler(event) {
+
+    hijackEvent(event);
+
+    this._stampSettings = false;
   }
 
 

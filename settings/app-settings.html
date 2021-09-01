@@ -1,15 +1,32 @@
 
-<style include="app-shared-styles">  
+<style include="app-shared-styles">
 
-  .option {
-    margin: 32px auto;
+  section {
+    padding: 32px 0px;
   }
 
-  p {
+  section[hidden] {
+    display: none;
+  }
+
+  .container {
     max-width: 414px;
-    margin:    24px auto;
-    padding:   0px 16px;
+    margin:    0px auto;
+  }
+
+  h2,
+  p {
+    padding: 0px 16px;
+  }
+
+  h2 {
+    font-weight: normal;
+    margin:      0px;
+  }
+
+  p {   
     font-size: 16px;
+    margin:    24px 0px; 
   }
 
   strong {
@@ -18,11 +35,16 @@
 
   .secondary {
     font-size: 14px;
-    margin:    16px auto;
+    margin:    16px 0px;
+    opacity:   0.6;
   }
 
-  *[hidden] {
-    display: none;
+  @media (min-width: 512px) {    
+
+    main {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(512px, 1fr));
+    } 
   }
 
 </style>
@@ -32,48 +54,83 @@
                     header-size="1"
                     prebuilt-animation="from-bottom"
                     reveal-header
-                    title="Settings">
+                    title="Settings"
+                    on-overlay-reset="__overlayResetHandler">
 
-  <div slot="content">
-
-
-    <dark-mode-selector class="option"
-                        auto-color-mode="[[autoColorMode]]"
-                        dark-mode="[[darkMode]]"
-                        hide-auto-color-mode="[[hideAutoColorMode]]">
-    </dark-mode-selector>
+  <main slot="content">
 
 
-    <div class="shared-divider" 
-         hidden="[[_hidePersistence]]">           
-    </div>
+    <section class="shared-bottom-divider">
+      <div class="container">
+
+        <h2>Theme</h2>
+
+        <dark-mode-selector auto-color-mode="[[autoColorMode]]"
+                            dark-mode="[[darkMode]]"
+                            hide-auto-color-mode="[[hideAutoColorMode]]">
+        </dark-mode-selector>
+
+      </div>
+    </section>
 
 
-    <offline-persistence-selector class="option"
-                                  hidden="[[_hidePersistence]]"
-                                  persistence="[[persistence]]">
-    </offline-persistence-selector>
-   
+    <section class="shared-bottom-divider" 
+             hidden="[[_hidePersistence]]">
+      <div class="container">
 
-    <p hidden="[[_hidePersistence]]">
-      When this setting is <strong>on</strong>, the app will keep a <strong>copy</strong> of your <strong>data</strong> on this device.
-    </p>
+        <h2>Use Offline</h2>
 
-    <p hidden="[[_hidePersistence]]">
-      The local copy is used as a <strong>fallback</strong> when you are <strong>offline</strong>, or when you have a <strong>poor connection</strong>.
-    </p>
+        <offline-persistence-selector persistence="[[persistence]]"></offline-persistence-selector>
+        
 
-    <p class="secondary"
-       hidden="[[_hidePersistence]]">
-      If this is a public or shared device, we recommend turning this feature off.
-    </p>
+        <p>
+          When this setting is <strong>on</strong>, the app will keep a <strong>copy</strong> of your <strong>data</strong> on this device.
+        </p>
 
-    <p class="secondary"
-       hidden="[[_hidePersistence]]">
-      Some features may not work offline.
-    </p>
+        <p>
+          The local copy is used as a <strong>fallback</strong> when you are <strong>offline</strong>, or when you have a <strong>poor connection</strong>.
+        </p>
+
+        <p class="secondary">
+          If this is a public or shared device, we recommend turning this feature off.
+        </p>
+
+        <p class="secondary">
+          Some features may not work offline.
+        </p>
+
+      </div>
+    </section>
 
 
-  </div>
+    <section class="shared-bottom-divider">
+      <div class="container">
+
+        <h2>Install</h2>
+
+        <pwa-install-button></pwa-install-button>
+
+        <p>Enjoy a better experience by installing the app to your <strong>home screen</strong>.</p>
+
+        <p>You get a <strong>quick launch icon</strong> so you can jump right back in easily.</p>
+
+        <p>And installed apps launch into a <strong>standalone</strong> mode which gives you more screen real estate.</p>
+
+      </div>
+    </section>
+
+
+    <section class="shared-bottom-divider">
+      <div class="container">
+
+        <h2>Version</h2>
+
+        <p>v[[_version]]</p>
+
+      </div>
+    </section>
+
+
+  </main>
 
 </app-header-overlay>
