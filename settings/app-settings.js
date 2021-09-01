@@ -12,15 +12,22 @@
   **/
 
 
-// Must use module resolution in webpack config and include app.config.js file in root
-// of src folder (ie. resolve: {modules: [path.resolve(__dirname, 'src'), 'node_modules'],})
-import {appUserAndData}   from 'config.js';
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import htmlString         from './app-settings.html';
+import {
+  appUserAndData, 
+  webpackConfig
+} from 'config.js';
+
+import {
+  AppElement, 
+  html
+} from '@longlost/app-core/app-element.js';
+
+import htmlString from './app-settings.html';
 import '@longlost/app-core/app-shared-styles.js';
 import '@longlost/app-overlays/app-header-overlay.js';
 import '../shared/dark-mode-selector.js';
 import '../shared/offline-persistence-selector.js';
+import '../shared/pwa-install-button.js';
 
 
 class AppSettings extends AppElement {
@@ -57,7 +64,9 @@ class AppSettings extends AppElement {
       },
 
       // Hide/show offline persistence section.
-      _persistenceConfig: Boolean
+      _persistenceConfig: Boolean,
+
+      _version: String
 
     };
   }
@@ -68,12 +77,19 @@ class AppSettings extends AppElement {
     super();
 
     this._persistenceConfig = appUserAndData.trustedDevice;
+    this._version           = webpackConfig.version;
   }
 
 
   __computeHidePersistence(bool) {
 
     return !bool;
+  }
+
+
+  __overlayResetHandler() {
+
+    this.fire('app-settings-closed');
   }
 
 
