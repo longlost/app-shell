@@ -12,8 +12,7 @@ export const initAuth = async () => {
   const {
     browserLocalPersistence,
     browserSessionPersistence,
-    getAuth,
-    setPersistence, 
+    initializeAuth,
     useDeviceLanguage
   } = fbAuth;
 
@@ -21,14 +20,14 @@ export const initAuth = async () => {
   // session: User and data persisted for current session or tab.
   // none:    User and data cleared on window refresh.
   const persistence = appUserAndData.trustedDevice ? 
-                            browserLocalPersistence : 
-                            browserSessionPersistence;
+                        browserLocalPersistence : 
+                        browserSessionPersistence;
 
-  const auth = getAuth(firebaseApp);
+  // Cannot use 'getAuth' here. Does NOT work offline. 
+  // Throws 'FirebaseError: auth/internal-error'.
+  const auth = initializeAuth(firebaseApp, {persistence});
 
   useDeviceLanguage(auth);
-
-  await setPersistence(auth, persistence);
 
   return {auth, ...fbAuth};
 };
