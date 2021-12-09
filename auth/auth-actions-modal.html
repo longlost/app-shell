@@ -1,0 +1,68 @@
+
+<style include="app-shared-styles">
+
+  app-modal {
+    --modal-card-background-color: var(--app-body-color);
+  }
+
+  #content {
+    padding-top: 8px;
+  }
+
+  paper-button {
+    height: 64px;
+    width:  100%;
+    margin: 16px 0px;
+  }
+
+  #account-btn {
+    background-color: var(--app-background-color);
+    color:            var(--app-primary-color);
+  }
+
+  avatar-image {
+    width: 40px;
+
+    --avatar-image-icon-height: 28px;
+    --avatar-image-icon-width:  28px;
+  }
+
+  #logout-btn {
+    background-color: var(--app-primary-color);
+    color:            var(--app-primary-color-text);
+  }
+
+</style>
+
+
+<app-modal id="modal"
+           on-click="__modalClicked"
+           on-overlay-reset="__overlayResetHandler">
+
+  <div id="content" 
+       slot="card-content-slot">
+
+    <paper-button id="account-btn"
+                  class="shared-paper-button-with-icon"
+                  raised
+                  on-click="__accountButtonClicked">
+      <avatar-image class="shared-iron-icon-inside-paper-button"
+                    alt="User Avatar."
+                    src="[[avatar]]">
+      </avatar-image>
+      <span>MY ACCOUNT</span>
+    </paper-button>
+
+    <paper-button id="logout-btn"
+                  class="shared-paper-button-with-icon"
+                  raised
+                  on-click="__signOutButtonClicked">
+      <iron-icon class="shared-iron-icon-inside-paper-button" 
+                 icon="app-shell-icons:person-off">
+      </iron-icon>
+      <span>SIGN OUT</span>
+    </paper-button>
+    
+  </div>
+
+</app-modal>

@@ -1438,21 +1438,6 @@
     scroll-behavior-polyfill "^2.0.13"
     workbox-window "^6.2.4"
 
-"@longlost/app-core@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@longlost/app-core/-/app-core-5.0.0.tgz#2f2e1f6ea6c1a7b2a1638403d8fd13726f970301"
-  integrity sha512-yPHx8Fub8Yujlfz5s6LlEJQblCMduE19w0xyEGn+zM2d3VN381GVpjCuplOz50/ZeaFFs58uOF29QccktL3p8A==
-  dependencies:
-    "@polymer/iron-iconset-svg" "^3.0.1"
-    "@polymer/paper-styles" "^3.0.1"
-    "@polymer/polymer" "^3.4.1"
-    "@ungap/global-this" "^0.4.4"
-    comlink "^4.3.1"
-    firebase "^9.0.0-2021724205917"
-    mime-types "^2.1.32"
-    scroll-behavior-polyfill "^2.0.13"
-    workbox-window "^6.2.4"
-
 "@longlost/app-core@^6.0.4":
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/@longlost/app-core/-/app-core-6.0.4.tgz#107446ffb851e80e0f811dc9c2ca86b4337ef82e"
@@ -1536,12 +1521,12 @@
     "@polymer/iron-image" "^3.0.2"
     "@polymer/paper-button" "^3.0.1"
 
-"@longlost/app-images@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@longlost/app-images/-/app-images-2.2.0.tgz#ca202becc809fe7497f3a5229ed4410e2bb90328"
-  integrity sha512-3UPJUXmmkAMJyo+1ntYsiYL8/b2kkz9jf0AQBKrejLw6U3eBs3UpMzJ85wqTe3dznz6C+q3gsRcgLc9CdvPuKA==
+"@longlost/app-images@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@longlost/app-images/-/app-images-2.2.1.tgz#536b0894042b7864b3e91503b70b283d26348a6e"
+  integrity sha512-Il4Fn+m8vD9XEaOHeuiXiEs5Ct4RdhuzY49DdXtQOtyK8KQA6u2wzbMmcR/DqQ3IzYS9N7JBWo8MmYzj/MCZzA==
   dependencies:
-    "@longlost/app-core" "^5.0.0"
+    "@longlost/app-core" "^6.0.4"
     "@polymer/iron-icon" "^3.0.1"
     "@polymer/iron-iconset-svg" "^3.0.1"
     "@polymer/iron-image" "^3.0.2"
@@ -2941,7 +2926,7 @@ firebase@^8.2.9:
     "@firebase/storage" "0.4.3"
     "@firebase/util" "0.3.4"
 
-firebase@^9.0.0-2021720181311, firebase@^9.0.0-2021724205917:
+firebase@^9.0.0-2021720181311:
   version "9.0.0-beta.8"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-9.0.0-beta.8.tgz#c1912f76abcef9c3a015a5693f4c5986b2eeb9f5"
   integrity sha512-QPqBJ/oRe+Afwm7dkFQ0Uy85T4+Q+w0yyk5sOyOh6Tx5rpMdBHcPLTje8Nf4qq0k1tOyNrXPTKnVxX/gPjZ7cA==
