@@ -1,73 +1,22 @@
 
-<style include="app-shared-styles">
-
-  app-modal {
-    --modal-card-background-color: var(--app-body-color);
-  }
-
-  #content {
-    padding-top: 8px;
-  }
-
-  paper-button {
-    height: 64px;
-    width:  100%;
-    margin: 16px 0px;
-  }
-
-  #account-btn {
-    background-color: var(--app-background-color);
-    color:            var(--app-primary-color);
-  }
-
-  avatar-image {
-    width: 40px;
-
-    --avatar-image-icon-height: 28px;
-    --avatar-image-icon-width:  28px;
-  }
-
-  #logout-btn {
-    background-color: var(--app-primary-color);
-    color:            var(--app-primary-color-text);
-  }
-
-</style>
+<template id="signinTemplate"
+          if="[[_stampSignin]]" 
+          is="dom-if" 
+          restamp>
+  <auth-signin-modal user="[[_user]]"
+                     on-signin-modal-closed="__signinClosedHandler"
+                     on-signin-modal-user-upgraded="__userUpgradedHandler">
+  </auth-signin-modal>
+</template>
 
 
-<signin-modal id="signinModal"
-              user="[[_user]]"
-              on-user-upgraded="__userUpgraded">
-</signin-modal>
-
-
-<app-modal id="accountModal"
-           on-click="__accountModalClicked">
-
-  <div id="content" 
-       slot="card-content-slot">
-
-    <paper-button id="account-btn"
-                  class="shared-paper-button-with-icon"
-                  raised
-                  on-click="__accountButtonClicked">
-      <avatar-image class="shared-iron-icon-inside-paper-button"
-                    alt="Avatar."
-                    src="[[avatar]]">
-      </avatar-image>
-      <span>MY ACCOUNT</span>
-    </paper-button>
-
-    <paper-button id="logout-btn"
-                  class="shared-paper-button-with-icon"
-                  raised
-                  on-click="__signOutButtonClicked">
-      <iron-icon class="shared-iron-icon-inside-paper-button" 
-                 icon="app-shell-icons:person-off">
-      </iron-icon>
-      <span>SIGN OUT</span>
-    </paper-button>
-    
-  </div>
-
-</app-modal>
+<template id="actionsTemplate"
+          if="[[_stampActions]]" 
+          is="dom-if" 
+          restamp>
+  <auth-actions-modal avatar="[[avatar]]"
+                      on-actions-modal-account-button-clicked="__accountButtonClicked"
+                      on-actions-modal-closed="__actionsClosedHandler"
+                      on-actions-modal-signout-button-clicked="__signOutButtonClicked">
+  </auth-actions-modal>
+</template>

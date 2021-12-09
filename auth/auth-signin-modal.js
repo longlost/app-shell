@@ -1,7 +1,7 @@
 
 /**
   * 
-  * `signin-modal`
+  * `auth-signin-modal`
   *
   *   Modal wrapper for firebaseui authentication.
   *
@@ -40,9 +40,9 @@ import '@longlost/app-overlays/app-modal.js';
 // 'services.js' lazy-loaded.
 
 
-class SigninModal extends AppElement {
+class AuthSigninModal extends AppElement {
   
-  static get is() { return 'signin-modal'; }
+  static get is() { return 'auth-signin-modal'; }
 
   static get template() {
     return html`
@@ -82,7 +82,7 @@ class SigninModal extends AppElement {
 
 
       <app-modal id="modal"
-                 on-overlay-reset="reset">
+                 on-overlay-reset="__overlayResetHandler">
 
         <div id="firebaseuiAuthContainer" 
              slot="card-content-slot" 
@@ -166,6 +166,14 @@ class SigninModal extends AppElement {
     }
   }
 
+
+  __overlayResetHandler() {
+
+    this.reset();
+
+    this.fire('signin-modal-closed');
+  }
+
   // Ignore card clicks.
   __cardClicked(event) {
 
@@ -241,7 +249,7 @@ class SigninModal extends AppElement {
             // Delete anonymnous user.
             await this.user.delete();
 
-            this.fire('user-upgraded', {user: newUser});
+            this.fire('signin-modal-user-upgraded', {user: newUser});
 
             // FirebaseUI will reset and the UI cleared when this promise
             // resolves.
@@ -368,4 +376,4 @@ class SigninModal extends AppElement {
 
 }
 
-window.customElements.define(SigninModal.is, SigninModal);
+window.customElements.define(AuthSigninModal.is, AuthSigninModal);

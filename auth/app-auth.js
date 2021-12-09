@@ -22,17 +22,21 @@
   **/
 
 
-import {AppElement, html}  from '@longlost/app-core/app-element.js';
-import {message, schedule} from '@longlost/app-core/utils.js';
-import {initAuth}          from './auth.js';
-import htmlString          from './app-auth.html';
-import '@longlost/app-core/app-shared-styles.js';
-import '@longlost/app-images/avatar-image.js';
-import '@longlost/app-overlays/app-modal.js';
-import '@polymer/iron-icon/iron-icon.js';
-import '@polymer/paper-button/paper-button.js';
-import '../shared/app-shell-icons.js';
-// Lazy loading `signin-modal` for better loading performance.
+import {
+  AppElement, 
+  html
+} from '@longlost/app-core/app-element.js';
+
+import {
+  hijackEvent,
+  listenOnce,
+  message, 
+  schedule
+} from '@longlost/app-core/utils.js';
+
+import {initAuth} from './auth.js';
+import htmlString from './app-auth.html';
+// Lazy loading modals for better loading performance.
 
 
 class AppAuth extends AppElement {
@@ -48,6 +52,10 @@ class AppAuth extends AppElement {
     return {
 
       avatar: Object,
+
+      _stampActions: Boolean,
+
+      _stampSignin: Boolean,
 
       //   user.displayName
       //   user.email
@@ -101,59 +109,84 @@ class AppAuth extends AppElement {
     });
   }
 
+
+  __signinClosedHandler() {
+
+    this._stampSignin = false;
+  }
+
   // Anonymous user upgraded account.
-  __userUpgraded(event) {
+  __userUpgradedHandler(event) {
 
     this._user = event.detail.user;
   }
 
 
-  __closeAccountModal() {
+  __closeActionsModal() {
 
-    return this.$.accountModal.close();
+    return this.select('auth-actions-modal').close();
   }
 
 
-  async __accountModalClicked() {
+  async __accountButtonClicked(event) {
 
-    try {
-      await  this.clicked();
-      return this.__closeAccountModal();
-    }
-    catch (error) {
-      if (error === 'click debounced') { return; }
-      console.error(error);
-    }
+    hijackEvent(event);
+
+    // Fire event AFTER `auth-actions-modal` 
+    // has closed and been garbage collected.
+    await schedule();
+
+    this.fire('auth-account-button');
   }
 
 
-  async __accountButtonClicked() {
+  __actionsClosedHandler() {
 
-    try {
-      await this.clicked();
-      await this.__closeAccountModal();
-
-      this.fire('auth-account-button');
-    }
-    catch (error) {
-      if (error === 'click debounced') { return; }
-      console.error(error);
-    }  
+    this._stampActions = false;
   }
 
 
   async __signOutButtonClicked() {
 
     try {
-      await this.clicked();
       await this.signOut();
       
-      return this.__closeAccountModal();
+      return this.__closeActionsModal();
     }
     catch (error) {
-      if (error === 'click debounced') { return; }
       console.error(error);
     }
+  }
+
+
+  async __openActionsModal() {
+
+    await import(
+      /* webpackChunkName: 'auth-actions-modal' */
+      './auth-actions-modal.js'
+    );
+
+    this._stampActions = true;
+
+    await listenOnce(this.$.actionsTemplate, 'dom-change');
+
+    return this.select('auth-actions-modal').open();
+  }
+
+
+  async __openSigninModal() {
+
+    // Lazy load for a large perf boost.
+    await import(
+      /* webpackChunkName: 'auth-siginin-modal' */
+      './auth-signin-modal.js'
+    );
+
+    this._stampSignin = true;
+
+    await listenOnce(this.$.signinTemplate, 'dom-change');
+
+    return this.select('auth-signin-modal').open();
   }
 
 
@@ -161,16 +194,10 @@ class AppAuth extends AppElement {
 
     if (this._user) {
       await  schedule();
-      return this.$.accountModal.open();
+      return this.__openActionsModal();
     }
 
-    // Lazy load signin-modal for a large perf boost.
-    await import(
-      /* webpackChunkName: 'siginin-modal' */
-      './signin-modal.js'
-    );
-
-    return this.$.signinModal.open();
+    return this.__openSigninModal();
   }
 
 
@@ -182,9 +209,7 @@ class AppAuth extends AppElement {
 
       await signOut(auth);
 
-      if (this.$.signinModal.reset) {
-        this.$.signinModal.reset();
-      }
+      this.select('auth-signin-modal')?.reset();
       
       message('You are signed out.');
     }
