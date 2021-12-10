@@ -22,6 +22,8 @@ import {
   html
 } from '@longlost/app-core/app-element.js';
 
+import {mode as pwaDisplayMode} from '@longlost/app-core/boot/install.js';
+
 import htmlString from './app-settings.html';
 import '@longlost/app-core/app-shared-styles.js';
 import '@longlost/app-overlays/app-header-overlay.js';
@@ -57,14 +59,9 @@ class AppSettings extends AppElement {
       // <app-shell>.
       persistence: Boolean,
 
-      _hidePersistence: {
-        type: Boolean,
-        value: false,
-        computed: '__computeHidePersistence(_persistenceConfig)'
-      },
+      _hideInstall: Boolean,
 
-      // Hide/show offline persistence section.
-      _persistenceConfig: Boolean,
+      _hidePersistence: Boolean,
 
       _version: String
 
@@ -76,14 +73,9 @@ class AppSettings extends AppElement {
 
     super();
 
-    this._persistenceConfig = appUserAndData.trustedDevice;
-    this._version           = webpackConfig.version;
-  }
-
-
-  __computeHidePersistence(bool) {
-
-    return !bool;
+    this._hidePersistence = !appUserAndData.trustedDevice;
+    this._hideInstall     = pwaDisplayMode !== 'browser';
+    this._version         = webpackConfig.version;
   }
 
 
