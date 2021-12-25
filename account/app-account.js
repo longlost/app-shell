@@ -21,6 +21,7 @@ import {
 
 import {
   hijackEvent,
+  listenOnce,
   message,
   schedule,
   wait,
@@ -140,6 +141,8 @@ class AppAccount extends AppElement {
         type: Object,
         computed: '__computeProfileBackground(_opened, _headerPlaceholderImg, _userDataSnapshot, _userData)'
       },
+
+      _stamp: Boolean,
 
       _unsavedEdits: {
         type: Boolean,
@@ -367,13 +370,14 @@ class AppAccount extends AppElement {
   __reset() {
 
     this._opened = false;
+    this._stamp  = false;
   }
 
 
   async __reauthenticate() {
 
     try {
-      await this.$.overlay.close();
+      await this.select('#overlay').close();
 
       this.fire('app-account-reauth-needed');
     }
@@ -388,7 +392,8 @@ class AppAccount extends AppElement {
         /* webpackChunkName: 'account-unsaved-edits-modal' */ 
         './account-unsaved-edits-modal.js'
       );
-      this.$.unsavedEditsModal.open();
+
+      this.select('#unsavedEditsModal').open();
     }
     catch (error) { console.error(error); }
   }
@@ -396,7 +401,7 @@ class AppAccount extends AppElement {
 
   __exitWithoutSavingChanges() {
 
-    this.$.overlay.back();
+    this.select('#overlay').back();
   }
 
 
@@ -408,13 +413,13 @@ class AppAccount extends AppElement {
       return;
     }
 
-    this.$.overlay.back();
+    this.select('#overlay').back();
   }
 
 
   async __actionsQuickStartHandler() {
 
-    await this.$.overlay.close();
+    await this.select('#overlay').close();
 
     this.fire('app-account-open-quick-start');
   }
@@ -427,13 +432,13 @@ class AppAccount extends AppElement {
       './account-resend-verification-modal.js'
     );
 
-    this.$.resendVerificationModal.open();
+    this.select('#resendVerificationModal').open();
   }
 
 
   async __actionsSignOutHandler() {
 
-    await this.$.overlay.close();
+    await this.select('#overlay').close();
 
     this.fire('app-account-signout-clicked');
   }
@@ -484,7 +489,7 @@ class AppAccount extends AppElement {
     try {
       await this.clicked();
 
-      this.$.actions.open();
+      this.select('#actions').open();
     }
     catch (error) {
       if (error === 'click debounced') { return; }
@@ -515,7 +520,7 @@ class AppAccount extends AppElement {
       './account-password-modal.js'
     );
 
-    this.$.passwordModal.open();
+    this.select('#passwordModal').open();
   }
 
 
@@ -527,16 +532,14 @@ class AppAccount extends AppElement {
         './account-reauth-modal.js'
       );
 
-      await this.$.reauthModal.open();
+      await this.select('#reauthModal').open();
 
       if (this._passwordPromiseRejecter) {
         await schedule();
         this._passwordPromiseRejecter('reauth needed');
       }
 
-      if (this.$.passwordModal.close) {
-        return this.$.passwordModal.close();
-      }
+      return this.select('#passwordModal')?.close();
     }
     catch (error) { console.error(error); }
   }
@@ -544,10 +547,10 @@ class AppAccount extends AppElement {
 
   async __weakPassword() {
 
-    this.$.passwordInput.errorMessage = 'Weak password';
-    this.$.passwordInput.invalid      = true;
+    this.select('#passwordInput').errorMessage = 'Weak password';
+    this.select('#passwordInput').invalid      = true;
 
-    await  this.$.passwordModal.close();
+    await this.select('#passwordModal').close();
 
     return warn('Please create a stronger password.');
   }
@@ -555,8 +558,8 @@ class AppAccount extends AppElement {
 
   __invalidEmail() {
 
-    this.$.emailInput.errorMessage = 'Invalid email address';
-    this.$.emailInput.invalid      = true;
+    this.select('#emailInput').errorMessage = 'Invalid email address';
+    this.select('#emailInput').invalid      = true;
 
     return warn('The email address is invalid. Please try again.');
   }
@@ -564,8 +567,8 @@ class AppAccount extends AppElement {
 
   __emailAlreadyInUse() {
 
-    this.$.emailInput.errorMessage = 'Email already in use';
-    this.$.emailInput.invalid      = true;
+    this.select('#emailInput').errorMessage = 'Email already in use';
+    this.select('#emailInput').invalid      = true;
 
     return warn('This email address is already taken. Please try another one.');
   }
@@ -613,7 +616,7 @@ class AppAccount extends AppElement {
       if (password === this._newPassword) {
         await this.user.updatePassword(password);
         await stopSpinner();
-        await this.$.passwordModal.close();
+        await this.select('#passwordModal').close();
 
         message('Your password has been updated.');
 
@@ -789,7 +792,7 @@ class AppAccount extends AppElement {
   async __saveAll() {
 
     try {
-      await this.$.spinner.show('Saving edits.');
+      await this.select('#spinner').show('Saving edits.');
 
       const pwEdit = this._unsavedEditsObj['password'];
 
@@ -878,8 +881,8 @@ class AppAccount extends AppElement {
       await this.__handleFirebaseErrors(error);
     }
     finally {
-      await  this.$.overlay.reset();
-      return this.$.spinner.hide();
+      await  this.select('#overlay').reset();
+      return this.select('#spinner').hide();
     }
   }
 
@@ -901,7 +904,7 @@ class AppAccount extends AppElement {
 
     try {
 
-      await this.$.spinner.show('Deleting your account. Please wait.');
+      await this.select('#spinner').show('Deleting your account. Please wait.');
 
       // Delete and signout user.
       await Promise.all([
@@ -909,7 +912,7 @@ class AppAccount extends AppElement {
         wait(1000)
       ]);
 
-      await this.$.spinner.show('Deleting app data from this device. Please wait.');
+      await this.select('#spinner').show('Deleting app data from this device. Please wait.');
 
       // Get the currently running firestore instance.
       const db = await initDb();
@@ -925,13 +928,13 @@ class AppAccount extends AppElement {
 
       await schedule();
 
-      await this.$.spinner.hide();
+      await this.select('#spinner').hide();
 
-      await this.$.overlay.close();
+      await this.select('#overlay').close();
     }
     catch (error) {
 
-      await this.$.spinner.hide();
+      await this.select('#spinner').hide();
 
       this.__handleFirebaseErrors(error);
     }
@@ -948,7 +951,7 @@ class AppAccount extends AppElement {
         './account-delete-modal.js'
       );
 
-      this.$.deleteModal.open();
+      this.select('#deleteModal').open();
     }
     catch (error) {
       if (error === 'click debounced') { return; }
@@ -960,7 +963,11 @@ class AppAccount extends AppElement {
   async open() {
 
     try {
-      await this.$.overlay.open();
+
+      this._stamp = true;
+
+      await listenOnce(this.$.stamper, 'dom-change');
+      await this.select('#overlay').open();
       await schedule();
 
       this._opened               = true;

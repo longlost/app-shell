@@ -114,58 +114,72 @@
                     on-acs-picker-overlay-processing-changed="__processingChangedHandler"
                     on-acs-picker-overlay-selected-changed="__selectedChangedHandler">
 
-  <!-- Safari fix! Chrome does not require this extra wrapping div. -->
-  <div>
+  <template id="contentStamper" 
+	          is="dom-if" 
+	          if="[[_stampContent]]" 
+	          restamp>
 
-	  <div id="grid">
+	  <!-- Safari fix! Chrome does not require this extra wrapping div. -->
+	  <div>
 
-	  	<app-image aspect="[[_aspect]]"
-	  						 class$="[[type]]"
-	  						 icon="[[_imgIcon]]"
-	  						 quality="optimized"
-	  						 raised 
-	  						 src="[[_src]]">
-	  	</app-image>
+		  <div id="grid">
 
-	  	<div id="processing"
-	  			 hidden="[[!_processing]]">
-	  		<div id="message">Image processing.</div>
-	  		<paper-spinner-lite id="spinner" 
-	  												active="[[_processing]]">
-	  		</paper-spinner-lite>
-	  	</div>
+		  	<app-image aspect="[[_aspect]]"
+		  						 class$="[[type]]"
+		  						 icon="[[_imgIcon]]"
+		  						 quality="optimized"
+		  						 raised 
+		  						 src="[[_src]]">
+		  	</app-image>
 
-	  	<div id="btns">
-			  <paper-button id="remove-btn"
-			  							disabled="[[_disableBtns]]"
-			  							hidden="[[_hideRemoveBtn]]"
-			  							raised 
-			  							on-click="__removeBtnClicked">
-			  	REMOVE
-			  </paper-button>
-			  <paper-button id="clear-btn"
-			  							disabled="[[_disableBtns]]"
-			  							hidden="[[_hideClearBtn]]"
-			  							raised 
-			  							on-click="__clearBtnClicked">
-			  	CLEAR
-			  </paper-button>
-			  <paper-button id="save-btn"
-			  							disabled="[[_disableBtns]]"
-			  							hidden="[[_hideSaveBtn]]"
-			  							raised 
-			  							on-click="__saveBtnClicked">
-			  	[[_saveBtnText]]
-			  </paper-button>
-		 	</div>
+		  	<div id="processing"
+		  			 hidden="[[!_processing]]">
+		  		<div id="message">Image processing.</div>
+		  		<paper-spinner-lite id="spinner" 
+		  												active="[[_processing]]">
+		  		</paper-spinner-lite>
+		  	</div>
+
+		  	<div id="btns">
+				  <paper-button id="remove-btn"
+				  							disabled="[[_disableBtns]]"
+				  							hidden="[[_hideRemoveBtn]]"
+				  							raised 
+				  							on-click="__removeBtnClicked">
+				  	REMOVE
+				  </paper-button>
+				  <paper-button id="clear-btn"
+				  							disabled="[[_disableBtns]]"
+				  							hidden="[[_hideClearBtn]]"
+				  							raised 
+				  							on-click="__clearBtnClicked">
+				  	CLEAR
+				  </paper-button>
+				  <paper-button id="save-btn"
+				  							disabled="[[_disableBtns]]"
+				  							hidden="[[_hideSaveBtn]]"
+				  							raised 
+				  							on-click="__saveBtnClicked">
+				  	[[_saveBtnText]]
+				  </paper-button>
+			 	</div>
+
+			</div>
 
 		</div>
 
-	</div>
+	</template>
 
 </acs-picker-overlay>
 
 
-<account-remove-photo-modal id="modal"
-														on-remove-photo-modal-remove="__removePhotoConfirmedHandler">
-</account-remove-photo-modal>
+<template id="modalStamper"
+					is="dom-if" 
+          if="[[_stampModal]]" 
+          restamp>
+
+	<account-remove-photo-modal id="modal"
+															on-remove-photo-modal-remove="__removePhotoConfirmedHandler">
+	</account-remove-photo-modal>
+
+</template>
