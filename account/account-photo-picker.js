@@ -34,17 +34,24 @@
   **/
 
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
+import {
+  AppElement, 
+  html
+} from '@longlost/app-core/app-element.js';
 
 import {
   hijackEvent,
+  listenOnce,
   message, 
   warn
 } from '@longlost/app-core/utils.js';
 
 import {allProcessingRan} from '@longlost/app-core/img-utils.js';
 
-import {set, subscribe} from '@longlost/app-core/services/services.js';
+import {
+  set, 
+  subscribe
+} from '@longlost/app-core/services/services.js';
 
 import htmlString from './account-photo-picker.html';
 import '@longlost/app-camera/picker/acs-picker-overlay.js';
@@ -129,12 +136,16 @@ class AccountPhotoPicker extends AppElement {
       // camera capture, uploaded file or chosen from saved photos.
       _selected: Object,
 
+      _selectedItemUnsubscribe: Object,
+
       _src: {
         type: String,
         computed: '__computeSrc(type, userData, _selected, _opened)'
       },
 
-      _selectedItemUnsubscribe: Object,
+      _stampContent: Boolean,
+
+      _stampModal: Boolean,
 
       _title: {
         type: String,
@@ -231,6 +242,9 @@ class AccountPhotoPicker extends AppElement {
 
     if (!opened) {
       this.__unsubFromSelectedItem();
+
+      this._stampContent = false;
+      this._stampModal   = false;
     }
 
     this.fire('account-photo-picker-opened-changed', {value: opened});
@@ -305,13 +319,20 @@ class AccountPhotoPicker extends AppElement {
 
       await this.clicked();
 
-      // Open a confirmation modal.
-      await import(
-        /* webpackChunkName: 'account-remove-photo-modal' */ 
-        './account-remove-photo-modal.js'
-      );
+      if (!this._stampModal) {
 
-      await this.$.modal.open();
+        // Open a confirmation modal.
+        await import(
+          /* webpackChunkName: 'account-remove-photo-modal' */ 
+          './account-remove-photo-modal.js'
+        );
+        
+        this._stampModal = true;
+
+        await listenOnce(this.$.modalStamper, 'dom-change');
+      }
+
+      await this.select('#modal').open();
     }
     catch (error) {
       
@@ -411,7 +432,11 @@ class AccountPhotoPicker extends AppElement {
   }
 
 
-  open() {
+  async open() {
+
+    this._stampContent = true;
+
+    await listenOnce(this.$.contentStamper, 'dom-change');
     
     return this.$.picker.open();
   }

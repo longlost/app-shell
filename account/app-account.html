@@ -38,6 +38,9 @@
   .grid-item {
     max-width: 480px;
     width:     100%;
+
+    /* Pass to <edit-input>'s and <shipping-inputs> */
+    background-color: var(--app-background-color);
   }
 
   .max-width-wrapper {
@@ -108,224 +111,233 @@
 </style>
 
 
-<app-header-overlay id="overlay"
-                    header-size="[[headerSize]]"
-                    parent-controls-exits
-                    prebuilt-animation="from-left"
-                    reveal-header
-                    title="[[user.displayName]]"
-                    on-header-overlay-back="__overlayBack"
-                    on-overlay-reset="__reset">
+<template id="stamper" 
+          is="dom-if" 
+          if="[[_stamp]]" 
+          restamp>
 
 
-  <app-image id="header-image"
-             alt="User account background."
-             quality="optimized"
-             slot="header-background-slot"
-             src="[[_profileBackground]]">
-  </app-image>
+  <app-header-overlay id="overlay"
+                      header-size="[[headerSize]]"
+                      parent-controls-exits
+                      prebuilt-animation="from-left"
+                      reveal-header
+                      title="[[user.displayName]]"
+                      on-header-overlay-back="__overlayBack"
+                      on-overlay-reset="__reset">
 
 
-  <paper-icon-button icon="app-shell-icons:wallpaper"
-                     slot="top-toolbar-buttons-slot"
-                     on-click="__changeBackgroundButtonClicked">
-  </paper-icon-button>
-
-  <paper-icon-button icon="app-icons:more-vert"
-                     slot="top-toolbar-buttons-slot"
-                     on-click="__moreBtnClicked">
-  </paper-icon-button>
+    <app-image id="header-image"
+               alt="User account background."
+               quality="optimized"
+               slot="header-background-slot"
+               src="[[_profileBackground]]">
+    </app-image>
 
 
-  <avatar-image button
-                raised
-                slot="fab-slot"
-                src="[[_avatar]]"
-                on-avatar-image-clicked="__avatarClicked">
-  </avatar-image>
-  
+    <paper-icon-button icon="app-shell-icons:wallpaper"
+                       slot="top-toolbar-buttons-slot"
+                       on-click="__changeBackgroundButtonClicked">
+    </paper-icon-button>
 
-  <div id="content" 
-       slot="content">
+    <paper-icon-button icon="app-icons:more-vert"
+                       slot="top-toolbar-buttons-slot"
+                       on-click="__moreBtnClicked">
+    </paper-icon-button>
 
-    <div id="grid">
-      <div class="grid-item">
 
-        <h3>My Profile</h3>
+    <avatar-image button
+                  raised
+                  slot="fab-slot"
+                  src="[[_avatar]]"
+                  on-avatar-image-clicked="__avatarClicked">
+    </avatar-image>
+    
 
-        <div id="verified-wrapper"
-             hidden="[[!user.emailVerified]]">
-          <iron-icon icon="app-shell-icons:verified-user"></iron-icon>
-          <div>
-            Verified
+    <div id="content" 
+         slot="content">
+
+      <div id="grid">
+        <div class="grid-item">
+
+          <h3>My Profile</h3>
+
+          <div id="verified-wrapper"
+               hidden="[[!user.emailVerified]]">
+            <iron-icon icon="app-shell-icons:verified-user"></iron-icon>
+            <div>
+              Verified
+            </div>
           </div>
+
+          <edit-input icon="app-icons:label"
+                      kind="displayName">
+            <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                         autocapitalize
+                         auto-validate
+                         label="Profile Name"
+                         placeholder="[[__computeDisplayNamePlaceholder(user.displayName)]]"
+                         tabindex="0">
+            </paper-input>
+          </edit-input>
+
+          <edit-input icon="app-icons:label-outline"
+                      kind="first">
+            <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                         autocapitalize
+                         auto-validate
+                         label="First Name"
+                         placeholder="[[__computeFirstNamePlaceholder(_userDataSnapshot.first)]]"
+                         tabindex="0">
+            </paper-input>
+          </edit-input>
+
+          <edit-input icon="app-icons:label-outline"
+                      kind="middle">
+            <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                         autocapitalize
+                         auto-validate
+                         label="Middle Name (not required)"
+                         placeholder="[[__computeMiddleNamePlaceholder(_userDataSnapshot.middle)]]"
+                         tabindex="0">
+            </paper-input>
+          </edit-input>
+
+          <edit-input icon="app-icons:label-outline"
+                      kind="last">
+            <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                         autocapitalize
+                         auto-validate
+                         label="Last Name"
+                         placeholder="[[__computeLastNamePlaceholder(_userDataSnapshot.last)]]"
+                         tabindex="0">
+            </paper-input>
+          </edit-input>
+
+          <edit-input icon="app-icons:mail"
+                      kind="email">
+            <paper-input id="emailInput"
+                         allowed-pattern="[^/\s/\f/\n/\r/\t/\v]"
+                         auto-validate
+                         error-message="Please enter a valid format"
+                         label="[[__computeEmailLabel(user.emailVerified)]]"
+                         pattern=".+@{1}.+\.{1}.+"
+                         placeholder="[[__computeEmailPlaceholder(user.email)]]"
+                         tabindex="0"
+                         type="email">
+            </paper-input>
+          </edit-input>
+
+          <edit-input icon="app-icons:call"
+                      kind="phone">
+            <gold-phone-input auto-validate
+                              label="Phone Number (not required)"
+                              maxlength="12"
+                              placeholder="[[__computePhonePlaceholder(_userDataSnapshot.phone)]]" 
+                              tabindex="0">
+            </gold-phone-input>
+          </edit-input>
+
+          <edit-input icon="app-shell-icons:security"
+                      kind="password">
+            <paper-input id="passwordInput"
+                         allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                         auto-validate
+                         label="Password"
+                         placeholder="*****"
+                         tabindex="0"
+                         type="password">
+            </paper-input>
+          </edit-input>
+
         </div>
 
-        <edit-input icon="app-icons:label"
-                    kind="displayName">
-          <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
-                       autocapitalize
-                       auto-validate
-                       label="Profile Name"
-                       placeholder="[[__computeDisplayNamePlaceholder(user.displayName)]]"
-                       tabindex="0">
-          </paper-input>
-        </edit-input>
 
-        <edit-input icon="app-icons:label-outline"
-                    kind="first">
-          <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
-                       autocapitalize
-                       auto-validate
-                       label="First Name"
-                       placeholder="[[__computeFirstNamePlaceholder(_userDataSnapshot.first)]]"
-                       tabindex="0">
-          </paper-input>
-        </edit-input>
+        <div id="first-divider" 
+             class="divider shared-bottom-divider">
+        </div>
 
-        <edit-input icon="app-icons:label-outline"
-                    kind="middle">
-          <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
-                       autocapitalize
-                       auto-validate
-                       label="Middle Name (not required)"
-                       placeholder="[[__computeMiddleNamePlaceholder(_userDataSnapshot.middle)]]"
-                       tabindex="0">
-          </paper-input>
-        </edit-input>
 
-        <edit-input icon="app-icons:label-outline"
-                    kind="last">
-          <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
-                       autocapitalize
-                       auto-validate
-                       label="Last Name"
-                       placeholder="[[__computeLastNamePlaceholder(_userDataSnapshot.last)]]"
-                       tabindex="0">
-          </paper-input>
-        </edit-input>
+        <div class="grid-item">  
 
-        <edit-input icon="app-icons:mail"
-                    kind="email">
-          <paper-input id="emailInput"
-                       allowed-pattern="[^/\s/\f/\n/\r/\t/\v]"
-                       auto-validate
-                       error-message="Please enter a valid format"
-                       label="[[__computeEmailLabel(user.emailVerified)]]"
-                       pattern=".+@{1}.+\.{1}.+"
-                       placeholder="[[__computeEmailPlaceholder(user.email)]]"
-                       tabindex="0"
-                       type="email">
-          </paper-input>
-        </edit-input>
+          <h3>My Shipping</h3>
 
-        <edit-input icon="app-icons:call"
-                    kind="phone">
-          <gold-phone-input auto-validate
-                            label="Phone Number (not required)"
-                            maxlength="12"
-                            placeholder="[[__computePhonePlaceholder(_userDataSnapshot.phone)]]" 
-                            tabindex="0">
-          </gold-phone-input>
-        </edit-input>
+          <shipping-inputs id="shipping"
+                           hide-name-input
+                           data="[[_userDataSnapshot]]">
+          </shipping-inputs>
+        </div>  
 
-        <edit-input icon="app-shell-icons:security"
-                    kind="password">
-          <paper-input id="passwordInput"
-                       allowed-pattern="[^/\f/\n/\r/\t/\v]"
-                       auto-validate
-                       label="Password"
-                       placeholder="*****"
-                       tabindex="0"
-                       type="password">
-          </paper-input>
-        </edit-input>
+      </div>    
 
+
+      <div class="divider shared-bottom-divider"></div>
+
+
+      <div class="max-width-wrapper">
+        <div id="bottom-btns-container">
+          <paper-button id="save-all-btn"
+                        class="bottom-btns"
+                        disabled="[[!_unsavedEdits]]"
+                        raised 
+                        on-click="__saveAllButtonClicked">
+            SAVE ALL
+          </paper-button>
+          <paper-button id="delete-btn"
+                        class="bottom-btns"
+                        raised 
+                        on-click="__deleteUserButtonClicked">
+            DELETE ACCOUNT
+          </paper-button>
+        </div>
       </div>
 
-
-      <div id="first-divider" 
-           class="divider shared-bottom-divider">
-      </div>
-
-
-      <div class="grid-item">  
-
-        <h3>My Shipping</h3>
-
-        <shipping-inputs id="shipping"
-                         hide-name-input
-                         data="[[_userDataSnapshot]]">
-        </shipping-inputs>
-      </div>  
-
-    </div>    
-
-
-    <div class="divider shared-bottom-divider"></div>
-
-
-    <div class="max-width-wrapper">
-      <div id="bottom-btns-container">
-        <paper-button id="save-all-btn"
-                      class="bottom-btns"
-                      disabled="[[!_unsavedEdits]]"
-                      raised 
-                      on-click="__saveAllButtonClicked">
-          SAVE ALL
-        </paper-button>
-        <paper-button id="delete-btn"
-                      class="bottom-btns"
-                      raised 
-                      on-click="__deleteUserButtonClicked">
-          DELETE ACCOUNT
-        </paper-button>
-      </div>
     </div>
-
-  </div>
-</app-header-overlay>
+  </app-header-overlay>
 
 
-<account-actions-dropdown id="actions"
-                          on-account-actions-dropdown-quick-start="__actionsQuickStartHandler"
-                          on-account-actions-dropdown-resend="__actionsResendHandler"
-                          on-account-actions-dropdown-sign-out="__actionsSignOutHandler">
-</account-actions-dropdown>
+  <account-actions-dropdown id="actions"
+                            on-account-actions-dropdown-quick-start="__actionsQuickStartHandler"
+                            on-account-actions-dropdown-resend="__actionsResendHandler"
+                            on-account-actions-dropdown-sign-out="__actionsSignOutHandler">
+  </account-actions-dropdown>
 
 
-<app-spinner id="spinner" 
-             full-screen>
-</app-spinner>
+  <app-spinner id="spinner" 
+               full-screen>
+  </app-spinner>
 
 
-<!-- Dynamically imported. -->
+  <!-- Dynamically imported. -->
 
-<account-password-modal id="passwordModal"
-                        on-password-modal-confirm="__passwordModalConfirm">
-</account-password-modal>
-
-
-<account-reauth-modal id="reauthModal" 
-                      on-reauth-modal-reauth="__reauthenticate">
-</account-reauth-modal>
+  <account-password-modal id="passwordModal"
+                          on-password-modal-confirm="__passwordModalConfirm">
+  </account-password-modal>
 
 
-<account-resend-verification-modal id="resendVerificationModal"
-                                   user="[[user]]"
-                                   on-resend-verification-modal-resend="__sendVerificationEmail">
-</account-resend-verification-modal>
+  <account-reauth-modal id="reauthModal" 
+                        on-reauth-modal-reauth="__reauthenticate">
+  </account-reauth-modal>
 
 
-<account-delete-modal id="deleteModal" 
-                      on-delete-modal-delete="__deleteUser">
-</account-delete-modal>
+  <account-resend-verification-modal id="resendVerificationModal"
+                                     user="[[user]]"
+                                     on-resend-verification-modal-resend="__sendVerificationEmail">
+  </account-resend-verification-modal>
 
 
-<account-unsaved-edits-modal id="unsavedEditsModal"
-                             on-unsaved-edits-modal-exit="__exitWithoutSavingChanges"
-                             on-unsaved-edits-modal-save-all="__saveAll">
-</account-unsaved-edits-modal>
+  <account-delete-modal id="deleteModal" 
+                        on-delete-modal-delete="__deleteUser">
+  </account-delete-modal>
+
+
+  <account-unsaved-edits-modal id="unsavedEditsModal"
+                               on-unsaved-edits-modal-exit="__exitWithoutSavingChanges"
+                               on-unsaved-edits-modal-save-all="__saveAll">
+  </account-unsaved-edits-modal>
+
+
+</template>
 
 
 <account-photo-picker id="picker"
@@ -333,6 +345,6 @@
                       type="[[_photoPickerType]]"
                       user="[[user]]"
                       user-data="[[_userData]]"
-                      on-account-photo-picker-opened-changed="__photoPickerOpenedChangedHandler">                    
+                      on-account-photo-picker-opened-changed="__photoPickerOpenedChangedHandler">              
 </account-photo-picker>
     

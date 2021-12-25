@@ -199,12 +199,12 @@
     tslib "^2.1.0"
     xmlhttprequest "1.8.0"
 
-"@firebase/app-compat@0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@firebase/app-compat/-/app-compat-0.1.11.tgz#22705fa65f2408ce6e2b43747b7bdcf1bdfcea7a"
-  integrity sha512-I6L6hHoAxylFg39w1I0w7zJ4cDq41FdUHUPhhNzDcPUJMJUQNzZXXBxUvDCj8ChFXDjVb/YTbLKzitqQXvkWBg==
+"@firebase/app-compat@0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@firebase/app-compat/-/app-compat-0.1.12.tgz#8a5fc169ad52c1fe9fe5119d543f12f9335cc8b2"
+  integrity sha512-hRzCCFjwTwrFsAFcuUW2TPpyShJ/OaoA1Yxp4QJr6Xod8g+CQxTMZ4RJ51I5t9fErXvl65VxljhfqFEyB3ZmJA==
   dependencies:
-    "@firebase/app" "0.7.10"
+    "@firebase/app" "0.7.11"
     "@firebase/component" "0.5.9"
     "@firebase/logger" "0.3.2"
     "@firebase/util" "1.4.2"
@@ -274,10 +274,10 @@
     tslib "^1.11.1"
     xmlhttprequest "1.8.0"
 
-"@firebase/app@0.7.10":
-  version "0.7.10"
-  resolved "https://registry.yarnpkg.com/@firebase/app/-/app-0.7.10.tgz#1771f47dc704402219d1fb6a574db6989f533fb0"
-  integrity sha512-u3dawOIj5EOK8OOJy0QypS51pdR2tJMD/DnrQy0U2vau3nLDZalXmcknA23HPX67pIbjg5AkUv9RhulM4qUK7g==
+"@firebase/app@0.7.11":
+  version "0.7.11"
+  resolved "https://registry.yarnpkg.com/@firebase/app/-/app-0.7.11.tgz#b85d553dc44620ee0f795ecb6aeabd6c43737390"
+  integrity sha512-GnG2XxlMrqd8zRa14Y3gvkPpr0tKTLZtxhUnShWkeSM5bQqk1DK2k9qDsf6D3cYfKCWv+JIg1zmL3oalxfhNNA==
   dependencies:
     "@firebase/component" "0.5.9"
     "@firebase/logger" "0.3.2"
@@ -297,12 +297,12 @@
     selenium-webdriver "^4.0.0-beta.2"
     tslib "^2.1.0"
 
-"@firebase/auth-compat@0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@firebase/auth-compat/-/auth-compat-0.2.3.tgz#74cb13c01d362eacb8422bbcd184171f781559b9"
-  integrity sha512-qXdibKq44Lf22hy9YQaaMsAFMOiTA95Z9NjZJbrY8P0zXZUjFhwpx41Mett8+3X/uv/mXa6KuouRt2QdpsqU/g==
+"@firebase/auth-compat@0.2.4":
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/@firebase/auth-compat/-/auth-compat-0.2.4.tgz#e2862ed0177520b34abc6be6adca9f220a928ed9"
+  integrity sha512-2OpV6o8U33xiC98G9UrlhEMOOHfXmoum74VghP85BufLroi7erLKawBaDbYiHWK2QYudd8cbOPkk5GDocl1KNQ==
   dependencies:
-    "@firebase/auth" "0.19.3"
+    "@firebase/auth" "0.19.4"
     "@firebase/auth-types" "0.11.0"
     "@firebase/component" "0.5.9"
     "@firebase/util" "1.4.2"
@@ -387,10 +387,10 @@
   dependencies:
     "@firebase/auth-types" "0.10.2"
 
-"@firebase/auth@0.19.3":
-  version "0.19.3"
-  resolved "https://registry.yarnpkg.com/@firebase/auth/-/auth-0.19.3.tgz#cb22954b9cf46ed8a537163b13aaddfbd3f7ee11"
-  integrity sha512-asOJkmzBh38DgZ5fBt7cv8dNyU3r7kRVoXi9f1eCpQp/n+NagaiUM+YKXq0snjbchFJu7qPBiwrIg/xZinY4kg==
+"@firebase/auth@0.19.4":
+  version "0.19.4"
+  resolved "https://registry.yarnpkg.com/@firebase/auth/-/auth-0.19.4.tgz#7d4962e70578e915d1a887be3d662c1fb030471e"
+  integrity sha512-0FefLGnP0mbgvSSan7j2e25i3pllqF9+KYO5fwuAo3YcgjCyNMBJKaXPlz/J+z6jRHa2itjh4W48jD4Y/FCMqw==
   dependencies:
     "@firebase/component" "0.5.9"
     "@firebase/logger" "0.3.2"
@@ -579,13 +579,13 @@
     node-fetch "2.6.1"
     tslib "^2.1.0"
 
-"@firebase/firestore-compat@0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@firebase/firestore-compat/-/firestore-compat-0.1.9.tgz#31c0e8154fcbc457d4413465bbdfeb4fea60ac84"
-  integrity sha512-OvWx3uzv9KzVJQPOyugz8RLbGVitjdRX+Wb845GtLbnFzApILHbjhd2zIKbvDQfnZsAD0eXPXLFIyCBCAEVz9g==
+"@firebase/firestore-compat@0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@firebase/firestore-compat/-/firestore-compat-0.1.10.tgz#910ba0304ec9cb9202b08852dab206d3511833ec"
+  integrity sha512-wnyUzx5bHatnsP+3nX0FmA1jxfDxVW5gCdM59sXxd0PWf4oUOONRlqVstVAHVUH123huGaNdEXY6LUlP7H0EnA==
   dependencies:
     "@firebase/component" "0.5.9"
-    "@firebase/firestore" "3.4.0"
+    "@firebase/firestore" "3.4.1"
     "@firebase/firestore-types" "2.5.0"
     "@firebase/util" "1.4.2"
     tslib "^2.1.0"
@@ -700,10 +700,10 @@
     node-fetch "2.6.1"
     tslib "^1.11.1"
 
-"@firebase/firestore@3.4.0":
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-3.4.0.tgz#1ead32ae912545f12ccf9203a55e6e8e27786851"
-  integrity sha512-AiK4ol0U1Ul2oWegHgtAL47MRN7pkEo4XMtMY6ysVpopkVsiZzHFQIIgq5nFi/dQczWUvwX/ntOIELGJyQEZXQ==
+"@firebase/firestore@3.4.1":
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-3.4.1.tgz#b988a25213e51b112db4fef8d939634957f35b9f"
+  integrity sha512-KSXuaiavHUqk3+0qRe4U8QZ1vfpOc4PuesohLcjA824HexBzXd+6NoUmBs/F9pyS9Ka1rJeECXzXgpk0pInSBw==
   dependencies:
     "@firebase/component" "0.5.9"
     "@firebase/logger" "0.3.2"
@@ -1261,14 +1261,14 @@
     protobufjs "^6.10.0"
     yargs "^16.1.1"
 
-"@longlost/app-camera@^1.18.8":
-  version "1.18.8"
-  resolved "https://registry.yarnpkg.com/@longlost/app-camera/-/app-camera-1.18.8.tgz#95ff86ae300ce96d94a857518ef0851bda4f37ee"
-  integrity sha512-6NuSX0nXAt49xvqJdvHw/dSqpjb0TSE01OYquPuAlGyfTHc8iTeN67SN/tu82lMnzYYu8Pqho+ygnJWmG6meyA==
+"@longlost/app-camera@^1.19.0":
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/@longlost/app-camera/-/app-camera-1.19.0.tgz#3553f9792549248d7e7acb325dd48bb3237a09f7"
+  integrity sha512-iJWUIUBNPcdR1K7Hpiu5LaK+HsLzwuNcNwqBHViqERZklnf5GcBjmrcStb5M5auOqOXTvZUAJ5iND/IQfVtVOg==
   dependencies:
-    "@longlost/app-core" "^4.0.0"
+    "@longlost/app-core" "^6.0.6"
     "@longlost/app-file-system" "^2.5.6"
-    "@longlost/app-images" "^2.1.1"
+    "@longlost/app-images" "^2.2.2"
     "@longlost/app-media" "^2.1.1"
     "@longlost/app-overlays" "^2.0.0"
     "@longlost/app-spinner" "^1.2.1"
@@ -1283,11 +1283,11 @@
     "@polymer/paper-tabs" "^3.1.0"
     "@polymer/polymer" "^3.4.1"
     "@tensorflow-models/face-landmarks-detection" "^0.0.3"
-    "@tensorflow/tfjs" "^3.8.0"
+    "@tensorflow/tfjs" "^3.12.0"
     comlink "^4.3.1"
-    mime-types "^2.1.32"
-    o9n "^2.1.0"
-    three "^0.131.3"
+    mime-types "^2.1.34"
+    o9n "^2.1.1"
+    three "^0.136.0"
 
 "@longlost/app-carousels@^3.0.2":
   version "3.0.2"
@@ -1438,17 +1438,17 @@
     scroll-behavior-polyfill "^2.0.13"
     workbox-window "^6.2.4"
 
-"@longlost/app-core@^6.0.4":
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/@longlost/app-core/-/app-core-6.0.4.tgz#107446ffb851e80e0f811dc9c2ca86b4337ef82e"
-  integrity sha512-S/0XQPgEGKYAL7yx/KI69EovaWJ0M4syE5wZfQITfeKvBCzKbgFh/uwzyf34iyWMd2DQDKDK7kQUoX6aoAxOMA==
+"@longlost/app-core@^6.0.6":
+  version "6.0.6"
+  resolved "https://registry.yarnpkg.com/@longlost/app-core/-/app-core-6.0.6.tgz#a2b3add8f39d155bc647d45ba801bca7db2dd1c9"
+  integrity sha512-hFIZ1JaKaTcMWceXiyFTepX0NzoyXzkGXumnNKGWegVjgzVTpy2BmvrgmEMmze6KO6zivttbK7lID76NQm89ZQ==
   dependencies:
     "@polymer/iron-iconset-svg" "^3.0.1"
     "@polymer/paper-styles" "^3.0.1"
     "@polymer/polymer" "^3.4.1"
     "@ungap/global-this" "^0.4.4"
     comlink "^4.3.1"
-    firebase "^9.6.0"
+    firebase "^9.6.1"
     mime-types "^2.1.34"
     scroll-behavior-polyfill "^2.0.13"
     workbox-window "^6.4.2"
@@ -1521,12 +1521,12 @@
     "@polymer/iron-image" "^3.0.2"
     "@polymer/paper-button" "^3.0.1"
 
-"@longlost/app-images@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@longlost/app-images/-/app-images-2.2.1.tgz#536b0894042b7864b3e91503b70b283d26348a6e"
-  integrity sha512-Il4Fn+m8vD9XEaOHeuiXiEs5Ct4RdhuzY49DdXtQOtyK8KQA6u2wzbMmcR/DqQ3IzYS9N7JBWo8MmYzj/MCZzA==
+"@longlost/app-images@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@longlost/app-images/-/app-images-2.2.2.tgz#48a428e496c6185ff588406da84aa5bb5cd308c2"
+  integrity sha512-mO17JzheL8ZoDqTxDk5AoEtjijkJXMm+5p27kOz2JigQ8K9qkBSRVO/8Ac++Kxydl7obJqF14OAKLgyh0Sv+BA==
   dependencies:
-    "@longlost/app-core" "^6.0.4"
+    "@longlost/app-core" "^6.0.6"
     "@polymer/iron-icon" "^3.0.1"
     "@polymer/iron-iconset-svg" "^3.0.1"
     "@polymer/iron-image" "^3.0.2"
@@ -1549,6 +1549,30 @@
     "@polymer/iron-input" "^3.0.1"
     "@polymer/paper-button" "^3.0.1"
     "@polymer/paper-dropdown-menu" "^3.1.0"
+    "@polymer/paper-icon-button" "^3.0.2"
+    "@polymer/paper-input" "^3.2.1"
+    "@polymer/paper-item" "^3.0.1"
+    "@polymer/paper-listbox" "^3.0.1"
+    "@polymer/paper-ripple" "^3.0.2"
+    "@polymer/polymer" "^3.4.1"
+
+"@longlost/app-inputs@^2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@longlost/app-inputs/-/app-inputs-2.0.4.tgz#0e4f308c1c7b387754e03f0994ea716dc67ec516"
+  integrity sha512-rVfYcnCUtCE+31ipyX/WIK7vAr+p7LAnHlNwfAgdhhrrQSIJWZUXt2kpvdhRf/i3UOKkH4tp4axG73CGBZUXOg==
+  dependencies:
+    "@longlost/app-core" "^6.0.6"
+    "@longlost/grow-shrink-container" "^1.0.0"
+    "@longlost/icon-to-spinner" "^2.0.0"
+    "@longlost/pencil-to-check-icon" "^1.0.3"
+    "@polymer/gold-phone-input" "^3.0.1"
+    "@polymer/iron-a11y-keys" "^3.0.1"
+    "@polymer/iron-form-element-behavior" "^3.0.1"
+    "@polymer/iron-icon" "^3.0.1"
+    "@polymer/iron-iconset-svg" "^3.0.1"
+    "@polymer/iron-input" "^3.0.1"
+    "@polymer/paper-button" "^3.0.1"
+    "@polymer/paper-dropdown-menu" "^3.2.0"
     "@polymer/paper-icon-button" "^3.0.2"
     "@polymer/paper-input" "^3.2.1"
     "@polymer/paper-item" "^3.0.1"
@@ -2034,6 +2058,23 @@
     "@polymer/paper-styles" "^3.0.0-pre.26"
     "@polymer/polymer" "^3.3.1"
 
+"@polymer/paper-dropdown-menu@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@polymer/paper-dropdown-menu/-/paper-dropdown-menu-3.2.0.tgz#17f507ef864dc18365a92e256bde628c2d352956"
+  integrity sha512-2ohwSHF+RLSK6kA0UkkMiMQF6EZcaEYWAA25kfisI6DWie7yozKrpQNsqvwfOEHU6DdDMIotrOtH1TM88YS8Zg==
+  dependencies:
+    "@polymer/iron-a11y-keys-behavior" "^3.0.0-pre.26"
+    "@polymer/iron-form-element-behavior" "^3.0.0-pre.26"
+    "@polymer/iron-icon" "^3.0.0-pre.26"
+    "@polymer/iron-iconset-svg" "^3.0.0-pre.26"
+    "@polymer/iron-validatable-behavior" "^3.0.0-pre.26"
+    "@polymer/paper-behaviors" "^3.0.0-pre.27"
+    "@polymer/paper-input" "^3.1.0"
+    "@polymer/paper-menu-button" "^3.1.0"
+    "@polymer/paper-ripple" "^3.0.0-pre.26"
+    "@polymer/paper-styles" "^3.0.0-pre.26"
+    "@polymer/polymer" "^3.3.1"
+
 "@polymer/paper-fab@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@polymer/paper-fab/-/paper-fab-3.0.1.tgz#2636359e7fb70dd5a549ed92ba9b3bdb9ff86bf8"
@@ -2355,35 +2396,35 @@
     "@tensorflow-models/blazeface" "0.0.7"
     rimraf "^3.0.2"
 
-"@tensorflow/tfjs-backend-cpu@3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-cpu/-/tfjs-backend-cpu-3.8.0.tgz#1b0655d5ca1b57370c1ea9586d571f3d63ca7393"
-  integrity sha512-iSwHrqX0Ixh1kelfmxIgChKft/KrcZk9EMHQcX+878XnX7mxB2HfWUqfiJVIcq+Fyr4I3oE4ncbbpmlKMxA85A==
+"@tensorflow/tfjs-backend-cpu@3.12.0":
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-cpu/-/tfjs-backend-cpu-3.12.0.tgz#a96279c3116486dfb5deccf8bac78f72d3f77f65"
+  integrity sha512-UMf/OHHCzm/+oKXtTDnanlyYFNNKKU5u2hJooKak1JqSOEKChBOPYKmxf9VWmY7Pos4GbbKH/V1pLzfLnLq+Bg==
   dependencies:
     "@types/seedrandom" "2.4.27"
     seedrandom "2.4.3"
 
-"@tensorflow/tfjs-backend-webgl@3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-webgl/-/tfjs-backend-webgl-3.8.0.tgz#35fc3c69979805a0f84a5ffa99fe431512c72f6b"
-  integrity sha512-Pjv+oWPf+7YS8kz/UFh2QBeD3F74R63AEU48a44LVh63YHXvdRg/M/Mvhjd55Oe0crDbBLej287SgVB8DHjUXg==
+"@tensorflow/tfjs-backend-webgl@3.12.0":
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-webgl/-/tfjs-backend-webgl-3.12.0.tgz#51af13d9790fd07748e95efe02ab72092c52ead1"
+  integrity sha512-nFiPS7AiDZ+H4RXpx8dSYPWzy3B1zC/aRKwH9uz9MUp1WiHHbYr90+E0ut9HFrIz0cMb0sR7vGU+zkjSZ1rLsA==
   dependencies:
-    "@tensorflow/tfjs-backend-cpu" "3.8.0"
+    "@tensorflow/tfjs-backend-cpu" "3.12.0"
     "@types/offscreencanvas" "~2019.3.0"
     "@types/seedrandom" "2.4.27"
     "@types/webgl-ext" "0.0.30"
-    "@types/webgl2" "0.0.5"
+    "@types/webgl2" "0.0.6"
     seedrandom "2.4.3"
 
-"@tensorflow/tfjs-converter@3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-converter/-/tfjs-converter-3.8.0.tgz#78dd1c96acd775ceb112cd0c30deb5120a8a7536"
-  integrity sha512-IWalZtKNfsSHt9He3Tvfje71gwMnFg5msQEiEnAtVnz1Zly0Yi0mycGLp5TPyqPhZCcJ+i9OhgkAlL4sbjP1hw==
+"@tensorflow/tfjs-converter@3.12.0":
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-converter/-/tfjs-converter-3.12.0.tgz#2e28c7bf6e92d4614cb6df362a81a55f79432fef"
+  integrity sha512-WO6FreEB83CgFwvcyrzyaWG5WshanfyhTI6rOqSbjY86+MlJprTn4fuY9qbnYk/gDLhxEaUpYgubamY4g4L76g==
 
-"@tensorflow/tfjs-core@3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-core/-/tfjs-core-3.8.0.tgz#b7390db21bbcbf4c3da0c540d9318164d987767c"
-  integrity sha512-0VKqNpnTiXIeOql3dnEyPOxKA9yDA366onv3sphm6k8KAzkr+is+GHOHzmo8mL7+AujiOb6o0J7BYhr7yvpNjA==
+"@tensorflow/tfjs-core@3.12.0":
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-core/-/tfjs-core-3.12.0.tgz#af1f93ea924be74e4ecf094608ea22709bf56f17"
+  integrity sha512-0rXf+aMjfkFLan7qna+L7DjfSZaaRibKgq9XuorjSy9rZcdZLE2IHFTzYR7B8mdlnq2szArKzm+JXqa9grTl7w==
   dependencies:
     "@types/long" "^4.0.1"
     "@types/offscreencanvas" "~2019.3.0"
@@ -2393,30 +2434,30 @@
     node-fetch "~2.6.1"
     seedrandom "2.4.3"
 
-"@tensorflow/tfjs-data@3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-data/-/tfjs-data-3.8.0.tgz#eb60485c35f5e493cab675e3071dc814d1c0dc5d"
-  integrity sha512-TuzI2ggCKb3lLUAsTGT/CMOkMZgrmgu1dQckEnft621RDJSQTN1o7xC0YLDmuwLwfUmWJax8TvsSxXBy2M5GSg==
+"@tensorflow/tfjs-data@3.12.0":
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-data/-/tfjs-data-3.12.0.tgz#d38ff029aa0ef0864c5144476fe3c5d608cb9839"
+  integrity sha512-Q5S0pYgjqqLeFPaoHaEt9KeNFf5BrobcYmLZ9bsUnSowY0Kxz6RvnPWNNaOI3FhgqCF/e+RmGX20J0wx3Ty04Q==
   dependencies:
     "@types/node-fetch" "^2.1.2"
     node-fetch "~2.6.1"
 
-"@tensorflow/tfjs-layers@3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-layers/-/tfjs-layers-3.8.0.tgz#f8afbc375aacab7457ac5d6a83d5c5b292105681"
-  integrity sha512-O7r0zkGFM2DTS2NdWhGUrKNgoY1GR7IX5aGIj50SQ8WnPWwY9gaVI7b+euP2Yg7A6kDiFXJIST+MY9EottyqSA==
+"@tensorflow/tfjs-layers@3.12.0":
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-layers/-/tfjs-layers-3.12.0.tgz#b90190d1d6950488f3fd5245783384500c832787"
+  integrity sha512-GlU9LxDnPg3I3p+MMOYzKgr2NZK2vVmT4/EotwMVIAyhR2WbVFTRP0AXkIrWSoNIJ9v/ryvFEvNNPyNfkXM/xQ==
 
-"@tensorflow/tfjs@^3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs/-/tfjs-3.8.0.tgz#76e9e5447c1d1725bcc25904c2c8c21f615acb0f"
-  integrity sha512-4tVMEfGT8l8JBei/O0K0j7pcNbWR7C9r6WAuvoFXQBiu6FkwUhnM+rNrBHoh1/UaYKKm1enVbiyAP9+sbSFRaw==
+"@tensorflow/tfjs@^3.12.0":
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs/-/tfjs-3.12.0.tgz#af9f1b3b6f5b35f43b09f0b0ad54cacba0f11e0d"
+  integrity sha512-Gpala8Lf2DJ3j2hY43gPQ8TIJzw5sYrxfpQF0SBX26/zuHUMaF/DQz4koeRqf9s1t6MAjVbbkXdYKtGeEz4Jrg==
   dependencies:
-    "@tensorflow/tfjs-backend-cpu" "3.8.0"
-    "@tensorflow/tfjs-backend-webgl" "3.8.0"
-    "@tensorflow/tfjs-converter" "3.8.0"
-    "@tensorflow/tfjs-core" "3.8.0"
-    "@tensorflow/tfjs-data" "3.8.0"
-    "@tensorflow/tfjs-layers" "3.8.0"
+    "@tensorflow/tfjs-backend-cpu" "3.12.0"
+    "@tensorflow/tfjs-backend-webgl" "3.12.0"
+    "@tensorflow/tfjs-converter" "3.12.0"
+    "@tensorflow/tfjs-core" "3.12.0"
+    "@tensorflow/tfjs-data" "3.12.0"
+    "@tensorflow/tfjs-layers" "3.12.0"
     argparse "^1.0.10"
     chalk "^4.1.0"
     core-js "3"
@@ -2486,10 +2527,10 @@
   resolved "https://registry.yarnpkg.com/@types/webgl-ext/-/webgl-ext-0.0.30.tgz#0ce498c16a41a23d15289e0b844d945b25f0fb9d"
   integrity sha512-LKVgNmBxN0BbljJrVUwkxwRYqzsAEPcZOe6S2T6ZaBDIrFp0qu4FNlpc5sM1tGbXUYFgdVQIoeLk1Y1UoblyEg==
 
-"@types/webgl2@0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@types/webgl2/-/webgl2-0.0.5.tgz#dd925e20ab8ace80eb4b1e46fda5b109c508fb0d"
-  integrity sha512-oGaKsBbxQOY5+aJFV3KECDhGaXt+yZJt2y/OZsnQGLRkH6Fvr7rv4pCt3SRH1somIHfej/c4u7NSpCyd9x+1Ow==
+"@types/webgl2@0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@types/webgl2/-/webgl2-0.0.6.tgz#1ea2db791362bd8521548d664dbd3c5311cdf4b6"
+  integrity sha512-50GQhDVTq/herLMiqSQkdtRu+d5q/cWHn4VvKJtrj4DJAjo1MNkWYa2MA41BaBO1q1HgsUjuQvEOk0QHvlnAaQ==
 
 "@ungap/global-this@^0.4.2":
   version "0.4.2"
@@ -2954,24 +2995,24 @@ firebase@^9.0.0-2021720181311:
     "@firebase/storage" "0.0.900-exp.8b4d7550f"
     "@firebase/storage-compat" "0.0.900-exp.8b4d7550f"
 
-firebase@^9.6.0:
-  version "9.6.0"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-9.6.0.tgz#3f2c3e3cc33d51285bcb40738d1b5318c9c8aaa0"
-  integrity sha512-ZpChU8JIwetXxcOwoJV/IKabMyW/oLsq9l+qf3aFB7LPcxcq0yxCFQzpHnYeQeWGrn9lcqfuhS1kXpIv5Ky7EQ==
+firebase@^9.6.1:
+  version "9.6.1"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-9.6.1.tgz#08e0fd0799f57a885f895b86a6ed2bc0083412fe"
+  integrity sha512-d4wbkVMRiSREa1jfFx2z/Kq3KueEKfNWApvdrEAxvzDRN4eiFLeZSZM/MOxj7TR01e/hANnw2lrYKMUpg21ukg==
   dependencies:
     "@firebase/analytics" "0.7.4"
     "@firebase/analytics-compat" "0.1.5"
-    "@firebase/app" "0.7.10"
+    "@firebase/app" "0.7.11"
     "@firebase/app-check" "0.5.2"
     "@firebase/app-check-compat" "0.2.2"
-    "@firebase/app-compat" "0.1.11"
+    "@firebase/app-compat" "0.1.12"
     "@firebase/app-types" "0.7.0"
-    "@firebase/auth" "0.19.3"
-    "@firebase/auth-compat" "0.2.3"
+    "@firebase/auth" "0.19.4"
+    "@firebase/auth-compat" "0.2.4"
     "@firebase/database" "0.12.4"
     "@firebase/database-compat" "0.1.4"
-    "@firebase/firestore" "3.4.0"
-    "@firebase/firestore-compat" "0.1.9"
+    "@firebase/firestore" "3.4.1"
+    "@firebase/firestore-compat" "0.1.10"
     "@firebase/functions" "0.7.6"
     "@firebase/functions-compat" "0.1.7"
     "@firebase/installations" "0.5.4"
@@ -3382,10 +3423,10 @@ normalize-path@^3.0.0, normalize-path@~3.0.0:
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
 
-o9n@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/o9n/-/o9n-2.1.0.tgz#e4566cf95e5abefdd10dd2c2bc304f2d8ebf243c"
-  integrity sha512-Kvf4kB/XBctZwXKwjAmlPVhCqRywMFXl+o0dvhIc04A5gjWdTiQWYgy75vGXPRBxa9TrkWK6rhgtE+o4GnZTYQ==
+o9n@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/o9n/-/o9n-2.1.1.tgz#ef172b692405f748e2d55ec94b12cadbb94db0de"
+  integrity sha512-R6NCwtdFWAOXE5JE/FUF4ZX4akpXdOrGH7K3cDf5tbNtpY1x9r7Lo+n7rwcr+8e5B67dN0aVw3Yu+CCpo5lZFw==
 
 once@^1.3.0:
   version "1.4.0"
@@ -3727,10 +3768,10 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-three@^0.131.3:
-  version "0.131.3"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.131.3.tgz#406fd210c603ca9154937ae3582996fbfd3cb716"
-  integrity sha512-VkZAv8ZTJqiE/fyEmoWLxcNHImpVcjqW7RO0GzMu3tRpwO0KUvK9pjTmJzJcAbc51BOeB2G38zh80yjHTbP8gQ==
+three@^0.136.0:
+  version "0.136.0"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.136.0.tgz#b1504db021b46398ef468aa7849f3dcabb814f50"
+  integrity sha512-+fEMX7nYLz2ZesVP/dyifli5Jf8gR3XPAnFJveQ80aMhibFduzrADnjMbARXh8+W9qLK7rshJCjAIL/6cDxC+A==
 
 tmp@^0.2.1:
   version "0.2.1"
