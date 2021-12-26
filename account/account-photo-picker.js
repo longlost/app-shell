@@ -48,6 +48,8 @@ import {
 
 import {allProcessingRan} from '@longlost/app-core/img-utils.js';
 
+import firebaseReady from '@longlost/app-core/firebase.js';
+
 import {
   set, 
   subscribe
@@ -388,7 +390,11 @@ class AccountPhotoPicker extends AppElement {
         const photoURL = thumbnail || optimized;
 
         if (photoURL) {
-          await this.user.updateProfile({photoURL});
+
+          const {loadAuth}      = await firebaseReady();
+          const {updateProfile} = await loadAuth();
+
+          await updateProfile(this.user, {photoURL});
         }
       }
 
@@ -419,7 +425,11 @@ class AccountPhotoPicker extends AppElement {
       });
 
       if (this.type === 'avatar') {
-        await this.user.updateProfile({photoURL: null});
+
+        const {loadAuth}      = await firebaseReady();
+        const {updateProfile} = await loadAuth();
+
+        await updateProfile(this.user, {photoURL: null});
       }
 
       this.__cleanupSelected();
