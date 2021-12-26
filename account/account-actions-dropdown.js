@@ -30,6 +30,16 @@ class AccountActionsDropdown extends AppElement {
   }
 
 
+  static get properties() {
+    return {
+
+      // User email verified state.
+      verified: Boolean
+
+    };
+  }
+
+
   constructor() {
 
     super();

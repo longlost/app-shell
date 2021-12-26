@@ -37,7 +37,7 @@ class AccountResendVerificationModal extends AppElement {
   static get properties() {
     return {
 
-      user: Object
+      email: String
 
     };
   }

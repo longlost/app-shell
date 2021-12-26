@@ -124,7 +124,7 @@
                       reveal-header
                       title="[[user.displayName]]"
                       on-header-overlay-back="__overlayBack"
-                      on-overlay-reset="__reset">
+                      on-overlay-reset="__overlayReset">
 
 
     <app-image id="header-image"
@@ -198,6 +198,7 @@
                          autocapitalize
                          auto-validate
                          label="Middle Name (not required)"
+                         minlength="0"
                          placeholder="[[__computeMiddleNamePlaceholder(_userDataSnapshot.middle)]]"
                          tabindex="0">
             </paper-input>
@@ -233,6 +234,7 @@
             <gold-phone-input auto-validate
                               label="Phone Number (not required)"
                               maxlength="12"
+                              minlength="0"
                               placeholder="[[__computePhonePlaceholder(_userDataSnapshot.phone)]]" 
                               tabindex="0">
             </gold-phone-input>
@@ -297,6 +299,7 @@
 
 
   <account-actions-dropdown id="actions"
+                            verified="[[user.emailVerified]]"
                             on-account-actions-dropdown-quick-start="__actionsQuickStartHandler"
                             on-account-actions-dropdown-resend="__actionsResendHandler"
                             on-account-actions-dropdown-sign-out="__actionsSignOutHandler">
@@ -321,7 +324,7 @@
 
 
   <account-resend-verification-modal id="resendVerificationModal"
-                                     user="[[user]]"
+                                     email="[[user.email]]"
                                      on-resend-verification-modal-resend="__sendVerificationEmail">
   </account-resend-verification-modal>
 

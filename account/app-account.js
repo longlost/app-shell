@@ -28,6 +28,8 @@ import {
   warn
 } from '@longlost/app-core/utils.js';
 
+import firebaseReady from '@longlost/app-core/firebase.js';
+
 import {
   get, 
   initDb, 
@@ -115,6 +117,8 @@ class AppAccount extends AppElement {
           'address2', 
           'city', 
           'country',
+          'displayName',
+          'email',
           'first',
           'last',
           'middle',
@@ -141,6 +145,8 @@ class AppAccount extends AppElement {
         type: Object,
         computed: '__computeProfileBackground(_opened, _headerPlaceholderImg, _userDataSnapshot, _userData)'
       },
+
+      _spinnerShown: Boolean,
 
       _stamp: Boolean,
 
@@ -188,7 +194,8 @@ class AppAccount extends AppElement {
     return [
       '__avatarChanged(_avatar)',
       '__userChanged(user)',
-      '__openedPickerOpenedUserChanged(_opened, _photoPickerOpened, user)'
+      '__openedPickerOpenedUserChanged(_opened, _photoPickerOpened, user)',
+      '__openedSpinnerShownChanged(_opened, _spinnerShown)'
     ];
   }
   
@@ -285,9 +292,11 @@ class AppAccount extends AppElement {
     if (!obj || !obj.base) { return false; }
 
     const {base: unsaved} = obj; 
-    const values = Object.values(unsaved);
+    const entries = Object.entries(unsaved);
 
-    return values.some(val => val && val.trim());
+    return entries.some(([key, val]) => 
+             notRequired(key) ||
+             (typeof val === 'string' && val.trim()));
   }
 
 
@@ -327,6 +336,14 @@ class AppAccount extends AppElement {
     }
   }
 
+  // NOT a computed prop since '_stamp' is set prior to opening.
+  __openedSpinnerShownChanged(opened, spinnerShown) {
+
+    if (!opened && !spinnerShown) {
+      this._stamp = false;
+    }
+  }
+
 
   async __startUserDataSub() {
 
@@ -363,14 +380,21 @@ class AppAccount extends AppElement {
   __editInputChanged(event) {
 
     const {kind, value} = event.detail;
-    this.set(`_unsavedEditsObj.${kind}`, value);
+    this.set(`_unsavedEditsObj.${kind}`, value || null);
   }
 
 
-  __reset() {
+  __clearUnsavedEdits() {
+
+    this.set('_unsavedEditsObj', {});
+  }
+
+
+  __overlayReset() {
 
     this._opened = false;
-    this._stamp  = false;
+
+    this.__clearUnsavedEdits();
   }
 
 
@@ -614,7 +638,11 @@ class AppAccount extends AppElement {
     try {
 
       if (password === this._newPassword) {
-        await this.user.updatePassword(password);
+
+        const {loadAuth}       = await firebaseReady();
+        const {updatePassword} = await loadAuth();
+
+        await updatePassword(this.user, password);
         await stopSpinner();
         await this.select('#passwordModal').close();
 
@@ -654,7 +682,10 @@ class AppAccount extends AppElement {
 
     if (!this.user) { return; }
 
-    await this.user.sendEmailVerification();
+    const {loadAuth}              = await firebaseReady();
+    const {sendEmailVerification} = await loadAuth();
+
+    await sendEmailVerification(this.user);
 
     return message('Account verification email sent.');
   }
@@ -668,31 +699,37 @@ class AppAccount extends AppElement {
 
       // Bail if a required value is empty, 
       // middle, phone and address2 are not required.
-      if (!value && (!notRequired(kind) || !value.trim())) {
+      if ((!value || !value.trim()) && !notRequired(kind)) {
 
         await warn('Sorry, this is a required field.');
 
         stopSpinner();
+
+        return;
       }
+
+      const newVal = value || null;
 
 
       const saveEditToDb = async str => {
 
         const oldVal = this._userDataSnapshot[kind];
 
-        if (oldVal !== value) { // Ignore if there is no change.
+        if (oldVal !== newVal) { // Ignore if there is no change.
 
           const data = {};
-          data[kind] = value;
+          data[kind] = newVal;
 
           await set({coll: 'users', doc: this.user.uid, data});
 
-          this.set(`_userDataSnapshot.${kind}`, value);
+          this.set(`_userDataSnapshot.${kind}`, newVal);
 
           await message(`${str} updated.`);
         }
 
-        stopSpinner();
+        await stopSpinner();
+
+        reset();
       };
 
       switch (kind) {
@@ -701,15 +738,19 @@ class AppAccount extends AppElement {
 
           const previousDisplayName = this.user.displayName;
 
-          // Profile obj === {displayName: nullable string, photoURL: nullable string}.
-          // The profile's displayName and photoURL to update.
-          await this.user.updateProfile({displayName: value});
+          if (previousDisplayName !== newVal) {
 
-          this.notifyPath('user.displayName'); // Cannot write to Firebase user.
+            const {loadAuth}      = await firebaseReady();
+            const {updateProfile} = await loadAuth();
 
-          await message('Profile name updated.');
+            // Profile obj === {displayName: nullable string, photoURL: nullable string}.
+            // The profile's displayName and photoURL to update.
+            await updateProfile(this.user, {displayName: newVal});
 
-          stopSpinner();
+            this.notifyPath('user.displayName'); // Cannot write to Firebase user.
+          }
+
+          await saveEditToDb('Profile name');
 
           break;
 
@@ -727,14 +768,22 @@ class AppAccount extends AppElement {
 
         case 'email':
 
-          await this.user.updateEmail(value);
+          const previousEmail = this.user.email;
 
-          // Sends an email to user for them to verify.
-          await this.__sendVerificationEmail();
-          this.notifyPath('user.email');
+          if (previousEmail !== newVal) {
 
-          await stopSpinner();
-          message('Email updated.');
+            const {loadAuth}    = await firebaseReady();
+            const {updateEmail} = await loadAuth();
+
+            await updateEmail(this.user, newVal);
+
+            // Sends an email to user for them to verify ownership.
+            await this.__sendVerificationEmail();
+
+            this.notifyPath('user.email');
+          }
+
+          await saveEditToDb('Email');
 
           break;
 
@@ -744,7 +793,7 @@ class AppAccount extends AppElement {
 
         case 'password':
 
-          this._newPassword = value;
+          this._newPassword = newVal;
 
           await stopSpinner();
           await this.__openPasswordModal();
@@ -789,10 +838,26 @@ class AppAccount extends AppElement {
   }
 
 
+  __showSpinner(text) {
+
+    this._spinnerShown = true;
+
+    return this.select('#spinner').show(text);
+  }
+
+
+  async __hideSpinner() {
+
+    await this.select('#spinner').hide();
+
+    this._spinnerShown = false;
+  }
+
+
   async __saveAll() {
 
     try {
-      await this.select('#spinner').show('Saving edits.');
+      await this.__showSpinner('Saving edits.');
 
       const pwEdit = this._unsavedEditsObj['password'];
 
@@ -811,36 +876,43 @@ class AppAccount extends AppElement {
         await promise;
       }
       
+      // Make sure no required fields are empty.
       const normalSaves = this._normalKeys.reduce((accum, key) => {
 
         const val = this._unsavedEditsObj[key];
 
-        // 'address2' can be empty string, not required.
-        if (val && (notRequired(key) || val.trim())) {
+        // Unrequired entries can be empty.
+        if (notRequired(key) || (val && val.trim())) {
           accum[key] = val;
         }
 
         return accum; 
       }, {});
 
-      const normalSavePromise = set({
+      const userDataSave = set({
         coll: 'users', 
-        doc:  this.user.uid, 
-        data: normalSaves
+        doc:   this.user.uid, 
+        data:  normalSaves
       });
 
       const saveDisplayName = async displayName => {
 
+        const {loadAuth}      = await firebaseReady();
+        const {updateProfile} = await loadAuth();
+
         // Profile obj === {displayName: nullable string, photoURL: nullable string}.
         // The profile's displayName and photoURL to update.
-        await this.user.updateProfile({displayName});
+        await updateProfile(this.user, {displayName});
 
         this.notifyPath('user.displayName'); // Cannot write to firebase user.
       };
 
       const saveEmail = async email => {
 
-        await this.user.updateEmail(email);
+        const {loadAuth}    = await firebaseReady();
+        const {updateEmail} = await loadAuth();
+
+        await updateEmail(this.user, email);
 
         // Sends an email to user for them to verify.
         await this.__sendVerificationEmail();
@@ -848,20 +920,20 @@ class AppAccount extends AppElement {
         this.notifyPath('user.email');
       };
 
-      const displayNameVal = this._unsavedEditsObj['displayName'];
-      const displayNameSavePromise = 
-        displayNameVal && displayNameVal.trim() ?
-          saveDisplayName(displayNameVal) : Promise.resolve();
+      const name     = this._unsavedEditsObj['displayName'];
+      const nameSave = name && name.trim() ?
+                         saveDisplayName(name) : 
+                         Promise.resolve();
 
-      const emailVal = this._unsavedEditsObj['email'];
-      const emailSavePromise = 
-        emailVal && emailVal.trim() ?
-          saveEmail(emailVal) : Promise.resolve();
+      const email     = this._unsavedEditsObj['email'];
+      const emailSave = email && email.trim() ?
+                          saveEmail(email) : 
+                          Promise.resolve();
 
       await Promise.all([
-        normalSavePromise, 
-        displayNameSavePromise, 
-        emailSavePromise
+        userDataSave, 
+        nameSave, 
+        emailSave
       ]);
 
       // Update input vals.
@@ -872,8 +944,7 @@ class AppAccount extends AppElement {
         this.set(`_userDataSnapshot.${key}`, value);
       });
 
-      // Reset obj.
-      this.set('_unsavedEditsObj', {});
+      this.__clearUnsavedEdits();
 
       await message('Account updated.');
     }
@@ -882,7 +953,7 @@ class AppAccount extends AppElement {
     }
     finally {
       await  this.select('#overlay').reset();
-      return this.select('#spinner').hide();
+      return this.__hideSpinner();
     }
   }
 
@@ -904,15 +975,18 @@ class AppAccount extends AppElement {
 
     try {
 
-      await this.select('#spinner').show('Deleting your account. Please wait.');
+      await this.__showSpinner('Deleting your account. Please wait.');
+
+      const {loadAuth}   = await firebaseReady();
+      const {deleteUser} = await loadAuth();
 
       // Delete and signout user.
       await Promise.all([
-        this.user.delete(),
+        deleteUser(this.user),
         wait(1000)
       ]);
 
-      await this.select('#spinner').show('Deleting app data from this device. Please wait.');
+      await this.__showSpinner('Deleting app data from this device. Please wait.');
 
       // Get the currently running firestore instance.
       const db = await initDb();
@@ -925,16 +999,13 @@ class AppAccount extends AppElement {
 
       // Start a new firestore instance.
       await initDb();
-
       await schedule();
-
-      await this.select('#spinner').hide();
-
+      await this.__hideSpinner();
       await this.select('#overlay').close();
     }
     catch (error) {
 
-      await this.select('#spinner').hide();
+      await this.__hideSpinner();
 
       this.__handleFirebaseErrors(error);
     }
