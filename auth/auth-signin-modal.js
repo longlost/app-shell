@@ -32,11 +32,15 @@ import {
   schedule
 } from '@longlost/app-core/utils.js';
 
-import {htmlLiteral}   from '@polymer/polymer/lib/utils/html-tag.js';
-import {initAuth}      from './auth.js';
-import styles          from 'firebaseui/dist/firebaseui.css';
-import * as firebaseui from 'firebaseui';
+import {
+  firebaseui, 
+  styles
+} from '@longlost/app-core/firebaseui.js';
+
+import {htmlLiteral} from '@polymer/polymer/lib/utils/html-tag.js';
+import {initAuth}    from './auth.js';
 import '@longlost/app-overlays/app-modal.js';
+
 // 'services.js' lazy-loaded.
 
 
