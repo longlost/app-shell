@@ -77,6 +77,9 @@ class AccountPhotoPicker extends AppElement {
 
       darkMode: Boolean,
 
+      // User's db data.
+      data: Object,
+
       // 'avatar' is a special value that also sets
       // the Firebase Auth 'user' profile 'photoURL' field.
       type: {
@@ -85,8 +88,6 @@ class AccountPhotoPicker extends AppElement {
       },
 
       user: Object,
-
-      userData: Object,
 
       _aspect: {
         type: String,
@@ -102,7 +103,7 @@ class AccountPhotoPicker extends AppElement {
       _hideRemoveBtn: {
         type: Boolean,
         value: true,
-        computed: '__computeHideRemoveBtn(type, userData, _selected)'
+        computed: '__computeHideRemoveBtn(type, data, _selected)'
       },
 
       _hideClearBtn: {
@@ -142,7 +143,7 @@ class AccountPhotoPicker extends AppElement {
 
       _src: {
         type: String,
-        computed: '__computeSrc(type, userData, _selected, _opened)'
+        computed: '__computeSrc(type, data, _selected, _opened)'
       },
 
       _stampContent: Boolean,

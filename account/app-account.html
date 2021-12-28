@@ -26,21 +26,9 @@
     margin-top: 32px;
   }
 
-  #grid {
-    display:               grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    grid-column-gap:       144px;
-    justify-items:         center;
-    max-width:             1152px;
-    margin:                0px auto;
-  }
-
-  .grid-item {
-    max-width: 480px;
-    width:     100%;
-
-    /* Pass to <edit-input>'s and <shipping-inputs> */
-    background-color: var(--app-background-color);
+  .divider { 
+    margin: 32px 0px;
+    width:  100%; /* Needed for grid. */
   }
 
   .max-width-wrapper {
@@ -48,44 +36,17 @@
     margin:    0px auto;
   }
 
-  #verified-wrapper {
-    display:        flex;
-    align-items:    center;
-    height:         62px; /* Match edit-input. */
-    font-size:      12px;
-    color:          var(--app-secondary-color);
-  }
-
-  #verified-wrapper[hidden] {
-    display: none;
-  }
-
-  #verified-wrapper iron-icon {
-    margin: 0px 16px;
-  }
-
-  .divider { 
-    margin: 32px 0px;
-    width:  100%; /* Needed for grid. */
-  }
-
-  h3 {
-    font-weight: normal;
-    padding:     0px 16px;
-  }
-
   #bottom-btns-container {
-    display:        flex;
-    flex-direction: column;
-    margin-top:     32px;
-    padding:        64px 16px 0px 16px;
+    padding: 32px 16px 0px 16px;
   }
 
   .bottom-btns {
-    margin: 0px 0px 32px 0px;
+    margin: 0px 0px 64px 0px;
   }
 
   #save-all-btn {
+    width: 100%;
+
     background-color: var(--app-secondary-color);
     color:            var(--app-secondary-color-text);
   }
@@ -98,14 +59,6 @@
   #delete-btn {
     background-color: var(--app-error-color);
     color:            var(--app-error-color-text, white);
-  }
-
-  @media only screen and (min-width: 846px) {
-
-    #first-divider {
-      display: none;
-    }
-
   }
 
 </style>
@@ -157,120 +110,12 @@
     <div id="content" 
          slot="content">
 
-      <div id="grid">
-        <div class="grid-item">
-
-          <h3>My Profile</h3>
-
-          <div id="verified-wrapper"
-               hidden="[[!user.emailVerified]]">
-            <iron-icon icon="app-shell-icons:verified-user"></iron-icon>
-            <div>
-              Verified
-            </div>
-          </div>
-
-          <edit-input icon="app-icons:label"
-                      kind="displayName">
-            <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
-                         autocapitalize
-                         auto-validate
-                         label="Profile Name"
-                         placeholder="[[__computeDisplayNamePlaceholder(user.displayName)]]"
-                         tabindex="0">
-            </paper-input>
-          </edit-input>
-
-          <edit-input icon="app-icons:label-outline"
-                      kind="first">
-            <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
-                         autocapitalize
-                         auto-validate
-                         label="First Name"
-                         placeholder="[[__computeFirstNamePlaceholder(_userDataSnapshot.first)]]"
-                         tabindex="0">
-            </paper-input>
-          </edit-input>
-
-          <edit-input icon="app-icons:label-outline"
-                      kind="middle">
-            <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
-                         autocapitalize
-                         auto-validate
-                         label="Middle Name (not required)"
-                         minlength="0"
-                         placeholder="[[__computeMiddleNamePlaceholder(_userDataSnapshot.middle)]]"
-                         tabindex="0">
-            </paper-input>
-          </edit-input>
-
-          <edit-input icon="app-icons:label-outline"
-                      kind="last">
-            <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
-                         autocapitalize
-                         auto-validate
-                         label="Last Name"
-                         placeholder="[[__computeLastNamePlaceholder(_userDataSnapshot.last)]]"
-                         tabindex="0">
-            </paper-input>
-          </edit-input>
-
-          <edit-input icon="app-icons:mail"
-                      kind="email">
-            <paper-input id="emailInput"
-                         allowed-pattern="[^/\s/\f/\n/\r/\t/\v]"
-                         auto-validate
-                         error-message="Please enter a valid format"
-                         label="[[__computeEmailLabel(user.emailVerified)]]"
-                         pattern=".+@{1}.+\.{1}.+"
-                         placeholder="[[__computeEmailPlaceholder(user.email)]]"
-                         tabindex="0"
-                         type="email">
-            </paper-input>
-          </edit-input>
-
-          <edit-input icon="app-icons:call"
-                      kind="phone">
-            <gold-phone-input auto-validate
-                              label="Phone Number (not required)"
-                              maxlength="12"
-                              minlength="0"
-                              placeholder="[[__computePhonePlaceholder(_userDataSnapshot.phone)]]" 
-                              tabindex="0">
-            </gold-phone-input>
-          </edit-input>
-
-          <edit-input icon="app-shell-icons:security"
-                      kind="password">
-            <paper-input id="passwordInput"
-                         allowed-pattern="[^/\f/\n/\r/\t/\v]"
-                         auto-validate
-                         label="Password"
-                         placeholder="*****"
-                         tabindex="0"
-                         type="password">
-            </paper-input>
-          </edit-input>
-
-        </div>
-
-
-        <div id="first-divider" 
-             class="divider shared-bottom-divider">
-        </div>
-
-
-        <div class="grid-item">  
-
-          <h3>My Shipping</h3>
-
-          <shipping-inputs id="shipping"
-                           hide-name-input
-                           data="[[_userDataSnapshot]]">
-          </shipping-inputs>
-        </div>  
-
-      </div>    
+      <account-inputs id="inputs"
+                      data="[[_data]]"
+                      user="[[user]]"
+                      on-app-inputs-save-value="__inputsSaveValueHandler"
+                      on-app-inputs-value-changed="__inputsValueChangedHandler">
+      </account-inputs>
 
 
       <div class="divider shared-bottom-divider"></div>
@@ -347,7 +192,6 @@
                       dark-mode="[[darkMode]]"
                       type="[[_photoPickerType]]"
                       user="[[user]]"
-                      user-data="[[_userData]]"
-                      on-account-photo-picker-opened-changed="__photoPickerOpenedChangedHandler">              
+                      data="[[_data]]">              
 </account-photo-picker>
     
