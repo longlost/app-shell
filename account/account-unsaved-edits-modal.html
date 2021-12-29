@@ -1,8 +1,51 @@
 
-<style>
+<style include="app-shared-styles">
+
+  app-modal {
+    --modal-card-content-padding: 0px;
+  }
+
+  #content {
+    padding:          16px;
+    background-color: var(--app-body-color);
+  }
+
+  .secondary {
+    font-size: 14px;
+  }
+  
+  .secondary,
+  .item iron-icon,
+  .label {
+    color: var(--app-secondary-text);
+  }
+
+  .item {
+    display:     flex;
+    align-items: center;
+    margin:      16px 0px;
+  }
+
+  .item iron-icon {
+    min-width:    24px;
+    margin-right: 4px;
+  }
+
+  .text {
+    max-width: calc(100% - 28px);
+  }
+
+  .label {
+    font-size: 12px;
+  }
+
+  #dismiss-btn {
+    color: var(--app-primary-color);
+  }
 
   #exit-anyway-btn {    
-    color: var(--app-secondary-color);
+    background-color: var(--app-primary-color);
+    color:            var(--app-primary-color-text);
   }
 
   #save-all-btn {
@@ -17,27 +60,49 @@
            heading="Unsaved Edits"
            on-click="__modalClicked">
 
-  <div slot="card-content-slot">
-    <p>
-      You have unsaved edits.
+  <div id="content" 
+       slot="card-content-slot">
+
+    <p class="secondary">
+      The following changes have not been saved.
     </p>
-    <p>
-      These are indicated by a <iron-icon icon="app-icons:check"></iron-icon>
+
+
+    <template is="dom-repeat"
+              items="[[_items]]">
+      <div class="item">
+
+        <iron-icon icon="[[item.icon]]"></iron-icon>
+
+        <div class="text">
+          <div class="label">[[__computeLabel(item.label)]]</div>
+          <div class="shared-single-line-truncate">[[__computeValue(item.kind, item.value)]]</div>
+        </div>
+
+      </div>
+    </template>
+
+
+    <p class="secondary">
+      Do you want to exit without saving, or would you like to save your changes first?
     </p>
-    <p>
-      Do you want to exit without saving, or would you like to save your changes?
-    </p>
+
   </div>
   
+  <paper-button id="dismiss-btn"
+                slot="card-actions-slot"
+                on-click="__dismissButtonClicked">
+    DISMISS
+  </paper-button>
   <paper-button id="exit-anyway-btn"
                 slot="card-actions-slot"
                 on-click="__exitAnywayButtonClicked">
-    EXIT ANYWAY
+    EXIT
   </paper-button>  
   <paper-button id="save-all-btn"
                 slot="card-actions-slot" 
                 on-click="__saveAllButtonClicked">
-    SAVE ALL
+    SAVE
   </paper-button>  
   
 </app-modal>

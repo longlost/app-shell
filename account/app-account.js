@@ -145,10 +145,10 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
     const entries = Object.entries(unsaved);
 
     return entries.
-             filter(([_, val]) => val !== null). // Null entries have already been saved.
-             some(([key, val]) => 
+             filter(([_, obj]) => obj !== null). // Null entries have already been saved.
+             some(([key, obj]) => 
                notRequired(key) || // Unrequired entries can be empty.
-               (typeof val === 'string' && val.trim()));
+               (typeof obj.value === 'string' && obj.value.trim()));
   }
 
 
@@ -208,8 +208,9 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
 
     hijackEvent(event);
 
-    const {kind, value} = event.detail;
-    this.set(`_unsavedEditsObj.${kind}`, value);
+    const {kind, ...data} = event.detail;
+
+    this.set(`_unsavedEditsObj.${kind}`, data);
   }
 
 
@@ -279,8 +280,22 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
     this.select('#passwordModal').open();
   }
 
+  // Handle cases where the password modal is
+  // dismissed during a 'save all' scenario.
+  async __passwordModalDismissHandler(event) {
 
-  async __passwordModalConfirm(event) {
+    hijackEvent(event);
+
+    if (this._passwordPromiseResolver) {
+      await schedule();
+      this._passwordPromiseResolver();
+    }    
+  }
+
+
+  async __passwordModalConfirmHandler(event) {
+
+    hijackEvent(event);
 
     const {password, stopSpinner} = event.detail;
 
@@ -520,7 +535,7 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
     try {
       await this.__showSpinner('Saving edits.');
 
-      const pwEdit = this._unsavedEditsObj['password'];
+      const pwEdit = this._unsavedEditsObj?.password.value;
 
       if (pwEdit && pwEdit.trim()) {   
 
@@ -539,11 +554,13 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
 
       // Make sure no required fields are empty.
       const data = Object.entries(this._unsavedEditsObj).reduce(
-        (accum, [key, val]) => {
+        (accum, [key, obj]) => {
+
+          const {value} = obj;
 
           // Unrequired entries can be empty.
-          if (notRequired(key) || (val && val.trim())) {
-            accum[key] = val;
+          if (notRequired(key) || (value && value.trim())) {
+            accum[key] = value;
           }
 
           return accum; 
@@ -561,8 +578,8 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
 
       await Promise.all([
         userDataSave, 
-        this.__saveDisplayName(displayName), 
-        this.__saveEmail(email)
+        this.__saveDisplayName(displayName?.value), 
+        this.__saveEmail(email?.value)
       ]);
 
       this.__clearUnsavedEdits();

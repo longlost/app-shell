@@ -159,7 +159,8 @@
   <!-- Dynamically imported. -->
 
   <account-password-modal id="passwordModal"
-                          on-password-modal-confirm="__passwordModalConfirm">
+                          on-password-modal-dismiss="__passwordModalDismissHandler"
+                          on-password-modal-confirm="__passwordModalConfirmHandler">
   </account-password-modal>
 
 
@@ -180,6 +181,7 @@
 
 
   <account-unsaved-edits-modal id="unsavedEditsModal"
+                               unsaved="[[_unsavedEditsObj]]"
                                on-unsaved-edits-modal-exit="__exitWithoutSavingChanges"
                                on-unsaved-edits-modal-save-all="__saveAll">
   </account-unsaved-edits-modal>

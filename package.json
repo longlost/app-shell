@@ -20,7 +20,7 @@
     "@longlost/app-camera": "^1.19.0",
     "@longlost/app-core": "^6.1.1",
     "@longlost/app-images": "^2.2.2",
-    "@longlost/app-inputs": "^2.1.0",
+    "@longlost/app-inputs": "^2.2.0",
     "@longlost/app-overlays": "^2.0.0",
     "@longlost/app-spinner": "^1.2.1",
     "@longlost/grow-shrink-container": "^1.0.0",
