@@ -1,0 +1,151 @@
+
+<style include="app-shared-styles">
+
+  :host {
+    display:          flex;
+    flex-direction:   column;
+    background-color: inherit;
+  }
+
+  .address {
+    position:         relative;
+    margin-bottom:    32px;
+    background-color: inherit;
+  }
+
+  h3 {
+    position:         sticky;
+    top:              0px;
+    z-index:          1;
+    padding:          16px;
+    font-weight:      normal;
+    background-color: inherit;
+  }
+
+  .remove-btn {
+    position: absolute;
+    top:      30px;
+    right:    8px;
+    z-index:  1;
+  }
+
+  .radios {
+    display:         flex;
+    justify-content: space-between;
+    margin:          16px 0px;
+    padding:         0px 16px;
+  }
+
+  .radio {
+    --paper-radio-button-label-color:     var(--app-secondary-text);
+    --paper-radio-button-unchecked-color: var(--app-secondary-text);
+  }
+
+  .radio[checked] {
+    --paper-radio-button-label-color: var(--app-dark-text);
+  }
+
+  paper-fab {
+    align-self:       flex-end;
+    margin-right:     16px;
+    background-color: var(--app-primary-color);
+    color:            var(--app-primary-color-text);
+  }
+
+  /* `paper-fab` does NOT have this built in. ?? */
+  paper-fab[hidden] {
+    display: none;
+  }
+
+</style>
+
+
+<template is="dom-repeat" 
+          items="[[_addresses]]"
+          strip-whitespace>
+
+  <div class="address">
+
+
+    <h3>Address [[__computeAddressNumber(index)]]</h3>
+
+    <paper-icon-button class="remove-btn"
+                       hidden="[[__computeHideRemoveBtn(_addresses)]]"
+                       icon="app-icons:close"
+                       on-click="__removeButtonClicked">
+    </paper-icon-button>
+
+
+    <div class="radios">
+
+      <!-- 
+        Using 'item.index' for radios instead of 'index' 
+        to keep data strictlyin sync with db. 
+      -->
+      <paper-radio-button class="shared-paper-radio-button radio" 
+                          checked="[[item.billing]]"
+                          index="[[item.index]]"
+                          name="billing"
+                          on-checked-changed="__radioCheckedChangedHandler">
+        Billing
+      </paper-radio-button>
+
+      <paper-radio-button class="shared-paper-radio-button radio" 
+                          checked="[[item.default]]"
+                          index="[[item.index]]"
+                          name="default"
+                          on-checked-changed="__radioCheckedChangedHandler">
+        Default Shipping
+      </paper-radio-button>
+
+    </div>
+
+
+    <edit-input icon="app-icons:label-outline"
+                kind="first">
+      <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                   autocapitalize
+                   auto-validate
+                   label="First Name"
+                   placeholder="[[__computeFirstNamePlaceholder(item.first)]]"
+                   tabindex="0">
+      </paper-input>
+    </edit-input>
+
+    <edit-input icon="app-icons:label-outline"
+                kind="middle">
+      <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                   autocapitalize
+                   auto-validate
+                   label="Middle Name (not required)"
+                   minlength="0"
+                   placeholder="[[__computeMiddleNamePlaceholder(item.middle)]]"
+                   tabindex="0">
+      </paper-input>
+    </edit-input>
+
+    <edit-input icon="app-icons:label-outline"
+                kind="last">
+      <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
+                   autocapitalize
+                   auto-validate
+                   label="Last Name"
+                   placeholder="[[__computeLastNamePlaceholder(item.last)]]"
+                   tabindex="0">
+      </paper-input>
+    </edit-input>
+
+    <shipping-inputs hide-name-input
+                     data="[[item]]">
+    </shipping-inputs>
+
+  </div>
+
+</template>
+
+
+<paper-fab hidden="[[_hideAddFab]]" 
+           icon="app-shell-icons:add"
+           mini
+           on-click="__addFabClicked">             
+</paper-fab>
