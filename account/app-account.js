@@ -29,7 +29,6 @@ import {
 } from '@longlost/app-core/utils.js';
 
 import {
-  get, 
   initDb, 
   set, 
   subscribe,

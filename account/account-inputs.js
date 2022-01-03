@@ -20,11 +20,11 @@ import htmlString         from './account-inputs.html';
 import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.js';
 import '@longlost/app-inputs/edit-input.js';
-import '@longlost/app-inputs/shipping-inputs.js';
 import '@polymer/gold-phone-input/gold-phone-input.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-input/paper-input.js';
 import '../shared/app-shell-icons.js';
+import './account-addresses.js';
 
 
 // User input data captured.

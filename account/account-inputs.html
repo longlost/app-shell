@@ -34,7 +34,7 @@
     margin: 0px 16px;
   }
 
-  h3 {
+  h2 {
     font-weight: normal;
     padding:     0px 16px;
   }
@@ -57,7 +57,7 @@
 
 <div class="grid-item">
 
-  <h3>My Profile</h3>
+  <h2>My Profile</h2>
 
   <div id="verified-wrapper"
        hidden="[[!user.emailVerified]]">
@@ -159,10 +159,8 @@
 
 <div class="grid-item">  
 
-  <h3>My Shipping</h3>
+  <h2>My Addresses</h2>
 
-  <shipping-inputs id="shipping"
-                   hide-name-input
-                   data="[[data]]">
-  </shipping-inputs>
+  <account-addresses user="[[user]]"></account-addresses>
+
 </div>
