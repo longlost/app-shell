@@ -63,11 +63,38 @@ import './account-inputs.js';
 // phone, state, zip
 
 
+const separateEntries = unsaved => 
+                          Object.entries(unsaved).reduce(
+                            (accum, [kind, obj]) => {
+
+                              const data = {...obj, kind};
+
+                              if (data.isAddress) {
+                                accum.addressEntries.push(data);
+                              }
+                              else {
+                                accum.dataEntries.push(data);
+                              }
+
+                              return accum;
+                            },
+                            {addressEntries: [], dataEntries: []}
+                          );
+
+
 const notRequired = str => (
-  str === 'address2' ||
-  str === 'middle'   ||
+  str.includes('address2') ||
+  str === 'middle'         ||
   str === 'phone'
 );
+
+// Make sure no required fields are empty.
+const filterEmptyRequiredEntries = entries => {
+
+  return entries.filter(({kind, value}) => 
+           notRequired(kind) || (value && value.trim()));
+};
+
 
 
 class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
@@ -133,6 +160,42 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
       '__openedUserChanged(_opened, user)',
       '__openedSpinnerShownChanged(_opened, _spinnerShown)'
     ];
+  }
+
+
+  connectedCallback() {
+
+    super.connectedCallback();
+
+    this.__addressesAddAnimSetupHandler    = this.__addressesAddAnimSetupHandler.bind(this);
+    this.__addressesAddAnimPlayHandler     = this.__addressesAddAnimPlayHandler.bind(this);
+    this.__addressesAddedHandler           = this.__addressesAddedHandler.bind(this);
+    this.__addressesOpenRemoveModalHandler = this.__addressesOpenRemoveModalHandler.bind(this);
+    this.__addressesRemoveAnimHandler      = this.__addressesRemoveAnimHandler.bind(this);
+    this.__addressesRemovedHandler         = this.__addressesRemovedHandler.bind(this);
+    this.__addressesValueSavedHandler      = this.__addressesValueSavedHandler.bind(this);
+
+    this.addEventListener('addresses-add-animation-setup', this.__addressesAddAnimSetupHandler);
+    this.addEventListener('addresses-add-animation-play',  this.__addressesAddAnimPlayHandler);
+    this.addEventListener('addresses-address-added',       this.__addressesAddedHandler);
+    this.addEventListener('addresses-open-remove-modal',   this.__addressesOpenRemoveModalHandler);
+    this.addEventListener('addresses-remove-animation',    this.__addressesRemoveAnimHandler);
+    this.addEventListener('addresses-address-removed',     this.__addressesRemovedHandler);
+    this.addEventListener('addresses-value-saved',         this.__addressesValueSavedHandler);
+  }
+
+
+  disconnectedCallback() {
+
+    super.disconnectedCallback();
+
+    this.removeEventListener('addresses-add-animation-setup', this.__addressesAddAnimSetupHandler);
+    this.removeEventListener('addresses-add-animation-play',  this.__addressesAddAnimPlayHandler);
+    this.removeEventListener('addresses-address-added',       this.__addressesAddedHandler);
+    this.removeEventListener('addresses-open-remove-modal',   this.__addressesOpenRemoveModalHandler);
+    this.removeEventListener('addresses-remove-animation',    this.__addressesRemoveAnimHandler);
+    this.removeEventListener('addresses-address-removed',     this.__addressesRemovedHandler);
+    this.removeEventListener('addresses-value-saved',         this.__addressesValueSavedHandler);
   }
 
 
@@ -213,9 +276,115 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
   }
 
 
+  __clearUnsavedEditsEntry(kind) {
+
+    this.set(`_unsavedEditsObj.${kind}`, null);
+  }
+
+
   __clearUnsavedEdits() {
 
     this.set('_unsavedEditsObj', {});
+  }
+
+  // Move 'bottom-section' back into it's current position
+  // after it has been displaced by the new dom element.
+  __addressesAddAnimSetupHandler(event) {
+
+    hijackEvent(event);
+
+    const {height} = event.detail;
+
+    this.updateStyles({'--bottom-section-y': `${-height}px`}); 
+
+    this.select('#bottom-section').classList.add('setup-move-down'); 
+  }
+
+  // Trigger the transition from its former to new position.
+  __addressesAddAnimPlayHandler(event) {
+
+    hijackEvent(event);
+
+    this.select('#bottom-section').classList.remove('setup-move-down');
+    this.select('#bottom-section').classList.add('move-down');
+  }
+
+  // Cleanup for next animation.
+  __addressesAddedHandler(event) {
+
+    hijackEvent(event);
+
+    this.select('#bottom-section').classList.remove('move-down');
+  }
+
+
+  async __addressesOpenRemoveModalHandler(event) {
+
+    try {
+
+      hijackEvent(event);
+
+      await import(
+        /* webpackChunkName: 'account-remove-address-modal' */ 
+        './account-remove-address-modal.js'
+      );
+
+      await this.select('#removeAddressModal').open(event.detail.model);
+    }
+    catch (error) { console.error(error); }
+  }
+
+  // User confirmed via modal.
+  __removeAddressHandler(event) {
+
+    hijackEvent(event);
+
+    this.select('#inputs').removeAddress(event.detail.model);
+  }
+
+  // Move 'bottom-section' up one address section
+  // before deleting the dom element.
+  __addressesRemoveAnimHandler(event) {
+
+    hijackEvent(event);
+
+    const {height} = event.detail;
+
+    this.updateStyles({'--bottom-section-y': `${-height}px`}); 
+
+    this.select('#bottom-section').classList.add('move-up'); 
+  }
+
+  // Cleanup after address section deleted.
+  __addressesRemovedHandler(event) {
+
+    hijackEvent(event);
+
+    this.select('#bottom-section').classList.remove('move-up');
+
+    const {index} = event.detail;
+
+    const entries = Object.
+                      entries(this._unsavedEditsObj).
+                      filter(([_, obj]) => 
+                        obj.isAddress && (obj.index === index));
+
+    // Address section was removed before any edits were made.
+    if (!entries.length) { return; }
+
+    entries.forEach(([kind]) => {
+      this.__clearUnsavedEditsEntry(kind);
+    });
+  }
+
+
+  __addressesValueSavedHandler(event) {
+
+    hijackEvent(event);
+
+    const {kind} = event.detail;
+
+    this.__clearUnsavedEditsEntry(kind);
   }
 
 
@@ -426,8 +595,7 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
 
         if (oldVal !== newVal) { // Ignore if there is no change.
 
-          const data = {};
-          data[kind] = newVal;
+          const data = {[kind]: newVal};
 
           await set({coll: 'users', doc: this.user.uid, data});
           await message(`${str} updated.`);
@@ -475,36 +643,12 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
 
           break;
 
-        case 'address1':
-          await saveEditToDb('Address');
-          break;
-
-        case 'address2':
-          await saveEditToDb('Address');
-          break;
-
-        case 'city':
-          await saveEditToDb('City');
-          break;
-
-        case 'state':
-          await saveEditToDb('State/province/region');
-          break;
-
-        case 'zip':
-          await saveEditToDb('Zip/postal code');
-          break;
-
-        case 'country':
-          await saveEditToDb('Country');
-          break;
-
         default:
           console.warn('no such input kind: ', kind);
           break;
       }
 
-      this.set(`_unsavedEditsObj.${kind}`, null);
+      this.__clearUnsavedEditsEntry(kind);
     }
     catch (error) {
       stopSpinner();
@@ -534,7 +678,7 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
     try {
       await this.__showSpinner('Saving edits.');
 
-      const pwEdit = this._unsavedEditsObj?.password.value;
+      const pwEdit = this._unsavedEditsObj.password?.value;
 
       if (pwEdit && pwEdit.trim()) {   
 
@@ -551,21 +695,17 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
         await promise;
       }
 
+      const {addressEntries, dataEntries} = separateEntries(this._unsavedEditsObj);
+
       // Make sure no required fields are empty.
-      const data = Object.entries(this._unsavedEditsObj).reduce(
-        (accum, [key, obj]) => {
-
-          const {value} = obj;
-
-          // Unrequired entries can be empty.
-          if (notRequired(key) || (value && value.trim())) {
-            accum[key] = value;
-          }
-
-          return accum; 
-        }, 
-        {}
-      );
+      const addresses = filterEmptyRequiredEntries(addressEntries);
+      const data      = filterEmptyRequiredEntries(dataEntries).reduce(
+                          (accum, {kind, value}) => {
+                            accum[kind] = value;
+                            return accum; 
+                          }, 
+                          {}
+                        );
 
       const userDataSave = set({
         coll: 'users', 
@@ -573,12 +713,15 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
         data
       });
 
+      const addressSaves = this.select('#inputs').saveAddresses(addresses);
+
       const {displayName, email} = this._unsavedEditsObj;
 
       await Promise.all([
-        userDataSave, 
+        userDataSave,
         this.__saveDisplayName(displayName?.value), 
-        this.__saveEmail(email?.value)
+        this.__saveEmail(email?.value),
+        ...addressSaves
       ]);
 
       this.__clearUnsavedEdits();

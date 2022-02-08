@@ -1,0 +1,43 @@
+
+<style include="app-shared-styles">
+
+  #dismiss-btn {
+    color: var(--app-primary-color);
+  }
+  
+  #delete-btn {
+    background-color: var(--app-error-color);
+    color:            var(--app-error-color-text, white);
+  }
+
+</style>
+
+
+<app-modal id="modal"
+           heading="Delete Address"
+           on-click="__reauthModalClicked">
+
+  <div id="content-div" 
+       slot="card-content-slot">
+    <p>
+      Would you like to delete this address?
+    </p>
+  </div>
+
+  <paper-button id="dismiss-btn"
+                slot="card-actions-slot"
+                on-click="__dismissButtonClicked">
+    DISMISS
+  </paper-button>
+  
+  <paper-button id="delete-btn"
+                class="shared-paper-button-with-icon"
+                slot="card-actions-slot"
+                on-click="__deleteButtonClicked">
+    <iron-icon icon="app-icons:delete-forever"
+               class="shared-iron-icon-inside-paper-button">
+    </iron-icon>
+    DELETE
+  </paper-button> 
+
+</app-modal>

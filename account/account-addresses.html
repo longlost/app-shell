@@ -9,8 +9,37 @@
 
   .address {
     position:         relative;
-    margin-bottom:    32px;
+    padding-bottom:   32px;
     background-color: inherit;
+    opacity:          0;
+  }
+
+  .fade-in-address {
+    opacity:    1;
+    transition: opacity var(--remove-animation-duration) ease-in;
+  }
+
+  .move-up-next {
+    transition: transform var(--remove-animation-duration) var(--app-custom-ease);
+    transform:  translateY(-100%);
+    z-index:    1;
+  }
+
+  .address:after {
+    content:          '';
+    position:         absolute;
+    top:              0px;
+    right:            0px;
+    bottom:           0px;
+    left:             0px;
+    background-color: inherit;
+    transform:        scale(1, 0);
+    transform-origin: bottom;
+  }
+
+  .move-up-address:after {
+    transition: transform var(--remove-animation-duration) var(--app-custom-ease);
+    transform:  scale(1, 1);
   }
 
   h3 {
@@ -60,7 +89,8 @@
 </style>
 
 
-<template is="dom-repeat" 
+<template id="repeater"
+          is="dom-repeat" 
           items="[[_addresses]]"
           strip-whitespace>
 
@@ -102,6 +132,7 @@
 
 
     <edit-input icon="app-icons:label-outline"
+                index="[[item.index]]"
                 kind="first">
       <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
                    autocapitalize
@@ -113,6 +144,7 @@
     </edit-input>
 
     <edit-input icon="app-icons:label-outline"
+                index="[[item.index]]"
                 kind="middle">
       <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
                    autocapitalize
@@ -125,6 +157,7 @@
     </edit-input>
 
     <edit-input icon="app-icons:label-outline"
+                index="[[item.index]]"
                 kind="last">
       <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
                    autocapitalize
@@ -136,6 +169,7 @@
     </edit-input>
 
     <shipping-inputs hide-name-input
+                     index="[[item.index]]"
                      data="[[item]]">
     </shipping-inputs>
 
