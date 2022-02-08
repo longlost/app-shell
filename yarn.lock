@@ -3420,15 +3420,10 @@ multi-download@^3.0.0:
   resolved "https://registry.yarnpkg.com/multi-download/-/multi-download-3.0.0.tgz#c169bcdb723d9c568856593a158a32d3d205d36a"
   integrity sha512-AXumytZ+JGdwxWSNrOqNa2ATAQHb1u/K1kfWXoTkaOs0zL6rcy+QJJrYFRLe+T2jLtlTxM+8fx/qKXQS7+E6XQ==
 
-nanoid@3.2.0:
+nanoid@3.2.0, nanoid@^3.1.25:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.2.0.tgz#62667522da6673971cca916a6d3eff3f415ff80c"
   integrity sha512-fmsZYa9lpn69Ad5eDn7FMcnnSR+8R34W9qJEijxYhTbfOWzr22n1QxCMzXLK+ODyW2973V3Fux959iQoUxzUIA==
-
-nanoid@^3.1.25:
-  version "3.1.25"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.25.tgz#09ca32747c0e543f0e1814b7d3793477f9c8e152"
-  integrity sha512-rdwtIXaXCLFAQbnfqDRnI6jaRHp9fTcYBjtFKE8eezcZ7LuLjhUaQGNeMXf1HmRoCH32CLz6XwX0TtxEOS/A3Q==
 
 node-fetch@2.6.1, node-fetch@~2.6.1:
   version "2.6.1"
