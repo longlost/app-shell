@@ -19,11 +19,11 @@
   }
 
   #verified-wrapper {
-    display:        flex;
-    align-items:    center;
-    height:         62px; /* Match edit-input. */
-    font-size:      12px;
-    color:          var(--app-secondary-color);
+    display:     flex;
+    align-items: center;
+    height:      62px; /* Match edit-input. */
+    font-size:   12px;
+    color:       var(--app-secondary-color);
   }
 
   #verified-wrapper[hidden] {
@@ -44,7 +44,7 @@
     width:  100%; /* Needed for grid. */
   }
 
-  @media only screen and (min-width: 846px) {
+  @media only screen and (min-width: 784px) {
 
     #divider {
       display: none;
@@ -161,6 +161,9 @@
 
   <h2>My Addresses</h2>
 
-  <account-addresses user="[[user]]"></account-addresses>
+  <account-addresses id="addresses"
+                     user="[[user]]"
+                     on-addresses-input-changed="__editInputChanged">                       
+  </account-addresses>
 
 </div>

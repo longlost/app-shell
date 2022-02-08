@@ -7,6 +7,11 @@
 
     /* Match truncated text with main title truncate. */
     --bottom-toolbar-text-width: calc(100% - 96px); 
+
+    /* Used in add/remove address animtion. */
+    --bottom-section-y:          unset;
+    --add-animation-duration:    500ms;
+    --remove-animation-duration: 800ms;
   }
 
   #header-image {
@@ -24,6 +29,24 @@
   #content {
     position:   relative;
     margin-top: 32px;
+  }
+
+  .bottom-section {
+    transform:  translateY(0px);
+    transition: none;
+  }
+
+  .setup-move-down {
+    transform: translateY(var(--bottom-section-y));
+  }
+
+  .move-down {    
+    transition: transform var(--add-animation-duration) var(--app-custom-ease);
+  }
+
+  .move-up {  
+    transform:  translateY(var(--bottom-section-y));  
+    transition: transform var(--remove-animation-duration) var(--app-custom-ease);
   }
 
   .divider { 
@@ -118,26 +141,28 @@
       </account-inputs>
 
 
-      <div class="divider shared-bottom-divider"></div>
+      <section id="bottom-section" 
+               class="divider shared-divider bottom-section">
 
-
-      <div class="max-width-wrapper">
-        <div id="bottom-btns-container">
-          <paper-button id="save-all-btn"
-                        class="bottom-btns"
-                        disabled="[[!_unsavedEdits]]"
-                        raised 
-                        on-click="__saveAllButtonClicked">
-            SAVE ALL
-          </paper-button>
-          <paper-button id="delete-btn"
-                        class="bottom-btns"
-                        raised 
-                        on-click="__deleteUserButtonClicked">
-            DELETE ACCOUNT
-          </paper-button>
+        <div class="max-width-wrapper">
+          <div id="bottom-btns-container">
+            <paper-button id="save-all-btn"
+                          class="bottom-btns"
+                          disabled="[[!_unsavedEdits]]"
+                          raised 
+                          on-click="__saveAllButtonClicked">
+              SAVE ALL
+            </paper-button>
+            <paper-button id="delete-btn"
+                          class="bottom-btns"
+                          raised 
+                          on-click="__deleteUserButtonClicked">
+              DELETE ACCOUNT
+            </paper-button>
+          </div>
         </div>
-      </div>
+
+      </section>
 
     </div>
   </app-header-overlay>
@@ -173,6 +198,11 @@
                                      email="[[user.email]]"
                                      on-resend-verification-modal-resend="__sendVerificationEmail">
   </account-resend-verification-modal>
+
+
+  <account-remove-address-modal id="removeAddressModal" 
+                                on-remove-address-modal-remove="__removeAddressHandler">
+  </account-remove-address-modal>
 
 
   <account-delete-modal id="deleteModal" 

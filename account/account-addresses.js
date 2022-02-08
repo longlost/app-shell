@@ -20,8 +20,18 @@ import {
 } from '@longlost/app-core/app-element.js';
 
 import {
+  compose,
+  rest,
+  split,
+  tail
+} from '@longlost/app-core/lambda.js';
+
+import {
   getRootTarget,
   hijackEvent,
+  listenOnce,
+  message,
+  schedule,
   warn
 } from '@longlost/app-core/utils.js';
 
@@ -48,6 +58,16 @@ import '../shared/app-shell-icons.js';
 // first, last, middle, 
 // address1, address2, city, 
 // country, state, zip
+
+
+const notRequired = str => (
+  str.includes('address2') ||
+  str === 'middle'         ||
+  str === 'phone'
+);
+
+// 'kind' string formatted ie. 'address-0-first'.
+const getKeyFromKind = compose(split('-'), tail);
 
 
 class AccountAddresses extends AppElement {
@@ -77,10 +97,13 @@ class AccountAddresses extends AppElement {
           billing: null, 
           default: null, 
           index:   0
-        }]
+        }],
+        observer: '__addressesChanged'
       },
 
       _addressesUnsubscribe: Object,
+
+      _firstFadeIn: Boolean,
 
       _hideAddFab: {
         type: Boolean,
@@ -90,11 +113,24 @@ class AccountAddresses extends AppElement {
 
     };
   }
+
+
+  static get observers() {
+    return [
+      '__firstFadeChanged(_firstFadeIn)'
+    ];
+  }
   
 
   connectedCallback() {
 
     super.connectedCallback();
+
+    this.__editInputChanged = this.__editInputChanged.bind(this);
+    this.__editInputConfirm = this.__editInputConfirm.bind(this);
+
+    this.addEventListener('edit-input-changed',      this.__editInputChanged);
+    this.addEventListener('edit-input-confirm-edit', this.__editInputConfirm);
 
     this.__startAddressesSub();
   }
@@ -103,6 +139,9 @@ class AccountAddresses extends AppElement {
   disconnectedCallback() {
 
     super.disconnectedCallback();
+
+    this.removeEventListener('edit-input-changed',      this.__editInputChanged);
+    this.removeEventListener('edit-input-confirm-edit', this.__editInputConfirm);
 
     this.__stopAddressesSub();
   }
@@ -148,19 +187,36 @@ class AccountAddresses extends AppElement {
   }
 
 
+  __firstFadeChanged(bool) {
+
+    if (bool) {
+      const elements = this.selectAll('.address');
+
+      elements.forEach(el => {
+        el.classList.add('fade-in-address');
+      });
+    }
+  }
+
+
+  async __addressesChanged(newVal, oldVal) {
+
+    if (this._firstFadeIn) { return; }
+
+    await listenOnce(this.select('#repeater'), 'dom-change'); 
+
+    if (oldVal) { 
+      this._firstFadeIn = true;
+    }
+  }
+
+
   async __startAddressesSub() {
 
     if (this._addressesUnsubscribe) { return; }
 
     const callback = dbData => {
       this._addresses = dbData;
-
-
-
-      console.log('addresses: ', dbData);
-
-      
-
     };
 
     const errorCallback = async error => {
@@ -195,10 +251,8 @@ class AccountAddresses extends AppElement {
       callback,
       coll: `users/${this.user.uid}/addresses`,
       errorCallback,
-      query: {
-        orderBy: 'index',
-        limit:    this.max
-      }
+      orderBy: {prop: 'index'},
+      limit:   this.max
     });
   }
 
@@ -217,17 +271,11 @@ class AccountAddresses extends AppElement {
 
     try {
 
-      // NOT using the 'model.index' here as
-      // discrepencies may arise between the template
-      // array and the db data.
-      const {index} = event.model.item;
+      const {model} = event;
 
       await this.clicked();
 
-      await deleteDocument({
-        coll: `users/${this.user.uid}/addresses`, 
-        doc:  `${index}`
-      });
+      this.fire('addresses-open-remove-modal', {model});
     }
     catch (error) {
       if (error === 'click debounced') { return; }
@@ -286,6 +334,165 @@ class AccountAddresses extends AppElement {
   }
 
 
+  __getDbIndexFromEvent(event) {
+
+    const target = getRootTarget(event);
+
+    return this.$.repeater.itemForElement(target).index;
+  }
+
+
+  __editInputChanged(event) {
+
+    hijackEvent(event);
+
+    const index           = this.__getDbIndexFromEvent(event);
+    const {kind, ...data} = event.detail;
+
+    this.fire('addresses-input-changed', {
+      ...data, 
+      kind: `addresses-${index}-${kind}`, 
+      index,
+      isAddress: true
+    });
+  }
+
+
+  async __editInputConfirm(event) {
+
+    hijackEvent(event);
+
+    const {kind, reset, stopSpinner, value} = event.detail;
+
+    try {
+
+      // Bail if a required value is empty, 
+      // middle, phone and address2 are not required.
+      if ((!value || !value.trim()) && !notRequired(kind)) {
+
+        await warn('Sorry, this is a required field.');
+
+        stopSpinner();
+
+        return;
+      }
+
+
+      const index  = this.__getDbIndexFromEvent(event);
+      const newVal = value || null;
+
+
+      const saveEditToDb = async str => {
+
+        const current = this._addresses.find(address => address.index === index);
+
+        const oldVal = current[kind];
+
+        if (oldVal !== newVal) { // Ignore if there is no change.
+
+          const data = {[kind]: newVal};
+
+          await set({
+            coll: `users/${this.user.uid}/addresses`, 
+            doc:   `${index}`, 
+            data
+          });
+
+          await message(`${str} updated.`);
+        }
+
+        await stopSpinner();
+
+        reset();
+      };
+
+      switch (kind) {
+
+        case 'first':
+          await saveEditToDb('First name');
+          break;
+
+        case 'middle':
+          await saveEditToDb('Middle name');
+          break;
+
+        case 'last':
+          await saveEditToDb('Last name');
+          break;
+
+        case 'address1':
+          await saveEditToDb('Address');
+          break;
+
+        case 'address2':
+          await saveEditToDb('Address');
+          break;
+
+        case 'city':
+          await saveEditToDb('City');
+          break;
+
+        case 'state':
+          await saveEditToDb('State/province/region');
+          break;
+
+        case 'zip':
+          await saveEditToDb('Zip/postal code');
+          break;
+
+        case 'country':
+          await saveEditToDb('Country');
+          break;
+
+        default:
+          console.warn('no such input kind: ', kind);
+          break;
+      }
+
+      this.fire('addresses-value-saved', {kind: `addresses-${index}-${kind}`});
+    }
+    catch (error) {
+      console.error(error);
+      stopSpinner();
+    }
+  }
+
+
+  __getAnimationElements(index) {
+
+    const elements = this.selectAll('.address');
+    const element  = elements[index];
+    const next     = rest(index + 1, elements);
+
+    return {element, next};
+  }
+
+
+  async __addAddressAnimation(element) {
+
+    const {height} = element.getBoundingClientRect();
+      
+    this.fire('addresses-add-animation-setup', {height});
+
+    await schedule();
+
+    this.fire('addresses-add-animation-play');
+
+    element.classList.add('fade-in-address');
+
+    return new Promise(resolve => {
+      element.addEventListener('transitionend', event => {
+
+        const target = getRootTarget(event);
+
+        if (target.classList.contains('fade-in-address')) {
+          resolve(event);
+        }
+      });
+    });    
+  }
+
+
   async __addFabClicked() {
 
     try {
@@ -298,10 +505,12 @@ class AccountAddresses extends AppElement {
       // MUST use the data's index here instead of the
       // array's since there can be discrepencies in the
       // data from deleting items from the middle of the list.
-      const {index}   = this._addresses[length - 1];
+      const {index}   = tail(this._addresses);
       const nextIndex = index + 1;
 
-      await set({
+      // NOT waiting for this promise, as it finishes AFTER
+      // the dom has updated.
+      set({
         coll: `users/${this.user.uid}/addresses`, 
         doc:  `${nextIndex}`, 
         data: {
@@ -310,11 +519,107 @@ class AccountAddresses extends AppElement {
           index:   nextIndex
         }
       });
+
+      await listenOnce(this.select('#repeater'), 'dom-change');
+
+      const {element} = this.__getAnimationElements(this._addresses.length - 1);
+
+      // 'model.index' refers to the repeated dom element order.
+      await this.__addAddressAnimation(element);
+
+      this.fire('addresses-address-added');
     }
     catch (error) {
       if (error === 'click debounced') { return; }
       console.error(error);
     }
+  }
+
+
+  async __removeAddressAnimation(element, next) {
+    
+    next.forEach(el => {
+      el.classList.add('move-up-next');
+    });
+
+    const {height} = element.getBoundingClientRect();
+      
+    this.fire('addresses-remove-animation', {height});
+
+    element.classList.add('move-up-address');
+
+    return new Promise(resolve => {
+      element.addEventListener('transitionend', event => {
+
+        const target = getRootTarget(event);
+
+        if (target.classList.contains('move-up-address')) {
+          resolve(event);
+        }
+      });
+    });    
+  }
+
+
+  __cleanupRemoveAddressAnimation(element, next) {
+
+    next.forEach(el => {
+      el.classList.remove('move-up-next');
+    });
+
+    element.classList.remove('move-up-address');
+  }
+
+
+  async removeAddress(model) {
+
+    try {
+
+      const {element, next} = this.__getAnimationElements(model.index);
+
+      // 'model.index' refers to the repeated dom element order.
+      await this.__removeAddressAnimation(element, next);
+
+      // NOT waiting for this promise, as it finishes AFTER
+      // the dom has updated.
+      deleteDocument({
+        coll: `users/${this.user.uid}/addresses`, 
+
+        // NOT using the 'model.index' here as
+        // discrepencies may arise between the template
+        // array and the db data.
+        doc: `${model.item.index}`
+      });
+
+      await listenOnce(this.select('#repeater'), 'dom-change');
+
+      this.fire('addresses-address-removed', {index: model.item.index});
+
+      this.__cleanupRemoveAddressAnimation(element, next);
+    }
+    catch (error) {
+      console.error(error);
+    }
+  }
+
+
+  save(addresses) {
+
+    const saves = addresses.map(address => {
+
+      const {index, kind, value} = address;
+
+      const key  = getKeyFromKind(kind);
+      const data = {[key]: value};
+
+      set({
+        coll: `users/${this.user.uid}/addresses`, 
+        doc:  `${index}`, 
+        data
+      });
+    });
+
+    return saves;
   }
 
 }

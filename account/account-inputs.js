@@ -133,6 +133,18 @@ class AccountInputs extends AppElement {
   }
 
 
+  removeAddress(model) {
+
+    return this.$.addresses.removeAddress(model);
+  }
+
+
+  saveAddresses(addressEntries) {
+
+    return this.$.addresses.save(addressEntries);
+  }
+
+
   showWeakPasswordError() {
 
     this.select('#passwordInput').errorMessage = 'Weak password';
