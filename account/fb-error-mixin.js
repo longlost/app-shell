@@ -51,7 +51,7 @@ export const FbErrorMixin = superClass => {
           this._passwordPromiseRejecter('reauth needed');
         }
 
-        return this.select('#passwordModal')?.close();
+        return this.select('#passwordModal')?.close?.();
       }
       catch (error) { console.error(error); }
     }

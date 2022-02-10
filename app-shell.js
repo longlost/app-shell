@@ -44,6 +44,7 @@ import {
 import {waitForLoaded}          from './shell/utils.js';
 import {OverlayControlMixin}    from './shell/overlay-control-mixin.js';
 import {ThemeMixin}             from './shell/theme-mixin.js';
+import firebaseReady            from '@longlost/app-core/firebase.js';
 import {setEnableDbPersistence} from '@longlost/app-core/services/settings.js';
 import htmlString               from './app-shell.html';
 
@@ -836,7 +837,10 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
 
       if (!verifiedOrVerificationSent) {
 
-        await this._user.sendEmailVerification();
+        const {loadAuth}              = await firebaseReady();
+        const {sendEmailVerification} = await loadAuth();
+
+        await sendEmailVerification(this._user);
 
         set({
           coll: 'users',

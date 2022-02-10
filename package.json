@@ -18,7 +18,7 @@
   "homepage": "https://github.com/longlost/app-shell#readme",
   "dependencies": {
     "@longlost/app-camera": "^1.19.0",
-    "@longlost/app-core": "^6.1.1",
+    "@longlost/app-core": "^7.0.1",
     "@longlost/app-images": "^2.2.2",
     "@longlost/app-inputs": "^2.2.0",
     "@longlost/app-overlays": "^2.0.0",
