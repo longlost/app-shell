@@ -3,8 +3,9 @@
           if="[[_stampSignin]]" 
           is="dom-if" 
           restamp>
-  <auth-signin-modal user="[[_user]]"
-                     on-signin-modal-closed="__signinClosedHandler"
+  <auth-signin-modal checked-for-redirect="[[_checkedForRedirect]]"
+                     user="[[_user]]"
+                     on-signin-modal-reset="__signinResetHandler"
                      on-signin-modal-user-upgraded="__userUpgradedHandler">
   </auth-signin-modal>
 </template>

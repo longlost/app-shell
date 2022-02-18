@@ -36,7 +36,12 @@ import {
 
 import {initAuth} from './auth.js';
 import htmlString from './app-auth.html';
-// Lazy loading modals for better loading performance.
+
+// MUST load firebaseui to check for pending redirects
+// from federated providers such as Google.
+import './auth-signin-modal.js';
+
+// Lazy loading action-modal for better loading performance.
 
 
 class AppAuth extends AppElement {
@@ -53,9 +58,17 @@ class AppAuth extends AppElement {
 
       avatar: Object,
 
+      _checkedForRedirect: {
+        type: Boolean,
+        value: false
+      },
+
       _stampActions: Boolean,
 
-      _stampSignin: Boolean,
+      _stampSignin: {
+        type: Boolean,
+        value: true
+      },
 
       //   user.displayName
       //   user.email
@@ -110,9 +123,10 @@ class AppAuth extends AppElement {
   }
 
 
-  __signinClosedHandler() {
+  __signinResetHandler() {
 
-    this._stampSignin = false;
+    this._checkedForRedirect = true;
+    this._stampSignin        = false;
   }
 
   // Anonymous user upgraded account.
@@ -176,12 +190,6 @@ class AppAuth extends AppElement {
 
   async __openSigninModal() {
 
-    // Lazy load for a large perf boost.
-    await import(
-      /* webpackChunkName: 'auth-siginin-modal' */
-      './auth-signin-modal.js'
-    );
-
     this._stampSignin = true;
 
     await listenOnce(this.$.signinTemplate, 'dom-change');
@@ -208,8 +216,6 @@ class AppAuth extends AppElement {
       const {auth, signOut} = await initAuth();
 
       await signOut(auth);
-
-      this.select('auth-signin-modal')?.reset();
       
       message('You are signed out.');
     }

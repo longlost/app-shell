@@ -792,7 +792,7 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
 
     await this.__waitForTemplateToStamp('_stampQuickStart', 'qsTemplate');
 
-    this.select('#quickStart').open();
+    return this.select('#quickStart').open();
   }
 
   // Subscribe to user data, which is created by
@@ -823,7 +823,7 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
 
       if (!data) { return; }      
 
-      const verifiedOrVerificationSent = (user.emailVerified || data.verificationEmailSent);      
+      const verifiedOrVerificationSent = (user.emailVerified || data.verificationEmailSent); 
 
       if (verifiedOrVerificationSent && data.onboarded) {
 
@@ -849,7 +849,10 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
         });
       }
 
-      if (!data.onboarded) {
+      // Wait until AFTER 'verificationEmailSent' has been set
+      // from the previous invocation, to avoid jank that
+      // breaks the quickstart overlay animation.
+      if (verifiedOrVerificationSent && !data.onboarded) {
 
         this.__openQuickStart();
       }
