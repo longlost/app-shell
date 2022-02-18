@@ -57,7 +57,7 @@ class AuthSigninModal extends AppElement {
           --modal-card-content-padding:  0px;
         }
 
-        #firebaseuiAuthContainer {
+        #container {
           min-height: 368px;
           width:      240px;
         }
@@ -88,7 +88,7 @@ class AuthSigninModal extends AppElement {
       <app-modal id="modal"
                  on-overlay-reset="__overlayResetHandler">
 
-        <div id="firebaseuiAuthContainer" 
+        <div id="container" 
              slot="card-content-slot" 
              on-click="__cardClicked">
         </div>
@@ -105,6 +105,10 @@ class AuthSigninModal extends AppElement {
 
   static get properties() {
     return {
+
+      // Must initalize firebaseui to check for 
+      // pending redirects when app boots up.
+      checkedForRedirect: Boolean,
 
       //   user.displayName
       //   user.email
@@ -130,7 +134,8 @@ class AuthSigninModal extends AppElement {
 
   static get observers() {
     return [
-      '__userChanged(user)'
+      '__checkForRedirectChanged(checkedForRedirect)',
+      '__userFirebaseuiChanged(user, _firebaseUi)'
     ];
   }
 
@@ -152,30 +157,61 @@ class AuthSigninModal extends AppElement {
     }
   }
 
+  // Needed for redirected federated auth types like signin with Google.
+  async __checkForRedirectChanged(checked) {
 
-  __userChanged(user) {
+    if (checked) { return; }
+
+    const ui = await this.__setupFirebaseUI();
+
+    if (ui.isPendingRedirect()) {
+      this.open();
+    }
+    else {
+      this.__reset();
+    }       
+  }
+
+
+  __userFirebaseuiChanged(user, ui) {
+
+    if (!ui) { return; }
 
     if (user === null) {
 
-      // Needed for redirected auth types like signin with Google.
-      if (
-        (this._firebaseUi && this._firebaseUi.isPendingRedirect()) || 
-        !appUserAndData.anonymous
-      ) {
+      // Only open if there is no pending redirect.
+      if (!ui.isPendingRedirect() && !appUserAndData.anonymous) {
         this.open();
       }
     } 
-    else {
+    else if (typeof user === 'object') {
       this.close();
     }
   }
 
 
+  async __deleteInstance() {
+
+    if (this._firebaseUi) {
+
+      await this._firebaseUi.delete();
+
+      this._firebaseUi = undefined;
+    }
+  }
+
+
+  async __reset() {
+
+    await this.__deleteInstance();
+
+    this.fire('signin-modal-reset');
+  }
+
+
   __overlayResetHandler() {
 
-    this.reset();
-
-    this.fire('signin-modal-closed');
+    this.__reset();
   }
 
   // Ignore card clicks.
@@ -193,7 +229,8 @@ class AuthSigninModal extends AppElement {
       GithubAuthProvider,
       GoogleAuthProvider,
       TwitterAuthProvider,
-      auth, 
+      auth,
+      deleteUser,
       signInWithCredential
     } = fbAuth;
 
@@ -209,8 +246,9 @@ class AuthSigninModal extends AppElement {
 
         signInSuccessWithAuthResult: () => {
 
-          // Return type determines whether we (return false) continue the redirect automatically
-          // or whether we (return true) leave that to developer to handle.
+          // Return type determines whether we (return false) 
+          // continue the redirect automatically or whether we 
+          // (return true) leave that to developer to handle.
           return false;
         },
 
@@ -251,7 +289,7 @@ class AuthSigninModal extends AppElement {
             await set({coll, doc: newUser.uid, data: anonymousUserData});
 
             // Delete anonymnous user.
-            await this.user.delete();
+            await deleteUser(this.user);
 
             this.fire('signin-modal-user-upgraded', {user: newUser});
 
@@ -272,26 +310,19 @@ class AuthSigninModal extends AppElement {
       // credentialHelper: ui.auth.CredentialHelper.NONE,
 
 
-
-      signInFlow: 'redirect', // Or 'popup', must use redirect for single page apps.
+      // Must use 'redirect' for single page apps.
+      signInFlow: 'redirect', // Or 'popup'.
 
       signInOptions: [
 
-        // Leave the lines as is for the providers you want to offer your users.
         {
           provider: EmailAuthProvider.PROVIDER_ID,
 
           // Whether the display name should be displayed in the Sign Up page.
           requireDisplayName: true
-        }//,
-
-
-        // Google oauth is currenly inop on iOS PWA modes.
-        // It causes all sorts of issues even if we test 
-        // for ios standalone mode in js and only use email signup
-        // until it is fixed, DO NOT USE! 
-        // as of 1/9/2019 "firebaseui": "^3.5.1" CB        
-        // GoogleAuthProvider.PROVIDER_ID,
+        },
+       
+        GoogleAuthProvider.PROVIDER_ID,
 
 
         // TODO:
@@ -312,10 +343,14 @@ class AuthSigninModal extends AppElement {
 
   async __setupFirebaseUI() {
 
+    if (this._firebaseUi) { return this._firebaseUi; }
+
     const fbAuth = await initAuth();
 
     this._firebaseUIConfig = this.__getFirebaseUiConfig(fbAuth, firebaseui);
     this._firebaseUi       = new firebaseui.auth.AuthUI(fbAuth.auth);
+
+    return this._firebaseUi;
   }
 
 
@@ -325,9 +360,8 @@ class AuthSigninModal extends AppElement {
       this._firebaseUIConfig.autoUpgradeAnonymousUsers = true;
     }
 
-    // #firebaseuiAuthContainer found in Light DOM.
     // The start method will wait until the DOM is loaded.
-    this._firebaseUi.start(this.$.firebaseuiAuthContainer, this._firebaseUIConfig);
+    this._firebaseUi.start(this.$.container, this._firebaseUIConfig);
   }
 
 
@@ -354,11 +388,9 @@ class AuthSigninModal extends AppElement {
 
     await this.$.modal.open();
 
-    if (!this._firebaseUi) {
-      await this.__setupFirebaseUI();
-    }
+    const ui = await this.__setupFirebaseUI();
 
-    if (!this._firebaseUi.isPendingRedirect()) {
+    if (!ui.isPendingRedirect()) {
 
       // Close and reset overlay if user clicks outside of chooser buttons.
       this.$.modal.addEventListener('click', this.__modalClicked);
@@ -368,14 +400,6 @@ class AuthSigninModal extends AppElement {
     await schedule();
 
     this.__startFirebaseUI();
-  }
-
-
-  reset() {
-
-    if (this._firebaseUi) {
-      this._firebaseUi.reset();
-    }
   }
 
 }
