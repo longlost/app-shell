@@ -14,6 +14,7 @@
   *
   **/
 
+import {appUserAndData}   from 'config.js';
 import {AppElement, html} from '@longlost/app-core/app-element.js';
 import {hijackEvent}      from '@longlost/app-core/utils.js';
 import htmlString         from './account-inputs.html';
@@ -25,13 +26,6 @@ import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-input/paper-input.js';
 import '../shared/app-shell-icons.js';
 import './account-addresses.js';
-
-
-// User input data captured.
-//
-// address1, address2, city, country, 
-// displayName, first, last, middle, 
-// phone, state, zip
 
 
 class AccountInputs extends AppElement {
@@ -49,9 +43,22 @@ class AccountInputs extends AppElement {
       // From app-user.
       user: Object,
 
-      data: Object
+      data: Object,
+
+      // From 'config.js' file.
+      // When true, show 'first', 'middle' 
+      // and 'last' name inputs.
+      _nameRequired: Boolean
 
     };
+  }
+
+
+  constructor() {
+
+    super();
+
+    this._nameRequired = appUserAndData.nameRequired;
   }
   
 

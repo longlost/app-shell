@@ -89,6 +89,11 @@ class AccountPhotoPicker extends AppElement {
 
       user: Object,
 
+      _appImageIsButton: {
+        type: Boolean,
+        computed: '__computeAppImageIsButton(_src)'
+      },
+
       _aspect: {
         type: String,
         computed: '__computeAspect(type)'
@@ -163,6 +168,12 @@ class AccountPhotoPicker extends AppElement {
     return [
       '__openedChanged(_opened)'
     ];
+  }
+
+
+  __computeAppImageIsButton(src) {
+
+    return Boolean(src);
   }
 
 
@@ -311,6 +322,16 @@ class AccountPhotoPicker extends AppElement {
 
     this.__unsubFromSelectedItem();
     this._selected = undefined;
+  }
+
+
+  __appImageClickedHandler(event) {
+
+    hijackEvent(event);
+
+    if (!this._src) { return; }
+
+    this.$.picker.openEditor(this._src);
   }
 
 

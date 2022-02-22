@@ -1,6 +1,6 @@
 {
   "name": "@longlost/app-shell",
-  "version": "6.9.0",
+  "version": "6.10.0",
   "description": "This element bundles core functionalities that are essential to any app.",
   "main": "app-shell.js",
   "scripts": {
@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/longlost/app-shell#readme",
   "dependencies": {
-    "@longlost/app-camera": "^1.19.0",
-    "@longlost/app-core": "^7.0.1",
+    "@longlost/app-camera": "^1.20.0",
+    "@longlost/app-core": "^7.0.3",
     "@longlost/app-images": "^2.2.2",
     "@longlost/app-inputs": "^2.2.0",
     "@longlost/app-overlays": "^2.0.0",
@@ -57,7 +57,7 @@
     "@polymer/test-fixture": "^4.0.2",
     "@webcomponents/webcomponentsjs": "^2.6.0",
     "chai": "^4.3.6",
-    "mocha": "^9.2.0",
+    "mocha": "^9.2.1",
     "wct-mocha": "^1.1.0"
   }
 }
