@@ -125,12 +125,15 @@
 		  <div id="grid">
 
 		  	<app-image aspect="[[_aspect]]"
+		  						 button="[[_appImageIsButton]]"
 		  						 class$="[[type]]"
 		  						 icon="[[_imgIcon]]"
 		  						 quality="optimized"
 		  						 raised 
-		  						 src="[[_src]]">
+		  						 src="[[_src]]"
+		  						 on-app-image-clicked="__appImageClickedHandler">
 		  	</app-image>
+
 
 		  	<div id="processing"
 		  			 hidden="[[!_processing]]">

@@ -58,9 +58,16 @@ import './account-inputs.js';
 
 // User input data captured.
 //
-// address1, address2, city, country, 
-// displayName, first, last, middle, 
-// phone, state, zip
+//   displayName, email, phone, password (not stored in db)
+//
+// Optional. Set 'nameRequired' in 'config.js':
+// 
+//   first, last, middle,
+//
+// Each address section (max 5):
+//
+//   address1, address2, first, last, 
+//   middle, city, country, state, zip
 
 
 const separateEntries = unsaved => 

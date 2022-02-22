@@ -26,7 +26,8 @@
     color:       var(--app-secondary-color);
   }
 
-  #verified-wrapper[hidden] {
+  #verified-wrapper[hidden],
+  edit-input[hidden] {
     display: none;
   }
 
@@ -78,7 +79,8 @@
     </paper-input>
   </edit-input>
 
-  <edit-input icon="app-icons:label-outline"
+  <edit-input hidden="[[!_nameRequired]]" 
+              icon="app-icons:label-outline"
               kind="first">
     <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
                  autocapitalize
@@ -89,7 +91,8 @@
     </paper-input>
   </edit-input>
 
-  <edit-input icon="app-icons:label-outline"
+  <edit-input hidden="[[!_nameRequired]]" 
+              icon="app-icons:label-outline"
               kind="middle">
     <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
                  autocapitalize
@@ -101,7 +104,8 @@
     </paper-input>
   </edit-input>
 
-  <edit-input icon="app-icons:label-outline"
+  <edit-input hidden="[[!_nameRequired]]" 
+              icon="app-icons:label-outline"
               kind="last">
     <paper-input allowed-pattern="[^/\f/\n/\r/\t/\v]"
                  autocapitalize
