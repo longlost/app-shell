@@ -43,7 +43,7 @@ import {
 
 import htmlString from './account-addresses.html';
 import '@longlost/app-core/app-icons.js';
-import '@longlost/app-core/app-shared-styles.js';
+import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-inputs/edit-input.js';
 import '@longlost/app-inputs/shipping-inputs.js';
 import '@polymer/iron-icon/iron-icon.js';

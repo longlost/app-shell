@@ -25,7 +25,7 @@ import {
 
 import htmlString from './pwa-install-button.html';
 import '@longlost/app-core/app-icons.js';
-import '@longlost/app-core/app-shared-styles.js';
+import '@longlost/app-core/app-shared-styles.css';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-button/paper-button.js';
 import '../shared/app-shell-icons.js';

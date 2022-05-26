@@ -24,7 +24,7 @@ import {
 } from '@longlost/app-core/utils.js';
 
 import htmlString from './dark-mode-selector.html';
-import '@longlost/app-core/app-shared-styles.js';
+import '@longlost/app-core/app-shared-styles.css';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-radio-group/paper-radio-group.js';
 import '@polymer/paper-radio-button/paper-radio-button.js';

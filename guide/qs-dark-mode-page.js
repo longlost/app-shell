@@ -18,7 +18,7 @@ import '@longlost/app-core/app-icons.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '../shared/app-shell-icons.js';
 import '../shared/dark-mode-selector.js';
-import './qs-page-shared-styles.js';
+import './qs-page-shared-styles.css';
 import './animated-light-mode-icon.js';
 
 

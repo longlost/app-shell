@@ -39,7 +39,7 @@ import firebaseReady        from '@longlost/app-core/firebase.js';
 import {FbErrorMixin}       from './fb-error-mixin.js';
 import {HeaderActionsMixin} from './header-actions-mixin.js';
 import htmlString           from './app-account.html';
-import '@longlost/app-core/app-shared-styles.js';
+import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-overlays/app-header-overlay.js';
 import '@longlost/app-spinner/app-spinner.js';
 import '@polymer/paper-button/paper-button.js';

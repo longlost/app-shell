@@ -32,13 +32,13 @@ import {
   schedule
 } from '@longlost/app-core/utils.js';
 
-import {
-  firebaseui, 
-  styles
-} from '@longlost/app-core/firebaseui.js';
+// This file imports the required css file as well.
+// The css file is included in the local dom styles.
+//    ie. <style include="firebaseui">
+import * as firebaseui from '@longlost/app-core/firebaseui.js';
 
-import {htmlLiteral} from '@polymer/polymer/lib/utils/html-tag.js';
-import {initAuth}    from './auth.js';
+import {initAuth} from './auth.js';
+
 import '@longlost/app-overlays/app-modal.js';
 
 // 'services.js' lazy-loaded.
@@ -50,7 +50,7 @@ class AuthSigninModal extends AppElement {
 
   static get template() {
     return html`
-      <style>
+      <style include="firebaseui"> /* Use styles provided by library. */
 
         #modal {
           --modal-card-background-color: white;
@@ -61,8 +61,6 @@ class AuthSigninModal extends AppElement {
           min-height: 368px;
           width:      240px;
         }
-
-        ${this.stylePartial}
 
         /* Input underlines, primary buttons. */
         /* Won't work withough !important. */
@@ -95,11 +93,6 @@ class AuthSigninModal extends AppElement {
 
       </app-modal>
     `;
-  }
-
-
-  static get stylePartial() {
-    return htmlLiteral([styles.toString()]);
   }
 
 

@@ -18,7 +18,7 @@ import htmlString         from './qs-conclusion-page.html';
 import '@longlost/app-core/app-icons.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '../shared/app-shell-icons.js';
-import './qs-page-shared-styles.js';
+import './qs-page-shared-styles.css';
 import './conclusion-thumbs-up.js';
 
 

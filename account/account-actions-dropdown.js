@@ -14,7 +14,7 @@
 import {AppElement, html} from '@longlost/app-core/app-element.js';
 import htmlString         from './account-actions-dropdown.html';
 import '@longlost/app-core/app-icons.js';
-import '@longlost/app-core/app-shared-styles.js';
+import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/grow-shrink-container/grow-shrink-container.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-item/paper-item.js';

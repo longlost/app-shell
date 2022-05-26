@@ -19,7 +19,7 @@ import {AppElement, html} from '@longlost/app-core/app-element.js';
 import {hijackEvent}      from '@longlost/app-core/utils.js';
 import htmlString         from './account-inputs.html';
 import '@longlost/app-core/app-icons.js';
-import '@longlost/app-core/app-shared-styles.js';
+import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-inputs/edit-input.js';
 import '@polymer/gold-phone-input/gold-phone-input.js';
 import '@polymer/iron-icon/iron-icon.js';

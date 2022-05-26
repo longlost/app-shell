@@ -14,7 +14,7 @@
   
 import {AppElement, html} from '@longlost/app-core/app-element.js';
 import htmlString         from './offline-persistence-selector.html';
-import '@longlost/app-core/app-shared-styles.js';
+import '@longlost/app-core/app-shared-styles.css';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import '../shared/app-shell-icons.js';
