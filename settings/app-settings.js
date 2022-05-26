@@ -25,7 +25,7 @@ import {
 import {mode as pwaDisplayMode} from '@longlost/app-core/boot/install.js';
 
 import htmlString from './app-settings.html';
-import '@longlost/app-core/app-shared-styles.js';
+import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-overlays/app-header-overlay.js';
 import '../shared/dark-mode-selector.js';
 import '../shared/offline-persistence-selector.js';

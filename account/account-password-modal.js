@@ -16,7 +16,7 @@
 
 import {AppElement, html} from '@longlost/app-core/app-element.js';
 import htmlString         from './account-password-modal.html';
-import '@longlost/app-core/app-shared-styles.js';
+import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-overlays/app-modal.js';
 import '@longlost/icon-to-spinner/icon-to-spinner.js';
 import '@polymer/paper-input/paper-input.js';

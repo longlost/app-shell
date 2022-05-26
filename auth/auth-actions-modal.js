@@ -18,7 +18,7 @@
 
 import {AppElement, html} from '@longlost/app-core/app-element.js';
 import htmlString         from './auth-actions-modal.html';
-import '@longlost/app-core/app-shared-styles.js';
+import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-images/avatar-image.js';
 import '@longlost/app-overlays/app-modal.js';
 import '@polymer/iron-icon/iron-icon.js';

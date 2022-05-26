@@ -134,7 +134,7 @@ import {mode as pwaDisplayMode} from '@longlost/app-core/boot/install.js';
 
 import htmlString from './app-quick-start.html';
 import '@longlost/app-core/app-icons.js';
-import '@longlost/app-core/app-shared-styles.js';
+import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-overlays/app-header-overlay.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-button/paper-button.js';

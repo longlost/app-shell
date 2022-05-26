@@ -18,7 +18,7 @@
 
 import {AppElement, html} from '@longlost/app-core/app-element.js';
 import htmlString         from './conclusion-thumbs-up.html';
-import '@longlost/app-core/app-shared-styles.js';
+import '@longlost/app-core/app-shared-styles.css';
 import '@polymer/iron-icon/iron-icon.js';
 import '../shared/app-shell-icons.js';
 
@@ -51,6 +51,7 @@ class ConclusionThumbsUp extends AppElement {
 
 
   connectedCallback() {
+    
     super.connectedCallback();
 
     this._thumbs = this.selectAll('.thumb-icon');
