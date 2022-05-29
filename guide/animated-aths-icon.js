@@ -16,8 +16,8 @@
   **/
 
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import htmlString         from './animated-aths-icon.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import template     from './animated-aths-icon.html';
 
 
 class AnimatedAddToHomeScreenIcon extends AppElement {
@@ -25,7 +25,7 @@ class AnimatedAddToHomeScreenIcon extends AppElement {
   static get is() { return 'animated-aths-icon'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
   
 }

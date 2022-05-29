@@ -12,10 +12,10 @@
   **/
   
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
+import {AppElement}       from '@longlost/app-core/app-element.js';
 import {hexToRGBA}        from '@longlost/app-core/lambda.js';
 import {getComputedStyle} from '@longlost/app-core/utils.js';   
-import htmlString         from './install-app-model.html';
+import template           from './install-app-model.html';
 
 
 class InstallAppModel extends AppElement {
@@ -23,7 +23,7 @@ class InstallAppModel extends AppElement {
   static get is() { return 'install-app-model'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

@@ -16,8 +16,8 @@
   *
   **/
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import htmlString         from './account-resend-verification-modal.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import template     from './account-resend-verification-modal.html';
 import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-overlays/app-modal.js';
 import '@polymer/iron-icon/iron-icon.js';
@@ -30,7 +30,7 @@ class AccountResendVerificationModal extends AppElement {
   static get is() { return 'account-resend-verification-modal'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

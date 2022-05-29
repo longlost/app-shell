@@ -16,8 +16,8 @@
   **/
 
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import htmlString         from './conclusion-thumbs-up.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import template     from './conclusion-thumbs-up.html';
 import '@longlost/app-core/app-shared-styles.css';
 import '@polymer/iron-icon/iron-icon.js';
 import '../shared/app-shell-icons.js';
@@ -28,7 +28,7 @@ class ConclusionThumbsUp extends AppElement {
   static get is() { return 'conclusion-thumbs-up'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

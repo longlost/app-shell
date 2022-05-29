@@ -17,8 +17,8 @@
   **/
 
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import htmlString         from './app-shell-drawer-content.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import template     from './app-shell-drawer-content.html';
 import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@polymer/iron-selector/iron-selector.js';
 import './app-shell-drawer-item.js';
@@ -29,7 +29,7 @@ class AppShellDrawerContent extends AppElement {
   static get is() { return 'app-shell-drawer-content'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

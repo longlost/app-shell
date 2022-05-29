@@ -16,8 +16,8 @@
   **/
 
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import htmlString         from './auth-actions-modal.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import template     from './auth-actions-modal.html';
 import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-images/avatar-image.js';
 import '@longlost/app-overlays/app-modal.js';
@@ -31,7 +31,7 @@ class AuthActionsModal extends AppElement {
   static get is() { return 'auth-actions-modal'; }  
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

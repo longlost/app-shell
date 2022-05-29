@@ -14,8 +14,8 @@
   *
   **/
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import htmlString         from './account-delete-modal.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import template     from './account-delete-modal.html';
 import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-overlays/app-modal.js';
@@ -28,7 +28,7 @@ class AccountDeleteModal extends AppElement {
   static get is() { return 'account-delete-modal'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

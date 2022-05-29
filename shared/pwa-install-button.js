@@ -12,10 +12,7 @@
   **/
 
   
-import {
-  AppElement, 
-  html
-} from '@longlost/app-core/app-element.js';
+import {AppElement} from '@longlost/app-core/app-element.js';
 
 import {
   installable,
@@ -23,7 +20,7 @@ import {
   prompt
 } from '@longlost/app-core/boot/install.js';
 
-import htmlString from './pwa-install-button.html';
+import template from './pwa-install-button.html';
 import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.css';
 import '@polymer/iron-icon/iron-icon.js';
@@ -36,7 +33,7 @@ class PWAInstallButton extends AppElement {
   static get is() { return 'pwa-install-button'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

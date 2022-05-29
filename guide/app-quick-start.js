@@ -120,10 +120,7 @@
 // of src folder (ie. resolve: {modules: [path.resolve(__dirname, 'src'), 'node_modules'],})
 import {appUserAndData} from 'config.js';
 
-import {
-  AppElement, 
-  html
-} from '@longlost/app-core/app-element.js';
+import {AppElement} from '@longlost/app-core/app-element.js';
 
 import {
   consumeEvent,
@@ -132,7 +129,7 @@ import {
 
 import {mode as pwaDisplayMode} from '@longlost/app-core/boot/install.js';
 
-import htmlString from './app-quick-start.html';
+import template from './app-quick-start.html';
 import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-overlays/app-header-overlay.js';
@@ -155,7 +152,7 @@ class AppQuickStartGuide extends AppElement {
   static get is() { return 'app-quick-start'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

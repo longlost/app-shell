@@ -14,8 +14,8 @@
   *
   **/
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import htmlString         from './account-unsaved-edits-modal.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import template     from './account-unsaved-edits-modal.html';
 import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-overlays/app-modal.js';
@@ -29,7 +29,7 @@ class AccountUnsavedEditsModal extends AppElement {
   static get is() { return 'account-unsaved-edits-modal'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

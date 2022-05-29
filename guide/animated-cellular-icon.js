@@ -16,9 +16,9 @@
   **/
 
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import {wait}             from '@longlost/app-core/utils.js';
-import htmlString         from './animated-cellular-icon.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import {wait}       from '@longlost/app-core/utils.js';
+import template     from './animated-cellular-icon.html';
 
 
 class AnimatedCellularIcon extends AppElement {
@@ -26,7 +26,7 @@ class AnimatedCellularIcon extends AppElement {
   static get is() { return 'animated-cellular-icon'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

@@ -14,8 +14,8 @@
   *
   **/
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import htmlString         from './account-remove-address-modal.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import template     from './account-remove-address-modal.html';
 import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-overlays/app-modal.js';
@@ -28,7 +28,7 @@ class AccountRemoveAddressModal extends AppElement {
   static get is() { return 'account-remove-address-modal'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 
@@ -43,6 +43,7 @@ class AccountRemoveAddressModal extends AppElement {
 
 
   __close() {
+    
     return this.$.modal.close();
   }
 

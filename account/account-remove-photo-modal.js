@@ -14,21 +14,23 @@
   *
   **/
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import htmlString         from './account-remove-photo-modal.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import template     from './account-remove-photo-modal.html';
 import '@longlost/app-overlays/app-modal.js';
 import '@polymer/paper-button/paper-button.js';
 
 
 class AccountRemovePhotoModal extends AppElement {
+
   static get is() { return 'account-remove-photo-modal'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 
   async __dismissButtonClicked() {
+
     try {
       await this.clicked();
       await this.close();
@@ -41,6 +43,7 @@ class AccountRemovePhotoModal extends AppElement {
 
 
   async __removeButtonClicked() {
+
     try {
       await this.clicked();
       await this.close();
@@ -54,11 +57,13 @@ class AccountRemovePhotoModal extends AppElement {
 
 
   close() {
+
     return this.$.modal.close();
   }
 
 
   open() {
+    
     return this.$.modal.open();
   }
   

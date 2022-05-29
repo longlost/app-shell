@@ -22,10 +22,7 @@
   **/
 
 
-import {
-  AppElement, 
-  html
-} from '@longlost/app-core/app-element.js';
+import {AppElement} from '@longlost/app-core/app-element.js';
 
 import {
   hijackEvent,
@@ -35,7 +32,7 @@ import {
 } from '@longlost/app-core/utils.js';
 
 import {initAuth} from './auth.js';
-import htmlString from './app-auth.html';
+import template   from './app-auth.html';
 
 // MUST load firebaseui to check for pending redirects
 // from federated providers such as Google.
@@ -49,7 +46,7 @@ class AppAuth extends AppElement {
   static get is() { return 'app-auth'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

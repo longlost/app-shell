@@ -12,8 +12,8 @@
   **/
 
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import htmlString         from './app-shell-refresh-required-modal.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import template     from './app-shell-refresh-required-modal.html';
 import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-overlays/app-modal.js';
 import '@polymer/iron-icon/iron-icon.js';
@@ -26,7 +26,7 @@ class RefreshRequiredModal extends AppElement {
   static get is() { return 'app-shell-refresh-required-modal'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 
