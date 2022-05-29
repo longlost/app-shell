@@ -12,9 +12,9 @@
   **/
   
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import {wait}             from '@longlost/app-core/utils.js';
-import htmlString         from './qs-verification-page.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import {wait}       from '@longlost/app-core/utils.js';
+import template     from './qs-verification-page.html';
 import '@polymer/iron-icon/iron-icon.js';
 import '../shared/app-shell-icons.js';
 import './qs-page-shared-styles.css';
@@ -25,7 +25,7 @@ class QuickStartVerificationPage extends AppElement {
   static get is() { return 'qs-verification-page'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

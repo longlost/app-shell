@@ -12,8 +12,8 @@
   **/
   
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import htmlString         from './dark-mode-app-model.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import template     from './dark-mode-app-model.html';
 import '@polymer/paper-button/paper-button.js';
 
 
@@ -22,7 +22,7 @@ class DarkModeAppModel extends AppElement {
   static get is() { return 'dark-mode-app-model'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

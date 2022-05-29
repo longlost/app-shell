@@ -12,10 +12,7 @@
   **/
   
 
-import {
-  AppElement, 
-  html
-} from '@longlost/app-core/app-element.js';
+import {AppElement} from '@longlost/app-core/app-element.js';
 
 import {
   getRootTarget, 
@@ -23,7 +20,7 @@ import {
   wait
 } from '@longlost/app-core/utils.js';
 
-import htmlString from './dark-mode-selector.html';
+import template from './dark-mode-selector.html';
 import '@longlost/app-core/app-shared-styles.css';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/paper-radio-group/paper-radio-group.js';
@@ -37,7 +34,7 @@ class DarkModeSelector extends AppElement {
   static get is() { return 'dark-mode-selector'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

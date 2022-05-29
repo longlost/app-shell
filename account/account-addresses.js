@@ -14,10 +14,7 @@
   *
   **/
 
-import {
-  AppElement, 
-  html
-} from '@longlost/app-core/app-element.js';
+import {AppElement} from '@longlost/app-core/app-element.js';
 
 import {
   compose,
@@ -41,7 +38,7 @@ import {
   subscribe
 } from '@longlost/app-core/services/services.js';
 
-import htmlString from './account-addresses.html';
+import template from './account-addresses.html';
 import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-inputs/edit-input.js';
@@ -61,6 +58,7 @@ import '../shared/app-shell-icons.js';
 
 
 const notRequired = str => (
+
   str.includes('address2') ||
   str === 'middle'         ||
   str === 'phone'
@@ -75,7 +73,7 @@ class AccountAddresses extends AppElement {
   static get is() { return 'account-addresses'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

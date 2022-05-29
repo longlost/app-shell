@@ -34,10 +34,7 @@
   **/
 
 
-import {
-  AppElement, 
-  html
-} from '@longlost/app-core/app-element.js';
+import {AppElement} from '@longlost/app-core/app-element.js';
 
 import {
   hijackEvent,
@@ -55,7 +52,7 @@ import {
   subscribe
 } from '@longlost/app-core/services/services.js';
 
-import htmlString from './account-photo-picker.html';
+import template from './account-photo-picker.html';
 import '@longlost/app-camera/picker/acs-picker-overlay.js';
 import '@longlost/app-images/app-image.js';
 import '@polymer/paper-button/paper-button.js';
@@ -68,7 +65,7 @@ class AccountPhotoPicker extends AppElement {
   static get is() { return 'account-photo-picker'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

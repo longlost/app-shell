@@ -17,14 +17,11 @@ import {
   webpackConfig
 } from 'config.js';
 
-import {
-  AppElement, 
-  html
-} from '@longlost/app-core/app-element.js';
+import {AppElement} from '@longlost/app-core/app-element.js';
 
 import {mode as pwaDisplayMode} from '@longlost/app-core/boot/install.js';
 
-import htmlString from './app-settings.html';
+import template from './app-settings.html';
 import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-overlays/app-header-overlay.js';
 import '../shared/dark-mode-selector.js';
@@ -37,7 +34,7 @@ class AppSettings extends AppElement {
   static get is() { return 'app-settings'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

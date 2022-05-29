@@ -27,10 +27,7 @@
 
 import {appUserAndData} from 'config.js';
 
-import {
-  AppElement,
-  html
-} from '@longlost/app-core/app-element.js';
+import {AppElement} from '@longlost/app-core/app-element.js';
 
 import {
   hijackEvent,
@@ -46,7 +43,7 @@ import {OverlayControlMixin}    from './shell/overlay-control-mixin.js';
 import {ThemeMixin}             from './shell/theme-mixin.js';
 import firebaseReady            from '@longlost/app-core/firebase.js';
 import {setEnableDbPersistence} from '@longlost/app-core/services/settings.js';
-import htmlString               from './app-shell.html';
+import template                 from './app-shell.html';
 
 
 // All custom element definitions imported after window 
@@ -89,7 +86,7 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
   static get is() { return 'app-shell'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

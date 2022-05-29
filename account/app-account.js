@@ -14,10 +14,7 @@
   *
   **/
 
-import {
-  AppElement, 
-  html
-} from '@longlost/app-core/app-element.js';
+import {AppElement} from '@longlost/app-core/app-element.js';
 
 import {
   hijackEvent,
@@ -38,7 +35,7 @@ import {
 import firebaseReady        from '@longlost/app-core/firebase.js';
 import {FbErrorMixin}       from './fb-error-mixin.js';
 import {HeaderActionsMixin} from './header-actions-mixin.js';
-import htmlString           from './app-account.html';
+import template             from './app-account.html';
 import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-overlays/app-header-overlay.js';
 import '@longlost/app-spinner/app-spinner.js';
@@ -109,7 +106,7 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
   static get is() { return 'app-account'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

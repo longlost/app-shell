@@ -22,10 +22,7 @@ import {
   termsOfServiceUrl     
 } from 'config.js';
 
-import {
-  AppElement, 
-  html
-} from '@longlost/app-core/app-element.js';
+import {AppElement} from '@longlost/app-core/app-element.js';
 
 import {
   hijackEvent, 
@@ -39,6 +36,7 @@ import * as firebaseui from '@longlost/app-core/firebaseui.js';
 
 import {initAuth} from './auth.js';
 
+import template from './auth-signin-modal.html';
 import '@longlost/app-overlays/app-modal.js';
 
 // 'services.js' lazy-loaded.
@@ -49,50 +47,7 @@ class AuthSigninModal extends AppElement {
   static get is() { return 'auth-signin-modal'; }
 
   static get template() {
-    return html`
-      <style include="firebaseui"> /* Use styles provided by library. */
-
-        #modal {
-          --modal-card-background-color: white;
-          --modal-card-content-padding:  0px;
-        }
-
-        #container {
-          min-height: 368px;
-          width:      240px;
-        }
-
-        /* Input underlines, primary buttons. */
-        /* Won't work withough !important. */
-        .firebaseui-textfield.mdl-textfield .firebaseui-label::after,
-        .mdl-button--raised.mdl-button--colored,
-        .mdl-button.mdl-button--colored {
-
-          /* Default color is material design dark blue. */
-          background-color: var(--app-primary-color, #3f51b5) !important;
-        }
-
-        /* Secondary buttons. */
-        /* Won't work withough !important. */
-        .mdl-button--primary.mdl-button--primary {
-
-          /* Default color is material design dark blue. */
-          color: var(--app-primary-color, #3f51b5) !important;
-        }
-
-      </style>
-
-
-      <app-modal id="modal"
-                 on-overlay-reset="__overlayResetHandler">
-
-        <div id="container" 
-             slot="card-content-slot" 
-             on-click="__cardClicked">
-        </div>
-
-      </app-modal>
-    `;
+    return template;
   }
 
 

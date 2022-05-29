@@ -16,8 +16,8 @@
   **/
 
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import htmlString         from './animated-wifi-icon.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import template     from './animated-wifi-icon.html';
 import '@polymer/iron-icon/iron-icon.js';
 import '../shared/app-shell-icons.js';
 
@@ -27,7 +27,7 @@ class AnimatedWifiIcon extends AppElement {
   static get is() { return 'animated-wifi-icon'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

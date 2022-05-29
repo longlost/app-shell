@@ -15,6 +15,7 @@ import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 
 
 class LongLostView404 extends PolymerElement {
+  
   static get is() { return 'view-404'; }
 
   

@@ -14,10 +14,10 @@
   *
   **/
 
-import {appUserAndData}   from 'config.js';
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import {hijackEvent}      from '@longlost/app-core/utils.js';
-import htmlString         from './account-inputs.html';
+import {appUserAndData} from 'config.js';
+import {AppElement}     from '@longlost/app-core/app-element.js';
+import {hijackEvent}    from '@longlost/app-core/utils.js';
+import template         from './account-inputs.html';
 import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/app-inputs/edit-input.js';
@@ -33,7 +33,7 @@ class AccountInputs extends AppElement {
   static get is() { return 'account-inputs'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

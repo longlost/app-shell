@@ -11,8 +11,8 @@
   **/
  
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import htmlString         from './account-actions-dropdown.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import template     from './account-actions-dropdown.html';
 import '@longlost/app-core/app-icons.js';
 import '@longlost/app-core/app-shared-styles.css';
 import '@longlost/grow-shrink-container/grow-shrink-container.js';
@@ -26,7 +26,7 @@ class AccountActionsDropdown extends AppElement {
   static get is() { return 'account-actions-dropdown'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
 
 

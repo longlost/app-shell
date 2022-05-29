@@ -16,8 +16,8 @@
   **/
 
 
-import {AppElement, html} from '@longlost/app-core/app-element.js';
-import htmlString         from './animated-light-mode-icon.html';
+import {AppElement} from '@longlost/app-core/app-element.js';
+import template     from './animated-light-mode-icon.html';
 
 
 class AnimatedLightModeIcon extends AppElement {
@@ -25,7 +25,7 @@ class AnimatedLightModeIcon extends AppElement {
   static get is() { return 'animated-light-mode-icon'; }
 
   static get template() {
-    return html([htmlString]);
+    return template;
   }
   
 }
