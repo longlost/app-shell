@@ -45,8 +45,6 @@ import {
 
 import {allProcessingRan} from '@longlost/app-core/img-utils.js';
 
-import firebaseReady from '@longlost/app-core/firebase.js';
-
 import {
   set, 
   subscribe
@@ -309,7 +307,7 @@ class AccountPhotoPicker extends AppElement {
 
     this._selected = event.detail.value;
 
-    if (!allProcessingRan(this._selected)) {
+    if (this._selected && !allProcessingRan(this._selected)) {
       this.__startSelectedItemSub();
     }
   }
@@ -392,6 +390,16 @@ class AccountPhotoPicker extends AppElement {
       await this.clicked();
 
       // Set the recently selected photo as the new profile photo.
+      //
+      // The 'core-updateProfilePhotos' cloud function will be
+      // triggerd by this change. It will add any missing photo 
+      // data once the image is fully processed.
+      //
+      //    See cloud.js file in the '@longlost/app-core' package
+      //    for more details.
+      //
+      // This architecture allows the user to continue their experience
+      // without having to wait for further cloud image processing steps.
       await set({
         coll: `users`,
         doc:   this.user.uid,
@@ -400,29 +408,13 @@ class AccountPhotoPicker extends AppElement {
         }
       });
 
-      // The 'core-updateProfilePhotos' cloud function will
-      // pick this up if the selected photo item has not
-      // been fully processed by this time.
-      if (this.type === 'avatar') {
-
-        const {optimized, thumbnail} = this._selected;
-        const photoURL = thumbnail || optimized;
-
-        if (photoURL) {
-
-          const {loadAuth}      = await firebaseReady();
-          const {updateProfile} = await loadAuth();
-
-          await updateProfile(this.user, {photoURL});
-        }
-      }
-
       this.__cleanupSelected();
 
       await message('Profile photo updated.');
     }
     catch (error) {
       if (error === 'click debounced') { return; }
+
       console.error(error);
 
       warn('Sorry, your profile was not updated.');
@@ -435,23 +427,22 @@ class AccountPhotoPicker extends AppElement {
     try {
       hijackEvent(event);
 
+      // The 'core-updateProfilePhotos' cloud function will handle
+      // removing the photoURL from the user profile data.
+      //
+      //    See 'cloud.js' file in the '@longlost/app-core' package
+      //    for more details.
       await set({
         coll: `users`,
         doc:   this.user.uid,
         data: {
-          [this.type]: null
+          [this.type]: null // MUST be 'null' for cloud function.
         }
       });
 
-      if (this.type === 'avatar') {
-
-        const {loadAuth}      = await firebaseReady();
-        const {updateProfile} = await loadAuth();
-
-        await updateProfile(this.user, {photoURL: null});
-      }
-
       this.__cleanupSelected();
+
+      await message('Profile photo removed.');
     }
     catch (error) {
       console.error(error);

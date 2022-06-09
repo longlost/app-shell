@@ -375,9 +375,9 @@
                               page="[[page]]"
                               root-path="[[rootPath]]"
                               view-items="[[_viewDrawerItems]]"
-                              on-app-shell-drawer-content-account-selected="__drawerAccountSelected"
-                              on-app-shell-drawer-content-overlay-selected="__drawerOverlayItemSelected"
-                              on-app-shell-drawer-content-settings-selected="__drawerSettingsSelected">
+                              on-app-shell-drawer-content-account-selected="__drawerAccountSelectedHandler"
+                              on-app-shell-drawer-content-overlay-selected="__drawerOverlayItemSelectedHandler"
+                              on-app-shell-drawer-content-settings-selected="__drawerSettingsSelectedHandler">
 
       <slot name="drawer-background"
             slot="background">
@@ -529,11 +529,11 @@
 
 
 <app-account id="account"
+             data="[[_userData]]"
              dark-mode="[[_darkMode]]"
              user="[[_user]]"
              header-image="[[accountHeaderImage]]"
              header-size="[[accountHeaderSize]]"
-             on-app-account-avatar-changed="__accountAvatarChangedHandler"
              on-app-account-open-quick-start="__openQuickStart"
              on-app-account-reauth-needed="__accountReauthNeededHandler"
              on-app-account-signout-clicked="__accountSignoutClickedHandler"

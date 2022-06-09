@@ -35,6 +35,9 @@ export const HeaderActionsMixin = superClass => {
     static get properties() {
       return {
 
+        // From a live subscription to the user's database collection.
+        data: Object,
+
         // Should be a webpack responsive-loader image object.
         //
         // This is used as a branded placeholder, used only when the user 
@@ -47,7 +50,7 @@ export const HeaderActionsMixin = superClass => {
         // The most current user avatar photo item.
         _avatar: {
           type: Object,
-          computed: '__computeAvatar(_opened, user, _data)'
+          computed: '__computeAvatar(_opened, user, data)'
         },
 
         _photoPickerType: {
@@ -57,17 +60,10 @@ export const HeaderActionsMixin = superClass => {
 
         _profileBackground: {
           type: Object,
-          computed: '__computeProfileBackground(_opened, _data, headerImage)'
+          computed: '__computeProfileBackground(_opened, data, headerImage)'
         }        
 
       };
-    }
-
-
-    static get observers() {
-      return [
-        '__avatarChanged(_avatar)'
-      ];
     }
 
 
@@ -91,12 +87,6 @@ export const HeaderActionsMixin = superClass => {
       }
 
       return img;
-    }
-
-
-    __avatarChanged(avatar) {
-
-      this.fire('app-account-avatar-changed', {value: avatar});
     }
 
 

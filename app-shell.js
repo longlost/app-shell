@@ -33,15 +33,13 @@ import {
   hijackEvent,
   listenOnce,
   schedule,
-  message,
-  wait,
   warn
 } from '@longlost/app-core/utils.js';
 
 import {waitForLoaded}          from './shell/utils.js';
 import {OverlayControlMixin}    from './shell/overlay-control-mixin.js';
 import {ThemeMixin}             from './shell/theme-mixin.js';
-import firebaseReady            from '@longlost/app-core/firebase.js';
+import {UserMixin}              from './shell/user-mixin.js';
 import {setEnableDbPersistence} from '@longlost/app-core/services/settings.js';
 import template                 from './app-shell.html';
 
@@ -81,7 +79,7 @@ const builtInLazyImports = {
 const builtInLazyImport = name => builtInLazyImports[name]();
 
 
-class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
+class AppShell extends UserMixin(ThemeMixin(OverlayControlMixin(AppElement))) {
 
   static get is() { return 'app-shell'; }
 
@@ -198,30 +196,6 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
         value: 'none' // Or 'instant', 'smooth'.
       },
 
-      // Fired from 'app-account' when user has updated their avatar photo.
-      _accountAvatarItem: Object,
-
-      // Show 'person-outline' icon when no user is logged in.
-      // Show 'account-circle' icon when user is logged in.
-      _accountIcon: {
-        type: String,
-        computed: '__computeAccountIcon(_user)'
-      },
-
-      // User's profile avatar photo.
-      //
-      // Favors the '_accountAvatarItem', which contains the most up-to-date
-      // data coming from 'app-account' when the user updates their photo, 
-      // using 'account-photo-picker'. 
-      //
-      // This mamual method was chosen, instead of simply keeping a live 
-      // subscription for the entire duration of a user session, in an 
-      // attempt to reduce user and app owner data charges at scale.
-      _avatar: {
-        type: Object,
-        computed: '__computeAvatar(_user, _accountAvatarItem)'
-      },
-
       _bottomViewDrawerItems: Array,
 
       _descriptionMeta: Object,
@@ -249,16 +223,6 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
       // Drives 'dom-if' template that wraps 'app-settings'
       _stampSettings: Boolean,
 
-      // Drives 'dom-if' template that wraps 'app-quick-start'
-      _stampQuickStart: Boolean,
-
-      _user: { 
-        type: Object,
-        value: null
-      },
-
-      _userDataUnsub: Object,
-
       _viewDrawerItems: Array
 
     };
@@ -283,6 +247,7 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
 
     super();
 
+    // 'shell/user-mixin.js'
     this.__showAuthUIHandler = this.__showAuthUIHandler.bind(this);
   }
 
@@ -322,25 +287,6 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
     super.disconnectedCallback();
 
     this.removeEventListener('show-user-ui', this.__showAuthUIHandler);
-  }
-  
-
-  __computeAccountIcon(user) {
-
-    if (!user) { return 'app-shell-icons:person-outline'; }
-
-    return 'app-shell-icons:account-circle';
-  }
-
-
-  __computeAvatar(user, avatarItem) {
-
-    if (!user) { return; }
-
-    // 'avatarItem' is null when user chooses to remove their avatar.
-    if (avatarItem === undefined) { return user.photoURL; }
-
-    return avatarItem;
   }
 
 
@@ -635,52 +581,15 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
   }
 
 
-  async __showAccountRequiredOverlay() {
-
-    try {
-      this.$.accountRequiredOverlay.style.display = 'flex';
-
-      await schedule();
-
-      this.$.accountRequiredOverlay.classList.add('show-account-required');
-
-      return wait(200);
-    }
-    catch (error) {
-      console.error(error);
-    }
-  }
-
-
-  async __hideAccountRequiredOverlay() {
-
-    try {
-      this.$.accountRequiredOverlay.classList.remove('show-account-required');
-
-      await wait(200);
-
-      this.$.accountRequiredOverlay.style.display = 'none';
-    }
-    catch (error) {
-      console.error(error);
-    }
-  }
-
-
-  __drawerAccountSelected(event) {
+  __drawerOverlayItemSelectedHandler(event) {
 
     hijackEvent(event);
 
-    if (this._user) {
-      this.__prepToOpenOverlay({id: 'account'});
-    }
-    else {
-      this.showAuthUI();
-    }
+    this.__prepToOpenOverlay(event.detail.selected);
   }
 
 
-  __drawerSettingsSelected(event) {
+  __drawerSettingsSelectedHandler(event) {
 
     hijackEvent(event);
 
@@ -689,14 +598,6 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
       domIfId: 'settingsTemplate',
       stampIf: '_stampSettings'
     });
-  }
-
-
-  __drawerOverlayItemSelected(event) {
-
-    hijackEvent(event);
-
-    this.__prepToOpenOverlay(event.detail.selected);
   }
 
 
@@ -765,189 +666,6 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
   }
 
 
-  __signOut() {
-
-    return this.$.auth.signOut();
-  }
-
-
-  __unsubFromUserData() {
-
-    if (this._userDataUnsub) {
-      this._userDataUnsub();
-      this._userDataUnsub = undefined;
-    }
-  }
-
-
-  async __openQuickStart() {
-
-    await import(
-      /* webpackChunkName: 'app-quick-start' */ 
-      './guide/app-quick-start.js'
-    );
-
-    await this.__waitForTemplateToStamp('_stampQuickStart', 'qsTemplate');
-
-    return this.select('#quickStart').open();
-  }
-
-  // Subscribe to user data, which is created by
-  // a cloud function which is triggered by the 
-  // Firebase Auth onCreate event.
-  async __welcomeUser(user) {
-
-    if (!user) { 
-
-      this.__unsubFromUserData();
-
-      return; 
-    }
-
-    const {set, subscribe} = await import(
-      /* webpackChunkName: 'services' */ 
-      '@longlost/app-core/services/services.js'
-    );
-
-    const callback = async data => {
-
-      if (!this._user) { 
-
-        this.__unsubFromUserData();
-
-        return; 
-      }
-
-      if (!data) { return; }      
-
-      const verifiedOrVerificationSent = (user.emailVerified || data.verificationEmailSent); 
-
-      if (verifiedOrVerificationSent && data.onboarded) {
-
-        this.__unsubFromUserData();
-        
-        const {displayName} = user;
-        const name          = displayName ? ` ${displayName}` : '';
-
-        message(`Welcome${name}!`);
-      }
-
-      if (!verifiedOrVerificationSent) {
-
-        const {loadAuth}              = await firebaseReady();
-        const {sendEmailVerification} = await loadAuth();
-
-        await sendEmailVerification(this._user);
-
-        set({
-          coll: 'users',
-          doc:   this._user.uid,
-          data: {verificationEmailSent: true}
-        });
-      }
-
-      // Wait until AFTER 'verificationEmailSent' has been set
-      // from the previous invocation, to avoid jank that
-      // breaks the quickstart overlay animation.
-      if (verifiedOrVerificationSent && !data.onboarded) {
-
-        this.__openQuickStart();
-      }
-    };
-
-    const errorCallback = error => {
-      console.error(error);
-    };
- 
-    this._userDataUnsub = await subscribe({
-      callback,
-      coll: 'users',
-      doc:   user.uid,
-      errorCallback
-    });
-  }
-
-
-  __accountAvatarChangedHandler(event) {
-
-    hijackEvent(event);
-
-    this._accountAvatarItem = event.detail.value;
-  }
-
-
-  async __accountReauthNeededHandler(event) {
-
-    try {
-      hijackEvent(event);
-
-      await this.__signOut();      
-
-      this.showAuthUI();
-    }
-    catch (error) {
-      console.warn('__accountReauthNeededHandler error: ', error);
-    }
-  }
-
-
-  __accountSignoutClickedHandler(event) {
-
-    hijackEvent(event);
-
-    this.__signOut();
-  }
-
-
-  __accountUserDeletedHandler(event) {
-
-    hijackEvent(event);
-
-    this._autoColorMode  = true;
-    this._persistence    = appUserAndData.trustedDevice;
-    this._quickStartPage = 'welcome';
-  }
-
-
-  __authAccountBtnHandler(event) {
-
-    hijackEvent(event);
-
-    this.__prepToOpenOverlay({id: 'account'});
-  }
-
-
-  __authUserHandler(event) {
-
-    hijackEvent(event);
-
-    const {user} = event.detail;
-    this._user   = user;
-
-    if (this.accountRequired) { // Whitelist apps.
-
-      if (!user) {
-        this.__showAccountRequiredOverlay();
-      }
-      else {
-        this.__hideAccountRequiredOverlay();
-      }
-    }
-
-    this.__welcomeUser(user);
-
-    this.fire('app-shell-user-changed', {value: user});
-  }
-
-
-  __avatarClickedHandler(event) {
-
-    hijackEvent(event);
-
-    this.showAuthUI();
-  }
-
-
   __drawerLayoutNarrowChangedHandler(event) {
 
     hijackEvent(event);
@@ -1004,46 +722,11 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
   }
 
 
-  async __quickStartClosedHandler(event) {
-
-    hijackEvent(event);
-
-    this._stampQuickStart = false;
-
-    const {set} = await import(
-      /* webpackChunkName: 'services' */ 
-      '@longlost/app-core/services/services.js'
-    );
-
-    set({
-      coll: 'users',
-      doc:   this._user.uid,
-      data: {onboarded: true}
-    });
-  }
-
-
-  __quickStartPageHandler(event) {
-
-    hijackEvent(event);
-
-    this._quickStartPage = event.detail.value;
-  }
-
-
   __routerPageChangedHandler(event) {
 
     hijackEvent(event);
 
     this._routerPage = event.detail.value;
-  }
-
-
-  __showAuthUIHandler(event) {
-
-    hijackEvent(event);
-
-    this.showAuthUI();
   }
 
   // Pull out data from slotted view elements to use in routing/lazy-loading.
@@ -1067,12 +750,6 @@ class AppShell extends ThemeMixin(OverlayControlMixin(AppElement)) {
     
     // overlay-control-mixin.js
     this.__resetUnderlays();
-  }
-
-
-  showAuthUI() {
-
-    return this.$.auth.showAuthUI();
   }
 
 }
