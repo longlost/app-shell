@@ -115,7 +115,10 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
 
       darkMode: Boolean,
 
-      // From `app-auth`.
+      // Additional user data kept in firestore from 'app-shell'.
+      data: Object,
+
+      // Firebase Auth user object from 'app-auth'.
       user: Object,
 
       // Should be a webpack responsive-loader image object.
@@ -128,9 +131,6 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
         type: Number,
         value: 4
       },
-
-      // From a live subscription to the user's database collection.
-      _data: Object,
 
       // Firebase unsubscribe function.
       _dataUnsubscribe: Object,
@@ -161,7 +161,6 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
 
   static get observers() {
     return [
-      '__openedUserChanged(_opened, user)',
       '__openedSpinnerShownChanged(_opened, _spinnerShown)'
     ];
   }
@@ -217,55 +216,11 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
                (typeof obj.value === 'string' && obj.value.trim()));
   }
 
-
-  __openedUserChanged(opened, user) {
-
-    if (user) {
-      this.__startUserDataSub();
-      return;
-    }
-    
-    this.__stopUserDataSub();    
-  }
-
   // NOT a computed prop since '_stamp' is set prior to opening.
   __openedSpinnerShownChanged(opened, spinnerShown) {
 
     if (!opened && !spinnerShown) {
       this._stamp = false;
-    }
-  }
-
-
-  async __startUserDataSub() {
-
-    if (this._dataUnsubscribe) { return; }
-
-    const callback = dbData => {
-      this._data = dbData;
-    };
-
-    const errorCallback = error => {
-      this._data = {};
-
-      console.error(error);
-    };
-
-    this._dataUnsubscribe = await subscribe({
-      callback,
-      coll: 'users',
-      doc:   this.user.uid,
-      errorCallback
-    });
-  }
-
-
-  __stopUserDataSub() {
-
-    if (this._dataUnsubscribe) {
-      this._dataUnsubscribe();
-      this._dataUnsubscribe = undefined;
-      this._data = {};
     }
   }
 
@@ -595,7 +550,7 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
 
       const saveEditToDb = async str => {
 
-        const oldVal = this._data[kind];
+        const oldVal = this.data?.[kind];
 
         if (oldVal !== newVal) { // Ignore if there is no change.
 
