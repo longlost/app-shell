@@ -728,18 +728,22 @@ class AppAccount extends HeaderActionsMixin(FbErrorMixin(AppElement)) {
         wait(1000)
       ]);
 
-      await this.__showSpinner('Deleting app data from this device. Please wait.');
-
-      // Shutdown firestore.
-      await shutdownDb();
-
       this.fire('app-account-user-deleted');
 
-      // Start a new firestore instance.
-      await initDb();
+      // Give custom app code one cycle to 
+      // do custom cleanup work.
       await schedule();
-      await this.__hideSpinner();
-      await this.select('#overlay').close();
+
+      await this.__showSpinner('Cleaning up. Please wait.');
+
+      await Promise.all([
+        shutdownDb(),
+        wait(800)
+      ]);
+
+      // Reload the app WITHOUT the option to use the browsers 
+      // 'back' button to return to this state/page.
+      document.location.replace(document.location.origin);
     }
     catch (error) {
 
