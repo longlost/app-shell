@@ -53,8 +53,13 @@ export const UserMixin = superClass => {
           computed: '__computeAvatar(_user, _userData)'
         },
 
+        // Very important to have an inital value set as new users
+        // will have an undefined value from the db. The change
+        // from false to undefined triggers '__onboardedVerifiedChanged'
+        // to run for new users.
         _onboarded: {
           type: Boolean,
+          value: false, 
           computed: '__computeOnboarded(_userData.onboarded)'
         },
 
@@ -71,8 +76,13 @@ export const UserMixin = superClass => {
 
         _userDataUnsub: Object,
 
+        // Very important to have an inital value set as new users
+        // will have an undefined value from the db. The change
+        // from false to undefined triggers '__onboardedVerifiedChanged'
+        // to run for new users.
         _verifiedOrVerificationSent: {
           type: Boolean,
+          value: false,
           computed: '__computeVerifiedOrVerificationSent(_user.emailVerified, _userData.verificationEmailSent)'
         }
 
