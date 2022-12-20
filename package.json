@@ -18,7 +18,7 @@
   "homepage": "https://github.com/longlost/app-shell#readme",
   "dependencies": {
     "@longlost/app-camera": "^1.20.4",
-    "@longlost/app-core": "^9.0.4",
+    "@longlost/app-core": "^9.0.5",
     "@longlost/app-images": "^2.2.4",
     "@longlost/app-inputs": "^2.2.2",
     "@longlost/app-overlays": "^2.0.2",
@@ -55,9 +55,9 @@
   "devDependencies": {
     "@polymer/iron-demo-helpers": "^3.1.0",
     "@polymer/test-fixture": "^4.0.2",
-    "@webcomponents/webcomponentsjs": "^2.6.0",
-    "chai": "^4.3.6",
-    "mocha": "^10.0.0",
+    "@webcomponents/webcomponentsjs": "^2.7.0",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
     "wct-mocha": "^1.1.0"
   }
 }
