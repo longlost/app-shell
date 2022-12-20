@@ -393,12 +393,12 @@
   <!-- DO NOT use 'has-scroll-region' in app-header-layout so that 
        it will use the document scroller for proper iOS useage. -->
   <app-header-layout id="mainPanel">
-    <app-header id="header" 
-                slot="header" 
-                scroll-target="document"
-                threshold="[[threshold]]"
+    <app-header id="header"
                 condenses
                 effects="waterfall blend-background"
+                scroll-target="document"
+                slot="header" 
+                threshold="[[threshold]]"
                 on-threshold-triggered-changed="__headerThresholdHandler">
 
       <app-toolbar id="topToolbar">
@@ -407,17 +407,17 @@
              class="not-loaded">
 
           <div id="menu-btn-placeholder">
-            <svg id="menu-btn-placeholder-svg"
-                 viewBox="0 0 24 24" 
-                 preserveAspectRatio="xMidYMid meet" 
-                 focusable="false">
+            <svg id="menu-btn-placeholder-svg"  
+                 focusable="false"
+                 preserveAspectRatio="xMidYMid meet"
+                 viewBox="0 0 24 24">
               <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
             </svg>
           </div>
 
-          <paper-icon-button icon="app-shell-icons:menu" 
+          <paper-icon-button aria-label="Opens menu drawer"
                              drawer-toggle
-                             aria-label="Opens menu drawer">
+                             icon="app-shell-icons:menu">
           </paper-icon-button>
 
         </div>
@@ -464,10 +464,10 @@
     <div id="pages"
          class="not-loaded">
 
-      <iron-pages selected="[[page]]"
-                  attr-for-selected="page"
+      <iron-pages attr-for-selected="page"
                   fallback-selection="view404"
-                  role="main">
+                  role="main"
+                  selected="[[page]]">
 
         <!-- Dynamically imported. -->
         <slot id="viewsSlot" 
@@ -531,9 +531,9 @@
 <app-account id="account"
              data="[[_userData]]"
              dark-mode="[[_darkMode]]"
-             user="[[_user]]"
              header-image="[[accountHeaderImage]]"
              header-size="[[accountHeaderSize]]"
+             user="[[_user]]"
              on-app-account-open-quick-start="__openQuickStart"
              on-app-account-reauth-needed="__accountReauthNeededHandler"
              on-app-account-signout-clicked="__accountSignoutClickedHandler"
@@ -603,9 +603,9 @@
 
 
 <paper-toast id="swToast" 
-             class="toasts-w-btn not-loaded" 
-             duration="Infinity" 
-             always-on-top>
+             class="toasts-w-btn not-loaded"  
+             always-on-top
+             duration="Infinity">
   <paper-button on-click="__swToastDismissButtonClicked">
     DISMISS
   </paper-button>
