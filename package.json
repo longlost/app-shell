@@ -1,6 +1,6 @@
 {
   "name": "@longlost/app-shell",
-  "version": "6.10.5",
+  "version": "6.10.6",
   "description": "This element bundles core functionalities that are essential to any app.",
   "main": "app-shell.js",
   "scripts": {
@@ -19,7 +19,7 @@
   "dependencies": {
     "@longlost/app-camera": "^1.20.4",
     "@longlost/app-core": "^9.0.5",
-    "@longlost/app-images": "^2.2.4",
+    "@longlost/app-images": "^2.3.1",
     "@longlost/app-inputs": "^2.2.2",
     "@longlost/app-overlays": "^2.0.2",
     "@longlost/app-spinner": "^1.2.2",

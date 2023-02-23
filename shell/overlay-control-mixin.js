@@ -96,23 +96,29 @@ export const OverlayControlMixin = superClass => {
 
     __addItemToRegistrySequence(symbol) {
 
+      const existing = this.__itemRegistered(symbol);
+
+      if (existing) { return; }
+
       this._overlayRegistry.sequence.push(symbol);
     }
 
 
-    __getUnderlaySymbolFromRegistry() {
+    __getUnderlaySymbolFromRegistry(symbol) {
 
-      const sequence         = this._overlayRegistry.sequence.length - 1;
-      const underlaySequence = sequence - 1;
-      const underlaySymbol   = this._overlayRegistry.sequence[underlaySequence];
+      const {sequence}   = this._overlayRegistry;
+      const overlayIndex = sequence.indexOf(symbol);
+
+      // Not found.
+      if (overlayIndex === -1) { return null; } 
+
+      // Bottom overlay. No underlay.
+      if (overlayIndex === 0) { return null; } 
+
+      const underlayIndex  = overlayIndex - 1;
+      const underlaySymbol = sequence.at(underlayIndex);
 
       return underlaySymbol;
-    }
-
-
-    __itemRegistered(symbol) {
-
-      return Boolean(this.__getItemFromRegistry(symbol));
     }
 
 
@@ -122,12 +128,18 @@ export const OverlayControlMixin = superClass => {
     }
 
 
+    __itemRegistered(symbol) {
+
+      return Boolean(this.__getItemFromRegistry(symbol));
+    }
+
+
     __makeRegistryItem(event) {
 
       const {node}                    = event.detail;
       const {content, header, symbol} = node;
 
-      const underlaySymbol = this.__getUnderlaySymbolFromRegistry();
+      const underlaySymbol = this.__getUnderlaySymbolFromRegistry(symbol);
 
       const item = {
         content,
@@ -156,7 +168,7 @@ export const OverlayControlMixin = superClass => {
 
     __updateItemInRegistry(symbol) {
 
-      const underlaySymbol = this.__getUnderlaySymbolFromRegistry();
+      const underlaySymbol = this.__getUnderlaySymbolFromRegistry(symbol);
       const overlay        = this.__getItemFromRegistry(symbol);
 
       overlay.underlaySymbol = underlaySymbol;
@@ -170,9 +182,11 @@ export const OverlayControlMixin = superClass => {
       if (!header) { return; } // Not an event from a header overlay.
 
       if (this.__itemRegistered(symbol)) {
+
         this.__updateItemInRegistry(symbol);
       }
       else {
+
         this.__addItemToRegistry(event);
       }
       
@@ -183,9 +197,20 @@ export const OverlayControlMixin = superClass => {
     }
 
 
-    __removeOverlayFromRegistrySequence() {
+    __removeOverlayFromRegistry(overlay) {
 
-      this._overlayRegistry.sequence.pop();
+      delete this._overlayRegistry[overlay.symbol];
+    }
+
+
+    __removeOverlayFromRegistrySequence(overlay) {
+
+      const {sequence} = this._overlayRegistry;
+      const start      = sequence.indexOf(overlay.symbol);
+
+      if (start === -1) { return; }
+
+      sequence.splice(start, 1); // Delete 1 item at start position.
     }
 
 
@@ -435,7 +460,7 @@ export const OverlayControlMixin = superClass => {
 
       this.__counteractAnimationHeaderPlacement(overlay);
     }
-
+    
 
     async __overlayReset(event) {
 
@@ -450,6 +475,7 @@ export const OverlayControlMixin = superClass => {
       this.__hideLayoutElement(overlay);
 
       if (underlay) {  
+
         this.__setLayoutElToPreviousScrollPosition(underlay);
 
         // This method is only needed when overlay.reset method is used.
@@ -460,18 +486,20 @@ export const OverlayControlMixin = superClass => {
       await schedule();
 
       if (underlay) {
+
         this.__readyLayoutElement(underlay);
       }
 
-      this.__removeOverlayFromRegistrySequence();
+      this.__removeOverlayFromRegistry(overlay);
+      this.__removeOverlayFromRegistrySequence(overlay);
     }
 
 
     __browserBackPushed() {
 
       const {sequence} = this._overlayRegistry;
-      const last       = sequence.length - 1;
-      const symbol     = sequence[last];
+      const lastIndex  = sequence.length - 1;
+      const symbol     = sequence[lastIndex];
 
       this._overlayRegistry[symbol].panel.back();
     }
@@ -483,7 +511,7 @@ export const OverlayControlMixin = superClass => {
 
       // Reset all overlays back to app-shell.
       // Get all symbols besides the one for app-shell's header.
-      const sequence        = this._overlayRegistry.sequence;
+      const {sequence}      = this._overlayRegistry;
       const lastIndex       = sequence.length - 1;
       const underlaySymbols = sequence.slice(1, lastIndex);
       const underlays       = underlaySymbols.map(symbol => 
